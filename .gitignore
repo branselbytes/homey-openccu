@@ -1,5 +1,6 @@
 env.json
-package-lock.json
 .idea
 /node_modules/
+/.homeybuild/
+coverage/
 /cli/homeymatic-cli

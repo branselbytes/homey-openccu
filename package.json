@@ -1,7 +1,7 @@
 {
-  "name": "homeymatic",
-  "version": "0.19.1",
-  "description": "Connect Homematic CCU with Homey",
+  "name": "homey-openccu",
+  "version": "0.1.0",
+  "description": "Local OpenCCU integration for Homey Pro",
   "main": "app.js",
   "dependencies": {
     "@twendt/binrpc": "3.3.2",
@@ -15,20 +15,36 @@
     "which": "^2.0.2"
   },
   "devDependencies": {
-    "eslint": "^7.13.0",
-    "homey": "^2.14.2"
+    "@eslint/js": "^10.0.0",
+    "@types/homey": "npm:homey-apps-sdk-v3-types@^0.3.12",
+    "@types/node": "^22.0.0",
+    "eslint": "^10.0.0",
+    "homey": "^4.4.2",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^3.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm test",
+    "format": "prettier --write AGENTS.md ARCHITECTURE.md IMPLEMENTATION_PLAN.md README.md package.json tsconfig*.json eslint.config.mjs vitest.config.ts tests docs/adr",
+    "format:check": "prettier --check AGENTS.md ARCHITECTURE.md IMPLEMENTATION_PLAN.md README.md package.json tsconfig*.json eslint.config.mjs vitest.config.ts tests docs/adr",
+    "lint": "eslint src/**/*.ts lib/**/*.ts tests/**/*.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit && tsc --project tsconfig.test.json"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/twendt/homey-matic.git"
+    "url": "git+https://github.com/branselbytes/homey-openccu.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "branselbytes",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/twendt/homey-matic/issues"
+    "url": "https://github.com/branselbytes/homey-openccu/issues"
   },
-  "homepage": "https://github.com/twendt/homey-matic#readme"
+  "homepage": "https://github.com/branselbytes/homey-openccu#readme",
+  "engines": {
+    "node": ">=22"
+  }
 }

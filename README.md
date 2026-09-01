@@ -1,160 +1,44 @@
-# ***** This app is still in Beta *****
+# OpenCCU for Homey
 
-# Homematic
+OpenCCU for Homey is an independent, open-source Homey Pro app for integrating Homematic IP devices locally through OpenCCU.
 
-This app adds support for Homematic device in Homey via the CCU2/CCU3/RaspberryMatic
+The project is in its initial modernization phase and is not ready for installation or daily use. Devices from the predecessor Homey app will not be migrated; they will be paired again in this app.
 
-What works:
+## Planned scope
 
-Devices can be connected via the following interfaces to the CCU:
+- current Homey Pro, Homey Apps SDK v3, and Node.js 22
+- HmIP-RF in the first implementation
+- XML-RPC for device discovery, values, commands, and push events
+- JSON-RPC for names, rooms, functions, programs, and system variables
+- one Homey driver per supported product plus a generic fallback for unknown products
+- no required Home Assistant, Python, MQTT, CCU-Jack, or RedMatic runtime
 
-* BidCos
-* Homematic IP
-* CUxD
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the design and [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for the staged delivery plan.
 
-## MQTT
+## Development
 
-As of 0.15.0 the app also supports the connection to the CCU via MQTT. This feature is currently cosidered experimental. The reason it is considered experimental is that it might be required to make some changes on the CCU in future versions of the app which could cause the app not to work until the changes are implemented.
+Prerequisites:
 
-It depends on RedMatic (Node Red) and Mosquitto (MQTT broker) to be configured on the CCU and therefore only supports the CCU3 ud RaspberryMatic.
+- Node.js 24 for the current Homey CLI
+- npm
+- a current Homey Pro for device-level testing
+- a dedicated or recorded OpenCCU test fixture
 
-The implementation is fully compatible with the existing devices that have been paired before it was enabled. It is also possible to switch back to the old mode without requiring to pair devices again.
+Install and verify locally:
 
-MQTT is more stable than the connection via RPC as used otherwise. It also fixes the issue that some users have been experiencing where the devices stopped working after some time and a restart of the app was required to fix it. The performance is also increased which means that switch operations as executed faster and more reliable.
+```sh
+npm ci
+npm run check
+npm run build
+npx homey app validate
+```
 
-See the [Wiki](https://github.com/twendt/homey-matic/wiki/MQTT-Setup) for a detailed description on setting it up.
+The application itself targets the Node.js 22 runtime used by Homey software 12.9.0 and newer. Generated TypeScript output under `.homeybuild/` is not committed.
 
-I recommend not to enable the auto update of this app in Homey and always check this page to make sure that no action is required before updating the app.
+Do not publish, push releases, or modify the upstream repository without explicit project-owner approval.
 
-If you encounter any issues then please open an issue on GitHub.
+## History and license
 
-If you have a device that is not supported currently then please open an issue on github and we will look into it.
+This repository preserves the Git history of [LRuesink-WebArray/homey-matic](https://github.com/LRuesink-WebArray/homey-matic), originally developed by Timo Wendt with contributions from Bjoern Welker and others. The original repository remains configured as the `upstream` Git remote.
 
-The app uses discovery to find your CCUs on the network. We were only able to test it with a single CCU yet. Therefore it is possible that the app fails in case multiple CCUs are discovered on the network.
-
-# Supported devices
-* HM-CC-RT-DN
-* HM-ES-PMSw1-DR
-* HM-ES-PMSw1-Pl
-* HM-ES-PMSw1-Pl-DN-R5
-* HM-ES-TX-WM
-* HM-LC-Bl1-FM
-* HM-LC-Bl1PBU-FM
-* HM-LC-Dim1PWM-CV
-* HM-LC-Dim1T-CV
-* HM-LC-Dim1T-DR
-* HM-LC-Dim1T-FM
-* HM-LC-Dim1TPBU-FM
-* HM-LC-Sw1-Ba-PCB
-* HM-LC-Sw1-DR
-* HM-LC-Sw1-FM
-* HM-LC-Sw1-Pl
-* HM-LC-Sw1-Pl-2
-* HM-LC-Sw1-Pl-CT-R1
-* HM-LC-Sw1-Pl-DN-R1
-* HM-LC-Sw1-Pl-DN-R5
-* HM-LC-Sw1PBU-FM
-* HM-LC-Sw2-FM
-* HM-LC-Sw2PBU-FM
-* HM-LC-Sw4-Ba-PCB
-* HM-LC-Sw4-DR
-* HM-LC-Sw4-DR-2
-* HM-LC-Sw4-SM
-* HM-LC-Sw4-WM
-* HM-MOD-Re-8
-* HM-OU-LED16
-* HM-PB-2-FM
-* HM-PB-2-WM55-2
-* HM-PB-4-WM
-* HM-PB-6-WM55
-* HM-PBI-4-FM
-* HM-RC-2-PBU-FM
-* HM-RC-4
-* HM-RC-4-2
-* HM-RC-4-3
-* HM-RC-8
-* HM-RC-Key4-2
-* HM-RC-Key4-3
-* HM-RC-Sec4-3
-* HM-SCI-3-FM
-* HM-Sec-Key
-* HM-Sec-MDIR-2
-* HM-Sec-RHS
-* HM-Sec-SC
-* HM-Sec-SC-2
-* HM-Sec-SCo
-* HM-Sec-SD
-* HM-Sec-SD-2
-* HM-Sec-Sir-WM
-* HM-Sec-WDS
-* HM-Sec-WDS-2
-* HM-Sen-DB-PCB
-* HM-Sen-MDIR-O
-* HM-Sen-MDIR-O-2
-* HM-Sen-MDIR-O-3
-* HM-Sen-MDIR-WM55
-* HM-Sen-RD-O
-* HM-SwI-3-FM
-* HM-TC-IT-WM-W-EU
-* HM-WDS10-TH-O
-* HM-WDS100-C6-O
-* HM-WDS30-T-O
-* HM-WS550STH-I
-* HMIP-PS
-* HMIP-PSM
-* HMIP-SWDO
-* HMIP-WRC2
-* HMIP-WTH
-* HMIP-eTRV
-* HmIP-ASIR
-* HmIP-ASIR-2
-* HmIP-BDT
-* HmIP-BRA
-* HmIP-BRC2
-* HmIP-BROLL
-* HmIP-BSM
-* HmIP-BWTH
-* HmIP-BWTH24
-* HmIP-DRSI1
-* HmIP-FCI1
-* HmIP-FBL
-* HmIP-FDT
-* HmIP-FROLL
-* HmIP-FSM
-* HmIP-FSM16
-* HmIP-MOD-HO
-* HmIP-MOD-OC8
-* HmIP-PCBS
-* HmIP-PCBS-BAT
-* HmIP-PS-CH
-* HmIP-PS-PE
-* HmIP-PS-UK
-* HmIP-PSM-CH
-* HmIP-RC8
-* HmIP-SAM
-* HmIP-SCI
-* HmIP-SLO
-* HmIP-SMI
-* HmIP-SMI55
-* HmIP-SMO
-* HmIP-SMO-A
-* HmIP-SPI
-* HmIP-SRH
-* HmIP-STE2-PCB
-* HmIP-STH
-* HmIP-STHD
-* HmIP-STHO
-* HmIP-SWD
-* HmIP-SWDM
-* HmIP-SWDO-I
-* HmIP-SWO-PR
-* HmIP-SWSD
-* HmIP-WRC6
-* HmIP-WTH-2
-* HmIP-eTRV-2
-* HmIP-eTRV-B
-* HmIP-eTRV-C
-
-# Credits
-
-Thank you [@hobbyquaker](https://github.com/hobbyquaker) for your great work on binrpc, xmlrpc, hm-discover and RedMatic.
+The project is distributed under the MIT License. See [LICENSE](LICENSE). Concepts from the MIT-licensed `aiohomematic` and `homematicip_local` projects may be studied and independently adapted for TypeScript; they are not runtime dependencies.
