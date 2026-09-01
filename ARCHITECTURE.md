@@ -164,6 +164,8 @@ The Phase 4 mapping prototype adds conservative generic rules and dedicated shar
 
 The first Phase 5 integration seam adds a Homey-independent HmIP discovery pipeline and runtime facade. It fetches only channel `VALUES` paramsets with bounded concurrency, retains partial-discovery errors for diagnostics, builds stable pairing identities, and produces serializable candidates for either a dedicated profile driver or the generic fallback. XML-RPC callbacks enter the same typed event bus. The legacy `app.js` and drivers are deliberately not switched over until Homey lifecycle, callback-server startup, configuration storage, and repair behavior can be integrated as one tested boundary.
 
+Manual connection settings now have a strict parsing boundary that normalizes the central ID, host, HmIP-RF port, JSON-RPC URL, and optional credential pair. Diagnostic views receive only a credential-free projection. A runtime registry provides replace/remove/shutdown semantics and attempts to stop every configured central even when one shutdown fails. Homey settings persistence and credential ownership remain adapter concerns and are the next integration task.
+
 ## Recorded decisions
 
 - `docs/adr/0001-initial-product-scope.md`: HmIP-RF first; programs and system variables in the first usable release.

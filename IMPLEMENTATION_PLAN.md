@@ -72,6 +72,8 @@ Exit criterion: the prototype pairs representative devices, processes live event
 - [x] Add a Homey-independent HmIP-RF discovery pipeline with bounded paramset concurrency and diagnosable partial failures.
 - [x] Build stable, serializable pairing candidates from discovery results and route them to dedicated drivers or the generic fallback.
 - [x] Route XML-RPC callback events through a central typed runtime/event facade.
+- [x] Add strict manual OpenCCU configuration parsing with credential-free diagnostic projection.
+- [x] Add deterministic multi-central runtime replacement, removal, and aggregate shutdown handling.
 - [ ] Implement Homey pairing/setup for one OpenCCU, initially activating its HmIP-RF interface only.
 - [ ] Add the `openccu-generic` Homey driver and validate dynamic capabilities on Homey Pro.
 - [ ] Switch one dedicated product driver to the shared runtime as the first end-to-end hardware slice.
@@ -81,6 +83,10 @@ Exit criterion: the prototype pairs representative devices, processes live event
 - Preserve unknown-device diagnostics instead of silently ignoring devices.
 
 Exit criterion: end-to-end hardware tests pass for the agreed initial matrix, including commands, push updates, outages, restart, deletion, and re-pairing.
+
+### Current handoff point
+
+The next implementation session should start by defining a Homey settings adapter for the validated connection configuration, then compose the XML-RPC client, callback server, `OpenCcuRuntime`, connection supervisor, and runtime registry behind a new TypeScript app lifecycle. Do not switch `package.json` away from legacy `app.js` until startup, shutdown, missing/invalid settings, callback registration, and restart behavior have unit tests. After that boundary is green, add `openccu-generic` and migrate one dedicated HmIP driver end to end. The legacy MQTT, CCU-Jack, BIN-RPC, BidCos-RF, CUxD, and non-HmIP driver removal follows only after the new app entrypoint validates successfully.
 
 ## Phase 6 — Hub features and coverage expansion
 
