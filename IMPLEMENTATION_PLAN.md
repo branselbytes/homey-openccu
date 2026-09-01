@@ -57,10 +57,13 @@ Exit criterion: a diagnostic run against a test OpenCCU enumerates supported and
 
 ## Phase 4 — Mapping prototype and driver strategy decision
 
-- Extract representative mappings from legacy drivers (switch, sensor, climate, cover, button, multi-channel device).
-- Implement generic mapping rules plus a small profile registry for composite devices.
-- Prototype the competing Homey driver topologies and validate pairing, dynamic capabilities, repair, restart, and presentation on current Homey Pro.
-- Write an ADR selecting the topology before bulk migration.
+- [x] Extract representative mappings from legacy switch, power-meter, contact, climate, cover, and thermostat drivers.
+- [x] Implement conservative generic mapping rules plus a typed profile registry for composite devices.
+- [x] Resolve known products to dedicated existing drivers and unknown products to `openccu-generic`.
+- [x] Add shared, tested value transforms and diagnostics for accepted/rejected mappings.
+- [x] Add consistency tests ensuring every profile references an existing dedicated Homey driver.
+- [ ] Validate dynamic generic capabilities, repair, restart, and presentation on a current Homey Pro.
+- [x] Record the selected dedicated-driver-plus-generic-fallback topology in ADR 0002.
 
 Exit criterion: the prototype pairs representative devices, processes live events, survives restart/reconnect, and explains every mapping decision.
 

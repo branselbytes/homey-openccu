@@ -160,6 +160,8 @@ Phases 2 and 3 provide a strict-TypeScript core under `src/`:
 
 This core is not yet wired into `app.js` or the legacy drivers. That integration belongs to the mapping/driver phases and must preserve a testable rollback boundary.
 
+The Phase 4 mapping prototype adds conservative generic rules and dedicated shared profiles. Known product types resolve to an existing product driver; unknown types resolve to `openccu-generic`. Generic `STATE` and `LEVEL` datapoints are mapped only when the channel type makes their meaning unambiguous. Every accepted or rejected mapping is recorded for diagnostics. Shared value transforms replace duplicated legacy conversions for booleans, current, energy, and percentage ratios.
+
 ## Recorded decisions
 
 - `docs/adr/0001-initial-product-scope.md`: HmIP-RF first; programs and system variables in the first usable release.
