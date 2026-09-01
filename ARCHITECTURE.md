@@ -162,6 +162,8 @@ This core is not yet wired into `app.js` or the legacy drivers. That integration
 
 The Phase 4 mapping prototype adds conservative generic rules and dedicated shared profiles. Known product types resolve to an existing product driver; unknown types resolve to `openccu-generic`. Generic `STATE` and `LEVEL` datapoints are mapped only when the channel type makes their meaning unambiguous. Every accepted or rejected mapping is recorded for diagnostics. Shared value transforms replace duplicated legacy conversions for booleans, current, energy, and percentage ratios.
 
+The first Phase 5 integration seam adds a Homey-independent HmIP discovery pipeline and runtime facade. It fetches only channel `VALUES` paramsets with bounded concurrency, retains partial-discovery errors for diagnostics, builds stable pairing identities, and produces serializable candidates for either a dedicated profile driver or the generic fallback. XML-RPC callbacks enter the same typed event bus. The legacy `app.js` and drivers are deliberately not switched over until Homey lifecycle, callback-server startup, configuration storage, and repair behavior can be integrated as one tested boundary.
+
 ## Recorded decisions
 
 - `docs/adr/0001-initial-product-scope.md`: HmIP-RF first; programs and system variables in the first usable release.
