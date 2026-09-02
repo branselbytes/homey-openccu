@@ -1,5 +1,8 @@
 import type { OpenCcuConnectionConfig } from "../config/openccu-config";
-import { ConnectionSupervisor } from "../protocol/connection-supervisor";
+import {
+  ConnectionSupervisor,
+  type ConnectionState,
+} from "../protocol/connection-supervisor";
 import {
   createHmIpXmlRpcClient,
   XmlRpcCallbackServer,
@@ -26,6 +29,11 @@ export interface ManagedCentralRuntimeFactoryOptions {
   }) => CallbackServer;
   readonly initialRetryDelayMs?: number;
   readonly maxRetryDelayMs?: number;
+  readonly onConnectionState?: (
+    centralId: string,
+    state: ConnectionState,
+    error?: unknown,
+  ) => void;
 }
 
 export class ManagedCentralRuntime {
@@ -112,7 +120,10 @@ export class ManagedCentralRuntimeFactory implements RuntimeFactory<ManagedCentr
       },
       initialDelayMs: this.#options.initialRetryDelayMs,
       maxDelayMs: this.#options.maxRetryDelayMs,
-      onStateChange: (state, error) => core.publishConnectionState(state, error),
+      onStateChange: (state, error) => {
+        core.publishConnectionState(state, error);
+        this.#options.onConnectionState?.(config.centralId, state, error);
+      },
     });
     const runtime = new ManagedCentralRuntime(core, supervisor, callbackServer);
     await runtime.start();

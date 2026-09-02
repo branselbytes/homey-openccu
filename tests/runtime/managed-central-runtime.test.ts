@@ -69,6 +69,38 @@ describe("ManagedCentralRuntimeFactory", () => {
     expect(close).toHaveBeenCalledOnce();
   });
 
+  it("reports credential-free supervisor states to the host adapter", async () => {
+    const { client } = createClient();
+    const onConnectionState = vi.fn();
+    const factory = new ManagedCentralRuntimeFactory({
+      callbackAdvertisedHost: "192.0.2.20",
+      createClient: () => client,
+      createCallbackServer: () => ({ ready: vi.fn(), close: vi.fn() }),
+      onConnectionState,
+    });
+    const runtime = await factory.create(
+      parseOpenCcuSettings({ centralId: "ccu-1", host: "openccu.local" }),
+    );
+    await new Promise((resolve) => setImmediate(resolve));
+    await runtime.stop();
+
+    expect(onConnectionState).toHaveBeenCalledWith(
+      "ccu-1",
+      "connecting",
+      undefined,
+    );
+    expect(onConnectionState).toHaveBeenCalledWith(
+      "ccu-1",
+      "healthy",
+      undefined,
+    );
+    expect(onConnectionState).toHaveBeenLastCalledWith(
+      "ccu-1",
+      "stopped",
+      undefined,
+    );
+  });
+
   it("reports connection transitions while retrying offline", async () => {
     const { client, listDevices } = createClient();
     listDevices.mockRejectedValue(new Error("offline"));

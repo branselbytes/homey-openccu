@@ -17,6 +17,11 @@ export = class OpenCcuApp extends Homey.App {
     const localAddress = await this.homey.cloud.getLocalAddress();
     const factory = new ManagedCentralRuntimeFactory({
       callbackAdvertisedHost: callbackHostFromLocalAddress(localAddress),
+      onConnectionState: (centralId, state, error) => {
+        const errorKind =
+          error === undefined ? "" : ` (${safeErrorKind(error)})`;
+        this.log(`OpenCCU ${centralId}: ${state}${errorKind}`);
+      },
     });
     const lifecycle = new OpenCcuApplicationLifecycle<ManagedCentralRuntime>(
       this.homey.settings,
@@ -38,3 +43,9 @@ export = class OpenCcuApp extends Homey.App {
     return this.#controller?.stop() ?? Promise.resolve();
   }
 };
+
+function safeErrorKind(error: unknown): string {
+  return error instanceof Error && error.name !== ""
+    ? error.name
+    : "unknown error";
+}
