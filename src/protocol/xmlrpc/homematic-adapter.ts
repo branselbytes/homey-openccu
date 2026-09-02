@@ -37,10 +37,21 @@ export interface XmlRpcCallbackServerOptions {
 
 export class XmlRpcCallbackServer {
   readonly #server: xmlrpc.Server;
+  readonly #ready: Promise<void>;
 
   constructor(options: XmlRpcCallbackServerOptions) {
-    this.#server = xmlrpc.createServer({ host: options.host, port: options.port });
+    let markReady: (() => void) | undefined;
+    this.#ready = new Promise<void>((resolve) => {
+      markReady = resolve;
+    });
+    this.#server = xmlrpc.createServer({ host: options.host, port: options.port }, () =>
+      markReady?.(),
+    );
     registerCallbackMethods(this.#server, options.dispatcher);
+  }
+
+  ready(): Promise<void> {
+    return this.#ready;
   }
 
   async close(): Promise<void> {

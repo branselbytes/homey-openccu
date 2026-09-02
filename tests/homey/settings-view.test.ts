@@ -8,6 +8,7 @@ describe("Homey settings view", () => {
   it("writes the validated OpenCCU connection-list setting", () => {
     expect(view).toContain('const SETTINGS_KEY = "openccu_connections"');
     expect(view).toContain("hmIpRfPort");
+    expect(view).toContain("callbackPort");
     expect(view).toContain('type="password"');
   });
 

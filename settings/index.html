@@ -29,6 +29,19 @@
         <input id="hmip-port" type="number" min="1" max="65535" value="2010" />
       </div>
       <div class="field row">
+        <label
+          for="callback-port"
+          data-i18n="settings.connection.callback_port"
+        ></label>
+        <input
+          id="callback-port"
+          type="number"
+          min="1"
+          max="65535"
+          value="12010"
+        />
+      </div>
+      <div class="field row">
         <label for="username" data-i18n="settings.connection.username"></label>
         <input id="username" type="text" autocomplete="username" />
       </div>
@@ -49,6 +62,7 @@
         centralId: document.getElementById("central-id"),
         host: document.getElementById("host"),
         hmIpRfPort: document.getElementById("hmip-port"),
+        callbackPort: document.getElementById("callback-port"),
         username: document.getElementById("username"),
         password: document.getElementById("password"),
       };
@@ -63,6 +77,7 @@
             fields.centralId.value = connection.centralId || "";
             fields.host.value = connection.host || "";
             fields.hmIpRfPort.value = connection.hmIpRfPort || 2010;
+            fields.callbackPort.value = connection.callbackPort || 12010;
             fields.username.value = connection.username || "";
             fields.password.value = connection.password || "";
           }
@@ -87,6 +102,7 @@
           centralId: fields.centralId.value.trim(),
           host: fields.host.value.trim(),
           hmIpRfPort: Number(fields.hmIpRfPort.value),
+          callbackPort: Number(fields.callbackPort.value),
           ...(username === "" && password === "" ? {} : { username, password }),
         };
       }
@@ -106,6 +122,13 @@
           connection.hmIpRfPort > 65535
         ) {
           return "HmIP-RF port must be an integer between 1 and 65535";
+        }
+        if (
+          !Number.isInteger(connection.callbackPort) ||
+          connection.callbackPort < 1 ||
+          connection.callbackPort > 65535
+        ) {
+          return "Callback port must be an integer between 1 and 65535";
         }
         if (
           (connection.username === undefined) !==

@@ -1,6 +1,7 @@
 import type { OpenCcuDevice } from "../domain/model";
 import { TypedEventBus, type Unsubscribe } from "../events/event-bus";
 import type { OpenCcuEvents } from "../events/openccu-events";
+import type { ConnectionState } from "../protocol/connection-supervisor";
 import { XmlRpcCallbackDispatcher } from "../protocol/xmlrpc/callback-dispatcher";
 import type { XmlRpcClient } from "../protocol/xmlrpc/types";
 import { createPairingCandidates, type PairingCandidate } from "../pairing/candidates";
@@ -74,6 +75,14 @@ export class OpenCcuRuntime {
           reason: "update",
         });
       },
+    });
+  }
+
+  publishConnectionState(state: ConnectionState, error?: unknown): void {
+    this.#events.publish("connection", {
+      interfaceId: this.#options.interfaceId,
+      state,
+      ...(error === undefined ? {} : { error }),
     });
   }
 

@@ -2,7 +2,10 @@ import { EventEmitter } from "node:events";
 import { describe, expect, it, vi } from "vitest";
 
 import { XmlRpcCallbackDispatcher } from "../../src/protocol/xmlrpc/callback-dispatcher";
-import { registerCallbackMethods } from "../../src/protocol/xmlrpc/homematic-adapter";
+import {
+  registerCallbackMethods,
+  XmlRpcCallbackServer,
+} from "../../src/protocol/xmlrpc/homematic-adapter";
 
 describe("homematic XML-RPC adapter", () => {
   it("registers and acknowledges callback methods", async () => {
@@ -29,5 +32,18 @@ describe("homematic XML-RPC adapter", () => {
 
     expect(result).toBe("");
     expect(onEvent).toHaveBeenCalledOnce();
+  });
+});
+
+describe("XmlRpcCallbackServer", () => {
+  it("exposes an explicit listening barrier", async () => {
+    const server = new XmlRpcCallbackServer({
+      host: "127.0.0.1",
+      port: 0,
+      dispatcher: new XmlRpcCallbackDispatcher({}),
+    });
+
+    await server.ready();
+    await server.close();
   });
 });

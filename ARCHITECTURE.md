@@ -168,6 +168,8 @@ Manual connection settings now have a strict parsing boundary that normalizes th
 
 The Homey boundary now reads a versionable `openccu_connections` array, validates duplicate central identities, serializes reload operations, preserves an existing runtime when new settings are invalid, and removes settings listeners before shutdown. The settings page writes this format for one manually configured OpenCCU and no longer exposes MQTT, CCU-Jack, RedMatic, or legacy bridge controls. The external Homey MQTT-app permission has consequently been removed. The active `app.js` still uses the legacy lifecycle until the concrete XML-RPC callback/supervisor runtime factory is complete and tested.
 
+The concrete managed-central runtime now owns one configured callback port per central. It waits until the callback server is listening, registers the advertised Homey address with HmIP-RF, refreshes discovery, retries failures with bounded backoff, publishes connection states, and performs best-effort deregistration before closing the server. Startup is deliberately non-blocking with respect to OpenCCU availability, so an offline central cannot prevent the Homey app from initializing. Callback address reachability and port/firewall behavior still require Homey/OpenCCU hardware validation.
+
 ## Recorded decisions
 
 - `docs/adr/0001-initial-product-scope.md`: HmIP-RF first; programs and system variables in the first usable release.

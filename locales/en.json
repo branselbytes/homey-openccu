@@ -7,6 +7,7 @@
       "central_id": "Central ID",
       "host": "Host name or IP address",
       "hmip_port": "HmIP-RF XML-RPC port",
+      "callback_port": "Homey XML-RPC callback port",
       "username": "Username (optional)",
       "password": "Password (optional)",
       "hint": "The initial release uses the local HmIP-RF XML-RPC interface. Enter the host without http:// or a path."

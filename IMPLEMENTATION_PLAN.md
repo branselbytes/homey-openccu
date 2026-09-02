@@ -77,6 +77,7 @@ Exit criterion: the prototype pairs representative devices, processes live event
 - [x] Add a strict Homey settings adapter and serialized settings-change controller.
 - [x] Replace the legacy MQTT/CCU-Jack settings page with manual HmIP-RF OpenCCU settings.
 - [x] Remove the unused external Homey MQTT-app permission.
+- [x] Implement callback-server readiness, per-central callback ports, background reconnect, connection states, deregistration, and shutdown.
 - [ ] Implement Homey pairing/setup for one OpenCCU, initially activating its HmIP-RF interface only.
 - [ ] Add the `openccu-generic` Homey driver and validate dynamic capabilities on Homey Pro.
 - [ ] Switch one dedicated product driver to the shared runtime as the first end-to-end hardware slice.
@@ -89,7 +90,7 @@ Exit criterion: end-to-end hardware tests pass for the agreed initial matrix, in
 
 ### Current handoff point
 
-The next implementation session should compose the XML-RPC client, callback server, `OpenCcuRuntime`, and connection supervisor into the managed runtime produced by the tested application lifecycle. It must define callback host/port ownership, callback registration/deregistration, background retry, connection-state reporting, and deterministic server shutdown. Do not switch `package.json` away from legacy `app.js` until those cases have unit tests. After that boundary is green, add `openccu-generic` and migrate one dedicated HmIP driver end to end. The legacy MQTT, CCU-Jack, BIN-RPC, BidCos-RF, CUxD, and non-HmIP driver removal follows only after the new app entrypoint validates successfully.
+The next implementation session should add `openccu-generic` plus a shared Homey device adapter for dynamic capability reconciliation, initial reads, writes, event subscriptions, availability, and listener-specific cleanup. Then compose the already-tested settings controller, application lifecycle, and managed-central factory behind a new TypeScript app entrypoint and switch only when generic pairing is usable. Migrate one dedicated HmIP driver end to end before removing the legacy MQTT, CCU-Jack, BIN-RPC, BidCos-RF, CUxD, and non-HmIP driver tree.
 
 ## Phase 6 — Hub features and coverage expansion
 

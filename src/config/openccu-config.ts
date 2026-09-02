@@ -1,11 +1,13 @@
 import { DEFAULT_HMIP_RF_XML_RPC_PORT } from "../protocol/xmlrpc/homematic-adapter";
 
 export const DEFAULT_JSON_RPC_PATH = "/api/homematic.cgi";
+export const DEFAULT_XML_RPC_CALLBACK_PORT = 12010;
 
 export interface OpenCcuConnectionConfig {
   readonly centralId: string;
   readonly host: string;
   readonly hmIpRfPort: number;
+  readonly callbackPort: number;
   readonly jsonRpcUrl: string;
   readonly username?: string;
   readonly password?: string;
@@ -15,6 +17,7 @@ export interface OpenCcuSettingsInput {
   readonly centralId?: unknown;
   readonly host?: unknown;
   readonly hmIpRfPort?: unknown;
+  readonly callbackPort?: unknown;
   readonly username?: unknown;
   readonly password?: unknown;
 }
@@ -23,6 +26,7 @@ export function parseOpenCcuSettings(input: OpenCcuSettingsInput): OpenCcuConnec
   const centralId = requiredText(input.centralId, "centralId");
   const host = parseHost(requiredText(input.host, "host"));
   const hmIpRfPort = parsePort(input.hmIpRfPort ?? DEFAULT_HMIP_RF_XML_RPC_PORT);
+  const callbackPort = parsePort(input.callbackPort ?? DEFAULT_XML_RPC_CALLBACK_PORT, "callback");
   const username = optionalText(input.username);
   const password = optionalText(input.password);
   if ((username === undefined) !== (password === undefined)) {
@@ -33,6 +37,7 @@ export function parseOpenCcuSettings(input: OpenCcuSettingsInput): OpenCcuConnec
     centralId,
     host,
     hmIpRfPort,
+    callbackPort,
     jsonRpcUrl: new URL(DEFAULT_JSON_RPC_PATH, `http://${formatUrlHost(host)}`).toString(),
     ...(username === undefined ? {} : { username, password }),
   };
@@ -47,6 +52,7 @@ export function publicOpenCcuConfig(config: OpenCcuConnectionConfig): Omit<
     centralId: config.centralId,
     host: config.host,
     hmIpRfPort: config.hmIpRfPort,
+    callbackPort: config.callbackPort,
     jsonRpcUrl: config.jsonRpcUrl,
     authenticated: config.username !== undefined,
   };
@@ -74,10 +80,10 @@ function parseHost(value: string): string {
   return value;
 }
 
-function parsePort(value: unknown): number {
+function parsePort(value: unknown, name = "HmIP-RF"): number {
   const port = typeof value === "string" && value.trim() !== "" ? Number(value) : value;
   if (!Number.isInteger(port) || (port as number) < 1 || (port as number) > 65_535) {
-    throw new RangeError("OpenCCU HmIP-RF port must be an integer between 1 and 65535");
+    throw new RangeError(`OpenCCU ${name} port must be an integer between 1 and 65535`);
   }
   return port as number;
 }
