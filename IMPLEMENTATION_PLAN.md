@@ -79,6 +79,7 @@ Exit criterion: the prototype pairs representative devices, processes live event
 - [x] Remove the unused external Homey MQTT-app permission.
 - [x] Implement callback-server readiness, per-central callback ports, background reconnect, connection states, deregistration, and shutdown.
 - [x] Preserve separate profile read/write targets and add a shared dynamic-capability device controller.
+- [x] Add a narrow runtime provider for driver lookup and driver-filtered pairing candidates.
 - [ ] Implement Homey pairing/setup for one OpenCCU, initially activating its HmIP-RF interface only.
 - [ ] Add the `openccu-generic` Homey driver and validate dynamic capabilities on Homey Pro.
 - [ ] Switch one dedicated product driver to the shared runtime as the first end-to-end hardware slice.
@@ -91,7 +92,7 @@ Exit criterion: end-to-end hardware tests pass for the agreed initial matrix, in
 
 ### Current handoff point
 
-The next implementation session should define the app runtime-provider interface, add `openccu-generic` as a thin Homey driver/device adapter around the tested pairing candidates and device-binding controller, and add manifest consistency tests. Then compose the settings controller, application lifecycle, and managed-central factory behind a new TypeScript app entrypoint and switch only when generic pairing is usable. Migrate one dedicated HmIP driver end to end before removing the legacy MQTT, CCU-Jack, BIN-RPC, BidCos-RF, CUxD, and non-HmIP driver tree.
+The next implementation session should add `openccu-generic` as a thin Homey driver/device adapter around the tested runtime provider, pairing candidates, and device-binding controller, then add manifest consistency tests. Compose the settings controller, application lifecycle, managed-central factory, and runtime provider behind a new TypeScript app entrypoint and switch only when generic pairing is usable. Migrate one dedicated HmIP driver end to end before removing the legacy MQTT, CCU-Jack, BIN-RPC, BidCos-RF, CUxD, and non-HmIP driver tree.
 
 ## Phase 6 — Hub features and coverage expansion
 

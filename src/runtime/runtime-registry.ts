@@ -13,6 +13,10 @@ export class RuntimeRegistry<Runtime extends ManagedRuntime> {
     return this.#runtimes.get(centralId);
   }
 
+  entries(): readonly (readonly [string, Runtime])[] {
+    return [...this.#runtimes.entries()];
+  }
+
   async replace(centralId: string, runtime: Runtime): Promise<void> {
     const previous = this.#runtimes.get(centralId);
     if (previous === runtime) return;

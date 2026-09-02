@@ -31,6 +31,10 @@ export class OpenCcuApplicationLifecycle<Runtime extends ManagedRuntime> {
     return this.#registry.get(centralId);
   }
 
+  runtimeEntries(): readonly (readonly [string, Runtime])[] {
+    return this.#registry.entries();
+  }
+
   start(): Promise<void> {
     return this.reload();
   }
