@@ -74,6 +74,9 @@ Exit criterion: the prototype pairs representative devices, processes live event
 - [x] Route XML-RPC callback events through a central typed runtime/event facade.
 - [x] Add strict manual OpenCCU configuration parsing with credential-free diagnostic projection.
 - [x] Add deterministic multi-central runtime replacement, removal, and aggregate shutdown handling.
+- [x] Add a strict Homey settings adapter and serialized settings-change controller.
+- [x] Replace the legacy MQTT/CCU-Jack settings page with manual HmIP-RF OpenCCU settings.
+- [x] Remove the unused external Homey MQTT-app permission.
 - [ ] Implement Homey pairing/setup for one OpenCCU, initially activating its HmIP-RF interface only.
 - [ ] Add the `openccu-generic` Homey driver and validate dynamic capabilities on Homey Pro.
 - [ ] Switch one dedicated product driver to the shared runtime as the first end-to-end hardware slice.
@@ -86,7 +89,7 @@ Exit criterion: end-to-end hardware tests pass for the agreed initial matrix, in
 
 ### Current handoff point
 
-The next implementation session should start by defining a Homey settings adapter for the validated connection configuration, then compose the XML-RPC client, callback server, `OpenCcuRuntime`, connection supervisor, and runtime registry behind a new TypeScript app lifecycle. Do not switch `package.json` away from legacy `app.js` until startup, shutdown, missing/invalid settings, callback registration, and restart behavior have unit tests. After that boundary is green, add `openccu-generic` and migrate one dedicated HmIP driver end to end. The legacy MQTT, CCU-Jack, BIN-RPC, BidCos-RF, CUxD, and non-HmIP driver removal follows only after the new app entrypoint validates successfully.
+The next implementation session should compose the XML-RPC client, callback server, `OpenCcuRuntime`, and connection supervisor into the managed runtime produced by the tested application lifecycle. It must define callback host/port ownership, callback registration/deregistration, background retry, connection-state reporting, and deterministic server shutdown. Do not switch `package.json` away from legacy `app.js` until those cases have unit tests. After that boundary is green, add `openccu-generic` and migrate one dedicated HmIP driver end to end. The legacy MQTT, CCU-Jack, BIN-RPC, BidCos-RF, CUxD, and non-HmIP driver removal follows only after the new app entrypoint validates successfully.
 
 ## Phase 6 — Hub features and coverage expansion
 

@@ -166,6 +166,8 @@ The first Phase 5 integration seam adds a Homey-independent HmIP discovery pipel
 
 Manual connection settings now have a strict parsing boundary that normalizes the central ID, host, HmIP-RF port, JSON-RPC URL, and optional credential pair. Diagnostic views receive only a credential-free projection. A runtime registry provides replace/remove/shutdown semantics and attempts to stop every configured central even when one shutdown fails. Homey settings persistence and credential ownership remain adapter concerns and are the next integration task.
 
+The Homey boundary now reads a versionable `openccu_connections` array, validates duplicate central identities, serializes reload operations, preserves an existing runtime when new settings are invalid, and removes settings listeners before shutdown. The settings page writes this format for one manually configured OpenCCU and no longer exposes MQTT, CCU-Jack, RedMatic, or legacy bridge controls. The external Homey MQTT-app permission has consequently been removed. The active `app.js` still uses the legacy lifecycle until the concrete XML-RPC callback/supervisor runtime factory is complete and tested.
+
 ## Recorded decisions
 
 - `docs/adr/0001-initial-product-scope.md`: HmIP-RF first; programs and system variables in the first usable release.

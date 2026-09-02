@@ -14,9 +14,7 @@
     "tools",
     "appliances"
   ],
-  "permissions": [
-    "homey:app:nl.scanno.mqtt"
-  ],
+  "permissions": [],
   "images": {
     "large": "/assets/images/large.png",
     "small": "/assets/images/small.png"
