@@ -28,8 +28,8 @@
   "scripts": {
     "build": "tsc",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm test",
-    "format": "prettier --write AGENTS.md ARCHITECTURE.md IMPLEMENTATION_PLAN.md README.md app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts settings locales tests docs/adr drivers/openccu-generic",
-    "format:check": "prettier --check AGENTS.md ARCHITECTURE.md IMPLEMENTATION_PLAN.md README.md app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts settings locales tests docs/adr drivers/openccu-generic",
+    "format": "prettier --write AGENTS.md ARCHITECTURE.md IMPLEMENTATION_PLAN.md README.md app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts settings locales tests docs/adr drivers/openccu-generic drivers/HMIP-PS/*.ts drivers/HMIP-PS/driver.compose.json",
+    "format:check": "prettier --check AGENTS.md ARCHITECTURE.md IMPLEMENTATION_PLAN.md README.md app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts settings locales tests docs/adr drivers/openccu-generic drivers/HMIP-PS/*.ts drivers/HMIP-PS/driver.compose.json",
     "lint": "eslint app.ts src/**/*.ts lib/**/*.ts drivers/**/*.ts tests/**/*.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit && tsc --project tsconfig.test.json"

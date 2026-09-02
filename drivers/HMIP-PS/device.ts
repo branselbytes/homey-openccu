@@ -1,3 +1,3 @@
 import { RuntimeBackedDevice } from "../../src/homey/runtime-backed-device";
 
-export = class OpenCcuGenericDevice extends RuntimeBackedDevice {};
+export = class HmIpPsDevice extends RuntimeBackedDevice {};
