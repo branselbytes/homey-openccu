@@ -11,6 +11,8 @@ export interface CapabilityBinding {
   readonly capability: string;
   readonly channelAddress: string;
   readonly parameter: string;
+  readonly writeChannelAddress?: string;
+  readonly writeParameter?: string;
   readonly readable: boolean;
   readonly writable: boolean;
   readonly transform: ValueTransform;

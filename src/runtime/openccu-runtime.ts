@@ -4,7 +4,10 @@ import type { OpenCcuEvents } from "../events/openccu-events";
 import type { ConnectionState } from "../protocol/connection-supervisor";
 import { XmlRpcCallbackDispatcher } from "../protocol/xmlrpc/callback-dispatcher";
 import type { XmlRpcClient } from "../protocol/xmlrpc/types";
+import type { RpcValue } from "../protocol/xmlrpc/types";
 import { createPairingCandidates, type PairingCandidate } from "../pairing/candidates";
+import { transformFromOpenCcu, transformToOpenCcu } from "../mapping/transforms";
+import type { CapabilityBinding } from "../mapping/types";
 import { discoverHmIpDevices, type HmIpDiscoveryResult } from "./discovery";
 
 export interface OpenCcuRuntimeOptions {
@@ -52,6 +55,28 @@ export class OpenCcuRuntime {
       interfaceId: this.#options.interfaceId,
       names,
     });
+  }
+
+  async read(binding: CapabilityBinding, signal?: AbortSignal): Promise<RpcValue> {
+    if (!binding.readable) throw new Error(`Capability ${binding.capability} is not readable`);
+    const value = await this.#client.getValue(binding.channelAddress, binding.parameter, signal);
+    return transformFromOpenCcu(binding.transform, value);
+  }
+
+  async write(
+    binding: CapabilityBinding,
+    value: RpcValue,
+    signal?: AbortSignal,
+  ): Promise<void> {
+    if (!binding.writable || !binding.writeChannelAddress || !binding.writeParameter) {
+      throw new Error(`Capability ${binding.capability} is not writable`);
+    }
+    await this.#client.setValue(
+      binding.writeChannelAddress,
+      binding.writeParameter,
+      transformToOpenCcu(binding.transform, value),
+      signal,
+    );
   }
 
   subscribe<Key extends keyof OpenCcuEvents>(

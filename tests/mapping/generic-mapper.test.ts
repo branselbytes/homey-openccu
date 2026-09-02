@@ -39,7 +39,11 @@ function context(channelType: string, parameter: string, writable: boolean) {
 describe("generic mapper", () => {
   it("maps writable switch state but refuses ambiguous state", () => {
     expect(mapGenericDataPoint(context("SWITCH", "STATE", true))).toMatchObject(
-      { capability: "onoff" },
+      {
+        capability: "onoff",
+        writeChannelAddress: "001:1",
+        writeParameter: "STATE",
+      },
     );
     const decisions = new MappingDecisionLog();
     expect(

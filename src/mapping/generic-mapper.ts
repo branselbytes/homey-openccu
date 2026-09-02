@@ -70,6 +70,12 @@ export function mapGenericDataPoint(
     parameter: context.dataPoint.parameter,
     readable: context.dataPoint.readable,
     writable: context.dataPoint.writable && (rule.writable ?? false),
+    ...(context.dataPoint.writable && (rule.writable ?? false)
+      ? {
+          writeChannelAddress: context.channel.address,
+          writeParameter: context.dataPoint.parameter,
+        }
+      : {}),
     transform: rule.transform ?? "identity",
   };
   decisions?.add({
