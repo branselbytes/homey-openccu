@@ -28,8 +28,8 @@
   "scripts": {
     "build": "tsc",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm test",
-    "format": "prettier --write AGENTS.md ARCHITECTURE.md IMPLEMENTATION_PLAN.md README.md app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts settings locales tests docs/adr drivers/openccu-generic drivers/HMIP-PS/*.ts drivers/HMIP-PS/driver.compose.json",
-    "format:check": "prettier --check AGENTS.md ARCHITECTURE.md IMPLEMENTATION_PLAN.md README.md app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts settings locales tests docs/adr drivers/openccu-generic drivers/HMIP-PS/*.ts drivers/HMIP-PS/driver.compose.json",
+    "format": "prettier --write AGENTS.md ARCHITECTURE.md IMPLEMENTATION_PLAN.md README.md app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts settings locales tests docs/adr drivers/openccu-generic drivers/HMIP-PS/*.ts drivers/HMIP-PS/driver.compose.json drivers/HMIP-PSM/*.ts drivers/HMIP-PSM/driver.compose.json drivers/HMIP-SWDO/*.ts drivers/HMIP-SWDO/driver.compose.json drivers/HmIP-STH/*.ts drivers/HmIP-STH/driver.compose.json drivers/HmIP-eTRV-2/*.ts drivers/HmIP-eTRV-2/driver.compose.json drivers/HmIP-BROLL/*.ts drivers/HmIP-BROLL/driver.compose.json",
+    "format:check": "prettier --check AGENTS.md ARCHITECTURE.md IMPLEMENTATION_PLAN.md README.md app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts settings locales tests docs/adr drivers/openccu-generic drivers/HMIP-PS/*.ts drivers/HMIP-PS/driver.compose.json drivers/HMIP-PSM/*.ts drivers/HMIP-PSM/driver.compose.json drivers/HMIP-SWDO/*.ts drivers/HMIP-SWDO/driver.compose.json drivers/HmIP-STH/*.ts drivers/HmIP-STH/driver.compose.json drivers/HmIP-eTRV-2/*.ts drivers/HmIP-eTRV-2/driver.compose.json drivers/HmIP-BROLL/*.ts drivers/HmIP-BROLL/driver.compose.json",
     "lint": "eslint app.ts src/**/*.ts lib/**/*.ts drivers/**/*.ts tests/**/*.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit && tsc --project tsconfig.test.json"
