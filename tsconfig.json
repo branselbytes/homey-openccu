@@ -19,13 +19,6 @@
     "target": "ES2023",
     "types": ["node", "vitest/globals"]
   },
-  "include": [
-    "app.ts",
-    "api.js",
-    "src/**/*.ts",
-    "lib/**/*",
-    "drivers/**/*.js",
-    "drivers/**/*.ts"
-  ],
+  "include": ["app.ts", "src/**/*.ts", "drivers/**/*.js", "drivers/**/*.ts"],
   "exclude": [".homeybuild", "cli", "node_modules", "node-red", "tools"]
 }

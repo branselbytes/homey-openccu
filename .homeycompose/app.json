@@ -31,22 +31,5 @@
         "name": "Bjoern Welker"
       }
     ]
-  },
-  "api": {
-    "getLogLines": {
-      "method": "GET",
-      "path": "/log/getloglines/",
-      "public": false
-    },
-    "getStoredBridges": {
-      "method": "GET",
-      "path": "/bridges/get/",
-      "public": false
-    },
-    "deleteStoredBridges": {
-      "method": "GET",
-      "path": "/bridges/delete/",
-      "public": false
-    }
   }
 }

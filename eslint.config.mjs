@@ -8,13 +8,7 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   {
-    files: [
-      "app.ts",
-      "src/**/*.ts",
-      "lib/**/*.ts",
-      "drivers/**/*.ts",
-      "tests/**/*.ts",
-    ],
+    files: ["app.ts", "src/**/*.ts", "drivers/**/*.ts", "tests/**/*.ts"],
     languageOptions: {
       parserOptions: {
         project: ["./tsconfig.json", "./tsconfig.test.json"],

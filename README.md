@@ -2,7 +2,7 @@
 
 OpenCCU for Homey is an independent, open-source Homey Pro app for integrating Homematic IP devices locally through OpenCCU.
 
-The project is in its initial modernization phase and is not ready for installation or daily use. Devices from the predecessor Homey app will not be migrated; they will be paired again in this app.
+The typed local runtime and initial HmIP driver slice are implemented, but hardware validation is still pending and the app is not ready for daily use. Devices from the predecessor Homey app will not be migrated; they will be paired again in this app.
 
 ## Planned scope
 
@@ -10,7 +10,7 @@ The project is in its initial modernization phase and is not ready for installat
 - HmIP-RF in the first implementation
 - XML-RPC for device discovery, values, commands, and push events
 - JSON-RPC for names, rooms, functions, programs, and system variables
-- one Homey driver per supported product plus a generic fallback for unknown products
+- dedicated Homey drivers backed by shared profiles plus a generic fallback for unknown products
 - no required Home Assistant, Python, MQTT, CCU-Jack, or RedMatic runtime
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for the design and [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for the staged delivery plan.

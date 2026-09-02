@@ -29,7 +29,7 @@ Exit criterion: architecture and initial scope are approved, and local tool vers
 
 Exit criterion: clean install, build, lint, type-check, unit tests, and Homey app validation run reproducibly without changing device behavior.
 
-Known Phase 1 debt: the imported runtime dependency graph has five npm audit findings in legacy Axios, BIN-RPC, and MQTT paths. Address them by removing or replacing those paths in the typed protocol work, not with an unreviewed forced upgrade.
+The inherited Axios, BIN-RPC, MQTT, CCU-Jack, and discovery paths have been removed. `npm audit --omit=dev` reports zero production findings.
 
 ## Phase 2 — Typed protocol core
 
@@ -80,10 +80,12 @@ Exit criterion: the prototype pairs representative devices, processes live event
 - [x] Implement callback-server readiness, per-central callback ports, background reconnect, connection states, deregistration, and shutdown.
 - [x] Preserve separate profile read/write targets and add a shared dynamic-capability device controller.
 - [x] Add a narrow runtime provider for driver lookup and driver-filtered pairing candidates.
-- [ ] Implement Homey pairing/setup for one OpenCCU, initially activating its HmIP-RF interface only.
-- [ ] Add the `openccu-generic` Homey driver and validate dynamic capabilities on Homey Pro.
-- [ ] Switch one dedicated product driver to the shared runtime as the first end-to-end hardware slice.
-- [ ] Ship a narrow, explicit device matrix based on tested profiles and generic fallback rules.
+- [x] Implement Homey pairing/setup over configured OpenCCUs, initially activating HmIP-RF only.
+- [x] Add the `openccu-generic` Homey driver with dynamic capability reconciliation.
+- [x] Switch six profiled HmIP driver families to the shared runtime.
+- [x] Remove inactive legacy drivers, transports, API surfaces, tools, Flow cards, and runtime dependencies from the active tree.
+- [ ] Validate pairing, dynamic capabilities, callbacks, commands, restart, and reconnect on Homey Pro with OpenCCU.
+- [ ] Publish a hardware-verified initial device matrix.
 - Map standard capabilities and capability-provided Flow cards first.
 - Add Homematic-specific Flow triggers/actions only where standard cards are insufficient.
 - Preserve unknown-device diagnostics instead of silently ignoring devices.
@@ -92,7 +94,7 @@ Exit criterion: end-to-end hardware tests pass for the agreed initial matrix, in
 
 ### Current handoff point
 
-The next implementation session should add `openccu-generic` as a thin Homey driver/device adapter around the tested runtime provider, pairing candidates, and device-binding controller, then add manifest consistency tests. Compose the settings controller, application lifecycle, managed-central factory, and runtime provider behind a new TypeScript app entrypoint and switch only when generic pairing is usable. Migrate one dedicated HmIP driver end to end before removing the legacy MQTT, CCU-Jack, BIN-RPC, BidCos-RF, CUxD, and non-HmIP driver tree.
+All locally testable runtime, mapping, lifecycle, driver, cleanup, and manifest work is green. The next gate needs a Homey Pro that can reach a configured OpenCCU: verify XML-RPC registration/callback reachability, discovery results, pairing, initial values, commands, push updates, outages, restart, deletion, and re-pairing. Recorded real responses should then become regression fixtures before coverage expands.
 
 ## Phase 6 — Hub features and coverage expansion
 

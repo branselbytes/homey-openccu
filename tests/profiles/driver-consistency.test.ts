@@ -1,4 +1,4 @@
-import { access } from "node:fs/promises";
+import { access, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -20,5 +20,14 @@ describe("dedicated profile drivers", () => {
     await expect(
       access(resolve("drivers", GENERIC_DRIVER_ID, "driver.compose.json")),
     ).resolves.toBeUndefined();
+  });
+
+  it("exposes only profiled drivers and the generic fallback", async () => {
+    const expected = [
+      ...new Set(HMIP_PROFILES.map((profile) => profile.driverId)),
+      GENERIC_DRIVER_ID,
+    ].sort();
+    const actual = (await readdir(resolve("drivers"))).sort();
+    expect(actual).toEqual(expected);
   });
 });

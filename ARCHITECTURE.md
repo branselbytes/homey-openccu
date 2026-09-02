@@ -23,9 +23,9 @@ The repository retains the history of `LRuesink-WebArray/homey-matic` (earliest 
 
 No remote changes have been made.
 
-### Current implementation
+### Imported implementation (historical analysis)
 
-The baseline is a CommonJS JavaScript Homey app. Its generated `app.json` already declares Apps SDK 3 and Homey compatibility `>=5.0.0`, while development tooling uses the old `homey` 2.14 CLI package. It contains 105 product-specific driver directories, each with a `driver.js`, `device.js`, and compose manifest; 41 contain dedicated flow manifests. There are no automated tests.
+The imported baseline was a CommonJS JavaScript Homey app. Its generated `app.json` declared Apps SDK 3 and Homey compatibility `>=5.0.0`, while development tooling used the old `homey` 2.14 CLI package. It contained 105 product-specific driver directories and no automated tests. The table below records the source architecture that informed the migration; these runtime components have since been removed from the active tree and remain available through Git history.
 
 The principal components are:
 
@@ -41,10 +41,10 @@ The principal components are:
 | `lib/device.js`      | capability reads/writes, conversions, event listeners               | static channel maps, broad listener removal, swallowed errors   |
 | product drivers      | hard-coded channel/datapoint-to-capability maps                     | extensive duplication and poor unknown-device support           |
 
-### Dependency and maintenance findings
+### Historical dependency and maintenance findings
 
 - Direct dependencies are pinned to an old ecosystem: Axios 0.21, MQTT 3, node-fetch 2, `homematic-xmlrpc` 1.0.2, and `@twendt/binrpc` 3.3.2.
-- The initial npm runtime audit reports five inherited vulnerabilities: three high-severity findings in Axios and legacy MQTT/WebSocket paths and two low-severity findings including the unmaintained `put` dependency used by BIN-RPC. They remain isolated as known migration debt; forced upgrades would change legacy behavior, and the out-of-scope transports are scheduled for removal or replacement.
+- The initial npm runtime audit reported five inherited vulnerabilities in Axios, legacy MQTT/WebSocket, and BIN-RPC paths. Those transports and dependencies have now been removed; the current production audit reports zero findings.
 - `package.json` says ISC although the repository `LICENSE` is MIT; metadata must be reconciled without removing the original notice.
 - Repository URLs and package/app identity still point to the predecessor (`twendt`, `de.twendt.homey.matic`).
 - Generated `app.json` is very large because static driver definitions are expanded from Homey Compose.
@@ -158,19 +158,19 @@ Phases 2 and 3 provide a strict-TypeScript core under `src/`:
 - a device-graph builder deriving readable, writable, and eventable datapoints from operation flags;
 - typed listener-specific event unsubscription, schema-versioned caches, bounded mapping explanations, and redacted diagnostic snapshots.
 
-This core is not yet wired into `app.js` or the legacy drivers. That integration belongs to the mapping/driver phases and must preserve a testable rollback boundary.
+The core is wired through the strict-TypeScript `app.ts` lifecycle. Generated CommonJS output remains a build artifact under `.homeybuild/`.
 
 The Phase 4 mapping prototype adds conservative generic rules and dedicated shared profiles. Known product types resolve to an existing product driver; unknown types resolve to `openccu-generic`. Generic `STATE` and `LEVEL` datapoints are mapped only when the channel type makes their meaning unambiguous. Every accepted or rejected mapping is recorded for diagnostics. Shared value transforms replace duplicated legacy conversions for booleans, current, energy, and percentage ratios.
 
-The first Phase 5 integration seam adds a Homey-independent HmIP discovery pipeline and runtime facade. It fetches only channel `VALUES` paramsets with bounded concurrency, retains partial-discovery errors for diagnostics, builds stable pairing identities, and produces serializable candidates for either a dedicated profile driver or the generic fallback. XML-RPC callbacks enter the same typed event bus. The legacy `app.js` and drivers are deliberately not switched over until Homey lifecycle, callback-server startup, configuration storage, and repair behavior can be integrated as one tested boundary.
+The Phase 5 integration adds a Homey-independent HmIP discovery pipeline and runtime facade. It fetches channel `VALUES` paramsets with bounded concurrency, retains partial-discovery errors for diagnostics, builds stable pairing identities, and produces serializable candidates for either a dedicated profile driver or the generic fallback. XML-RPC callbacks enter the same typed event bus.
 
 Manual connection settings now have a strict parsing boundary that normalizes the central ID, host, HmIP-RF port, JSON-RPC URL, and optional credential pair. Diagnostic views receive only a credential-free projection. A runtime registry provides replace/remove/shutdown semantics and attempts to stop every configured central even when one shutdown fails. Homey settings persistence and credential ownership remain adapter concerns and are the next integration task.
 
-The Homey boundary now reads a versionable `openccu_connections` array, validates duplicate central identities, serializes reload operations, preserves an existing runtime when new settings are invalid, and removes settings listeners before shutdown. The settings page writes this format for one manually configured OpenCCU and no longer exposes MQTT, CCU-Jack, RedMatic, or legacy bridge controls. The external Homey MQTT-app permission has consequently been removed. The active `app.js` still uses the legacy lifecycle until the concrete XML-RPC callback/supervisor runtime factory is complete and tested.
+The Homey boundary reads a versionable `openccu_connections` array, validates duplicate central identities, serializes reload operations, preserves an existing runtime when new settings are invalid, and removes settings listeners before shutdown. The settings page writes this format for one manually configured OpenCCU and no longer exposes MQTT, CCU-Jack, RedMatic, or legacy bridge controls.
 
 The concrete managed-central runtime now owns one configured callback port per central. It waits until the callback server is listening, registers the advertised Homey address with HmIP-RF, refreshes discovery, retries failures with bounded backoff, publishes connection states, and performs best-effort deregistration before closing the server. Startup is deliberately non-blocking with respect to OpenCCU availability, so an offline central cannot prevent the Homey app from initializing. Callback address reachability and port/firewall behavior still require Homey/OpenCCU hardware validation.
 
-The shared device-binding controller reconciles dynamic capabilities, reads initial values, routes commands and push events through the typed runtime, mirrors connection availability, and owns listener-specific cleanup. Resolved bindings retain separate read and write channel/parameter targets; this is required for devices such as covers whose status and command channels differ. The concrete Homey device class remains a thin pending adapter around this tested controller.
+The shared device-binding controller reconciles dynamic capabilities, reads initial values, routes commands and push events through the typed runtime, mirrors connection availability, and owns listener-specific cleanup. Resolved bindings retain separate read and write channel/parameter targets. Thin Homey adapters now serve six profiled HmIP driver families plus `openccu-generic`; all other imported drivers and transports were removed from the active tree after their history was preserved.
 
 ## Recorded decisions
 
@@ -191,5 +191,5 @@ The shared device-binding controller reconciles dynamic capabilities, reads init
 - Homematic channel semantics cannot always be inferred from datapoint types; complex devices require curated profiles.
 - Adding many capabilities dynamically can create unstable device presentations or exceed practical Homey limits.
 - Modern OpenCCU authentication/TLS combinations vary; permissive fallbacks could create security problems.
-- A large rewrite could regress the useful device knowledge embedded in 105 legacy drivers. Extracting that knowledge into fixtures/profiles before removal reduces the risk.
+- Useful device knowledge remains recoverable from the imported Git history, but only the currently profiled device families are active. Expanding dedicated coverage requires fixture- and hardware-backed profile work.
 - Without representative hardware or recorded fixtures, protocol compatibility and event recovery cannot be proven locally.
