@@ -25,7 +25,10 @@ export function createHmIpXmlRpcClient(endpoint: HmIpXmlRpcEndpoint): HmIpXmlRpc
         ? {}
         : { basic_auth: { user: endpoint.username, pass: endpoint.password as string } }),
     }),
-    { timeoutMs: endpoint.timeoutMs },
+    {
+      timeoutMs: endpoint.timeoutMs,
+      writeTimeoutMs: endpoint.writeTimeoutMs,
+    },
   );
 }
 

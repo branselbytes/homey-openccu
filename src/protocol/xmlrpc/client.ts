@@ -16,15 +16,18 @@ export interface RawXmlRpcClient {
 
 export interface HmIpXmlRpcClientOptions {
   readonly timeoutMs?: number;
+  readonly writeTimeoutMs?: number;
 }
 
 export class HmIpXmlRpcClient implements XmlRpcClient {
   readonly #rawClient: RawXmlRpcClient;
   readonly #timeoutMs: number;
+  readonly #writeTimeoutMs: number;
 
   constructor(rawClient: RawXmlRpcClient, options: HmIpXmlRpcClientOptions = {}) {
     this.#rawClient = rawClient;
     this.#timeoutMs = options.timeoutMs ?? 10_000;
+    this.#writeTimeoutMs = options.writeTimeoutMs ?? 20_000;
   }
 
   async listDevices(signal?: AbortSignal): Promise<readonly DeviceDescription[]> {
@@ -60,7 +63,12 @@ export class HmIpXmlRpcClient implements XmlRpcClient {
     value: RpcValue,
     signal?: AbortSignal,
   ): Promise<void> {
-    await this.#call("setValue", [address, parameter, value], signal);
+    await this.#call(
+      "setValue",
+      [address, parameter, value],
+      signal,
+      this.#writeTimeoutMs,
+    );
   }
 
   async putParamset(
@@ -76,7 +84,12 @@ export class HmIpXmlRpcClient implements XmlRpcClient {
     await this.#call("init", [callbackUrl, interfaceId], signal);
   }
 
-  async #call(method: string, params: readonly RpcValue[], signal?: AbortSignal): Promise<unknown> {
+  async #call(
+    method: string,
+    params: readonly RpcValue[],
+    signal?: AbortSignal,
+    timeoutMs = this.#timeoutMs,
+  ): Promise<unknown> {
     if (signal?.aborted) throw new ProtocolError("aborted", `XML-RPC ${method} was aborted`);
 
     return new Promise((resolve, reject) => {
@@ -92,7 +105,7 @@ export class HmIpXmlRpcClient implements XmlRpcClient {
         finish(() => reject(new ProtocolError("aborted", `XML-RPC ${method} was aborted`)));
       const timer = setTimeout(() => {
         finish(() => reject(new ProtocolError("timeout", `XML-RPC ${method} timed out`)));
-      }, this.#timeoutMs);
+      }, timeoutMs);
 
       signal?.addEventListener("abort", onAbort, { once: true });
       try {

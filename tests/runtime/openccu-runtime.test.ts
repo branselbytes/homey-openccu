@@ -25,6 +25,19 @@ function createClient(): XmlRpcClient {
 }
 
 describe("OpenCcuRuntime", () => {
+  it("retains the latest connection state for late subscribers", () => {
+    const runtime = new OpenCcuRuntime(createClient(), {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+    });
+
+    expect(runtime.connectionState).toBe("stopped");
+    runtime.publishConnectionState("connecting");
+    expect(runtime.connectionState).toBe("connecting");
+    runtime.publishConnectionState("healthy");
+    expect(runtime.connectionState).toBe("healthy");
+  });
+
   it("provides pairing candidates only after a successful refresh", async () => {
     const runtime = new OpenCcuRuntime(createClient(), {
       centralId: "ccu-1",

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import {
   HmIpXmlRpcClient,
@@ -48,5 +48,31 @@ describe("HmIpXmlRpcClient", () => {
         code: "invalid-response",
       },
     );
+  });
+
+  it("allows writes more time than reads", async () => {
+    vi.useFakeTimers();
+    try {
+      const raw: RawXmlRpcClient = {
+        methodCall: (_method, _params, callback) => {
+          setTimeout(() => callback(null, undefined), 15);
+        },
+      };
+      const client = new HmIpXmlRpcClient(raw, {
+        timeoutMs: 10,
+        writeTimeoutMs: 20,
+      });
+
+      const read = client.getValue("001:1", "STATE");
+      const readExpectation = expect(read).rejects.toMatchObject({ code: "timeout" });
+      await vi.advanceTimersByTimeAsync(10);
+      await readExpectation;
+
+      const write = client.setValue("001:1", "STATE", true);
+      await vi.advanceTimersByTimeAsync(15);
+      await expect(write).resolves.toBeUndefined();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

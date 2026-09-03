@@ -69,6 +69,7 @@ function createDevicePort(device: Homey.Device): HomeyDevicePort {
     setUnavailable: async (message) => {
       await device.setUnavailable(message);
     },
+    log: (message) => device.log(message),
     error: (message, error) => device.error(message, error),
   };
 }

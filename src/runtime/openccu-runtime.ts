@@ -21,6 +21,7 @@ export class OpenCcuRuntime {
   readonly #options: OpenCcuRuntimeOptions;
   readonly #events = new TypedEventBus<OpenCcuEvents>();
   #discovery?: HmIpDiscoveryResult;
+  #connectionState: ConnectionState = "stopped";
 
   constructor(client: XmlRpcClient, options: OpenCcuRuntimeOptions) {
     this.#client = client;
@@ -33,6 +34,10 @@ export class OpenCcuRuntime {
 
   get discoveryIssues(): HmIpDiscoveryResult["issues"] {
     return this.#discovery?.issues ?? [];
+  }
+
+  get connectionState(): ConnectionState {
+    return this.#connectionState;
   }
 
   async refresh(signal?: AbortSignal): Promise<HmIpDiscoveryResult> {
@@ -104,6 +109,7 @@ export class OpenCcuRuntime {
   }
 
   publishConnectionState(state: ConnectionState, error?: unknown): void {
+    this.#connectionState = state;
     this.#events.publish("connection", {
       interfaceId: this.#options.interfaceId,
       state,
