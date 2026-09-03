@@ -4,11 +4,19 @@ import type {
   ParamsetDescription,
   XmlRpcClient,
 } from "../protocol/xmlrpc/types";
+import { createDescriptionCacheKey } from "../cache/versioned-cache";
+
+export interface DescriptionCache {
+  get(key: string): Promise<ParamsetDescription | undefined>;
+  set(key: string, value: ParamsetDescription): Promise<void>;
+  delete(key: string): Promise<void>;
+}
 
 export interface DiscoveryOptions {
   readonly centralId: string;
   readonly interfaceId: string;
   readonly concurrency?: number;
+  readonly descriptionCache?: DescriptionCache;
 }
 
 export interface ParamsetDiscoveryIssue {
@@ -43,9 +51,19 @@ export async function discoverHmIpDevices(
   const issues: ParamsetDiscoveryIssue[] = [];
 
   await mapConcurrent(channels, concurrency, async (channel) => {
+    const cacheKey = createDescriptionCacheKey(
+      options.centralId,
+      options.interfaceId,
+      channel.ADDRESS,
+      "VALUES",
+    );
     try {
-      const description = await client.getParamsetDescription(channel.ADDRESS, "VALUES", signal);
+      const cached = await options.descriptionCache?.get(cacheKey);
+      const description =
+        cached ??
+        (await client.getParamsetDescription(channel.ADDRESS, "VALUES", signal));
       paramsets.set(channel.ADDRESS, description);
+      if (cached === undefined) await options.descriptionCache?.set(cacheKey, description);
     } catch (error) {
       if (signal?.aborted) throw error;
       issues.push({
@@ -66,6 +84,14 @@ export async function discoverHmIpDevices(
     paramsets,
     issues,
   };
+}
+
+export function descriptionCacheKey(
+  centralId: string,
+  interfaceId: string,
+  channelAddress: string,
+): string {
+  return createDescriptionCacheKey(centralId, interfaceId, channelAddress, "VALUES");
 }
 
 async function mapConcurrent<T>(

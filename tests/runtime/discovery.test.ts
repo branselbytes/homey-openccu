@@ -42,6 +42,7 @@ function createClient(): {
       listDevices,
       getParamsetDescription,
       getValue: vi.fn(),
+      getParamset: vi.fn(),
       setValue: vi.fn(),
       putParamset: vi.fn(),
       init: vi.fn(),
@@ -77,5 +78,31 @@ describe("discoverHmIpDevices", () => {
       }),
     ).rejects.toThrow(RangeError);
     expect(listDevices).not.toHaveBeenCalled();
+  });
+
+  it("reuses cached paramset descriptions", async () => {
+    const { client, getParamsetDescription } = createClient();
+    const values = new Map<string, Awaited<ReturnType<typeof client.getParamsetDescription>>>();
+    const cache = {
+      get: vi.fn((key: string) => Promise.resolve(values.get(key))),
+      set: vi.fn((key: string, value: Awaited<ReturnType<typeof client.getParamsetDescription>>) => {
+        values.set(key, value);
+        return Promise.resolve();
+      }),
+      delete: vi.fn().mockResolvedValue(undefined),
+    };
+    const options = {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+      descriptionCache: cache,
+    };
+
+    await discoverHmIpDevices(client, options);
+    expect(getParamsetDescription).toHaveBeenCalledTimes(2);
+    getParamsetDescription.mockClear();
+
+    await discoverHmIpDevices(client, options);
+    expect(getParamsetDescription).toHaveBeenCalledTimes(1);
+    expect(cache.get).toHaveBeenCalled();
   });
 });

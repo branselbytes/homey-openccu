@@ -21,6 +21,7 @@ function createClient(): {
       listDevices,
       getParamsetDescription: vi.fn(),
       getValue: vi.fn(),
+      getParamset: vi.fn(),
       setValue: vi.fn(),
       putParamset: vi.fn(),
       init,

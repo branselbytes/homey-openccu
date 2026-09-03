@@ -1,0 +1,26 @@
+{
+  "title": {
+    "en": "Set [[device]] week profile to [[profile]]",
+    "de": "Setze das Wochenprofil von [[device]] auf [[profile]]"
+  },
+  "titleFormatted": {
+    "en": "Set [[device]] week profile to [[profile]]",
+    "de": "Setze das Wochenprofil von [[device]] auf [[profile]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "capabilities=homematic_thermostat_weekprofile"
+    },
+    {
+      "name": "profile",
+      "type": "dropdown",
+      "values": [
+        { "id": "1", "label": { "en": "Profile 1", "de": "Profil 1" } },
+        { "id": "2", "label": { "en": "Profile 2", "de": "Profil 2" } },
+        { "id": "3", "label": { "en": "Profile 3", "de": "Profil 3" } }
+      ]
+    }
+  ]
+}

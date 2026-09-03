@@ -33,6 +33,111 @@
       }
     ]
   },
+  "flow": {
+    "actions": [
+      {
+        "title": {
+          "en": "Activate boost on [[device]]",
+          "de": "Aktiviere Boost bei [[device]]"
+        },
+        "titleFormatted": {
+          "en": "Activate boost on [[device]]",
+          "de": "Aktiviere Boost bei [[device]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "capabilities=homematic_thermostat_boost"
+          }
+        ],
+        "id": "activate_thermostat_boost"
+      },
+      {
+        "title": {
+          "en": "Set [[device]] mode to [[mode]]",
+          "de": "Setze den Modus von [[device]] auf [[mode]]"
+        },
+        "titleFormatted": {
+          "en": "Set [[device]] mode to [[mode]]",
+          "de": "Setze den Modus von [[device]] auf [[mode]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "capabilities=homematic_thermostat_mode"
+          },
+          {
+            "name": "mode",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "0",
+                "label": {
+                  "en": "Auto",
+                  "de": "Automatik"
+                }
+              },
+              {
+                "id": "1",
+                "label": {
+                  "en": "Manual",
+                  "de": "Manuell"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_thermostat_mode"
+      },
+      {
+        "title": {
+          "en": "Set [[device]] week profile to [[profile]]",
+          "de": "Setze das Wochenprofil von [[device]] auf [[profile]]"
+        },
+        "titleFormatted": {
+          "en": "Set [[device]] week profile to [[profile]]",
+          "de": "Setze das Wochenprofil von [[device]] auf [[profile]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "capabilities=homematic_thermostat_weekprofile"
+          },
+          {
+            "name": "profile",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "1",
+                "label": {
+                  "en": "Profile 1",
+                  "de": "Profil 1"
+                }
+              },
+              {
+                "id": "2",
+                "label": {
+                  "en": "Profile 2",
+                  "de": "Profil 2"
+                }
+              },
+              {
+                "id": "3",
+                "label": {
+                  "en": "Profile 3",
+                  "de": "Profil 3"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_thermostat_weekprofile"
+      }
+    ]
+  },
   "drivers": [
     {
       "id": "HMIP-PS",

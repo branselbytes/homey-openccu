@@ -18,7 +18,10 @@ export class ProfileRegistry {
   }
 
   find(deviceType: string): DeviceProfile | undefined {
-    return this.#profiles.find((profile) => profile.deviceTypes.includes(deviceType));
+    const normalized = normalizeDeviceType(deviceType);
+    return this.#profiles.find((profile) =>
+      profile.deviceTypes.some((type) => normalizeDeviceType(type) === normalized),
+    );
   }
 
   resolve(device: OpenCcuDevice, decisions?: MappingDecisionLog): readonly ReturnType<typeof resolveProfileBindings>[number][] {
@@ -37,4 +40,8 @@ export class ProfileRegistry {
     }
     return bindings;
   }
+}
+
+export function normalizeDeviceType(deviceType: string): string {
+  return deviceType.trim().split(/\s+/, 1)[0] ?? deviceType;
 }

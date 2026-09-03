@@ -28,6 +28,7 @@ export function createHmIpXmlRpcClient(endpoint: HmIpXmlRpcEndpoint): HmIpXmlRpc
     {
       timeoutMs: endpoint.timeoutMs,
       writeTimeoutMs: endpoint.writeTimeoutMs,
+      maxConcurrentRequests: endpoint.maxConcurrentRequests,
     },
   );
 }

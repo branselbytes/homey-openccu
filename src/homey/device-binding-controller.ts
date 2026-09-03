@@ -33,27 +33,73 @@ export interface HomeyDevicePort {
   error(message: string, error: unknown): void;
 }
 
+export interface DeviceBindingControllerOptions {
+  readonly resolveBindings?: () => readonly CapabilityBinding[] | undefined;
+  readonly persistBindings?: (bindings: readonly CapabilityBinding[]) => Promise<void>;
+}
+
 export class DeviceBindingController {
   readonly #runtime: OpenCcuRuntime;
   readonly #device: HomeyDevicePort;
-  readonly #bindings: readonly CapabilityBinding[];
+  readonly #options: DeviceBindingControllerOptions;
+  #bindings: readonly CapabilityBinding[];
   readonly #unsubscribers: Unsubscribe[] = [];
   readonly #pendingWrites = new Map<string, PendingWrite>();
+  #activated = false;
 
   constructor(
     runtime: OpenCcuRuntime,
     device: HomeyDevicePort,
     bindings: readonly CapabilityBinding[],
+    options: DeviceBindingControllerOptions = {},
   ) {
     this.#runtime = runtime;
     this.#device = device;
     this.#bindings = bindings;
+    this.#options = options;
   }
 
   async start(): Promise<void> {
-    await this.#reconcile();
-    for (const binding of this.#bindings) {
-      if (binding.writable) {
+    this.#unsubscribers.push(
+      this.#runtime.subscribe("datapoint", (event) => {
+        for (const binding of this.#bindings) {
+          if (
+            event.channelAddress === binding.channelAddress &&
+            event.parameter === binding.parameter
+          ) {
+            this.#confirmPendingWriteFromEvent(binding, event.value);
+            void this.#setValue(
+              binding,
+              transformFromOpenCcu(binding.transform, event.value),
+            );
+          }
+        }
+      }),
+      this.#runtime.subscribe("connection", ({ state }) => {
+        if (state === "healthy") void this.#activate();
+        if (state === "disconnected") {
+          void this.#device.setUnavailable("OpenCCU HmIP-RF connection unavailable");
+        }
+      }),
+    );
+    if (this.#runtime.connectionState === "healthy") {
+      await this.#activate();
+    } else {
+      await this.#device.setUnavailable("Waiting for OpenCCU HmIP-RF connection");
+    }
+  }
+
+  async #activate(): Promise<void> {
+    if (!this.#activated) {
+      const resolved = this.#options.resolveBindings?.();
+      if (resolved !== undefined && !bindingsEqual(this.#bindings, resolved)) {
+        this.#bindings = resolved;
+        await this.#options.persistBindings?.(resolved);
+        this.#device.log("Updated stored bindings from current OpenCCU discovery");
+      }
+      await this.#reconcile();
+      for (const binding of this.#bindings) {
+        if (!binding.writable) continue;
         this.#unsubscribers.push(
           this.#device.onCapabilityWrite(binding.capability, async (value) => {
             const target = `${binding.writeChannelAddress}/${binding.writeParameter}`;
@@ -98,38 +144,10 @@ export class DeviceBindingController {
           }),
         );
       }
+      this.#activated = true;
     }
-    this.#unsubscribers.push(
-      this.#runtime.subscribe("datapoint", (event) => {
-        for (const binding of this.#bindings) {
-          if (
-            event.channelAddress === binding.channelAddress &&
-            event.parameter === binding.parameter
-          ) {
-            this.#confirmPendingWriteFromEvent(binding, event.value);
-            void this.#setValue(
-              binding,
-              transformFromOpenCcu(binding.transform, event.value),
-            );
-          }
-        }
-      }),
-      this.#runtime.subscribe("connection", ({ state }) => {
-        if (state === "healthy") {
-          void this.#device.setAvailable();
-          void this.#readInitialValues();
-        }
-        if (state === "disconnected") {
-          void this.#device.setUnavailable("OpenCCU HmIP-RF connection unavailable");
-        }
-      }),
-    );
-    if (this.#runtime.connectionState === "healthy") {
-      await this.#device.setAvailable();
-      await this.#readInitialValues();
-    } else {
-      await this.#device.setUnavailable("Waiting for OpenCCU HmIP-RF connection");
-    }
+    await this.#device.setAvailable();
+    await this.#readInitialValues();
   }
 
   stop(): void {
@@ -149,17 +167,29 @@ export class DeviceBindingController {
     for (const capability of changes.add) await this.#device.addCapability(capability);
   }
 
-  async #readInitial(binding: CapabilityBinding): Promise<void> {
-    try {
-      await this.#setValue(binding, await this.#runtime.read(binding));
-    } catch (error) {
-      this.#device.error(`Failed to read ${binding.capability}`, error);
-    }
-  }
-
   async #readInitialValues(): Promise<void> {
-    for (const binding of this.#bindings) {
-      if (binding.readable) await this.#readInitial(binding);
+    const byChannel = new Map<string, CapabilityBinding[]>();
+    for (const binding of this.#bindings.filter(({ readable }) => readable)) {
+      const bindings = byChannel.get(binding.channelAddress) ?? [];
+      bindings.push(binding);
+      byChannel.set(binding.channelAddress, bindings);
+    }
+    for (const [channelAddress, bindings] of byChannel) {
+      try {
+        const values = await this.#runtime.readChannelValues(channelAddress);
+        for (const binding of bindings) {
+          if (!(binding.parameter in values)) continue;
+          await this.#setValue(
+            binding,
+            transformFromOpenCcu(
+              binding.transform,
+              values[binding.parameter],
+            ),
+          );
+        }
+      } catch (error) {
+        this.#device.error(`Failed to read OpenCCU channel ${channelAddress}`, error);
+      }
     }
   }
 
@@ -251,4 +281,11 @@ function rpcValuesEqual(left: RpcValue, right: RpcValue): boolean {
     return JSON.stringify(left) === JSON.stringify(right);
   }
   return left === right;
+}
+
+function bindingsEqual(
+  left: readonly CapabilityBinding[],
+  right: readonly CapabilityBinding[],
+): boolean {
+  return JSON.stringify(left) === JSON.stringify(right);
 }

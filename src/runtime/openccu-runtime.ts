@@ -5,15 +5,29 @@ import type { ConnectionState } from "../protocol/connection-supervisor";
 import { XmlRpcCallbackDispatcher } from "../protocol/xmlrpc/callback-dispatcher";
 import type { XmlRpcClient } from "../protocol/xmlrpc/types";
 import type { RpcValue } from "../protocol/xmlrpc/types";
+import type { XmlRpcClientDiagnostics } from "../protocol/xmlrpc/types";
 import { createPairingCandidates, type PairingCandidate } from "../pairing/candidates";
 import { transformFromOpenCcu, transformToOpenCcu } from "../mapping/transforms";
 import type { CapabilityBinding } from "../mapping/types";
-import { discoverHmIpDevices, type HmIpDiscoveryResult } from "./discovery";
+import {
+  descriptionCacheKey,
+  discoverHmIpDevices,
+  type DescriptionCache,
+  type HmIpDiscoveryResult,
+} from "./discovery";
 
 export interface OpenCcuRuntimeOptions {
   readonly centralId: string;
   readonly interfaceId: string;
   readonly discoveryConcurrency?: number;
+  readonly descriptionCache?: DescriptionCache;
+}
+
+export interface OpenCcuRuntimeDiagnostics {
+  readonly connectionState: ConnectionState;
+  readonly deviceCount: number;
+  readonly discoveryIssueCount: number;
+  readonly transport?: XmlRpcClientDiagnostics;
 }
 
 export class OpenCcuRuntime {
@@ -40,6 +54,16 @@ export class OpenCcuRuntime {
     return this.#connectionState;
   }
 
+  getDiagnostics(): OpenCcuRuntimeDiagnostics {
+    const transport = this.#client.getDiagnostics?.();
+    return {
+      connectionState: this.#connectionState,
+      deviceCount: this.devices.size,
+      discoveryIssueCount: this.discoveryIssues.length,
+      ...(transport === undefined ? {} : { transport }),
+    };
+  }
+
   async refresh(signal?: AbortSignal): Promise<HmIpDiscoveryResult> {
     const discovery = await discoverHmIpDevices(
       this.#client,
@@ -47,6 +71,7 @@ export class OpenCcuRuntime {
         centralId: this.#options.centralId,
         interfaceId: this.#options.interfaceId,
         concurrency: this.#options.discoveryConcurrency,
+        descriptionCache: this.#options.descriptionCache,
       },
       signal,
     );
@@ -64,8 +89,19 @@ export class OpenCcuRuntime {
 
   async read(binding: CapabilityBinding, signal?: AbortSignal): Promise<RpcValue> {
     if (!binding.readable) throw new Error(`Capability ${binding.capability} is not readable`);
-    const value = await this.#client.getValue(binding.channelAddress, binding.parameter, signal);
+    const values = await this.#client.getParamset(binding.channelAddress, "VALUES", signal);
+    if (!(binding.parameter in values)) {
+      throw new Error(`OpenCCU channel does not expose ${binding.parameter}`);
+    }
+    const value = values[binding.parameter];
     return transformFromOpenCcu(binding.transform, value);
+  }
+
+  readChannelValues(
+    channelAddress: string,
+    signal?: AbortSignal,
+  ): Promise<Readonly<Record<string, RpcValue>>> {
+    return this.#client.getParamset(channelAddress, "VALUES", signal);
   }
 
   async write(
@@ -94,11 +130,20 @@ export class OpenCcuRuntime {
   createCallbackDispatcher(): XmlRpcCallbackDispatcher {
     return new XmlRpcCallbackDispatcher({
       onEvent: (event) => this.#events.publish("datapoint", event),
-      onNewDevices: (interfaceId) =>
-        this.#events.publish("devicesChanged", { interfaceId, reason: "new" }),
-      onDeleteDevices: (interfaceId) =>
-        this.#events.publish("devicesChanged", { interfaceId, reason: "delete" }),
+      onNewDevices: async (interfaceId, devices) => {
+        if (this.#discovery !== undefined) {
+          await this.#invalidateDescriptions(devices.map(({ ADDRESS }) => ADDRESS));
+        }
+        this.#events.publish("devicesChanged", { interfaceId, reason: "new" });
+      },
+      onDeleteDevices: async (interfaceId, addresses) => {
+        if (this.#discovery !== undefined) await this.#invalidateDescriptions(addresses);
+        this.#events.publish("devicesChanged", { interfaceId, reason: "delete" });
+      },
       onUpdateDevice: (update) => {
+        if (this.#discovery !== undefined) {
+          void this.#invalidateDescriptions([update.address]);
+        }
         this.#events.publish("deviceUpdated", update);
         this.#events.publish("devicesChanged", {
           interfaceId: update.interfaceId,
@@ -119,5 +164,29 @@ export class OpenCcuRuntime {
 
   clearSubscriptions(): void {
     this.#events.clear();
+  }
+
+  async #invalidateDescriptions(addresses: readonly string[]): Promise<void> {
+    const cache = this.#options.descriptionCache;
+    if (cache === undefined) return;
+    const expanded = new Set(addresses);
+    for (const description of this.#discovery?.descriptions ?? []) {
+      if (description.PARENT && addresses.includes(description.PARENT)) {
+        expanded.add(description.ADDRESS);
+      }
+    }
+    await Promise.all(
+      [...expanded]
+        .filter((address) => address.includes(":"))
+        .map((address) =>
+          cache.delete(
+            descriptionCacheKey(
+              this.#options.centralId,
+              this.#options.interfaceId,
+              address,
+            ),
+          ),
+        ),
+    );
   }
 }

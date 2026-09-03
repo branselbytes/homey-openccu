@@ -28,12 +28,15 @@ describe("HmIpXmlRpcClient", () => {
     await expect(client.listDevices()).resolves.toHaveLength(1);
     raw.response = true;
     await client.getValue("001:1", "STATE");
+    raw.response = { STATE: true };
+    await expect(client.getParamset("001:1")).resolves.toEqual({ STATE: true });
     await client.setValue("001:1", "STATE", true);
     await client.putParamset("001:1", "VALUES", { STATE: false });
     await client.init("http://homey:1234", "openccu-hmip");
     expect(raw.calls.map(({ method }) => method)).toEqual([
       "listDevices",
       "getValue",
+      "getParamset",
       "setValue",
       "putParamset",
       "init",
@@ -67,12 +70,52 @@ describe("HmIpXmlRpcClient", () => {
       const readExpectation = expect(read).rejects.toMatchObject({ code: "timeout" });
       await vi.advanceTimersByTimeAsync(10);
       await readExpectation;
+      expect(client.getDiagnostics()).toMatchObject({
+        totalRequests: 1,
+        failedRequests: 1,
+        timedOutRequests: 1,
+      });
 
       const write = client.setValue("001:1", "STATE", true);
       await vi.advanceTimersByTimeAsync(15);
       await expect(write).resolves.toBeUndefined();
+      expect(client.getDiagnostics()).toMatchObject({
+        totalRequests: 2,
+        completedRequests: 1,
+      });
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  it("limits concurrency and prioritizes writes over queued reads", async () => {
+    const callbacks: Array<(error: unknown, value?: unknown) => void> = [];
+    const methods: string[] = [];
+    const raw: RawXmlRpcClient = {
+      methodCall: (method, _params, callback) => {
+        methods.push(method);
+        callbacks.push(callback);
+      },
+    };
+    const client = new HmIpXmlRpcClient(raw, { maxConcurrentRequests: 1 });
+
+    const firstRead = client.getValue("001:1", "STATE");
+    const secondRead = client.getValue("002:1", "STATE");
+    const write = client.setValue("003:1", "STATE", true);
+    await vi.waitFor(() => expect(methods).toEqual(["getValue"]));
+
+    callbacks.shift()?.(null, false);
+    await vi.waitFor(() => expect(methods).toEqual(["getValue", "setValue"]));
+    callbacks.shift()?.(null, undefined);
+    await vi.waitFor(() =>
+      expect(methods).toEqual(["getValue", "setValue", "getValue"]),
+    );
+    callbacks.shift()?.(null, true);
+
+    await expect(Promise.all([firstRead, secondRead, write])).resolves.toEqual([
+      false,
+      true,
+      undefined,
+    ]);
   });
 });

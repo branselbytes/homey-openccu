@@ -18,4 +18,9 @@ describe("value transforms", () => {
       /Cannot apply/,
     );
   });
+
+  it("converts numeric OpenCCU enums to Homey string IDs and back", () => {
+    expect(transformFromOpenCcu("enum-number-to-string", 2)).toBe("2");
+    expect(transformToOpenCcu("enum-number-to-string", "2")).toBe(2);
+  });
 });

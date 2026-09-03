@@ -7,6 +7,7 @@ import {
 import { isRuntimeProvidingApp } from "./runtime-providing-app";
 import { parseStoredBindings } from "./stored-bindings";
 import type { RpcValue } from "../protocol/xmlrpc/types";
+import { resolveDeviceMapping } from "../mapping/device-resolver";
 
 export abstract class RuntimeBackedDevice extends Homey.Device {
   #controller?: DeviceBindingController;
@@ -36,6 +37,17 @@ export abstract class RuntimeBackedDevice extends Homey.Device {
         runtime,
         createDevicePort(this),
         bindings,
+        {
+          resolveBindings: () => {
+            const device = runtime.devices.get(data.address as string);
+            return device === undefined
+              ? undefined
+              : resolveDeviceMapping(device).bindings;
+          },
+          persistBindings: async (updatedBindings) => {
+            await this.setStoreValue("bindings", updatedBindings);
+          },
+        },
       );
       await this.#controller.start();
     } catch (error) {

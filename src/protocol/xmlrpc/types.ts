@@ -43,7 +43,17 @@ export interface XmlRpcDeviceUpdate {
   readonly hint: number;
 }
 
+export interface XmlRpcClientDiagnostics {
+  readonly activeRequests: number;
+  readonly queuedRequests: number;
+  readonly totalRequests: number;
+  readonly completedRequests: number;
+  readonly failedRequests: number;
+  readonly timedOutRequests: number;
+}
+
 export interface XmlRpcClient {
+  getDiagnostics?(): XmlRpcClientDiagnostics;
   listDevices(signal?: AbortSignal): Promise<readonly DeviceDescription[]>;
   getParamsetDescription(
     address: string,
@@ -51,6 +61,11 @@ export interface XmlRpcClient {
     signal?: AbortSignal,
   ): Promise<ParamsetDescription>;
   getValue(address: string, parameter: string, signal?: AbortSignal): Promise<RpcValue>;
+  getParamset(
+    address: string,
+    paramsetKey?: string,
+    signal?: AbortSignal,
+  ): Promise<Readonly<Record<string, RpcValue>>>;
   setValue(address: string, parameter: string, value: RpcValue, signal?: AbortSignal): Promise<void>;
   putParamset(
     address: string,

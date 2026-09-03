@@ -2,6 +2,7 @@ import type { OpenCcuChannel, OpenCcuDataPoint, OpenCcuDevice } from "../domain/
 
 export type ValueTransform =
   | "boolean"
+  | "enum-number-to-string"
   | "identity"
   | "milliamp-to-amp"
   | "ratio-to-percent"

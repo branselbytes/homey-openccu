@@ -18,6 +18,7 @@ function createClient(): XmlRpcClient {
       STATE: { TYPE: "BOOL", OPERATIONS: 7, FLAGS: 1 },
     }),
     getValue: vi.fn(),
+    getParamset: vi.fn().mockResolvedValue({ STATE: true }),
     setValue: vi.fn(),
     putParamset: vi.fn(),
     init: vi.fn(),
@@ -36,6 +37,11 @@ describe("OpenCcuRuntime", () => {
     expect(runtime.connectionState).toBe("connecting");
     runtime.publishConnectionState("healthy");
     expect(runtime.connectionState).toBe("healthy");
+    expect(runtime.getDiagnostics()).toMatchObject({
+      connectionState: "healthy",
+      deviceCount: 0,
+      discoveryIssueCount: 0,
+    });
   });
 
   it("provides pairing candidates only after a successful refresh", async () => {

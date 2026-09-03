@@ -1,6 +1,7 @@
 import type { PairingCandidate } from "../pairing/candidates";
 import type { ManagedCentralRuntime } from "../runtime/managed-central-runtime";
 import type { OpenCcuRuntime } from "../runtime/openccu-runtime";
+import type { OpenCcuRuntimeDiagnostics } from "../runtime/openccu-runtime";
 
 export interface ManagedRuntimeSource {
   getRuntime(centralId: string): ManagedCentralRuntime | undefined;
@@ -23,5 +24,15 @@ export class OpenCcuRuntimeProvider {
       .runtimeEntries()
       .flatMap(([, runtime]) => runtime.core.pairingCandidates())
       .filter((candidate) => candidate.driverId === driverId);
+  }
+
+  diagnostics(): readonly {
+    readonly centralId: string;
+    readonly runtime: OpenCcuRuntimeDiagnostics;
+  }[] {
+    return this.#source.runtimeEntries().map(([centralId, runtime]) => ({
+      centralId,
+      runtime: runtime.core.getDiagnostics(),
+    }));
   }
 }

@@ -97,6 +97,8 @@ Represent OpenCCU data explicitly:
 
 Persist only safe, versioned description/metadata caches. Live values remain event-driven and can be refreshed after reconnect. Cache keys must include central identity, interface, address, channel, paramset, and schema version.
 
+The HmIP-RF client admits at most two concurrent XML-RPC calls. Registration and writes have priority over queued reads. `VALUES` paramset descriptions are persisted in Homey settings using schema-versioned envelopes; device callbacks invalidate only affected channel entries. A fresh `listDevices` call remains the source of current inventory on each connection.
+
 ### 3. Discovery and mapping
 
 Discovery is data-driven:
@@ -125,6 +127,8 @@ Flow cards should be capability-driven where Homey already supplies standard car
 
 A typed internal event bus decouples RPC callbacks from Homey devices. Subscriptions return an unsubscribe function; they must never remove listeners belonging to other devices. Reconnect reconciles descriptions and refreshes state before marking an interface healthy.
 
+Homey devices activate only after the runtime is healthy. At activation, stored pair-time bindings are re-resolved against current discovery and persisted when they differ. Slow writes may be acknowledged optimistically to stay within Homey's listener window, but remain pending until a matching callback or bounded read-back verifies the OpenCCU value. A final differing read-back replaces the optimistic Homey value.
+
 Diagnostics should include:
 
 - app/build and sanitized runtime information;
@@ -134,6 +138,7 @@ Diagnostics should include:
 - profile matching and capability mapping decisions;
 - unknown or ignored datapoints with reasons;
 - bounded recent event traces with values optionally omitted.
+- XML-RPC active/queued/total/completed/failed/timeout counters without method parameters.
 
 Diagnostic exports require explicit user action and deterministic secret redaction.
 
@@ -172,11 +177,14 @@ The concrete managed-central runtime now owns one configured callback port per c
 
 The shared device-binding controller reconciles dynamic capabilities, reads initial values, routes commands and push events through the typed runtime, mirrors connection availability, and owns listener-specific cleanup. Resolved bindings retain separate read and write channel/parameter targets. Thin Homey adapters now serve six profiled HmIP driver families plus `openccu-generic`; all other imported drivers and transports were removed from the active tree after their history was preserved.
 
+Observed OpenCCU product suffixes such as `R4M` and `I9F` are normalized for profile selection. HmIP-eTRV-B-2 and eTRV-E variants use the shared radiator-thermostat profile. Custom Flow actions cover thermostat mode, boost, and week profile; standard Homey capabilities continue to supply temperature cards.
+
 ## Recorded decisions
 
 - `docs/adr/0001-initial-product-scope.md`: HmIP-RF first; programs and system variables in the first usable release.
 - `docs/adr/0002-homey-driver-strategy.md`: dedicated product drivers plus a generic fallback.
 - `docs/adr/0003-typed-core-boundaries.md`: Homey-independent typed protocol, domain, cache, event, and diagnostic boundaries.
+- `docs/adr/0004-bounded-rpc-and-confirmed-writes.md`: prioritized XML-RPC admission, persistent descriptions, repaired bindings, and verified commands.
 
 ## Architectural decisions still open
 

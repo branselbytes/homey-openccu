@@ -1,8 +1,12 @@
 import Homey from "homey";
 
+import { VersionedCache } from "./src/cache/versioned-cache";
 import { OpenCcuAppController } from "./src/homey/app-controller";
+import { HomeySettingsCacheStorage } from "./src/homey/cache-storage";
+import { registerThermostatFlowCards } from "./src/homey/thermostat-flow-controller";
 import { callbackHostFromLocalAddress } from "./src/homey/callback-host";
 import { OpenCcuRuntimeProvider } from "./src/homey/runtime-provider";
+import type { ParamsetDescription } from "./src/protocol/xmlrpc/types";
 import { OpenCcuApplicationLifecycle } from "./src/runtime/application-lifecycle";
 import {
   ManagedCentralRuntime,
@@ -15,8 +19,14 @@ export = class OpenCcuApp extends Homey.App {
 
   async onInit(): Promise<void> {
     const localAddress = await this.homey.cloud.getLocalAddress();
+    const descriptionCache = new VersionedCache<ParamsetDescription>(
+      new HomeySettingsCacheStorage(this.homey.settings),
+      "openccu_paramsets",
+      1,
+    );
     const factory = new ManagedCentralRuntimeFactory({
       callbackAdvertisedHost: callbackHostFromLocalAddress(localAddress),
+      descriptionCache,
       onConnectionState: (centralId, state, error) => {
         const errorKind =
           error === undefined ? "" : ` (${safeErrorKind(error)})`;
@@ -36,6 +46,7 @@ export = class OpenCcuApp extends Homey.App {
       },
     );
     await this.#controller.start();
+    registerThermostatFlowCards(this.homey.flow);
     this.log("OpenCCU for Homey initialized");
   }
 

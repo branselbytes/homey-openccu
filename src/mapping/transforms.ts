@@ -10,6 +10,10 @@ export function transformFromOpenCcu(transform: ValueTransform, value: RpcValue)
       if (value === true || value === 1 || value === "1" || value === "true") return true;
       if (value === false || value === 0 || value === "0" || value === "false") return false;
       throw invalidTransform(transform, value);
+    case "enum-number-to-string":
+      if (typeof value === "number" && Number.isInteger(value)) return String(value);
+      if (typeof value === "string") return value;
+      throw invalidTransform(transform, value);
     case "milliamp-to-amp":
       return numeric(value, transform) / 1_000;
     case "ratio-to-percent":
@@ -24,6 +28,10 @@ export function transformToOpenCcu(transform: ValueTransform, value: RpcValue): 
     case "identity":
     case "boolean":
       return value;
+    case "enum-number-to-string":
+      if (typeof value === "string" && /^-?\d+$/.test(value)) return Number(value);
+      if (typeof value === "number" && Number.isInteger(value)) return value;
+      throw invalidTransform(transform, value);
     case "milliamp-to-amp":
       return numeric(value, transform) * 1_000;
     case "ratio-to-percent":

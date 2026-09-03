@@ -10,6 +10,7 @@ import {
 import type { XmlRpcClient } from "../protocol/xmlrpc/types";
 import type { RuntimeFactory } from "./application-lifecycle";
 import { OpenCcuRuntime } from "./openccu-runtime";
+import type { DescriptionCache } from "./discovery";
 
 export const HMIP_RF_INTERFACE_ID = "HmIP-RF";
 
@@ -29,6 +30,7 @@ export interface ManagedCentralRuntimeFactoryOptions {
   }) => CallbackServer;
   readonly initialRetryDelayMs?: number;
   readonly maxRetryDelayMs?: number;
+  readonly descriptionCache?: DescriptionCache;
   readonly onConnectionState?: (
     centralId: string,
     state: ConnectionState,
@@ -92,6 +94,7 @@ export class ManagedCentralRuntimeFactory implements RuntimeFactory<ManagedCentr
     const core = new OpenCcuRuntime(client, {
       centralId: config.centralId,
       interfaceId: HMIP_RF_INTERFACE_ID,
+      descriptionCache: this.#options.descriptionCache,
     });
     const callbackServer =
       this.#options.createCallbackServer?.({

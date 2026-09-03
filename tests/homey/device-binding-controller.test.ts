@@ -19,10 +19,12 @@ const binding: CapabilityBinding = {
 function fixture() {
   const setValue = vi.fn().mockResolvedValue(undefined);
   const getValue = vi.fn().mockResolvedValue(1);
+  const getParamset = vi.fn().mockResolvedValue({ STATE: true });
   const client: XmlRpcClient = {
     listDevices: vi.fn(),
     getParamsetDescription: vi.fn(),
     getValue,
+    getParamset,
     setValue,
     putParamset: vi.fn(),
     init: vi.fn(),
@@ -53,7 +55,7 @@ function fixture() {
     runtime,
     device,
     setValue,
-    getValue,
+    getParamset,
     setCapabilityValue,
     getWriteListener: () => writeListener,
   };
@@ -90,6 +92,7 @@ describe("DeviceBindingController", () => {
 
   it("logs a failed write without logging its value and rethrows it", async () => {
     const { runtime, device, setValue, getWriteListener } = fixture();
+    runtime.publishConnectionState("healthy");
     const failure = new Error("XML-RPC timeout");
     setValue.mockRejectedValueOnce(failure);
     const controller = new DeviceBindingController(runtime, device, [binding]);
@@ -108,7 +111,8 @@ describe("DeviceBindingController", () => {
   it("acknowledges a slow write to Homey while awaiting OpenCCU confirmation", async () => {
     vi.useFakeTimers();
     try {
-      const { runtime, device, setValue, getValue, getWriteListener } = fixture();
+      const { runtime, device, setValue, getParamset, getWriteListener } = fixture();
+      runtime.publishConnectionState("healthy");
       let confirmWrite: (() => void) | undefined;
       setValue.mockImplementationOnce(
         () => new Promise<void>((resolve) => { confirmWrite = resolve; }),
@@ -124,7 +128,7 @@ describe("DeviceBindingController", () => {
       );
 
       confirmWrite?.();
-      getValue.mockResolvedValueOnce(false);
+      getParamset.mockResolvedValueOnce({ STATE: false });
       await vi.advanceTimersByTimeAsync(3_000);
       await vi.waitFor(() =>
         expect(device.log).toHaveBeenCalledWith(
@@ -150,5 +154,23 @@ describe("DeviceBindingController", () => {
     runtime.publishConnectionState("healthy");
     await vi.waitFor(() => expect(setCapabilityValue).toHaveBeenCalledOnce());
     expect(device.setAvailable).toHaveBeenCalledOnce();
+  });
+
+  it("repairs stored bindings from current discovery before activation", async () => {
+    const { runtime, device } = fixture();
+    const repaired = { ...binding, channelAddress: "301:5", parameter: "LEVEL" };
+    const persistBindings = vi.fn().mockResolvedValue(undefined);
+    runtime.publishConnectionState("healthy");
+    const controller = new DeviceBindingController(runtime, device, [binding], {
+      resolveBindings: () => [repaired],
+      persistBindings,
+    });
+
+    await controller.start();
+
+    expect(persistBindings).toHaveBeenCalledWith([repaired]);
+    expect(device.log).toHaveBeenCalledWith(
+      "Updated stored bindings from current OpenCCU discovery",
+    );
   });
 });

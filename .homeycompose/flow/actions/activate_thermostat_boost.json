@@ -1,0 +1,17 @@
+{
+  "title": {
+    "en": "Activate boost on [[device]]",
+    "de": "Aktiviere Boost bei [[device]]"
+  },
+  "titleFormatted": {
+    "en": "Activate boost on [[device]]",
+    "de": "Aktiviere Boost bei [[device]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "capabilities=homematic_thermostat_boost"
+    }
+  ]
+}

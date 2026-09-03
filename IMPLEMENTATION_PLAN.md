@@ -51,7 +51,9 @@ Exit criterion: fixture tests cover discovery, reads, writes, push events, recon
 - [x] Add typed event routing with listener-specific unsubscription.
 - [x] Add sanitized diagnostic snapshots and bounded mapping explanations.
 - [x] Represent programs and system variables in the core even though their Homey UI is deferred.
-- [ ] Wire connection state and XML-RPC events into mutable runtime state during the Homey integration phase.
+- [x] Wire connection state and XML-RPC events into mutable runtime state during the Homey integration phase.
+- [x] Persist schema-versioned `VALUES` paramset descriptions and invalidate affected channels on device callbacks.
+- [x] Expose credential- and value-free XML-RPC queue and outcome counters for diagnostics.
 
 Exit criterion: a diagnostic run against a test OpenCCU enumerates supported and unknown datapoints with no Homey device creation required.
 
@@ -62,7 +64,7 @@ Exit criterion: a diagnostic run against a test OpenCCU enumerates supported and
 - [x] Resolve known products to dedicated existing drivers and unknown products to `openccu-generic`.
 - [x] Add shared, tested value transforms and diagnostics for accepted/rejected mappings.
 - [x] Add consistency tests ensuring every profile references an existing dedicated Homey driver.
-- [ ] Validate dynamic generic capabilities, repair, restart, and presentation on a current Homey Pro.
+- [x] Validate dynamic generic capabilities, repair, restart, and presentation on a current Homey Pro.
 - [x] Record the selected dedicated-driver-plus-generic-fallback topology in ADR 0002.
 
 Exit criterion: the prototype pairs representative devices, processes live events, survives restart/reconnect, and explains every mapping decision.
@@ -83,8 +85,13 @@ Exit criterion: the prototype pairs representative devices, processes live event
 - [x] Implement Homey pairing/setup over configured OpenCCUs, initially activating HmIP-RF only.
 - [x] Add the `openccu-generic` Homey driver with dynamic capability reconciliation.
 - [x] Switch six profiled HmIP driver families to the shared runtime.
+- [x] Limit XML-RPC concurrency globally, prioritize commands, and defer device reads until discovery is healthy.
+- [x] Re-resolve and persist stored bindings against the current discovery before device activation.
+- [x] Match observed eTRV type suffixes and route HmIP-eTRV-B-2/E variants to the thermostat driver.
+- [x] Confirm delayed writes through callbacks or bounded read-back before treating the displayed state as authoritative.
+- [x] Add explicit thermostat mode, boost, and week-profile Flow actions.
 - [x] Remove inactive legacy drivers, transports, API surfaces, tools, Flow cards, and runtime dependencies from the active tree.
-- [ ] Validate pairing, dynamic capabilities, callbacks, commands, restart, and reconnect on Homey Pro with OpenCCU.
+- [x] Validate pairing, dynamic capabilities, callbacks, temperature commands, restart, and reconnect on Homey Pro with OpenCCU.
 - [ ] Publish a hardware-verified initial device matrix.
 - Map standard capabilities and capability-provided Flow cards first.
 - Add Homematic-specific Flow triggers/actions only where standard cards are insufficient.
@@ -94,7 +101,7 @@ Exit criterion: end-to-end hardware tests pass for the agreed initial matrix, in
 
 ### Current handoff point
 
-All locally testable runtime, mapping, lifecycle, driver, cleanup, and manifest work is green. The next gate needs a Homey Pro that can reach a configured OpenCCU: verify XML-RPC registration/callback reachability, discovery results, pairing, initial values, commands, push updates, outages, restart, deletion, and re-pairing. Recorded real responses should then become regression fixtures before coverage expands.
+HmIP-RF registration, discovery, pairing, temperature commands, delayed write acknowledgement, callback updates, and restart/reconnect have been exercised on Homey Test against OpenCCU. The next hardware gate is re-pairing an HmIP-eTRV-B-2 through its dedicated profile and validating mode, boost, week profile, valve position, deletion, and re-pairing. Redacted real responses should then become regression fixtures before coverage expands.
 
 ## Phase 6 — Hub features and coverage expansion
 

@@ -48,17 +48,33 @@ export const HMIP_CLIMATE_PROFILE: DeviceProfile = {
       channel: 1,
       parameter: "SET_POINT_MODE",
       setParameter: "CONTROL_MODE",
+      transform: "enum-number-to-string",
     },
     { capability: "homematic_thermostat_boost", channel: 1, parameter: "BOOST_MODE" },
-    { capability: "homematic_thermostat_weekprofile", channel: 1, parameter: "ACTIVE_PROFILE" },
+    {
+      capability: "homematic_thermostat_weekprofile",
+      channel: 1,
+      parameter: "ACTIVE_PROFILE",
+      transform: "enum-number-to-string",
+    },
   ],
 };
 
 export const HMIP_THERMOSTAT_PROFILE: DeviceProfile = {
   id: "hmip-radiator-thermostat",
   driverId: "HmIP-eTRV-2",
-  deviceTypes: ["HMIP-eTRV", "HmIP-eTRV", "HmIP-eTRV-2", "HmIP-eTRV-B", "HmIP-eTRV-C"],
+  deviceTypes: [
+    "HMIP-eTRV",
+    "HmIP-eTRV",
+    "HmIP-eTRV-2",
+    "HmIP-eTRV-B",
+    "HmIP-eTRV-B-2",
+    "HmIP-eTRV-C",
+    "HmIP-eTRV-E",
+    "HmIP-eTRV-E-A",
+  ],
   bindings: [
+    { capability: "alarm_battery", channel: 0, parameter: "LOW_BAT", transform: "boolean" },
     ...HMIP_CLIMATE_PROFILE.bindings.filter((binding) => binding.capability !== "measure_humidity"),
     { capability: "homematic_measure_valve", channel: 1, parameter: "LEVEL", transform: "ratio-to-percent" },
   ],
