@@ -119,6 +119,7 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 - [x] Add native lock/unlock and garage open/close mappings for DLD and MOD-HO/MOD-TM with explicit enum commands.
 - [x] Add SWSD intrusion-siren control and atomic default alarm commands for HmIP-ASIR.
 - [x] Add basic HmIP-WSM irrigation-valve open/close control on its dedicated valve channel.
+- [x] Map HmIP-WSM water flow and cumulative volume to standard Homey units.
 - [x] Add HmIP-BSM switching, energy measurements, and local button events.
 - [x] Add individual HmIP-FSM and HmIP-FSM16 switching and energy-measurement drivers.
 - [x] Add individual HmIP-FSI6 and HmIP-FSI16 switch drivers on the input-layout receiver channel.

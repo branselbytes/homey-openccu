@@ -10,6 +10,8 @@ describe("value transforms", () => {
     expect(transformFromOpenCcu("milliamp-to-amp", 750)).toBe(0.75);
     expect(transformToOpenCcu("milliamp-to-amp", 0.75)).toBe(750);
     expect(transformFromOpenCcu("watt-hour-to-kilowatt-hour", 2500)).toBe(2.5);
+    expect(transformFromOpenCcu("liter-to-cubic-meter", 2500)).toBe(2.5);
+    expect(transformToOpenCcu("liter-to-cubic-meter", 2.5)).toBe(2500);
     expect(transformFromOpenCcu("ratio-to-percent", 0.42)).toBe(42);
   });
 

@@ -11,6 +11,7 @@ export const VALUE_TRANSFORMS = [
   "identity",
   "garage-door-state-to-closed",
   "lock-state-to-boolean",
+  "liter-to-cubic-meter",
   "milliamp-to-amp",
   "positive-number-to-boolean",
   "ratio-to-percent",

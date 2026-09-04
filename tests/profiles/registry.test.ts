@@ -337,6 +337,30 @@ describe("ProfileRegistry", () => {
     ]);
   });
 
+  it("maps HmIP-WSM flow and cumulative liters to Homey water units", () => {
+    expect(
+      resolveDeviceMapping(
+        sensor("HmIP-WSM", [
+          [2, "WATER_FLOW", "FLOAT"],
+          [2, "WATER_VOLUME", "FLOAT"],
+          [4, "STATE", "BOOL"],
+        ]),
+      ).bindings,
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          capability: "measure_water",
+          parameter: "WATER_FLOW",
+        }),
+        expect.objectContaining({
+          capability: "meter_water",
+          parameter: "WATER_VOLUME",
+          transform: "liter-to-cubic-meter",
+        }),
+      ]),
+    );
+  });
+
   it("maps HmIP-BSM switching, metering, and both button channels", () => {
     const mapping = resolveDeviceMapping(
       sensor("HmIP-BSM", [

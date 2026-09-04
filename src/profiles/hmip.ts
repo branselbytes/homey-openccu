@@ -299,6 +299,13 @@ const HMIP_WSM_PROFILE: DeviceProfile = {
   deviceTypes: ["HmIP-WSM"],
   bindings: [
     { capability: "onoff", channel: 4, parameter: "STATE" },
+    { capability: "measure_water", channel: 2, parameter: "WATER_FLOW" },
+    {
+      capability: "meter_water",
+      channel: 2,
+      parameter: "WATER_VOLUME",
+      transform: "liter-to-cubic-meter",
+    },
     SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK,
   ],
 };

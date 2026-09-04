@@ -28,6 +28,8 @@ export function transformFromOpenCcu(
       if (value === "LOCKED" || value === 1) return true;
       if (value === "UNLOCKED" || value === 2) return false;
       throw invalidTransform(transform, value);
+    case "liter-to-cubic-meter":
+      return numeric(value, transform) / 1_000;
     case "boolean":
       if (value === true || value === 1 || value === "1" || value === "true")
         return true;
@@ -68,6 +70,8 @@ export function transformToOpenCcu(
     case "lock-state-to-boolean":
       if (typeof value !== "boolean") throw invalidTransform(transform, value);
       return value ? "LOCKED" : "UNLOCKED";
+    case "liter-to-cubic-meter":
+      return numeric(value, transform) * 1_000;
     case "enum-number-to-string":
       if (typeof value === "string" && /^-?\d+$/.test(value))
         return Number(value);
