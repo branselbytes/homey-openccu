@@ -379,6 +379,31 @@
       ]
     },
     {
+      "id": "HmIP-BS2",
+      "name": {
+        "en": "HmIP-BS2"
+      },
+      "class": "socket",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-BWTH",
       "name": {
         "en": "HmIP-BWTH"
@@ -504,6 +529,56 @@
       ]
     },
     {
+      "id": "HmIP-FS6",
+      "name": {
+        "en": "HmIP-FS6"
+      },
+      "class": "socket",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-FSI",
+      "name": {
+        "en": "HmIP-FSI"
+      },
+      "class": "socket",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-MOD-OC8",
       "name": {
         "en": "HmIP-MOD-OC8"
@@ -557,6 +632,31 @@
       "id": "HmIP-PCBS-BAT",
       "name": {
         "en": "HmIP-PCBS-BAT"
+      },
+      "class": "socket",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-PCBS2",
+      "name": {
+        "en": "HmIP-PCBS2"
       },
       "class": "socket",
       "capabilities": [],
@@ -1013,6 +1113,81 @@
       "images": {
         "large": "/drivers/HMIP-SWDO/assets/images/large.png",
         "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-USBSM",
+      "name": {
+        "en": "HmIP-USBSM"
+      },
+      "class": "socket",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-WGC",
+      "name": {
+        "en": "HmIP-WGC"
+      },
+      "class": "socket",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-WHS2",
+      "name": {
+        "en": "HmIP-WHS2"
+      },
+      "class": "socket",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
       },
       "pair": [
         {

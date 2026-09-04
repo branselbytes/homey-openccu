@@ -112,6 +112,7 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 - [x] Add motion, presence, acceleration, water, and smoke detector profiles with deterministic parameter fallbacks.
 - [x] Add stateless button/event bindings, a shared device Flow trigger, and the first BRC2/WRC2/WRC6/RC8 remote profiles.
 - [x] Add stable logical-subdevice pairing and binding support, then port HmIP-DRSI4 and HmIP-MOD-OC8 as the first multi-output actuators.
+- [x] Extend the reference-backed switch matrix with FSI, FS6, USBSM, WGC, PCBS2, BS2, and WHS2 product drivers.
 - Add programs and system variables to Flow/UI surfaces.
 - Use OpenCCU names, rooms, and functions to improve pairing and diagnostics according to the approved naming policy.
 - Port additional legacy knowledge into profiles, backed by fixtures and hardware reports.

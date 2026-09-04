@@ -10,27 +10,27 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 
 ## Current dedicated coverage
 
-| Family                 | Product types                                                                              | Verification                                                           |
-| ---------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| Contact                | HMIP-SWDO/HmIP-SWDO, HmIP-SWDO-I, HmIP-SWDM                                                | fixture; individual product drivers                                    |
-| Contact                | HmIP-SWDO-2                                                                                | fixture; hardware available for later re-pairing                       |
-| Rotary handle          | HmIP-SRH                                                                                   | fixture; three-state handle position                                   |
-| Climate                | HMIP-WTH/HmIP-WTH, HmIP-STH, HmIP-STHD, HmIP-BWTH                                          | fixture; individual product drivers                                    |
-| Outdoor climate sensor | HmIP-STHO                                                                                  | fixture; read-only temperature and humidity                            |
-| Radiator thermostat    | HMIP-eTRV/HmIP-eTRV, HmIP-eTRV-2, HmIP-eTRV-B, HmIP-eTRV-B-2, HmIP-eTRV-C, HmIP-eTRV-E/E-A | hardware/fixture; individual product drivers; extended actions pending |
-| Switch                 | HMIP-PS/HmIP-PS, HmIP-PCBS, HmIP-PCBS-BAT, HmIP-DRSI1                                      | fixture; individual product drivers                                    |
-| Multi-output switch    | HmIP-DRSI4, HmIP-MOD-OC8                                                                   | fixture; one Homey device per output                                   |
-| Power-meter switch     | HMIP-PSM, HmIP-PSM                                                                         | fixture                                                                |
-| Cover                  | HmIP-BROLL, HmIP-FROLL, HmIP-FBL                                                           | fixture; individual product drivers; slat semantics pending            |
-| Weather sensor         | HmIP-SWO-PR                                                                                | fixture; standard temperature/humidity/luminance subset                |
-| Light sensor           | HmIP-SLO                                                                                   | fixture; current illuminance subset                                    |
-| Temperature sensor     | HmIP-STE2-PCB                                                                              | fixture; first probe only                                              |
-| Motion sensor          | HmIP-SMI, HmIP-SMI55, HmIP-SMO-A                                                           | fixture; SMI55 motion and button events                                |
-| Presence sensor        | HmIP-SPI                                                                                   | fixture; exposed through Homey motion alarm                            |
-| Acceleration sensor    | HmIP-SAM                                                                                   | fixture; exposed through Homey motion alarm                            |
-| Water sensor           | HmIP-SWD                                                                                   | fixture; current and legacy datapoint variants                         |
-| Smoke detector         | HmIP-SWSD                                                                                  | fixture; standard Homey smoke alarm; siren command pending             |
-| Buttons/remotes        | HmIP-BRC2, HMIP-WRC2/HmIP-WRC2, HmIP-WRC6, HmIP-RC8                                        | fixture; short/long press device Flow trigger                          |
+| Family                 | Product types                                                                                   | Verification                                                           |
+| ---------------------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Contact                | HMIP-SWDO/HmIP-SWDO, HmIP-SWDO-I, HmIP-SWDM                                                     | fixture; individual product drivers                                    |
+| Contact                | HmIP-SWDO-2                                                                                     | fixture; hardware available for later re-pairing                       |
+| Rotary handle          | HmIP-SRH                                                                                        | fixture; three-state handle position                                   |
+| Climate                | HMIP-WTH/HmIP-WTH, HmIP-STH, HmIP-STHD, HmIP-BWTH                                               | fixture; individual product drivers                                    |
+| Outdoor climate sensor | HmIP-STHO                                                                                       | fixture; read-only temperature and humidity                            |
+| Radiator thermostat    | HMIP-eTRV/HmIP-eTRV, HmIP-eTRV-2, HmIP-eTRV-B, HmIP-eTRV-B-2, HmIP-eTRV-C, HmIP-eTRV-E/E-A      | hardware/fixture; individual product drivers; extended actions pending |
+| Switch                 | HMIP-PS/HmIP-PS, HmIP-PCBS, HmIP-PCBS-BAT, HmIP-DRSI1, HmIP-FSI, HmIP-FS6, HmIP-USBSM, HmIP-WGC | fixture; individual product drivers; standard on/off subset            |
+| Multi-output switch    | HmIP-DRSI4, HmIP-MOD-OC8, HmIP-PCBS2, HmIP-BS2, HmIP-WHS2                                       | fixture; one Homey device per output                                   |
+| Power-meter switch     | HMIP-PSM, HmIP-PSM                                                                              | fixture                                                                |
+| Cover                  | HmIP-BROLL, HmIP-FROLL, HmIP-FBL                                                                | fixture; individual product drivers; slat semantics pending            |
+| Weather sensor         | HmIP-SWO-PR                                                                                     | fixture; standard temperature/humidity/luminance subset                |
+| Light sensor           | HmIP-SLO                                                                                        | fixture; current illuminance subset                                    |
+| Temperature sensor     | HmIP-STE2-PCB                                                                                   | fixture; first probe only                                              |
+| Motion sensor          | HmIP-SMI, HmIP-SMI55, HmIP-SMO-A                                                                | fixture; SMI55 motion and button events                                |
+| Presence sensor        | HmIP-SPI                                                                                        | fixture; exposed through Homey motion alarm                            |
+| Acceleration sensor    | HmIP-SAM                                                                                        | fixture; exposed through Homey motion alarm                            |
+| Water sensor           | HmIP-SWD                                                                                        | fixture; current and legacy datapoint variants                         |
+| Smoke detector         | HmIP-SWSD                                                                                       | fixture; standard Homey smoke alarm; siren command pending             |
+| Buttons/remotes        | HmIP-BRC2, HMIP-WRC2/HmIP-WRC2, HmIP-WRC6, HmIP-RC8                                             | fixture; short/long press device Flow trigger                          |
 
 ## Reference baseline
 

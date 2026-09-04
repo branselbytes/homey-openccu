@@ -5,7 +5,10 @@ import type {
   OpenCcuDataPoint,
   OpenCcuDevice,
 } from "../../src/domain/model";
-import { resolveDeviceMapping } from "../../src/mapping/device-resolver";
+import {
+  resolveDeviceMapping,
+  resolveDeviceMappings,
+} from "../../src/mapping/device-resolver";
 import { ProfileRegistry } from "../../src/profiles/registry";
 
 function powerSwitch(type = "HMIP-PSM"): OpenCcuDevice {
@@ -274,6 +277,13 @@ describe("ProfileRegistry", () => {
     ["HmIP-DRSI1", "HmIP-DRSI1"],
     ["HmIP-DRSI4", "HmIP-DRSI4"],
     ["HmIP-MOD-OC8", "HmIP-MOD-OC8"],
+    ["HmIP-FSI", "HmIP-FSI"],
+    ["HmIP-FS6", "HmIP-FS6"],
+    ["HmIP-USBSM", "HmIP-USBSM"],
+    ["HmIP-WGC", "HmIP-WGC"],
+    ["HmIP-PCBS2", "HmIP-PCBS2"],
+    ["HmIP-BS2", "HmIP-BS2"],
+    ["HmIP-WHS2", "HmIP-WHS2"],
     ["HmIP-SWDO-I", "HmIP-SWDO-I"],
     ["HmIP-SWDM", "HmIP-SWDM"],
     ["HMIP-WTH", "HMIP-WTH"],
@@ -283,6 +293,41 @@ describe("ProfileRegistry", () => {
     ["HmIP-STHO", "HmIP-STHO"],
   ])("routes %s to product driver %s", (type, driverId) => {
     expect(new ProfileRegistry().find(type)?.driverId).toBe(driverId);
+  });
+
+  it.each([
+    ["HmIP-FSI", 3],
+    ["HmIP-FS6", 2],
+    ["HmIP-USBSM", 3],
+    ["HmIP-WGC", 3],
+  ])("maps %s switching to channel %i", (type, channel) => {
+    expect(
+      resolveDeviceMapping(sensor(type, [[channel, "STATE", "BOOL"]]))
+        .bindings[0],
+    ).toMatchObject({
+      capability: "onoff",
+      channelAddress: `sensor:${channel}`,
+    });
+  });
+
+  it.each([
+    ["HmIP-PCBS2", [4, 8]],
+    ["HmIP-BS2", [4, 8]],
+    ["HmIP-WHS2", [2, 6]],
+  ] as const)("maps %s to one logical device per output", (type, channels) => {
+    const mappings = resolveDeviceMappings(
+      sensor(
+        type,
+        channels.map((channel) => [channel, "STATE", "BOOL"] as const),
+      ),
+    );
+    expect(mappings.map(({ logicalId }) => logicalId)).toEqual([
+      "output-1",
+      "output-2",
+    ]);
+    expect(mappings.map(({ bindings }) => bindings[0]?.channelAddress)).toEqual(
+      channels.map((channel) => `sensor:${channel}`),
+    );
   });
 
   it.each([

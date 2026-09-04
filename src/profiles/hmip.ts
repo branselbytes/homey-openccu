@@ -4,6 +4,10 @@ const SWITCH_BINDINGS: DeviceProfile["bindings"] = [
   { capability: "onoff", channel: 3, parameter: "STATE" },
 ];
 
+function switchBindings(channel: number): DeviceProfile["bindings"] {
+  return [{ capability: "onoff", channel, parameter: "STATE" }];
+}
+
 export const HMIP_SWITCH_PROFILE: DeviceProfile = {
   id: "hmip-switch",
   driverId: "HMIP-PS",
@@ -57,6 +61,58 @@ const HMIP_MOD_OC8_PROFILE: DeviceProfile = {
   deviceTypes: ["HmIP-MOD-OC8"],
   bindings: [],
   logicalDevices: switchOutputs([10, 14, 18, 22, 26, 30, 34, 38]),
+};
+
+const HMIP_FSI_PROFILE: DeviceProfile = {
+  id: "hmip-fsi",
+  driverId: "HmIP-FSI",
+  deviceTypes: ["HmIP-FSI"],
+  bindings: switchBindings(3),
+};
+
+const HMIP_FS6_PROFILE: DeviceProfile = {
+  id: "hmip-fs6",
+  driverId: "HmIP-FS6",
+  deviceTypes: ["HmIP-FS6"],
+  bindings: switchBindings(2),
+};
+
+const HMIP_USBSM_PROFILE: DeviceProfile = {
+  id: "hmip-usbsm",
+  driverId: "HmIP-USBSM",
+  deviceTypes: ["HmIP-USBSM"],
+  bindings: SWITCH_BINDINGS,
+};
+
+const HMIP_WGC_PROFILE: DeviceProfile = {
+  id: "hmip-wgc",
+  driverId: "HmIP-WGC",
+  deviceTypes: ["HmIP-WGC"],
+  bindings: SWITCH_BINDINGS,
+};
+
+const HMIP_PCBS2_PROFILE: DeviceProfile = {
+  id: "hmip-pcbs2",
+  driverId: "HmIP-PCBS2",
+  deviceTypes: ["HmIP-PCBS2"],
+  bindings: [],
+  logicalDevices: switchOutputs([4, 8]),
+};
+
+const HMIP_BS2_PROFILE: DeviceProfile = {
+  id: "hmip-bs2",
+  driverId: "HmIP-BS2",
+  deviceTypes: ["HmIP-BS2"],
+  bindings: [],
+  logicalDevices: switchOutputs([4, 8]),
+};
+
+const HMIP_WHS2_PROFILE: DeviceProfile = {
+  id: "hmip-whs2",
+  driverId: "HmIP-WHS2",
+  deviceTypes: ["HmIP-WHS2"],
+  bindings: [],
+  logicalDevices: switchOutputs([2, 6]),
 };
 
 export const HMIP_POWER_METER_PROFILE: DeviceProfile = {
@@ -511,6 +567,13 @@ export const HMIP_PROFILES = [
   HMIP_DRSI1_PROFILE,
   HMIP_DRSI4_PROFILE,
   HMIP_MOD_OC8_PROFILE,
+  HMIP_FSI_PROFILE,
+  HMIP_FS6_PROFILE,
+  HMIP_USBSM_PROFILE,
+  HMIP_WGC_PROFILE,
+  HMIP_PCBS2_PROFILE,
+  HMIP_BS2_PROFILE,
+  HMIP_WHS2_PROFILE,
   HMIP_POWER_METER_PROFILE,
   HMIP_CONTACT_PROFILE,
   HMIP_SWDO_I_PROFILE,
