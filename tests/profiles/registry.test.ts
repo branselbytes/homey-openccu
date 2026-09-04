@@ -546,6 +546,27 @@ describe("ProfileRegistry", () => {
     ).toEqual(["measure_temperature", "measure_humidity", "alarm_battery"]);
   });
 
+  it("maps HmIP-SCTH230 air quality, climate, and physical relay", () => {
+    const registry = new ProfileRegistry();
+    expect(registry.find("HmIP-SCTH230")?.driverId).toBe("HmIP-SCTH230");
+    expect(
+      resolveDeviceMapping(
+        sensor("HmIP-SCTH230", [
+          [1, "CONCENTRATION", "FLOAT"],
+          [4, "ACTUAL_TEMPERATURE", "FLOAT"],
+          [4, "HUMIDITY", "FLOAT"],
+          [8, "STATE", "BOOL"],
+          [12, "LEVEL", "FLOAT"],
+        ]),
+      ).bindings,
+    ).toMatchObject([
+      { capability: "measure_co2", channelAddress: "sensor:1" },
+      { capability: "measure_temperature", channelAddress: "sensor:4" },
+      { capability: "measure_humidity", channelAddress: "sensor:4" },
+      { capability: "onoff", channelAddress: "sensor:8" },
+    ]);
+  });
+
   it.each([
     ["HmIP-BROLL", "HmIP-BROLL"],
     ["HmIP-FROLL", "HmIP-FROLL"],

@@ -29,6 +29,7 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 | Weather sensor         | HmIP-SWO-PR                                                                                                | fixture; standard temperature/humidity/luminance subset                |
 | Light sensor           | HmIP-SLO                                                                                                   | fixture; current illuminance subset                                    |
 | Temperature sensor     | HmIP-STE2-PCB                                                                                              | fixture; first probe only                                              |
+| CO₂ sensor + relay     | HmIP-SCTH230                                                                                               | fixture; CO₂, temperature, humidity, relay; indicator LED pending      |
 | Motion sensor          | HmIP-SMI, HmIP-SMI55, HmIP-SMO-A                                                                           | fixture; SMI55 motion and button events                                |
 | Presence sensor        | HmIP-SPI                                                                                                   | fixture; exposed through Homey motion alarm                            |
 | Acceleration sensor    | HmIP-SAM                                                                                                   | fixture; exposed through Homey motion alarm                            |

@@ -420,6 +420,22 @@ export const HMIP_TEMPERATURE_SENSOR_PROFILE: DeviceProfile = {
   ],
 };
 
+const HMIP_SCTH230_PROFILE: DeviceProfile = {
+  id: "hmip-scth230",
+  driverId: "HmIP-SCTH230",
+  deviceTypes: ["HmIP-SCTH230"],
+  bindings: [
+    { capability: "measure_co2", channel: 1, parameter: "CONCENTRATION" },
+    {
+      capability: "measure_temperature",
+      channel: 4,
+      parameter: "ACTUAL_TEMPERATURE",
+    },
+    { capability: "measure_humidity", channel: 4, parameter: "HUMIDITY" },
+    { capability: "onoff", channel: 8, parameter: "STATE" },
+  ],
+};
+
 const MOTION_SENSOR_BINDINGS: DeviceProfile["bindings"] = [
   {
     capability: "alarm_motion",
@@ -846,6 +862,7 @@ export const HMIP_PROFILES = [
   HMIP_WEATHER_PROFILE,
   HMIP_LIGHT_SENSOR_PROFILE,
   HMIP_TEMPERATURE_SENSOR_PROFILE,
+  HMIP_SCTH230_PROFILE,
   HMIP_SMI_PROFILE,
   HMIP_SMI55_PROFILE,
   HMIP_BRC2_PROFILE,

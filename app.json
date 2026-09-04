@@ -1079,6 +1079,31 @@
       ]
     },
     {
+      "id": "HmIP-SCTH230",
+      "name": {
+        "en": "HmIP-SCTH230"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-STH/assets/images/large.png",
+        "small": "/drivers/HmIP-STH/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-SLO",
       "name": {
         "en": "HmIP-SLO"
