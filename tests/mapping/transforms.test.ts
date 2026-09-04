@@ -23,4 +23,13 @@ describe("value transforms", () => {
     expect(transformFromOpenCcu("enum-number-to-string", 2)).toBe("2");
     expect(transformToOpenCcu("enum-number-to-string", "2")).toBe(2);
   });
+
+  it("converts smoke detector status to a Homey alarm", () => {
+    expect(transformFromOpenCcu("smoke-status-to-boolean", "IDLE_OFF")).toBe(
+      false,
+    );
+    expect(
+      transformFromOpenCcu("smoke-status-to-boolean", "PRIMARY_ALARM"),
+    ).toBe(true);
+  });
 });

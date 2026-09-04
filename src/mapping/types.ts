@@ -1,4 +1,8 @@
-import type { OpenCcuChannel, OpenCcuDataPoint, OpenCcuDevice } from "../domain/model";
+import type {
+  OpenCcuChannel,
+  OpenCcuDataPoint,
+  OpenCcuDevice,
+} from "../domain/model";
 
 export const VALUE_TRANSFORMS = [
   "boolean",
@@ -6,6 +10,7 @@ export const VALUE_TRANSFORMS = [
   "identity",
   "milliamp-to-amp",
   "ratio-to-percent",
+  "smoke-status-to-boolean",
   "watt-hour-to-kilowatt-hour",
 ] as const;
 

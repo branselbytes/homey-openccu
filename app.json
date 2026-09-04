@@ -440,9 +440,134 @@
       ]
     },
     {
+      "id": "HmIP-SAM",
+      "name": {
+        "en": "HmIP-SAM"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-SLO",
       "name": {
         "en": "HmIP-SLO"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-SMI",
+      "name": {
+        "en": "HmIP-SMI"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-SMI55",
+      "name": {
+        "en": "HmIP-SMI55"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-SMO-A",
+      "name": {
+        "en": "HmIP-SMO-A"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-SPI",
+      "name": {
+        "en": "HmIP-SPI"
       },
       "class": "sensor",
       "capabilities": [],
@@ -590,6 +715,31 @@
       ]
     },
     {
+      "id": "HmIP-SWD",
+      "name": {
+        "en": "HmIP-SWD"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-SWDM",
       "name": {
         "en": "HmIP-SWDM"
@@ -668,6 +818,31 @@
       "id": "HmIP-SWO-PR",
       "name": {
         "en": "HmIP-SWO-PR"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-SWSD",
+      "name": {
+        "en": "HmIP-SWSD"
       },
       "class": "sensor",
       "capabilities": [],

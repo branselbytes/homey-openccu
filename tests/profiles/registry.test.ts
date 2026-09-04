@@ -302,4 +302,67 @@ describe("ProfileRegistry", () => {
   ])("routes %s to cover product driver %s", (type, driverId) => {
     expect(new ProfileRegistry().find(type)?.driverId).toBe(driverId);
   });
+
+  it.each([
+    ["HmIP-SMI", "HmIP-SMI", "MOTION"],
+    ["HmIP-SMI55", "HmIP-SMI55", "MOTION"],
+    ["HmIP-SMO-A", "HmIP-SMO-A", "MOTION"],
+    ["HmIP-SPI", "HmIP-SPI", "PRESENCE_DETECTION_STATE"],
+    ["HmIP-SAM", "HmIP-SAM", "MOTION"],
+  ])("maps %s through sensor driver %s", (type, driverId, alarmParameter) => {
+    const registry = new ProfileRegistry();
+    expect(registry.find(type)?.driverId).toBe(driverId);
+    expect(
+      registry.resolve(
+        sensor(type, [
+          [1, alarmParameter, "BOOL"],
+          [1, "ILLUMINATION", "FLOAT"],
+          [0, "LOW_BAT", "BOOL"],
+        ]),
+      ),
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ capability: "alarm_motion" }),
+        expect.objectContaining({ capability: "alarm_battery" }),
+      ]),
+    );
+  });
+
+  it("uses legacy fallback parameters only when the preferred water datapoint is absent", () => {
+    const registry = new ProfileRegistry();
+    const legacy = registry.resolve(
+      sensor("HmIP-SWD", [
+        [1, "ALARMSTATE", "BOOL"],
+        [0, "LOWBAT", "BOOL"],
+      ]),
+    );
+    expect(legacy).toMatchObject([
+      { capability: "alarm_water", parameter: "ALARMSTATE" },
+      { capability: "alarm_battery", parameter: "LOWBAT" },
+    ]);
+    const current = registry.resolve(
+      sensor("HmIP-SWD", [
+        [1, "WATERLEVEL_DETECTED", "BOOL"],
+        [1, "ALARMSTATE", "BOOL"],
+      ]),
+    );
+    expect(current[0]).toMatchObject({ parameter: "WATERLEVEL_DETECTED" });
+  });
+
+  it("maps smoke detector status to the standard Homey smoke alarm", () => {
+    expect(
+      new ProfileRegistry().resolve(
+        sensor("HmIP-SWSD", [
+          [1, "SMOKE_DETECTOR_ALARM_STATUS", "ENUM"],
+          [0, "LOWBAT", "BOOL"],
+        ]),
+      ),
+    ).toMatchObject([
+      {
+        capability: "alarm_smoke",
+        transform: "smoke-status-to-boolean",
+      },
+      { capability: "alarm_battery" },
+    ]);
+  });
 });

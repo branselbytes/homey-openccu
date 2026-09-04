@@ -167,6 +167,8 @@ The core is wired through the strict-TypeScript `app.ts` lifecycle. Generated Co
 
 The Phase 4 mapping prototype adds conservative generic rules and dedicated shared profiles. Known product types resolve to an existing product driver; unknown types resolve to `openccu-generic`. Generic `STATE` and `LEVEL` datapoints are mapped only when the channel type makes their meaning unambiguous. Every accepted or rejected mapping is recorded for diagnostics. Shared value transforms replace duplicated legacy conversions for booleans, current, energy, and percentage ratios.
 
+Dedicated profiles may declare ordered fallback parameter names for firmware generations that expose the same semantic value under different XML-RPC names. Resolution selects the first available datapoint and stores that concrete binding, keeping runtime reads and callbacks deterministic.
+
 The Phase 5 integration adds a Homey-independent HmIP discovery pipeline and runtime facade. It fetches channel `VALUES` paramsets with bounded concurrency, retains partial-discovery errors for diagnostics, builds stable pairing identities, and produces serializable candidates for either a dedicated profile driver or the generic fallback. XML-RPC callbacks enter the same typed event bus.
 
 Manual connection settings now have a strict parsing boundary that normalizes the central ID, host, HmIP-RF port, JSON-RPC URL, and optional credential pair. Diagnostic views receive only a credential-free projection. A runtime registry provides replace/remove/shutdown semantics and attempts to stop every configured central even when one shutdown fails. Homey settings persistence and credential ownership remain adapter concerns and are the next integration task.

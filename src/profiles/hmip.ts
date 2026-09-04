@@ -62,6 +62,12 @@ const SENSOR_MAINTENANCE_BINDING = {
   transform: "boolean",
 } as const;
 
+const SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK: DeviceProfile["bindings"][number] =
+  {
+    ...SENSOR_MAINTENANCE_BINDING,
+    fallbackParameters: ["LOWBAT"],
+  };
+
 const CONTACT_BINDINGS: DeviceProfile["bindings"] = [
   {
     capability: "alarm_contact",
@@ -169,6 +175,106 @@ export const HMIP_TEMPERATURE_SENSOR_PROFILE: DeviceProfile = {
       parameter: "ACTUAL_TEMPERATURE",
     },
     SENSOR_MAINTENANCE_BINDING,
+  ],
+};
+
+const MOTION_SENSOR_BINDINGS: DeviceProfile["bindings"] = [
+  {
+    capability: "alarm_motion",
+    channel: 1,
+    parameter: "MOTION",
+    transform: "boolean",
+  },
+  {
+    capability: "measure_luminance",
+    channel: 1,
+    parameter: "CURRENT_ILLUMINATION",
+    fallbackParameters: ["ILLUMINATION"],
+  },
+  SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK,
+];
+
+const HMIP_SMI_PROFILE: DeviceProfile = {
+  id: "hmip-smi",
+  driverId: "HmIP-SMI",
+  deviceTypes: ["HmIP-SMI"],
+  bindings: MOTION_SENSOR_BINDINGS,
+};
+
+const HMIP_SMI55_PROFILE: DeviceProfile = {
+  id: "hmip-smi55",
+  driverId: "HmIP-SMI55",
+  deviceTypes: ["HmIP-SMI55"],
+  bindings: MOTION_SENSOR_BINDINGS,
+};
+
+const HMIP_SMO_A_PROFILE: DeviceProfile = {
+  id: "hmip-smo-a",
+  driverId: "HmIP-SMO-A",
+  deviceTypes: ["HmIP-SMO-A"],
+  bindings: MOTION_SENSOR_BINDINGS,
+};
+
+const HMIP_SPI_PROFILE: DeviceProfile = {
+  id: "hmip-spi",
+  driverId: "HmIP-SPI",
+  deviceTypes: ["HmIP-SPI"],
+  bindings: [
+    {
+      capability: "alarm_motion",
+      channel: 1,
+      parameter: "PRESENCE_DETECTION_STATE",
+      transform: "boolean",
+    },
+    ...MOTION_SENSOR_BINDINGS.filter(
+      (binding) => binding.capability !== "alarm_motion",
+    ),
+  ],
+};
+
+const HMIP_SAM_PROFILE: DeviceProfile = {
+  id: "hmip-sam",
+  driverId: "HmIP-SAM",
+  deviceTypes: ["HmIP-SAM"],
+  bindings: [
+    {
+      capability: "alarm_motion",
+      channel: 1,
+      parameter: "MOTION",
+      transform: "boolean",
+    },
+    SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK,
+  ],
+};
+
+const HMIP_SWD_PROFILE: DeviceProfile = {
+  id: "hmip-swd",
+  driverId: "HmIP-SWD",
+  deviceTypes: ["HmIP-SWD"],
+  bindings: [
+    {
+      capability: "alarm_water",
+      channel: 1,
+      parameter: "WATERLEVEL_DETECTED",
+      fallbackParameters: ["MOISTURE_DETECTED", "ALARMSTATE", "STATE"],
+      transform: "boolean",
+    },
+    SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK,
+  ],
+};
+
+const HMIP_SWSD_PROFILE: DeviceProfile = {
+  id: "hmip-swsd",
+  driverId: "HmIP-SWSD",
+  deviceTypes: ["HmIP-SWSD"],
+  bindings: [
+    {
+      capability: "alarm_smoke",
+      channel: 1,
+      parameter: "SMOKE_DETECTOR_ALARM_STATUS",
+      transform: "smoke-status-to-boolean",
+    },
+    SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK,
   ],
 };
 
@@ -352,6 +458,13 @@ export const HMIP_PROFILES = [
   HMIP_WEATHER_PROFILE,
   HMIP_LIGHT_SENSOR_PROFILE,
   HMIP_TEMPERATURE_SENSOR_PROFILE,
+  HMIP_SMI_PROFILE,
+  HMIP_SMI55_PROFILE,
+  HMIP_SMO_A_PROFILE,
+  HMIP_SPI_PROFILE,
+  HMIP_SAM_PROFILE,
+  HMIP_SWD_PROFILE,
+  HMIP_SWSD_PROFILE,
   HMIP_CLIMATE_PROFILE,
   HMIP_WTH_PROFILE,
   HMIP_BWTH_PROFILE,

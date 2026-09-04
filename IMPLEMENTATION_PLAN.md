@@ -109,6 +109,7 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 - [x] Add the first passive-sensor driver batch: HmIP-SWDO-2, HmIP-SWO-PR, HmIP-SLO, and HmIP-STE2-PCB.
 - [x] Split switch, contact, and climate families into individual product-facing drivers and correct HmIP-SRH/HmIP-STHO semantics.
 - [x] Split remaining shared thermostat and cover profiles into individual product-facing Homey drivers.
+- [x] Add motion, presence, acceleration, water, and smoke detector profiles with deterministic parameter fallbacks.
 - [ ] Add stateless button/event bindings and corresponding Flow triggers before porting remotes.
 - [ ] Add multi-channel binding support before porting multi-output switches and actuators.
 - Add programs and system variables to Flow/UI surfaces.

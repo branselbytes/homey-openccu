@@ -24,6 +24,11 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 | Weather sensor         | HmIP-SWO-PR                                                                                | fixture; standard temperature/humidity/luminance subset                |
 | Light sensor           | HmIP-SLO                                                                                   | fixture; current illuminance subset                                    |
 | Temperature sensor     | HmIP-STE2-PCB                                                                              | fixture; first probe only                                              |
+| Motion sensor          | HmIP-SMI, HmIP-SMI55, HmIP-SMO-A                                                           | fixture; SMI55 button events pending                                   |
+| Presence sensor        | HmIP-SPI                                                                                   | fixture; exposed through Homey motion alarm                            |
+| Acceleration sensor    | HmIP-SAM                                                                                   | fixture; exposed through Homey motion alarm                            |
+| Water sensor           | HmIP-SWD                                                                                   | fixture; current and legacy datapoint variants                         |
+| Smoke detector         | HmIP-SWSD                                                                                  | fixture; standard Homey smoke alarm; siren command pending             |
 
 ## Reference baseline
 
@@ -35,7 +40,7 @@ Both external references are MIT licensed. Concepts and datapoint semantics are 
 
 ## Next batches
 
-1. Motion, presence, smoke, water, and extended weather sensors.
+1. Extended weather sensors.
 2. Buttons/remotes and stateless event Flow triggers.
 3. Multi-channel switches, dimmers, enhanced covers/blinds, locks, sirens, valves, and RGBW/DALI lighting.
 4. Add redacted OpenCCU fixtures and promote devices to hardware verified as equipment becomes available.
