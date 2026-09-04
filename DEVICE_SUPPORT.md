@@ -21,7 +21,7 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 | Switch                 | HMIP-PS/HmIP-PS, HmIP-PCBS, HmIP-PCBS-BAT, HmIP-DRSI1, HmIP-FSI, HmIP-FS6, HmIP-USBSM, HmIP-WGC | fixture; individual product drivers; standard on/off subset              |
 | Multi-output switch    | HmIP-DRSI4, HmIP-MOD-OC8, HmIP-PCBS2, HmIP-BS2, HmIP-WHS2                                       | fixture; one Homey device per output                                     |
 | Dimmer                 | HmIP-BDT, HmIP-FDT, HmIP-PDT, HmIP-DRDI3                                                        | fixture; on/off plus level; DRDI3 split into three outputs               |
-| Power-meter switch     | HMIP-PSM, HmIP-PSM, HmIP-BSM                                                                    | fixture; BSM includes both local button channels                         |
+| Power-meter switch     | HMIP-PSM, HmIP-PSM, HmIP-BSM, HmIP-FSM, HmIP-FSM16                                              | fixture; BSM includes both local button channels                         |
 | Cover                  | HmIP-BROLL, HmIP-FROLL                                                                          | fixture; position and explicit up/down/stop                              |
 | Blind                  | HmIP-FBL, HmIP-BBL                                                                              | fixture; position, explicit up/down/stop, and slat position              |
 | Door lock              | HmIP-DLD                                                                                        | fixture; native Homey lock/unlock; latch-open action pending             |

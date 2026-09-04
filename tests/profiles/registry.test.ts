@@ -298,6 +298,8 @@ describe("ProfileRegistry", () => {
     ["HmIP-ASIR", "HmIP-ASIR"],
     ["HmIP-WSM", "HmIP-WSM"],
     ["HmIP-BSM", "HmIP-BSM"],
+    ["HmIP-FSM", "HmIP-FSM"],
+    ["HmIP-FSM16", "HmIP-FSM16"],
   ])("routes %s to product driver %s", (type, driverId) => {
     expect(new ProfileRegistry().find(type)?.driverId).toBe(driverId);
   });
@@ -355,6 +357,28 @@ describe("ProfileRegistry", () => {
       { button: 2, pressType: "long" },
     ]);
   });
+
+  it.each(["HmIP-FSM", "HmIP-FSM16"])(
+    "maps %s switching to channel 2 and metering to channel 5",
+    (type) => {
+      const mapping = resolveDeviceMapping(
+        sensor(type, [
+          [2, "STATE", "BOOL"],
+          [5, "POWER", "FLOAT"],
+          [5, "VOLTAGE", "FLOAT"],
+          [5, "CURRENT", "FLOAT"],
+          [5, "ENERGY_COUNTER", "FLOAT"],
+        ]),
+      );
+      expect(mapping.bindings).toMatchObject([
+        { capability: "onoff", channelAddress: "sensor:2" },
+        { capability: "measure_power", channelAddress: "sensor:5" },
+        { capability: "measure_voltage", channelAddress: "sensor:5" },
+        { capability: "measure_current", channelAddress: "sensor:5" },
+        { capability: "meter_power", channelAddress: "sensor:5" },
+      ]);
+    },
+  );
 
   it.each([
     ["HmIP-PCBS2", [4, 8]],

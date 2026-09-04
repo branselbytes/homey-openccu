@@ -1,0 +1,18 @@
+{
+  "id": "HmIP-FSM",
+  "name": { "en": "HmIP-FSM" },
+  "class": "socket",
+  "capabilities": [],
+  "images": {
+    "large": "/drivers/HMIP-PSM/assets/images/large.png",
+    "small": "/drivers/HMIP-PSM/assets/images/small.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": { "next": "add_devices" }
+    },
+    { "id": "add_devices", "template": "add_devices" }
+  ]
+}

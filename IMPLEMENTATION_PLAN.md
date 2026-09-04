@@ -120,6 +120,7 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 - [x] Add SWSD intrusion-siren control and atomic default alarm commands for HmIP-ASIR.
 - [x] Add basic HmIP-WSM irrigation-valve open/close control on its dedicated valve channel.
 - [x] Add HmIP-BSM switching, energy measurements, and local button events.
+- [x] Add individual HmIP-FSM and HmIP-FSM16 switching and energy-measurement drivers.
 - Add programs and system variables to Flow/UI surfaces.
 - Use OpenCCU names, rooms, and functions to improve pairing and diagnostics according to the approved naming policy.
 - Port additional legacy knowledge into profiles, backed by fixtures and hardware reports.

@@ -192,6 +192,57 @@ const HMIP_BSM_PROFILE: DeviceProfile = {
   buttonChannels: [1, 2],
 };
 
+function meteredSwitchProfile(
+  id: string,
+  driverId: string,
+  deviceType: string,
+  switchChannel: number,
+  meterChannel: number,
+): DeviceProfile {
+  return {
+    id,
+    driverId,
+    deviceTypes: [deviceType],
+    bindings: [
+      { capability: "onoff", channel: switchChannel, parameter: "STATE" },
+      { capability: "measure_power", channel: meterChannel, parameter: "POWER" },
+      {
+        capability: "measure_voltage",
+        channel: meterChannel,
+        parameter: "VOLTAGE",
+      },
+      {
+        capability: "measure_current",
+        channel: meterChannel,
+        parameter: "CURRENT",
+        transform: "milliamp-to-amp",
+      },
+      {
+        capability: "meter_power",
+        channel: meterChannel,
+        parameter: "ENERGY_COUNTER",
+        transform: "watt-hour-to-kilowatt-hour",
+      },
+    ],
+  };
+}
+
+const HMIP_FSM_PROFILE = meteredSwitchProfile(
+  "hmip-fsm",
+  "HmIP-FSM",
+  "HmIP-FSM",
+  2,
+  5,
+);
+
+const HMIP_FSM16_PROFILE = meteredSwitchProfile(
+  "hmip-fsm16",
+  "HmIP-FSM16",
+  "HmIP-FSM16",
+  2,
+  5,
+);
+
 export const HMIP_POWER_METER_PROFILE: DeviceProfile = {
   id: "hmip-power-meter-switch",
   driverId: "HMIP-PSM",
@@ -761,6 +812,8 @@ export const HMIP_PROFILES = [
   HMIP_PDT_PROFILE,
   HMIP_DRDI3_PROFILE,
   HMIP_BSM_PROFILE,
+  HMIP_FSM_PROFILE,
+  HMIP_FSM16_PROFILE,
   HMIP_POWER_METER_PROFILE,
   HMIP_CONTACT_PROFILE,
   HMIP_SWDO_I_PROFILE,
