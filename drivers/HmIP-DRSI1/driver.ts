@@ -1,0 +1,5 @@
+import { RuntimeBackedDriver } from "../../src/homey/runtime-backed-driver";
+
+export = class HmIpDrsi1Driver extends RuntimeBackedDriver {
+  protected readonly openCcuDriverId = "HmIP-DRSI1";
+};

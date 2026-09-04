@@ -215,6 +215,31 @@
       ]
     },
     {
+      "id": "HMIP-WTH",
+      "name": {
+        "en": "HMIP-WTH"
+      },
+      "class": "thermostat",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-STH/assets/images/large.png",
+        "small": "/drivers/HmIP-STH/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-BROLL",
       "name": {
         "en": "HmIP-BROLL"
@@ -240,9 +265,134 @@
       ]
     },
     {
+      "id": "HmIP-BWTH",
+      "name": {
+        "en": "HmIP-BWTH"
+      },
+      "class": "thermostat",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-STH/assets/images/large.png",
+        "small": "/drivers/HmIP-STH/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-DRSI1",
+      "name": {
+        "en": "HmIP-DRSI1"
+      },
+      "class": "socket",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-PCBS",
+      "name": {
+        "en": "HmIP-PCBS"
+      },
+      "class": "socket",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-PCBS-BAT",
+      "name": {
+        "en": "HmIP-PCBS-BAT"
+      },
+      "class": "socket",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-SLO",
       "name": {
         "en": "HmIP-SLO"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-SRH",
+      "name": {
+        "en": "HmIP-SRH"
       },
       "class": "sensor",
       "capabilities": [],
@@ -315,9 +465,109 @@
       ]
     },
     {
+      "id": "HmIP-STHD",
+      "name": {
+        "en": "HmIP-STHD"
+      },
+      "class": "thermostat",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-STH/assets/images/large.png",
+        "small": "/drivers/HmIP-STH/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-STHO",
+      "name": {
+        "en": "HmIP-STHO"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-STH/assets/images/large.png",
+        "small": "/drivers/HmIP-STH/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-SWDM",
+      "name": {
+        "en": "HmIP-SWDM"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-SWDO-2",
       "name": {
         "en": "HmIP-SWDO-2"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-SWDO-I",
+      "name": {
+        "en": "HmIP-SWDO-I"
       },
       "class": "sensor",
       "capabilities": [],
@@ -431,6 +681,39 @@
       "min": 0,
       "max": 100,
       "step": 1
+    },
+    "homematic_rhs_state": {
+      "type": "enum",
+      "values": [
+        {
+          "id": "2",
+          "title": {
+            "en": "Open",
+            "de": "Offen"
+          }
+        },
+        {
+          "id": "0",
+          "title": {
+            "en": "Closed",
+            "de": "Geschlossen"
+          }
+        },
+        {
+          "id": "1",
+          "title": {
+            "en": "Tilted",
+            "de": "Gekippt"
+          }
+        }
+      ],
+      "title": {
+        "en": "Handle state",
+        "de": "Griffstellung"
+      },
+      "uiComponent": "picker",
+      "getable": true,
+      "setable": false
     },
     "homematic_thermostat_boost": {
       "type": "boolean",

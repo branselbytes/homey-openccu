@@ -1,16 +1,35 @@
 import type { DeviceProfile } from "./types";
 
+const SWITCH_BINDINGS: DeviceProfile["bindings"] = [
+  { capability: "onoff", channel: 3, parameter: "STATE" },
+];
+
 export const HMIP_SWITCH_PROFILE: DeviceProfile = {
   id: "hmip-switch",
   driverId: "HMIP-PS",
-  deviceTypes: [
-    "HMIP-PS",
-    "HmIP-PS",
-    "HmIP-PCBS",
-    "HmIP-PCBS-BAT",
-    "HmIP-DRSI1",
-  ],
-  bindings: [{ capability: "onoff", channel: 3, parameter: "STATE" }],
+  deviceTypes: ["HMIP-PS", "HmIP-PS"],
+  bindings: SWITCH_BINDINGS,
+};
+
+const HMIP_PCBS_PROFILE: DeviceProfile = {
+  id: "hmip-pcbs",
+  driverId: "HmIP-PCBS",
+  deviceTypes: ["HmIP-PCBS"],
+  bindings: SWITCH_BINDINGS,
+};
+
+const HMIP_PCBS_BAT_PROFILE: DeviceProfile = {
+  id: "hmip-pcbs-bat",
+  driverId: "HmIP-PCBS-BAT",
+  deviceTypes: ["HmIP-PCBS-BAT"],
+  bindings: SWITCH_BINDINGS,
+};
+
+const HMIP_DRSI1_PROFILE: DeviceProfile = {
+  id: "hmip-drsi1",
+  driverId: "HmIP-DRSI1",
+  deviceTypes: ["HmIP-DRSI1"],
+  bindings: SWITCH_BINDINGS,
 };
 
 export const HMIP_POWER_METER_PROFILE: DeviceProfile = {
@@ -36,38 +55,63 @@ export const HMIP_POWER_METER_PROFILE: DeviceProfile = {
   ],
 };
 
-export const HMIP_CONTACT_PROFILE: DeviceProfile = {
-  id: "hmip-contact",
-  driverId: "HMIP-SWDO",
-  deviceTypes: [
-    "HMIP-SWDO",
-    "HmIP-SWDO",
-    "HmIP-SWDO-I",
-    "HmIP-SWDM",
-    "HmIP-SRH",
-  ],
-  bindings: [
-    {
-      capability: "alarm_contact",
-      channel: 1,
-      parameter: "STATE",
-      transform: "boolean",
-    },
-    {
-      capability: "alarm_battery",
-      channel: 0,
-      parameter: "LOW_BAT",
-      transform: "boolean",
-    },
-  ],
-};
-
 const SENSOR_MAINTENANCE_BINDING = {
   capability: "alarm_battery",
   channel: 0,
   parameter: "LOW_BAT",
   transform: "boolean",
 } as const;
+
+const CONTACT_BINDINGS: DeviceProfile["bindings"] = [
+  {
+    capability: "alarm_contact",
+    channel: 1,
+    parameter: "STATE",
+    transform: "boolean",
+  },
+  {
+    capability: "alarm_battery",
+    channel: 0,
+    parameter: "LOW_BAT",
+    transform: "boolean",
+  },
+];
+
+export const HMIP_CONTACT_PROFILE: DeviceProfile = {
+  id: "hmip-contact",
+  driverId: "HMIP-SWDO",
+  deviceTypes: ["HMIP-SWDO", "HmIP-SWDO"],
+  bindings: CONTACT_BINDINGS,
+};
+
+const HMIP_SWDO_I_PROFILE: DeviceProfile = {
+  id: "hmip-swdo-i",
+  driverId: "HmIP-SWDO-I",
+  deviceTypes: ["HmIP-SWDO-I"],
+  bindings: CONTACT_BINDINGS,
+};
+
+const HMIP_SWDM_PROFILE: DeviceProfile = {
+  id: "hmip-swdm",
+  driverId: "HmIP-SWDM",
+  deviceTypes: ["HmIP-SWDM"],
+  bindings: CONTACT_BINDINGS,
+};
+
+const HMIP_SRH_PROFILE: DeviceProfile = {
+  id: "hmip-srh",
+  driverId: "HmIP-SRH",
+  deviceTypes: ["HmIP-SRH"],
+  bindings: [
+    {
+      capability: "homematic_rhs_state",
+      channel: 1,
+      parameter: "STATE",
+      transform: "enum-number-to-string",
+    },
+    SENSOR_MAINTENANCE_BINDING,
+  ],
+};
 
 export const HMIP_CONTACT_2_PROFILE: DeviceProfile = {
   id: "hmip-contact-2",
@@ -128,17 +172,70 @@ export const HMIP_TEMPERATURE_SENSOR_PROFILE: DeviceProfile = {
   ],
 };
 
+const CLIMATE_BINDINGS: DeviceProfile["bindings"] = [
+  {
+    capability: "measure_temperature",
+    channel: 1,
+    parameter: "ACTUAL_TEMPERATURE",
+  },
+  { capability: "measure_humidity", channel: 1, parameter: "HUMIDITY" },
+  {
+    capability: "target_temperature",
+    channel: 1,
+    parameter: "SET_POINT_TEMPERATURE",
+  },
+  {
+    capability: "homematic_thermostat_mode",
+    channel: 1,
+    parameter: "SET_POINT_MODE",
+    setParameter: "CONTROL_MODE",
+    transform: "enum-number-to-string",
+  },
+  {
+    capability: "homematic_thermostat_boost",
+    channel: 1,
+    parameter: "BOOST_MODE",
+  },
+  {
+    capability: "homematic_thermostat_weekprofile",
+    channel: 1,
+    parameter: "ACTIVE_PROFILE",
+    transform: "enum-number-to-string",
+  },
+];
+
 export const HMIP_CLIMATE_PROFILE: DeviceProfile = {
   id: "hmip-climate",
   driverId: "HmIP-STH",
-  deviceTypes: [
-    "HMIP-WTH",
-    "HmIP-WTH",
-    "HmIP-STH",
-    "HmIP-STHD",
-    "HmIP-STHO",
-    "HmIP-BWTH",
-  ],
+  deviceTypes: ["HmIP-STH"],
+  bindings: CLIMATE_BINDINGS,
+};
+
+const HMIP_WTH_PROFILE: DeviceProfile = {
+  id: "hmip-wth",
+  driverId: "HMIP-WTH",
+  deviceTypes: ["HMIP-WTH", "HmIP-WTH"],
+  bindings: CLIMATE_BINDINGS,
+};
+
+const HMIP_BWTH_PROFILE: DeviceProfile = {
+  id: "hmip-bwth",
+  driverId: "HmIP-BWTH",
+  deviceTypes: ["HmIP-BWTH"],
+  bindings: CLIMATE_BINDINGS,
+};
+
+const HMIP_STHD_PROFILE: DeviceProfile = {
+  id: "hmip-sthd",
+  driverId: "HmIP-STHD",
+  deviceTypes: ["HmIP-STHD"],
+  bindings: CLIMATE_BINDINGS,
+};
+
+const HMIP_STHO_PROFILE: DeviceProfile = {
+  id: "hmip-stho",
+  driverId: "HmIP-STHO",
+  deviceTypes: ["HmIP-STHO"],
   bindings: [
     {
       capability: "measure_temperature",
@@ -146,29 +243,7 @@ export const HMIP_CLIMATE_PROFILE: DeviceProfile = {
       parameter: "ACTUAL_TEMPERATURE",
     },
     { capability: "measure_humidity", channel: 1, parameter: "HUMIDITY" },
-    {
-      capability: "target_temperature",
-      channel: 1,
-      parameter: "SET_POINT_TEMPERATURE",
-    },
-    {
-      capability: "homematic_thermostat_mode",
-      channel: 1,
-      parameter: "SET_POINT_MODE",
-      setParameter: "CONTROL_MODE",
-      transform: "enum-number-to-string",
-    },
-    {
-      capability: "homematic_thermostat_boost",
-      channel: 1,
-      parameter: "BOOST_MODE",
-    },
-    {
-      capability: "homematic_thermostat_weekprofile",
-      channel: 1,
-      parameter: "ACTIVE_PROFILE",
-      transform: "enum-number-to-string",
-    },
+    SENSOR_MAINTENANCE_BINDING,
   ],
 };
 
@@ -192,7 +267,7 @@ export const HMIP_THERMOSTAT_PROFILE: DeviceProfile = {
       parameter: "LOW_BAT",
       transform: "boolean",
     },
-    ...HMIP_CLIMATE_PROFILE.bindings.filter(
+    ...CLIMATE_BINDINGS.filter(
       (binding) => binding.capability !== "measure_humidity",
     ),
     {
@@ -228,13 +303,23 @@ export const HMIP_COVER_PROFILE: DeviceProfile = {
 
 export const HMIP_PROFILES = [
   HMIP_SWITCH_PROFILE,
+  HMIP_PCBS_PROFILE,
+  HMIP_PCBS_BAT_PROFILE,
+  HMIP_DRSI1_PROFILE,
   HMIP_POWER_METER_PROFILE,
   HMIP_CONTACT_PROFILE,
+  HMIP_SWDO_I_PROFILE,
+  HMIP_SWDM_PROFILE,
+  HMIP_SRH_PROFILE,
   HMIP_CONTACT_2_PROFILE,
   HMIP_WEATHER_PROFILE,
   HMIP_LIGHT_SENSOR_PROFILE,
   HMIP_TEMPERATURE_SENSOR_PROFILE,
   HMIP_CLIMATE_PROFILE,
+  HMIP_WTH_PROFILE,
+  HMIP_BWTH_PROFILE,
+  HMIP_STHD_PROFILE,
+  HMIP_STHO_PROFILE,
   HMIP_THERMOSTAT_PROFILE,
   HMIP_COVER_PROFILE,
 ] as const;

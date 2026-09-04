@@ -107,6 +107,7 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 
 - [x] Establish `DEVICE_SUPPORT.md` with explicit fixture- and hardware-verification levels and pinned reference revisions.
 - [x] Add the first passive-sensor driver batch: HmIP-SWDO-2, HmIP-SWO-PR, HmIP-SLO, and HmIP-STE2-PCB.
+- [x] Split switch, contact, and climate families into individual product-facing drivers and correct HmIP-SRH/HmIP-STHO semantics.
 - [ ] Split remaining shared profile families into individual product-facing Homey drivers.
 - [ ] Add stateless button/event bindings and corresponding Flow triggers before porting remotes.
 - [ ] Add multi-channel binding support before porting multi-output switches and actuators.

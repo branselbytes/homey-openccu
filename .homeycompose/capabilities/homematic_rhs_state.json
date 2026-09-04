@@ -1,0 +1,12 @@
+{
+  "type": "enum",
+  "values": [
+    { "id": "2", "title": { "en": "Open", "de": "Offen" } },
+    { "id": "0", "title": { "en": "Closed", "de": "Geschlossen" } },
+    { "id": "1", "title": { "en": "Tilted", "de": "Gekippt" } }
+  ],
+  "title": { "en": "Handle state", "de": "Griffstellung" },
+  "uiComponent": "picker",
+  "getable": true,
+  "setable": false
+}

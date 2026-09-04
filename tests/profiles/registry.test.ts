@@ -7,7 +7,7 @@ import type {
 } from "../../src/domain/model";
 import { ProfileRegistry } from "../../src/profiles/registry";
 
-function powerSwitch(): OpenCcuDevice {
+function powerSwitch(type = "HMIP-PSM"): OpenCcuDevice {
   const channels = new Map<string, OpenCcuChannel>();
   for (const [index, definitions] of [
     [3, [["STATE", "BOOL"]]],
@@ -45,7 +45,7 @@ function powerSwitch(): OpenCcuDevice {
   }
   return {
     address: "001",
-    type: "HMIP-PSM",
+    type,
     updatable: false,
     availability: "unknown",
     channels,
@@ -248,4 +248,50 @@ describe("ProfileRegistry", () => {
       ).toEqual(capabilities);
     },
   );
+
+  it.each([
+    ["HmIP-PCBS", "HmIP-PCBS"],
+    ["HmIP-PCBS-BAT", "HmIP-PCBS-BAT"],
+    ["HmIP-DRSI1", "HmIP-DRSI1"],
+    ["HmIP-SWDO-I", "HmIP-SWDO-I"],
+    ["HmIP-SWDM", "HmIP-SWDM"],
+    ["HMIP-WTH", "HMIP-WTH"],
+    ["HmIP-WTH", "HMIP-WTH"],
+    ["HmIP-BWTH", "HmIP-BWTH"],
+    ["HmIP-STHD", "HmIP-STHD"],
+    ["HmIP-STHO", "HmIP-STHO"],
+  ])("routes %s to product driver %s", (type, driverId) => {
+    expect(new ProfileRegistry().find(type)?.driverId).toBe(driverId);
+  });
+
+  it("maps the rotary handle as a three-state value instead of a boolean contact", () => {
+    expect(
+      new ProfileRegistry().resolve(
+        sensor("HmIP-SRH", [
+          [1, "STATE", "INTEGER"],
+          [0, "LOW_BAT", "BOOL"],
+        ]),
+      ),
+    ).toMatchObject([
+      {
+        capability: "homematic_rhs_state",
+        transform: "enum-number-to-string",
+      },
+      { capability: "alarm_battery", transform: "boolean" },
+    ]);
+  });
+
+  it("keeps the outdoor temperature sensor read-only", () => {
+    expect(
+      new ProfileRegistry()
+        .resolve(
+          sensor("HmIP-STHO", [
+            [1, "ACTUAL_TEMPERATURE", "FLOAT"],
+            [1, "HUMIDITY", "FLOAT"],
+            [0, "LOW_BAT", "BOOL"],
+          ]),
+        )
+        .map(({ capability }) => capability),
+    ).toEqual(["measure_temperature", "measure_humidity", "alarm_battery"]);
+  });
 });
