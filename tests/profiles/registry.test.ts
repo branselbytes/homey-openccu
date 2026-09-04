@@ -296,6 +296,7 @@ describe("ProfileRegistry", () => {
     ["HmIP-STHD", "HmIP-STHD"],
     ["HmIP-STHO", "HmIP-STHO"],
     ["HmIP-ASIR", "HmIP-ASIR"],
+    ["HmIP-WSM", "HmIP-WSM"],
   ])("routes %s to product driver %s", (type, driverId) => {
     expect(new ProfileRegistry().find(type)?.driverId).toBe(driverId);
   });
@@ -313,6 +314,20 @@ describe("ProfileRegistry", () => {
       capability: "onoff",
       channelAddress: `sensor:${channel}`,
     });
+  });
+
+  it("maps HmIP-WSM valve control to channel 4", () => {
+    expect(
+      resolveDeviceMapping(
+        sensor("HmIP-WSM", [
+          [4, "STATE", "BOOL"],
+          [0, "LOW_BAT", "BOOL"],
+        ]),
+      ).bindings,
+    ).toMatchObject([
+      { capability: "onoff", channelAddress: "sensor:4" },
+      { capability: "alarm_battery", channelAddress: "sensor:0" },
+    ]);
   });
 
   it.each([

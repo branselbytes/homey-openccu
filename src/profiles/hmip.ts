@@ -204,6 +204,16 @@ const SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK: DeviceProfile["bindings"][number
     fallbackParameters: ["LOWBAT"],
   };
 
+const HMIP_WSM_PROFILE: DeviceProfile = {
+  id: "hmip-wsm",
+  driverId: "HmIP-WSM",
+  deviceTypes: ["HmIP-WSM"],
+  bindings: [
+    { capability: "onoff", channel: 4, parameter: "STATE" },
+    SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK,
+  ],
+};
+
 const CONTACT_BINDINGS: DeviceProfile["bindings"] = [
   {
     capability: "alarm_contact",
@@ -721,6 +731,7 @@ export const HMIP_PROFILES = [
   HMIP_PCBS2_PROFILE,
   HMIP_BS2_PROFILE,
   HMIP_WHS2_PROFILE,
+  HMIP_WSM_PROFILE,
   HMIP_BDT_PROFILE,
   HMIP_FDT_PROFILE,
   HMIP_PDT_PROFILE,
