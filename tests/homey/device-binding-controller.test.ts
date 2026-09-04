@@ -40,6 +40,7 @@ function fixture() {
     addCapability: vi.fn().mockResolvedValue(undefined),
     removeCapability: vi.fn().mockResolvedValue(undefined),
     setCapabilityValue,
+    triggerButtonEvent: vi.fn().mockResolvedValue(undefined),
     onCapabilityWrite: vi.fn(
       (_: string, listener: (value: boolean) => Promise<void>) => {
         writeListener = listener;
@@ -180,6 +181,57 @@ describe("DeviceBindingController", () => {
     expect(persistBindings).toHaveBeenCalledWith([repaired]);
     expect(device.log).toHaveBeenCalledWith(
       "Updated stored bindings from current OpenCCU discovery",
+    );
+  });
+
+  it("routes resolved button datapoints to the Homey device trigger", async () => {
+    const { runtime, device } = fixture();
+    runtime.publishConnectionState("healthy");
+    const controller = new DeviceBindingController(runtime, device, [], {
+      resolveButtonEvents: () => [
+        {
+          channelAddress: "301:2",
+          parameter: "PRESS_LONG",
+          button: 2,
+          pressType: "long",
+        },
+      ],
+    });
+    await controller.start();
+
+    await runtime
+      .createCallbackDispatcher()
+      .dispatch("event", ["HmIP-RF", "301:2", "PRESS_LONG", true]);
+    await vi.waitFor(() =>
+      expect(device.triggerButtonEvent).toHaveBeenCalledWith(2, "long"),
+    );
+  });
+
+  it("contains Homey Flow trigger failures at the device boundary", async () => {
+    const { runtime, device } = fixture();
+    const triggerError = new Error("trigger failed");
+    device.triggerButtonEvent.mockRejectedValue(triggerError);
+    runtime.publishConnectionState("healthy");
+    const controller = new DeviceBindingController(runtime, device, [], {
+      resolveButtonEvents: () => [
+        {
+          channelAddress: "301:1",
+          parameter: "PRESS_SHORT",
+          button: 1,
+          pressType: "short",
+        },
+      ],
+    });
+    await controller.start();
+
+    await runtime
+      .createCallbackDispatcher()
+      .dispatch("event", ["HmIP-RF", "301:1", "PRESS_SHORT", true]);
+    await vi.waitFor(() =>
+      expect(device.error).toHaveBeenCalledWith(
+        "Failed to trigger button 1 short event",
+        triggerError,
+      ),
     );
   });
 });

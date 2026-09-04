@@ -44,6 +44,12 @@ export abstract class RuntimeBackedDevice extends Homey.Device {
               ? undefined
               : resolveDeviceMapping(device).bindings;
           },
+          resolveButtonEvents: () => {
+            const device = runtime.devices.get(data.address as string);
+            return device === undefined
+              ? []
+              : resolveDeviceMapping(device).buttonEvents;
+          },
           persistBindings: async (updatedBindings) => {
             await this.setStoreValue("bindings", updatedBindings);
           },
@@ -52,7 +58,9 @@ export abstract class RuntimeBackedDevice extends Homey.Device {
       await this.#controller.start();
     } catch (error) {
       this.error("Failed to initialize OpenCCU device", error);
-      await this.setUnavailable("Invalid or unsupported OpenCCU device mapping");
+      await this.setUnavailable(
+        "Invalid or unsupported OpenCCU device mapping",
+      );
     }
   }
 
@@ -69,6 +77,11 @@ function createDevicePort(device: Homey.Device): HomeyDevicePort {
     removeCapability: (capability) => device.removeCapability(capability),
     setCapabilityValue: (capability, value) =>
       device.setCapabilityValue(capability, value),
+    triggerButtonEvent: async (button, pressType) => {
+      await device.homey.flow
+        .getDeviceTriggerCard("hmip_button_pressed")
+        .trigger(device, { button, press_type: pressType }, {});
+    },
     onCapabilityWrite: (capability, listener) => {
       device.registerCapabilityListener(capability, (value: RpcValue) =>
         listener(value),

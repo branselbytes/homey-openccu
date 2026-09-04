@@ -1,5 +1,9 @@
 import type { Unsubscribe } from "../events/event-bus";
-import type { CapabilityBinding } from "../mapping/types";
+import type {
+  ButtonEventBinding,
+  ButtonPressType,
+  CapabilityBinding,
+} from "../mapping/types";
 import type { RpcValue } from "../protocol/xmlrpc/types";
 import type { OpenCcuRuntime } from "../runtime/openccu-runtime";
 import { transformFromOpenCcu } from "../mapping/transforms";
@@ -23,6 +27,7 @@ export interface HomeyDevicePort {
   addCapability(capability: string): Promise<void>;
   removeCapability(capability: string): Promise<void>;
   setCapabilityValue(capability: string, value: RpcValue): Promise<void>;
+  triggerButtonEvent(button: number, pressType: ButtonPressType): Promise<void>;
   onCapabilityWrite(
     capability: string,
     listener: (value: RpcValue) => Promise<void>,
@@ -35,7 +40,10 @@ export interface HomeyDevicePort {
 
 export interface DeviceBindingControllerOptions {
   readonly resolveBindings?: () => readonly CapabilityBinding[] | undefined;
-  readonly persistBindings?: (bindings: readonly CapabilityBinding[]) => Promise<void>;
+  readonly persistBindings?: (
+    bindings: readonly CapabilityBinding[],
+  ) => Promise<void>;
+  readonly resolveButtonEvents?: () => readonly ButtonEventBinding[];
 }
 
 export class DeviceBindingController {
@@ -43,6 +51,7 @@ export class DeviceBindingController {
   readonly #device: HomeyDevicePort;
   readonly #options: DeviceBindingControllerOptions;
   #bindings: readonly CapabilityBinding[];
+  #buttonEvents: readonly ButtonEventBinding[] = [];
   readonly #unsubscribers: Unsubscribe[] = [];
   readonly #pendingWrites = new Map<string, PendingWrite>();
   #activated = false;
@@ -74,28 +83,50 @@ export class DeviceBindingController {
             );
           }
         }
+        for (const binding of this.#buttonEvents) {
+          if (
+            event.channelAddress === binding.channelAddress &&
+            event.parameter === binding.parameter
+          ) {
+            void this.#device
+              .triggerButtonEvent(binding.button, binding.pressType)
+              .catch((error: unknown) => {
+                this.#device.error(
+                  `Failed to trigger button ${binding.button} ${binding.pressType} event`,
+                  error,
+                );
+              });
+          }
+        }
       }),
       this.#runtime.subscribe("connection", ({ state }) => {
         if (state === "healthy") void this.#activate();
         if (state === "disconnected") {
-          void this.#device.setUnavailable("OpenCCU HmIP-RF connection unavailable");
+          void this.#device.setUnavailable(
+            "OpenCCU HmIP-RF connection unavailable",
+          );
         }
       }),
     );
     if (this.#runtime.connectionState === "healthy") {
       await this.#activate();
     } else {
-      await this.#device.setUnavailable("Waiting for OpenCCU HmIP-RF connection");
+      await this.#device.setUnavailable(
+        "Waiting for OpenCCU HmIP-RF connection",
+      );
     }
   }
 
   async #activate(): Promise<void> {
     if (!this.#activated) {
+      this.#buttonEvents = this.#options.resolveButtonEvents?.() ?? [];
       const resolved = this.#options.resolveBindings?.();
       if (resolved !== undefined && !bindingsEqual(this.#bindings, resolved)) {
         this.#bindings = resolved;
         await this.#options.persistBindings?.(resolved);
-        this.#device.log("Updated stored bindings from current OpenCCU discovery");
+        this.#device.log(
+          "Updated stored bindings from current OpenCCU discovery",
+        );
       }
       await this.#reconcile();
       for (const binding of this.#bindings) {
@@ -105,10 +136,12 @@ export class DeviceBindingController {
             const target = `${binding.writeChannelAddress}/${binding.writeParameter}`;
             this.#device.log(`Writing ${binding.capability} to ${target}`);
             const pending = this.#beginWriteVerification(binding, value);
-            const writeOutcome: Promise<WriteOutcome> = this.#runtime.write(binding, value).then(
-              (): WriteOutcome => ({ status: "confirmed" }),
-              (error: unknown): WriteOutcome => ({ status: "failed", error }),
-            );
+            const writeOutcome: Promise<WriteOutcome> = this.#runtime
+              .write(binding, value)
+              .then(
+                (): WriteOutcome => ({ status: "confirmed" }),
+                (error: unknown): WriteOutcome => ({ status: "failed", error }),
+              );
             const outcome = await Promise.race([
               writeOutcome,
               waitForPendingWrite(),
@@ -120,7 +153,9 @@ export class DeviceBindingController {
               void writeOutcome.then((lateOutcome) => {
                 this.#scheduleWriteVerification(pending, 0);
                 if (lateOutcome.status === "confirmed") {
-                  this.#device.log(`Confirmed ${binding.capability} write to ${target}`);
+                  this.#device.log(
+                    `Confirmed ${binding.capability} write to ${target}`,
+                  );
                 } else {
                   this.#device.error(
                     `OpenCCU did not confirm ${binding.capability} write to ${target}`,
@@ -163,8 +198,10 @@ export class DeviceBindingController {
       this.#device.getCapabilities(),
       this.#bindings.map((binding) => binding.capability),
     );
-    for (const capability of changes.remove) await this.#device.removeCapability(capability);
-    for (const capability of changes.add) await this.#device.addCapability(capability);
+    for (const capability of changes.remove)
+      await this.#device.removeCapability(capability);
+    for (const capability of changes.add)
+      await this.#device.addCapability(capability);
   }
 
   async #readInitialValues(): Promise<void> {
@@ -181,14 +218,14 @@ export class DeviceBindingController {
           if (!(binding.parameter in values)) continue;
           await this.#setValue(
             binding,
-            transformFromOpenCcu(
-              binding.transform,
-              values[binding.parameter],
-            ),
+            transformFromOpenCcu(binding.transform, values[binding.parameter]),
           );
         }
       } catch (error) {
-        this.#device.error(`Failed to read OpenCCU channel ${channelAddress}`, error);
+        this.#device.error(
+          `Failed to read OpenCCU channel ${channelAddress}`,
+          error,
+        );
       }
     }
   }
@@ -251,11 +288,16 @@ export class DeviceBindingController {
         error,
       );
       this.#clearPendingWrite(pending);
-      await this.#device.setUnavailable("OpenCCU command delivery could not be verified");
+      await this.#device.setUnavailable(
+        "OpenCCU command delivery could not be verified",
+      );
     }
   }
 
-  #confirmPendingWriteFromEvent(binding: CapabilityBinding, value: RpcValue): void {
+  #confirmPendingWriteFromEvent(
+    binding: CapabilityBinding,
+    value: RpcValue,
+  ): void {
     const pending = this.#pendingWrites.get(binding.capability);
     if (pending === undefined) return;
     const actual = transformFromOpenCcu(binding.transform, value);
@@ -272,7 +314,9 @@ export class DeviceBindingController {
 }
 
 async function waitForPendingWrite(): Promise<{ readonly status: "pending" }> {
-  await new Promise<void>((resolve) => setTimeout(resolve, WRITE_ACKNOWLEDGEMENT_MS));
+  await new Promise<void>((resolve) =>
+    setTimeout(resolve, WRITE_ACKNOWLEDGEMENT_MS),
+  );
   return { status: "pending" };
 }
 

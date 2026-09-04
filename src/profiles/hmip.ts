@@ -206,6 +206,39 @@ const HMIP_SMI55_PROFILE: DeviceProfile = {
   driverId: "HmIP-SMI55",
   deviceTypes: ["HmIP-SMI55"],
   bindings: MOTION_SENSOR_BINDINGS,
+  buttonChannels: [1, 2],
+};
+
+const HMIP_BRC2_PROFILE: DeviceProfile = {
+  id: "hmip-brc2",
+  driverId: "HmIP-BRC2",
+  deviceTypes: ["HmIP-BRC2"],
+  bindings: [SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK],
+  buttonChannels: [1, 2],
+};
+
+const HMIP_WRC2_PROFILE: DeviceProfile = {
+  id: "hmip-wrc2",
+  driverId: "HMIP-WRC2",
+  deviceTypes: ["HMIP-WRC2", "HmIP-WRC2"],
+  bindings: [SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK],
+  buttonChannels: [1, 2],
+};
+
+const HMIP_WRC6_PROFILE: DeviceProfile = {
+  id: "hmip-wrc6",
+  driverId: "HmIP-WRC6",
+  deviceTypes: ["HmIP-WRC6"],
+  bindings: [SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK],
+  buttonChannels: [1, 2, 3, 4, 5, 6],
+};
+
+const HMIP_RC8_PROFILE: DeviceProfile = {
+  id: "hmip-rc8",
+  driverId: "HmIP-RC8",
+  deviceTypes: ["HmIP-RC8"],
+  bindings: [SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK],
+  buttonChannels: [1, 2, 3, 4, 5, 6, 7, 8],
 };
 
 const HMIP_SMO_A_PROFILE: DeviceProfile = {
@@ -460,6 +493,10 @@ export const HMIP_PROFILES = [
   HMIP_TEMPERATURE_SENSOR_PROFILE,
   HMIP_SMI_PROFILE,
   HMIP_SMI55_PROFILE,
+  HMIP_BRC2_PROFILE,
+  HMIP_WRC2_PROFILE,
+  HMIP_WRC6_PROFILE,
+  HMIP_RC8_PROFILE,
   HMIP_SMO_A_PROFILE,
   HMIP_SPI_PROFILE,
   HMIP_SAM_PROFILE,

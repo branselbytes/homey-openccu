@@ -110,7 +110,7 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 - [x] Split switch, contact, and climate families into individual product-facing drivers and correct HmIP-SRH/HmIP-STHO semantics.
 - [x] Split remaining shared thermostat and cover profiles into individual product-facing Homey drivers.
 - [x] Add motion, presence, acceleration, water, and smoke detector profiles with deterministic parameter fallbacks.
-- [ ] Add stateless button/event bindings and corresponding Flow triggers before porting remotes.
+- [x] Add stateless button/event bindings, a shared device Flow trigger, and the first BRC2/WRC2/WRC6/RC8 remote profiles.
 - [ ] Add multi-channel binding support before porting multi-output switches and actuators.
 - Add programs and system variables to Flow/UI surfaces.
 - Use OpenCCU names, rooms, and functions to improve pairing and diagnostics according to the approved naming policy.

@@ -11,7 +11,13 @@ function candidate(driverId: string, id: string): PairingCandidate {
     data: { id, centralId: "ccu-1", interfaceId: "HmIP-RF", address: id },
     capabilities: [],
     store: { deviceType: "test", generic: true, bindings: [] },
-    mapping: { driverId, generic: true, bindings: [], decisions: [] },
+    mapping: {
+      driverId,
+      generic: true,
+      bindings: [],
+      buttonEvents: [],
+      decisions: [],
+    },
   };
 }
 

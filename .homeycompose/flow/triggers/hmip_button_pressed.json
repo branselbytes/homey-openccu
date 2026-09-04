@@ -1,0 +1,25 @@
+{
+  "title": {
+    "en": "A button was pressed on [[device]]",
+    "de": "Eine Taste an [[device]] wurde gedrückt"
+  },
+  "titleFormatted": {
+    "en": "A button was pressed on [[device]]",
+    "de": "Eine Taste an [[device]] wurde gedrückt"
+  },
+  "tokens": [
+    {
+      "name": "button",
+      "type": "number",
+      "title": { "en": "Button", "de": "Taste" },
+      "example": 1
+    },
+    {
+      "name": "press_type",
+      "type": "string",
+      "title": { "en": "Press type", "de": "Tastendruck" },
+      "example": "short"
+    }
+  ],
+  "args": [{ "name": "device", "type": "device" }]
+}

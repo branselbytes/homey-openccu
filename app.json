@@ -34,6 +34,45 @@
     ]
   },
   "flow": {
+    "triggers": [
+      {
+        "title": {
+          "en": "A button was pressed on [[device]]",
+          "de": "Eine Taste an [[device]] wurde gedrückt"
+        },
+        "titleFormatted": {
+          "en": "A button was pressed on [[device]]",
+          "de": "Eine Taste an [[device]] wurde gedrückt"
+        },
+        "tokens": [
+          {
+            "name": "button",
+            "type": "number",
+            "title": {
+              "en": "Button",
+              "de": "Taste"
+            },
+            "example": 1
+          },
+          {
+            "name": "press_type",
+            "type": "string",
+            "title": {
+              "en": "Press type",
+              "de": "Tastendruck"
+            },
+            "example": "short"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device"
+          }
+        ],
+        "id": "hmip_button_pressed"
+      }
+    ],
     "actions": [
       {
         "title": {
@@ -215,6 +254,31 @@
       ]
     },
     {
+      "id": "HMIP-WRC2",
+      "name": {
+        "en": "HmIP-WRC2"
+      },
+      "class": "button",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HMIP-WTH",
       "name": {
         "en": "HMIP-WTH"
@@ -249,6 +313,31 @@
       "images": {
         "large": "/drivers/HmIP-eTRV-2/assets/images/large.png",
         "small": "/drivers/HmIP-eTRV-2/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-BRC2",
+      "name": {
+        "en": "HmIP-BRC2"
+      },
+      "class": "button",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
       },
       "pair": [
         {
@@ -424,6 +513,31 @@
       "images": {
         "large": "/drivers/HMIP-PS/assets/images/large.png",
         "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-RC8",
+      "name": {
+        "en": "HmIP-RC8"
+      },
+      "class": "button",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
       },
       "pair": [
         {
@@ -845,6 +959,31 @@
         "en": "HmIP-SWSD"
       },
       "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-WRC6",
+      "name": {
+        "en": "HmIP-WRC6"
+      },
+      "class": "button",
       "capabilities": [],
       "images": {
         "large": "/drivers/HMIP-SWDO/assets/images/large.png",

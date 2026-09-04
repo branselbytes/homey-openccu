@@ -169,6 +169,8 @@ The Phase 4 mapping prototype adds conservative generic rules and dedicated shar
 
 Dedicated profiles may declare ordered fallback parameter names for firmware generations that expose the same semantic value under different XML-RPC names. Resolution selects the first available datapoint and stores that concrete binding, keeping runtime reads and callbacks deterministic.
 
+Stateless button presses are resolved separately from persistent capability bindings. Profiles declare logical button-channel indices; discovery admits only actually present `PRESS_SHORT` and `PRESS_LONG` datapoints. XML-RPC callbacks then emit one shared Homey device trigger with button number and press type tokens. Events are never persisted as device state, and a Flow-trigger failure is contained and logged at the Homey boundary.
+
 The Phase 5 integration adds a Homey-independent HmIP discovery pipeline and runtime facade. It fetches channel `VALUES` paramsets with bounded concurrency, retains partial-discovery errors for diagnostics, builds stable pairing identities, and produces serializable candidates for either a dedicated profile driver or the generic fallback. XML-RPC callbacks enter the same typed event bus.
 
 Manual connection settings now have a strict parsing boundary that normalizes the central ID, host, HmIP-RF port, JSON-RPC URL, and optional credential pair. Diagnostic views receive only a credential-free projection. A runtime registry provides replace/remove/shutdown semantics and attempts to stop every configured central even when one shutdown fails. Homey settings persistence and credential ownership remain adapter concerns and are the next integration task.
@@ -187,6 +189,7 @@ Observed OpenCCU product suffixes such as `R4M` and `I9F` are normalized for pro
 - `docs/adr/0002-homey-driver-strategy.md`: dedicated product drivers plus a generic fallback.
 - `docs/adr/0003-typed-core-boundaries.md`: Homey-independent typed protocol, domain, cache, event, and diagnostic boundaries.
 - `docs/adr/0004-bounded-rpc-and-confirmed-writes.md`: prioritized XML-RPC admission, persistent descriptions, repaired bindings, and verified commands.
+- `docs/adr/0005-profile-driven-device-events.md`: discovery-checked stateless event bindings and shared Homey device triggers.
 
 ## Architectural decisions still open
 

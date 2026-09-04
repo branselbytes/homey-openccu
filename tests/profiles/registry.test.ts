@@ -5,6 +5,7 @@ import type {
   OpenCcuDataPoint,
   OpenCcuDevice,
 } from "../../src/domain/model";
+import { resolveDeviceMapping } from "../../src/mapping/device-resolver";
 import { ProfileRegistry } from "../../src/profiles/registry";
 
 function powerSwitch(type = "HMIP-PSM"): OpenCcuDevice {
@@ -262,6 +263,47 @@ describe("ProfileRegistry", () => {
     ["HmIP-STHO", "HmIP-STHO"],
   ])("routes %s to product driver %s", (type, driverId) => {
     expect(new ProfileRegistry().find(type)?.driverId).toBe(driverId);
+  });
+
+  it.each([
+    ["HmIP-BRC2", "HmIP-BRC2"],
+    ["HMIP-WRC2", "HMIP-WRC2"],
+    ["HmIP-WRC2", "HMIP-WRC2"],
+    ["HmIP-WRC6", "HmIP-WRC6"],
+    ["HmIP-RC8", "HmIP-RC8"],
+  ])("routes %s to remote driver %s", (type, driverId) => {
+    expect(new ProfileRegistry().find(type)?.driverId).toBe(driverId);
+  });
+
+  it("maps only button press datapoints that discovery actually reports", () => {
+    const mapping = resolveDeviceMapping(
+      sensor("HmIP-BRC2", [
+        [1, "PRESS_SHORT", "ACTION"],
+        [1, "PRESS_LONG", "ACTION"],
+        [2, "PRESS_SHORT", "ACTION"],
+      ]),
+    );
+
+    expect(mapping.buttonEvents).toEqual([
+      {
+        channelAddress: "sensor:1",
+        parameter: "PRESS_SHORT",
+        button: 1,
+        pressType: "short",
+      },
+      {
+        channelAddress: "sensor:1",
+        parameter: "PRESS_LONG",
+        button: 1,
+        pressType: "long",
+      },
+      {
+        channelAddress: "sensor:2",
+        parameter: "PRESS_SHORT",
+        button: 2,
+        pressType: "short",
+      },
+    ]);
   });
 
   it("maps the rotary handle as a three-state value instead of a boolean contact", () => {

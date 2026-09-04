@@ -27,6 +27,15 @@ export interface CapabilityBinding {
   readonly transform: ValueTransform;
 }
 
+export type ButtonPressType = "short" | "long";
+
+export interface ButtonEventBinding {
+  readonly channelAddress: string;
+  readonly parameter: string;
+  readonly button: number;
+  readonly pressType: ButtonPressType;
+}
+
 export interface MappingContext {
   readonly device: OpenCcuDevice;
   readonly channel: OpenCcuChannel;

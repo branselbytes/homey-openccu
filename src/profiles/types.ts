@@ -1,5 +1,9 @@
 import type { OpenCcuChannel, OpenCcuDevice } from "../domain/model";
-import type { CapabilityBinding, ValueTransform } from "../mapping/types";
+import type {
+  ButtonEventBinding,
+  CapabilityBinding,
+  ValueTransform,
+} from "../mapping/types";
 
 export interface ProfileBinding {
   readonly capability: string;
@@ -16,6 +20,33 @@ export interface DeviceProfile {
   readonly driverId: string;
   readonly deviceTypes: readonly string[];
   readonly bindings: readonly ProfileBinding[];
+  readonly buttonChannels?: readonly number[];
+}
+
+export function resolveProfileButtonEvents(
+  device: OpenCcuDevice,
+  profile: DeviceProfile,
+): readonly ButtonEventBinding[] {
+  const result: ButtonEventBinding[] = [];
+  for (const channelIndex of profile.buttonChannels ?? []) {
+    const channel = [...device.channels.values()].find(
+      (candidate) => candidate.index === channelIndex,
+    );
+    if (!channel) continue;
+    for (const [parameter, pressType] of [
+      ["PRESS_SHORT", "short"],
+      ["PRESS_LONG", "long"],
+    ] as const) {
+      if (!channel.dataPoints.has(parameter)) continue;
+      result.push({
+        channelAddress: channel.address,
+        parameter,
+        button: channelIndex,
+        pressType,
+      });
+    }
+  }
+  return result;
 }
 
 export function resolveProfileBindings(
