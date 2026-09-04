@@ -1,7 +1,7 @@
 {
-  "id": "HmIP-SWSD",
-  "name": { "en": "HmIP-SWSD" },
-  "class": "smokealarm",
+  "id": "HmIP-ASIR",
+  "name": { "en": "HmIP-ASIR" },
+  "class": "siren",
   "capabilities": [],
   "images": {
     "large": "/drivers/HMIP-SWDO/assets/images/large.png",

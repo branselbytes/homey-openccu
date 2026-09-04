@@ -443,6 +443,38 @@ const HMIP_SWSD_PROFILE: DeviceProfile = {
       parameter: "SMOKE_DETECTOR_ALARM_STATUS",
       transform: "smoke-status-to-boolean",
     },
+    {
+      capability: "onoff",
+      channel: 1,
+      parameter: "SMOKE_DETECTOR_ALARM_STATUS",
+      setParameter: "SMOKE_DETECTOR_COMMAND",
+      requiresWriteTarget: true,
+      transform: "smoke-status-to-boolean",
+      writeStrategy: "smoke-siren",
+    },
+    SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK,
+  ],
+};
+
+const HMIP_ASIR_PROFILE: DeviceProfile = {
+  id: "hmip-asir",
+  driverId: "HmIP-ASIR",
+  deviceTypes: ["HmIP-ASIR"],
+  bindings: [
+    {
+      capability: "onoff",
+      channel: 3,
+      parameter: "ACOUSTIC_ALARM_ACTIVE",
+      setParameter: "ACOUSTIC_ALARM_SELECTION",
+      requiresWriteTarget: true,
+      requiredWriteParameters: [
+        "OPTICAL_ALARM_SELECTION",
+        "DURATION_UNIT",
+        "DURATION_VALUE",
+      ],
+      transform: "boolean",
+      writeStrategy: "siren-default",
+    },
     SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK,
   ],
 };
@@ -713,6 +745,7 @@ export const HMIP_PROFILES = [
   HMIP_SAM_PROFILE,
   HMIP_SWD_PROFILE,
   HMIP_SWSD_PROFILE,
+  HMIP_ASIR_PROFILE,
   HMIP_CLIMATE_PROFILE,
   HMIP_WTH_PROFILE,
   HMIP_BWTH_PROFILE,

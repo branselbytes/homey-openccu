@@ -295,6 +295,7 @@ describe("ProfileRegistry", () => {
     ["HmIP-BWTH", "HmIP-BWTH"],
     ["HmIP-STHD", "HmIP-STHD"],
     ["HmIP-STHO", "HmIP-STHO"],
+    ["HmIP-ASIR", "HmIP-ASIR"],
   ])("routes %s to product driver %s", (type, driverId) => {
     expect(new ProfileRegistry().find(type)?.driverId).toBe(driverId);
   });
@@ -524,6 +525,19 @@ describe("ProfileRegistry", () => {
         transform: "smoke-status-to-boolean",
       },
       { capability: "alarm_battery" },
+    ]);
+  });
+
+  it("omits smoke-detector siren control without its command datapoint", () => {
+    const withoutCommand = new ProfileRegistry().resolve(
+      sensor("HmIP-SWSD", [
+        [1, "SMOKE_DETECTOR_ALARM_STATUS", "ENUM"],
+        [0, "LOWBAT", "BOOL"],
+      ]),
+    );
+    expect(withoutCommand.map(({ capability }) => capability)).toEqual([
+      "alarm_smoke",
+      "alarm_battery",
     ]);
   });
 });

@@ -24,6 +24,8 @@ export const WRITE_STRATEGIES = [
   "direct",
   "cover-state",
   "garage-closed",
+  "siren-default",
+  "smoke-siren",
 ] as const;
 export type WriteStrategy = (typeof WRITE_STRATEGIES)[number];
 

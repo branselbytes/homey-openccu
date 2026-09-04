@@ -153,4 +153,88 @@ describe("OpenCcuRuntime", () => {
       );
     },
   );
+
+  it.each([
+    [
+      true,
+      {
+        ACOUSTIC_ALARM_SELECTION: "FREQUENCY_RISING_AND_FALLING",
+        OPTICAL_ALARM_SELECTION: "BLINKING_ALTERNATELY_REPEATING",
+        DURATION_UNIT: "S",
+        DURATION_VALUE: 30,
+      },
+    ],
+    [
+      false,
+      {
+        ACOUSTIC_ALARM_SELECTION: "DISABLE_ACOUSTIC_SIGNAL",
+        OPTICAL_ALARM_SELECTION: "DISABLE_OPTICAL_SIGNAL",
+        DURATION_UNIT: "S",
+        DURATION_VALUE: 0,
+      },
+    ],
+  ] as const)(
+    "writes the default HmIP siren state %s atomically",
+    async (enabled, values) => {
+      const putParamset = vi.fn();
+      const runtime = new OpenCcuRuntime(
+        { ...createClient(), putParamset },
+        { centralId: "ccu-1", interfaceId: "HmIP-RF" },
+      );
+      await runtime.write(
+        {
+          capability: "onoff",
+          channelAddress: "701:3",
+          parameter: "ACOUSTIC_ALARM_ACTIVE",
+          writeChannelAddress: "701:3",
+          writeParameter: "ACOUSTIC_ALARM_SELECTION",
+          writeStrategy: "siren-default",
+          readable: true,
+          writable: true,
+          transform: "boolean",
+        },
+        enabled,
+      );
+      expect(putParamset).toHaveBeenCalledWith(
+        "701:3",
+        "VALUES",
+        values,
+        undefined,
+      );
+    },
+  );
+
+  it.each([
+    [true, "INTRUSION_ALARM"],
+    [false, "INTRUSION_ALARM_OFF"],
+  ] as const)(
+    "maps the smoke detector siren state %s to %s",
+    async (enabled, command) => {
+      const setValue = vi.fn();
+      const runtime = new OpenCcuRuntime(
+        { ...createClient(), setValue },
+        { centralId: "ccu-1", interfaceId: "HmIP-RF" },
+      );
+      await runtime.write(
+        {
+          capability: "onoff",
+          channelAddress: "801:1",
+          parameter: "SMOKE_DETECTOR_ALARM_STATUS",
+          writeChannelAddress: "801:1",
+          writeParameter: "SMOKE_DETECTOR_COMMAND",
+          writeStrategy: "smoke-siren",
+          readable: true,
+          writable: true,
+          transform: "smoke-status-to-boolean",
+        },
+        enabled,
+      );
+      expect(setValue).toHaveBeenCalledWith(
+        "801:1",
+        "SMOKE_DETECTOR_COMMAND",
+        command,
+        undefined,
+      );
+    },
+  );
 });

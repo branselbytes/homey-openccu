@@ -33,7 +33,8 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 | Presence sensor        | HmIP-SPI                                                                                        | fixture; exposed through Homey motion alarm                            |
 | Acceleration sensor    | HmIP-SAM                                                                                        | fixture; exposed through Homey motion alarm                            |
 | Water sensor           | HmIP-SWD                                                                                        | fixture; current and legacy datapoint variants                         |
-| Smoke detector         | HmIP-SWSD                                                                                       | fixture; standard Homey smoke alarm; siren command pending             |
+| Smoke detector         | HmIP-SWSD                                                                                       | fixture; smoke alarm and optional intrusion-siren control              |
+| Siren                  | HmIP-ASIR                                                                                       | fixture; atomic acoustic/optical 30-second default alarm               |
 | Buttons/remotes        | HmIP-BRC2, HMIP-WRC2/HmIP-WRC2, HmIP-WRC6, HmIP-RC8                                             | fixture; short/long press device Flow trigger                          |
 
 ## Reference baseline
@@ -47,5 +48,5 @@ Both external references are MIT licensed. Concepts and datapoint semantics are 
 ## Next batches
 
 1. Extended weather sensors.
-2. Enhanced covers/blinds, locks, sirens, valves, combined devices, and RGBW/DALI lighting.
+2. Enhanced covers/blinds, locks, siren options, valves, combined devices, and RGBW/DALI lighting.
 3. Add redacted OpenCCU fixtures and promote devices to hardware verified as equipment becomes available.

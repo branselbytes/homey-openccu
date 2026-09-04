@@ -193,4 +193,105 @@ describe("profile write targets", () => {
       writable: true,
     });
   });
+
+  it("maps HmIP-ASIR state to an atomic default siren command", () => {
+    const device = buildHmIpDeviceGraph({
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+      descriptions: [
+        { ADDRESS: "701", TYPE: "HmIP-ASIR", CHILDREN: ["701:3"] },
+        {
+          ADDRESS: "701:3",
+          TYPE: "ALARM_SWITCH_VIRTUAL_RECEIVER",
+          PARENT: "701",
+          PARAMSETS: ["VALUES"],
+        },
+      ],
+      paramsets: new Map([
+        [
+          "701:3",
+          {
+            ACOUSTIC_ALARM_ACTIVE: {
+              TYPE: "BOOL" as const,
+              OPERATIONS: 5,
+              FLAGS: 1,
+            },
+            ACOUSTIC_ALARM_SELECTION: {
+              TYPE: "ENUM" as const,
+              OPERATIONS: 2,
+              FLAGS: 1,
+            },
+            OPTICAL_ALARM_SELECTION: {
+              TYPE: "ENUM" as const,
+              OPERATIONS: 2,
+              FLAGS: 1,
+            },
+            DURATION_UNIT: {
+              TYPE: "ENUM" as const,
+              OPERATIONS: 2,
+              FLAGS: 1,
+            },
+            DURATION_VALUE: {
+              TYPE: "INTEGER" as const,
+              OPERATIONS: 2,
+              FLAGS: 1,
+            },
+          },
+        ],
+      ]),
+    }).get("701");
+    expect(device).toBeDefined();
+    expect(resolveDeviceMapping(device!).bindings[0]).toMatchObject({
+      capability: "onoff",
+      parameter: "ACOUSTIC_ALARM_ACTIVE",
+      writeParameter: "ACOUSTIC_ALARM_SELECTION",
+      writeStrategy: "siren-default",
+      writable: true,
+    });
+  });
+
+  it("maps HmIP-SWSD alarm state and intrusion-alarm commands", () => {
+    const device = buildHmIpDeviceGraph({
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+      descriptions: [
+        { ADDRESS: "801", TYPE: "HmIP-SWSD", CHILDREN: ["801:1"] },
+        {
+          ADDRESS: "801:1",
+          TYPE: "SMOKE_DETECTOR",
+          PARENT: "801",
+          PARAMSETS: ["VALUES"],
+        },
+      ],
+      paramsets: new Map([
+        [
+          "801:1",
+          {
+            SMOKE_DETECTOR_ALARM_STATUS: {
+              TYPE: "ENUM" as const,
+              OPERATIONS: 5,
+              FLAGS: 1,
+            },
+            SMOKE_DETECTOR_COMMAND: {
+              TYPE: "ENUM" as const,
+              OPERATIONS: 2,
+              FLAGS: 1,
+            },
+          },
+        ],
+      ]),
+    }).get("801");
+    expect(device).toBeDefined();
+    expect(resolveDeviceMapping(device!).bindings).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ capability: "alarm_smoke" }),
+        expect.objectContaining({
+          capability: "onoff",
+          writeParameter: "SMOKE_DETECTOR_COMMAND",
+          writeStrategy: "smoke-siren",
+          writable: true,
+        }),
+      ]),
+    );
+  });
 });

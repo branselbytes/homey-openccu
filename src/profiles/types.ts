@@ -13,6 +13,8 @@ export interface ProfileBinding {
   readonly fallbackParameters?: readonly string[];
   readonly setChannel?: number;
   readonly setParameter?: string;
+  readonly requiresWriteTarget?: boolean;
+  readonly requiredWriteParameters?: readonly string[];
   readonly transform?: ValueTransform;
   readonly writeStrategy?: WriteStrategy;
 }
@@ -76,6 +78,9 @@ export function resolveProfileBindings(
     const dataPoint = channel.dataPoints.get(parameter);
     if (!dataPoint) continue;
     const writeTarget = findWriteTarget(device, definition, parameter);
+    if (definition.requiresWriteTarget === true && writeTarget === undefined)
+      continue;
+    if (!hasRequiredWriteParameters(device, definition)) continue;
     result.push({
       capability: definition.capability,
       channelAddress: channel.address,
@@ -95,6 +100,21 @@ export function resolveProfileBindings(
     });
   }
   return result;
+}
+
+function hasRequiredWriteParameters(
+  device: OpenCcuDevice,
+  definition: ProfileBinding,
+): boolean {
+  const required = definition.requiredWriteParameters;
+  if (required === undefined) return true;
+  const channelIndex = definition.setChannel ?? definition.channel;
+  const channel = [...device.channels.values()].find(
+    (candidate) => candidate.index === channelIndex,
+  );
+  return required.every(
+    (parameter) => channel?.dataPoints.get(parameter)?.writable === true,
+  );
 }
 
 function findWriteTarget(

@@ -117,6 +117,7 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 - [x] Correct cover movement reads and route Homey up/down/stop commands to OpenCCU LEVEL/STOP explicitly.
 - [x] Split blind semantics from covers and add LEVEL_2 slat control for FBL and BBL.
 - [x] Add native lock/unlock and garage open/close mappings for DLD and MOD-HO/MOD-TM with explicit enum commands.
+- [x] Add SWSD intrusion-siren control and atomic default alarm commands for HmIP-ASIR.
 - Add programs and system variables to Flow/UI surfaces.
 - Use OpenCCU names, rooms, and functions to improve pairing and diagnostics according to the approved naming policy.
 - Port additional legacy knowledge into profiles, backed by fixtures and hardware reports.

@@ -132,6 +132,29 @@ export class OpenCcuRuntime {
     ) {
       throw new Error(`Capability ${binding.capability} is not writable`);
     }
+    if (binding.writeStrategy === "siren-default") {
+      if (typeof value !== "boolean")
+        throw new TypeError("Unsupported Homey siren state");
+      await this.#client.putParamset(
+        binding.writeChannelAddress,
+        "VALUES",
+        value
+          ? {
+              ACOUSTIC_ALARM_SELECTION: "FREQUENCY_RISING_AND_FALLING",
+              OPTICAL_ALARM_SELECTION: "BLINKING_ALTERNATELY_REPEATING",
+              DURATION_UNIT: "S",
+              DURATION_VALUE: 30,
+            }
+          : {
+              ACOUSTIC_ALARM_SELECTION: "DISABLE_ACOUSTIC_SIGNAL",
+              OPTICAL_ALARM_SELECTION: "DISABLE_OPTICAL_SIGNAL",
+              DURATION_UNIT: "S",
+              DURATION_VALUE: 0,
+            },
+        signal,
+      );
+      return;
+    }
     const operation = resolveWriteOperation(binding, value);
     await this.#client.setValue(
       binding.writeChannelAddress,
@@ -234,6 +257,14 @@ function resolveWriteOperation(
     return {
       parameter: "DOOR_COMMAND",
       value: value ? "CLOSE" : "OPEN",
+    };
+  }
+  if (binding.writeStrategy === "smoke-siren") {
+    if (typeof value !== "boolean")
+      throw new TypeError("Unsupported Homey smoke siren state");
+    return {
+      parameter: "SMOKE_DETECTOR_COMMAND",
+      value: value ? "INTRUSION_ALARM" : "INTRUSION_ALARM_OFF",
     };
   }
   return {
