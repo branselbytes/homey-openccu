@@ -93,6 +93,20 @@ const HMIP_FSI_PROFILE: DeviceProfile = {
   bindings: switchBindings(3),
 };
 
+const HMIP_FSI6_PROFILE: DeviceProfile = {
+  id: "hmip-fsi6",
+  driverId: "HmIP-FSI6",
+  deviceTypes: ["HmIP-FSI6"],
+  bindings: switchBindings(3),
+};
+
+const HMIP_FSI16_PROFILE: DeviceProfile = {
+  id: "hmip-fsi16",
+  driverId: "HmIP-FSI16",
+  deviceTypes: ["HmIP-FSI16"],
+  bindings: switchBindings(3),
+};
+
 const HMIP_FS6_PROFILE: DeviceProfile = {
   id: "hmip-fs6",
   driverId: "HmIP-FS6",
@@ -800,6 +814,8 @@ export const HMIP_PROFILES = [
   HMIP_DRSI4_PROFILE,
   HMIP_MOD_OC8_PROFILE,
   HMIP_FSI_PROFILE,
+  HMIP_FSI6_PROFILE,
+  HMIP_FSI16_PROFILE,
   HMIP_FS6_PROFILE,
   HMIP_USBSM_PROFILE,
   HMIP_WGC_PROFILE,

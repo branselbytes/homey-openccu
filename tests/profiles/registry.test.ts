@@ -278,6 +278,8 @@ describe("ProfileRegistry", () => {
     ["HmIP-DRSI4", "HmIP-DRSI4"],
     ["HmIP-MOD-OC8", "HmIP-MOD-OC8"],
     ["HmIP-FSI", "HmIP-FSI"],
+    ["HmIP-FSI6", "HmIP-FSI6"],
+    ["HmIP-FSI16", "HmIP-FSI16"],
     ["HmIP-FS6", "HmIP-FS6"],
     ["HmIP-USBSM", "HmIP-USBSM"],
     ["HmIP-WGC", "HmIP-WGC"],
@@ -306,6 +308,8 @@ describe("ProfileRegistry", () => {
 
   it.each([
     ["HmIP-FSI", 3],
+    ["HmIP-FSI6", 3],
+    ["HmIP-FSI16", 3],
     ["HmIP-FS6", 2],
     ["HmIP-USBSM", 3],
     ["HmIP-WGC", 3],
