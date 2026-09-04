@@ -608,11 +608,30 @@ const HMIP_FROLL_PROFILE: DeviceProfile = {
   deviceTypes: ["HmIP-FROLL"],
 };
 
+const BLIND_BINDINGS: DeviceProfile["bindings"] = [
+  ...HMIP_COVER_PROFILE.bindings,
+  {
+    capability: "windowcoverings_tilt_set",
+    channel: 3,
+    parameter: "LEVEL_2",
+    setChannel: 4,
+    setParameter: "LEVEL_2",
+  },
+];
+
 const HMIP_FBL_PROFILE: DeviceProfile = {
-  ...HMIP_COVER_PROFILE,
   id: "hmip-fbl",
   driverId: "HmIP-FBL",
   deviceTypes: ["HmIP-FBL"],
+  bindings: BLIND_BINDINGS,
+};
+
+const HMIP_BBL_PROFILE: DeviceProfile = {
+  id: "hmip-bbl",
+  driverId: "HmIP-BBL",
+  deviceTypes: ["HmIP-BBL"],
+  bindings: BLIND_BINDINGS,
+  buttonChannels: [1, 2],
 };
 
 export const HMIP_PROFILES = [
@@ -667,4 +686,5 @@ export const HMIP_PROFILES = [
   HMIP_COVER_PROFILE,
   HMIP_FROLL_PROFILE,
   HMIP_FBL_PROFILE,
+  HMIP_BBL_PROFILE,
 ] as const;

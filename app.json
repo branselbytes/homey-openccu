@@ -329,6 +329,31 @@
       ]
     },
     {
+      "id": "HmIP-BBL",
+      "name": {
+        "en": "HmIP-BBL"
+      },
+      "class": "blinds",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-BROLL/assets/images/large.png",
+        "small": "/drivers/HmIP-BROLL/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-BDT",
       "name": {
         "en": "HmIP-BDT"

@@ -115,6 +115,7 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 - [x] Extend the reference-backed switch matrix with FSI, FS6, USBSM, WGC, PCBS2, BS2, and WHS2 product drivers.
 - [x] Add explicit dim-level on/off conversion and initial BDT, FDT, PDT, and three-output DRDI3 dimmer drivers.
 - [x] Correct cover movement reads and route Homey up/down/stop commands to OpenCCU LEVEL/STOP explicitly.
+- [x] Split blind semantics from covers and add LEVEL_2 slat control for FBL and BBL.
 - Add programs and system variables to Flow/UI surfaces.
 - Use OpenCCU names, rooms, and functions to improve pairing and diagnostics according to the approved naming policy.
 - Port additional legacy knowledge into profiles, backed by fixtures and hardware reports.

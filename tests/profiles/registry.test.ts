@@ -456,6 +456,7 @@ describe("ProfileRegistry", () => {
     ["HmIP-BROLL", "HmIP-BROLL"],
     ["HmIP-FROLL", "HmIP-FROLL"],
     ["HmIP-FBL", "HmIP-FBL"],
+    ["HmIP-BBL", "HmIP-BBL"],
   ])("routes %s to cover product driver %s", (type, driverId) => {
     expect(new ProfileRegistry().find(type)?.driverId).toBe(driverId);
   });
