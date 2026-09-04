@@ -10,20 +10,20 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 
 ## Current dedicated coverage
 
-| Family                 | Product types                                                                    | Verification                                            |
-| ---------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| Contact                | HMIP-SWDO/HmIP-SWDO, HmIP-SWDO-I, HmIP-SWDM                                      | fixture; individual product drivers                     |
-| Contact                | HmIP-SWDO-2                                                                      | fixture; hardware available for later re-pairing        |
-| Rotary handle          | HmIP-SRH                                                                         | fixture; three-state handle position                    |
-| Climate                | HMIP-WTH/HmIP-WTH, HmIP-STH, HmIP-STHD, HmIP-BWTH                                | fixture; individual product drivers                     |
-| Outdoor climate sensor | HmIP-STHO                                                                        | fixture; read-only temperature and humidity             |
-| Radiator thermostat    | HMIP-eTRV, HmIP-eTRV, HmIP-eTRV-2, HmIP-eTRV-B/B-2, HmIP-eTRV-C, HmIP-eTRV-E/E-A | hardware/fixture; extended actions pending              |
-| Switch                 | HMIP-PS/HmIP-PS, HmIP-PCBS, HmIP-PCBS-BAT, HmIP-DRSI1                            | fixture; individual product drivers                     |
-| Power-meter switch     | HMIP-PSM, HmIP-PSM                                                               | fixture                                                 |
-| Cover                  | HmIP-BROLL, HmIP-FROLL, HmIP-FBL                                                 | fixture; slat semantics pending                         |
-| Weather sensor         | HmIP-SWO-PR                                                                      | fixture; standard temperature/humidity/luminance subset |
-| Light sensor           | HmIP-SLO                                                                         | fixture; current illuminance subset                     |
-| Temperature sensor     | HmIP-STE2-PCB                                                                    | fixture; first probe only                               |
+| Family                 | Product types                                                                              | Verification                                                           |
+| ---------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| Contact                | HMIP-SWDO/HmIP-SWDO, HmIP-SWDO-I, HmIP-SWDM                                                | fixture; individual product drivers                                    |
+| Contact                | HmIP-SWDO-2                                                                                | fixture; hardware available for later re-pairing                       |
+| Rotary handle          | HmIP-SRH                                                                                   | fixture; three-state handle position                                   |
+| Climate                | HMIP-WTH/HmIP-WTH, HmIP-STH, HmIP-STHD, HmIP-BWTH                                          | fixture; individual product drivers                                    |
+| Outdoor climate sensor | HmIP-STHO                                                                                  | fixture; read-only temperature and humidity                            |
+| Radiator thermostat    | HMIP-eTRV/HmIP-eTRV, HmIP-eTRV-2, HmIP-eTRV-B, HmIP-eTRV-B-2, HmIP-eTRV-C, HmIP-eTRV-E/E-A | hardware/fixture; individual product drivers; extended actions pending |
+| Switch                 | HMIP-PS/HmIP-PS, HmIP-PCBS, HmIP-PCBS-BAT, HmIP-DRSI1                                      | fixture; individual product drivers                                    |
+| Power-meter switch     | HMIP-PSM, HmIP-PSM                                                                         | fixture                                                                |
+| Cover                  | HmIP-BROLL, HmIP-FROLL, HmIP-FBL                                                           | fixture; individual product drivers; slat semantics pending            |
+| Weather sensor         | HmIP-SWO-PR                                                                                | fixture; standard temperature/humidity/luminance subset                |
+| Light sensor           | HmIP-SLO                                                                                   | fixture; current illuminance subset                                    |
+| Temperature sensor     | HmIP-STE2-PCB                                                                              | fixture; first probe only                                              |
 
 ## Reference baseline
 
@@ -35,8 +35,7 @@ Both external references are MIT licensed. Concepts and datapoint semantics are 
 
 ## Next batches
 
-1. Split shared legacy families into one Homey product driver each without duplicating runtime logic.
-2. Motion, presence, smoke, water, weather, and rotary-handle sensors.
-3. Buttons/remotes and stateless event Flow triggers.
-4. Multi-channel switches, dimmers, covers/blinds, locks, sirens, valves, and RGBW/DALI lighting.
-5. Add redacted OpenCCU fixtures and promote devices to hardware verified as equipment becomes available.
+1. Motion, presence, smoke, water, and extended weather sensors.
+2. Buttons/remotes and stateless event Flow triggers.
+3. Multi-channel switches, dimmers, enhanced covers/blinds, locks, sirens, valves, and RGBW/DALI lighting.
+4. Add redacted OpenCCU fixtures and promote devices to hardware verified as equipment becomes available.

@@ -247,42 +247,65 @@ const HMIP_STHO_PROFILE: DeviceProfile = {
   ],
 };
 
+const THERMOSTAT_BINDINGS: DeviceProfile["bindings"] = [
+  SENSOR_MAINTENANCE_BINDING,
+  ...CLIMATE_BINDINGS.filter(
+    (binding) => binding.capability !== "measure_humidity",
+  ),
+  {
+    capability: "homematic_measure_valve",
+    channel: 1,
+    parameter: "LEVEL",
+    transform: "ratio-to-percent",
+  },
+];
+
 export const HMIP_THERMOSTAT_PROFILE: DeviceProfile = {
   id: "hmip-radiator-thermostat",
   driverId: "HmIP-eTRV-2",
-  deviceTypes: [
-    "HMIP-eTRV",
-    "HmIP-eTRV",
-    "HmIP-eTRV-2",
-    "HmIP-eTRV-B",
-    "HmIP-eTRV-B-2",
-    "HmIP-eTRV-C",
-    "HmIP-eTRV-E",
-    "HmIP-eTRV-E-A",
-  ],
-  bindings: [
-    {
-      capability: "alarm_battery",
-      channel: 0,
-      parameter: "LOW_BAT",
-      transform: "boolean",
-    },
-    ...CLIMATE_BINDINGS.filter(
-      (binding) => binding.capability !== "measure_humidity",
-    ),
-    {
-      capability: "homematic_measure_valve",
-      channel: 1,
-      parameter: "LEVEL",
-      transform: "ratio-to-percent",
-    },
-  ],
+  deviceTypes: ["HmIP-eTRV-2"],
+  bindings: THERMOSTAT_BINDINGS,
+};
+
+const HMIP_ETRV_PROFILE: DeviceProfile = {
+  id: "hmip-etrv",
+  driverId: "HMIP-eTRV",
+  deviceTypes: ["HMIP-eTRV", "HmIP-eTRV"],
+  bindings: THERMOSTAT_BINDINGS,
+};
+
+const HMIP_ETRV_B_PROFILE: DeviceProfile = {
+  id: "hmip-etrv-b",
+  driverId: "HmIP-eTRV-B",
+  deviceTypes: ["HmIP-eTRV-B"],
+  bindings: THERMOSTAT_BINDINGS,
+};
+
+const HMIP_ETRV_B_2_PROFILE: DeviceProfile = {
+  id: "hmip-etrv-b-2",
+  driverId: "HmIP-eTRV-B-2",
+  deviceTypes: ["HmIP-eTRV-B-2"],
+  bindings: THERMOSTAT_BINDINGS,
+};
+
+const HMIP_ETRV_C_PROFILE: DeviceProfile = {
+  id: "hmip-etrv-c",
+  driverId: "HmIP-eTRV-C",
+  deviceTypes: ["HmIP-eTRV-C"],
+  bindings: THERMOSTAT_BINDINGS,
+};
+
+const HMIP_ETRV_E_PROFILE: DeviceProfile = {
+  id: "hmip-etrv-e",
+  driverId: "HmIP-eTRV-E",
+  deviceTypes: ["HmIP-eTRV-E", "HmIP-eTRV-E-A"],
+  bindings: THERMOSTAT_BINDINGS,
 };
 
 export const HMIP_COVER_PROFILE: DeviceProfile = {
   id: "hmip-cover",
   driverId: "HmIP-BROLL",
-  deviceTypes: ["HmIP-BROLL", "HmIP-FROLL", "HmIP-FBL"],
+  deviceTypes: ["HmIP-BROLL"],
   bindings: [
     {
       capability: "windowcoverings_set",
@@ -299,6 +322,20 @@ export const HMIP_COVER_PROFILE: DeviceProfile = {
       setParameter: "LEVEL",
     },
   ],
+};
+
+const HMIP_FROLL_PROFILE: DeviceProfile = {
+  ...HMIP_COVER_PROFILE,
+  id: "hmip-froll",
+  driverId: "HmIP-FROLL",
+  deviceTypes: ["HmIP-FROLL"],
+};
+
+const HMIP_FBL_PROFILE: DeviceProfile = {
+  ...HMIP_COVER_PROFILE,
+  id: "hmip-fbl",
+  driverId: "HmIP-FBL",
+  deviceTypes: ["HmIP-FBL"],
 };
 
 export const HMIP_PROFILES = [
@@ -321,5 +358,12 @@ export const HMIP_PROFILES = [
   HMIP_STHD_PROFILE,
   HMIP_STHO_PROFILE,
   HMIP_THERMOSTAT_PROFILE,
+  HMIP_ETRV_PROFILE,
+  HMIP_ETRV_B_PROFILE,
+  HMIP_ETRV_B_2_PROFILE,
+  HMIP_ETRV_C_PROFILE,
+  HMIP_ETRV_E_PROFILE,
   HMIP_COVER_PROFILE,
+  HMIP_FROLL_PROFILE,
+  HMIP_FBL_PROFILE,
 ] as const;

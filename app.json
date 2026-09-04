@@ -240,6 +240,31 @@
       ]
     },
     {
+      "id": "HMIP-eTRV",
+      "name": {
+        "en": "HMIP-eTRV"
+      },
+      "class": "thermostat",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-eTRV-2/assets/images/large.png",
+        "small": "/drivers/HmIP-eTRV-2/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-BROLL",
       "name": {
         "en": "HmIP-BROLL"
@@ -299,6 +324,56 @@
       "images": {
         "large": "/drivers/HMIP-PS/assets/images/large.png",
         "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-FBL",
+      "name": {
+        "en": "HmIP-FBL"
+      },
+      "class": "blinds",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-BROLL/assets/images/large.png",
+        "small": "/drivers/HmIP-BROLL/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-FROLL",
+      "name": {
+        "en": "HmIP-FROLL"
+      },
+      "class": "blinds",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-BROLL/assets/images/large.png",
+        "small": "/drivers/HmIP-BROLL/assets/images/small.png"
       },
       "pair": [
         {
@@ -618,6 +693,106 @@
       "id": "HmIP-eTRV-2",
       "name": {
         "en": "HmIP-eTRV-2"
+      },
+      "class": "thermostat",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-eTRV-2/assets/images/large.png",
+        "small": "/drivers/HmIP-eTRV-2/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-eTRV-B",
+      "name": {
+        "en": "HmIP-eTRV-B"
+      },
+      "class": "thermostat",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-eTRV-2/assets/images/large.png",
+        "small": "/drivers/HmIP-eTRV-2/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-eTRV-B-2",
+      "name": {
+        "en": "HmIP-eTRV-B-2"
+      },
+      "class": "thermostat",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-eTRV-2/assets/images/large.png",
+        "small": "/drivers/HmIP-eTRV-2/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-eTRV-C",
+      "name": {
+        "en": "HmIP-eTRV-C"
+      },
+      "class": "thermostat",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-eTRV-2/assets/images/large.png",
+        "small": "/drivers/HmIP-eTRV-2/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-eTRV-E",
+      "name": {
+        "en": "HmIP-eTRV-E"
       },
       "class": "thermostat",
       "capabilities": [],

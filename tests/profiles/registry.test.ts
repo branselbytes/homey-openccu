@@ -172,14 +172,14 @@ describe("ProfileRegistry", () => {
   });
 
   it.each([
-    "HmIP-eTRV-B-2",
-    "HmIP-eTRV-B-2 R4M",
-    "HmIP-eTRV-2 I9F",
-    "HmIP-eTRV-E-A",
-  ])("routes %s to the dedicated radiator thermostat profile", (type) => {
+    ["HmIP-eTRV-B-2", "HmIP-eTRV-B-2"],
+    ["HmIP-eTRV-B-2 R4M", "HmIP-eTRV-B-2"],
+    ["HmIP-eTRV-2 I9F", "HmIP-eTRV-2"],
+    ["HmIP-eTRV-E-A", "HmIP-eTRV-E"],
+  ])("routes %s to radiator product driver %s", (type, driverId) => {
     const registry = new ProfileRegistry();
     const profile = registry.find(type);
-    expect(profile?.driverId).toBe("HmIP-eTRV-2");
+    expect(profile?.driverId).toBe(driverId);
     expect(
       registry
         .resolve(radiatorThermostat(type))
@@ -293,5 +293,13 @@ describe("ProfileRegistry", () => {
         )
         .map(({ capability }) => capability),
     ).toEqual(["measure_temperature", "measure_humidity", "alarm_battery"]);
+  });
+
+  it.each([
+    ["HmIP-BROLL", "HmIP-BROLL"],
+    ["HmIP-FROLL", "HmIP-FROLL"],
+    ["HmIP-FBL", "HmIP-FBL"],
+  ])("routes %s to cover product driver %s", (type, driverId) => {
+    expect(new ProfileRegistry().find(type)?.driverId).toBe(driverId);
   });
 });
