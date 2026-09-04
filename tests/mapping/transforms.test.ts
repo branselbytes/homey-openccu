@@ -42,4 +42,16 @@ describe("value transforms", () => {
       /Cannot apply/,
     );
   });
+
+  it("maps OpenCCU cover activity to Homey's movement state", () => {
+    expect(transformFromOpenCcu("activity-state-to-cover-state", "UP")).toBe(
+      "up",
+    );
+    expect(transformFromOpenCcu("activity-state-to-cover-state", "DOWN")).toBe(
+      "down",
+    );
+    expect(
+      transformFromOpenCcu("activity-state-to-cover-state", "STABLE"),
+    ).toBe("idle");
+  });
 });

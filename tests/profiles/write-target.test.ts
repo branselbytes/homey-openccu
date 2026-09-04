@@ -43,14 +43,23 @@ describe("profile write targets", () => {
     }).get("301");
 
     expect(device).toBeDefined();
-    expect(
-      resolveProfileBindings(device!, HMIP_COVER_PROFILE)[0],
-    ).toMatchObject({
-      capability: "windowcoverings_set",
-      channelAddress: "301:3",
-      writeChannelAddress: "301:4",
-      writeParameter: "LEVEL",
-      writable: true,
-    });
+    expect(resolveProfileBindings(device!, HMIP_COVER_PROFILE)).toMatchObject([
+      {
+        capability: "windowcoverings_set",
+        channelAddress: "301:3",
+        writeChannelAddress: "301:4",
+        writeParameter: "LEVEL",
+        writable: true,
+      },
+      {
+        capability: "windowcoverings_state",
+        channelAddress: "301:3",
+        writeChannelAddress: "301:4",
+        writeParameter: "LEVEL",
+        writeStrategy: "cover-state",
+        transform: "activity-state-to-cover-state",
+        writable: true,
+      },
+    ]);
   });
 });

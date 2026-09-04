@@ -48,4 +48,22 @@ describe("parseStoredBindings", () => {
       ]),
     ).toHaveLength(1);
   });
+
+  it("preserves a supported non-direct write strategy", () => {
+    expect(
+      parseStoredBindings([
+        {
+          capability: "windowcoverings_state",
+          channelAddress: "301:3",
+          parameter: "ACTIVITY_STATE",
+          writeChannelAddress: "301:4",
+          writeParameter: "LEVEL",
+          writeStrategy: "cover-state",
+          readable: true,
+          writable: true,
+          transform: "activity-state-to-cover-state",
+        },
+      ]),
+    ).toMatchObject([{ writeStrategy: "cover-state" }]);
+  });
 });

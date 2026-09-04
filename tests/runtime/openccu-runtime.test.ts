@@ -81,4 +81,42 @@ describe("OpenCcuRuntime", () => {
       value: true,
     });
   });
+
+  it.each([
+    ["up", "LEVEL", 1],
+    ["down", "LEVEL", 0],
+    ["idle", "STOP", true],
+  ] as const)(
+    "maps Homey cover state %s to OpenCCU %s",
+    async (state, parameter, value) => {
+      const setValue = vi.fn();
+      const client = { ...createClient(), setValue };
+      const runtime = new OpenCcuRuntime(client, {
+        centralId: "ccu-1",
+        interfaceId: "HmIP-RF",
+      });
+
+      await runtime.write(
+        {
+          capability: "windowcoverings_state",
+          channelAddress: "301:3",
+          parameter: "ACTIVITY_STATE",
+          writeChannelAddress: "301:4",
+          writeParameter: "LEVEL",
+          writeStrategy: "cover-state",
+          readable: true,
+          writable: true,
+          transform: "activity-state-to-cover-state",
+        },
+        state,
+      );
+
+      expect(setValue).toHaveBeenCalledWith(
+        "301:4",
+        parameter,
+        value,
+        undefined,
+      );
+    },
+  );
 });

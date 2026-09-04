@@ -595,6 +595,8 @@ export const HMIP_COVER_PROFILE: DeviceProfile = {
       parameter: "ACTIVITY_STATE",
       setChannel: 4,
       setParameter: "LEVEL",
+      writeStrategy: "cover-state",
+      transform: "activity-state-to-cover-state",
     },
   ],
 };

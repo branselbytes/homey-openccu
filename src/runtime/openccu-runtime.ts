@@ -6,8 +6,14 @@ import { XmlRpcCallbackDispatcher } from "../protocol/xmlrpc/callback-dispatcher
 import type { XmlRpcClient } from "../protocol/xmlrpc/types";
 import type { RpcValue } from "../protocol/xmlrpc/types";
 import type { XmlRpcClientDiagnostics } from "../protocol/xmlrpc/types";
-import { createPairingCandidates, type PairingCandidate } from "../pairing/candidates";
-import { transformFromOpenCcu, transformToOpenCcu } from "../mapping/transforms";
+import {
+  createPairingCandidates,
+  type PairingCandidate,
+} from "../pairing/candidates";
+import {
+  transformFromOpenCcu,
+  transformToOpenCcu,
+} from "../mapping/transforms";
 import type { CapabilityBinding } from "../mapping/types";
 import {
   descriptionCacheKey,
@@ -79,7 +85,9 @@ export class OpenCcuRuntime {
     return discovery;
   }
 
-  pairingCandidates(names?: ReadonlyMap<string, string>): readonly PairingCandidate[] {
+  pairingCandidates(
+    names?: ReadonlyMap<string, string>,
+  ): readonly PairingCandidate[] {
     return createPairingCandidates(this.devices, {
       centralId: this.#options.centralId,
       interfaceId: this.#options.interfaceId,
@@ -87,9 +95,17 @@ export class OpenCcuRuntime {
     });
   }
 
-  async read(binding: CapabilityBinding, signal?: AbortSignal): Promise<RpcValue> {
-    if (!binding.readable) throw new Error(`Capability ${binding.capability} is not readable`);
-    const values = await this.#client.getParamset(binding.channelAddress, "VALUES", signal);
+  async read(
+    binding: CapabilityBinding,
+    signal?: AbortSignal,
+  ): Promise<RpcValue> {
+    if (!binding.readable)
+      throw new Error(`Capability ${binding.capability} is not readable`);
+    const values = await this.#client.getParamset(
+      binding.channelAddress,
+      "VALUES",
+      signal,
+    );
     if (!(binding.parameter in values)) {
       throw new Error(`OpenCCU channel does not expose ${binding.parameter}`);
     }
@@ -109,13 +125,18 @@ export class OpenCcuRuntime {
     value: RpcValue,
     signal?: AbortSignal,
   ): Promise<void> {
-    if (!binding.writable || !binding.writeChannelAddress || !binding.writeParameter) {
+    if (
+      !binding.writable ||
+      !binding.writeChannelAddress ||
+      !binding.writeParameter
+    ) {
       throw new Error(`Capability ${binding.capability} is not writable`);
     }
+    const operation = resolveWriteOperation(binding, value);
     await this.#client.setValue(
       binding.writeChannelAddress,
-      binding.writeParameter,
-      transformToOpenCcu(binding.transform, value),
+      operation.parameter,
+      operation.value,
       signal,
     );
   }
@@ -132,13 +153,19 @@ export class OpenCcuRuntime {
       onEvent: (event) => this.#events.publish("datapoint", event),
       onNewDevices: async (interfaceId, devices) => {
         if (this.#discovery !== undefined) {
-          await this.#invalidateDescriptions(devices.map(({ ADDRESS }) => ADDRESS));
+          await this.#invalidateDescriptions(
+            devices.map(({ ADDRESS }) => ADDRESS),
+          );
         }
         this.#events.publish("devicesChanged", { interfaceId, reason: "new" });
       },
       onDeleteDevices: async (interfaceId, addresses) => {
-        if (this.#discovery !== undefined) await this.#invalidateDescriptions(addresses);
-        this.#events.publish("devicesChanged", { interfaceId, reason: "delete" });
+        if (this.#discovery !== undefined)
+          await this.#invalidateDescriptions(addresses);
+        this.#events.publish("devicesChanged", {
+          interfaceId,
+          reason: "delete",
+        });
       },
       onUpdateDevice: (update) => {
         if (this.#discovery !== undefined) {
@@ -189,4 +216,20 @@ export class OpenCcuRuntime {
         ),
     );
   }
+}
+
+function resolveWriteOperation(
+  binding: CapabilityBinding,
+  value: RpcValue,
+): { readonly parameter: string; readonly value: RpcValue } {
+  if (binding.writeStrategy === "cover-state") {
+    if (value === "up") return { parameter: "LEVEL", value: 1 };
+    if (value === "down") return { parameter: "LEVEL", value: 0 };
+    if (value === "idle") return { parameter: "STOP", value: true };
+    throw new TypeError("Unsupported Homey cover state");
+  }
+  return {
+    parameter: binding.writeParameter as string,
+    value: transformToOpenCcu(binding.transform, value),
+  };
 }

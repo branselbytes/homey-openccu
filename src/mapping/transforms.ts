@@ -7,6 +7,11 @@ export function transformFromOpenCcu(
   value: RpcValue,
 ): RpcValue {
   switch (transform) {
+    case "activity-state-to-cover-state":
+      if (typeof value !== "string") throw invalidTransform(transform, value);
+      if (value === "UP") return "up";
+      if (value === "DOWN") return "down";
+      return "idle";
     case "identity":
       return value;
     case "boolean":
@@ -39,6 +44,8 @@ export function transformToOpenCcu(
   value: RpcValue,
 ): RpcValue {
   switch (transform) {
+    case "activity-state-to-cover-state":
+      throw invalidTransform(transform, value);
     case "identity":
     case "boolean":
       return value;

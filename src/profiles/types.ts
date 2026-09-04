@@ -3,6 +3,7 @@ import type {
   ButtonEventBinding,
   CapabilityBinding,
   ValueTransform,
+  WriteStrategy,
 } from "../mapping/types";
 
 export interface ProfileBinding {
@@ -13,6 +14,7 @@ export interface ProfileBinding {
   readonly setChannel?: number;
   readonly setParameter?: string;
   readonly transform?: ValueTransform;
+  readonly writeStrategy?: WriteStrategy;
 }
 
 export interface ProfileMappingDefinition {
@@ -87,6 +89,9 @@ export function resolveProfileBindings(
             writeParameter: writeTarget.parameter,
           }),
       transform: definition.transform ?? "identity",
+      ...(definition.writeStrategy === undefined
+        ? {}
+        : { writeStrategy: definition.writeStrategy }),
     });
   }
   return result;
