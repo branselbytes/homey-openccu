@@ -105,6 +105,11 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 
 ## Phase 6 — Hub features and coverage expansion
 
+- [x] Establish `DEVICE_SUPPORT.md` with explicit fixture- and hardware-verification levels and pinned reference revisions.
+- [x] Add the first passive-sensor driver batch: HmIP-SWDO-2, HmIP-SWO-PR, HmIP-SLO, and HmIP-STE2-PCB.
+- [ ] Split remaining shared profile families into individual product-facing Homey drivers.
+- [ ] Add stateless button/event bindings and corresponding Flow triggers before porting remotes.
+- [ ] Add multi-channel binding support before porting multi-output switches and actuators.
 - Add programs and system variables to Flow/UI surfaces.
 - Use OpenCCU names, rooms, and functions to improve pairing and diagnostics according to the approved naming policy.
 - Port additional legacy knowledge into profiles, backed by fixtures and hardware reports.

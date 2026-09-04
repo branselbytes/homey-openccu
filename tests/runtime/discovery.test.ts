@@ -82,13 +82,21 @@ describe("discoverHmIpDevices", () => {
 
   it("reuses cached paramset descriptions", async () => {
     const { client, getParamsetDescription } = createClient();
-    const values = new Map<string, Awaited<ReturnType<typeof client.getParamsetDescription>>>();
+    const values = new Map<
+      string,
+      Awaited<ReturnType<typeof client.getParamsetDescription>>
+    >();
     const cache = {
       get: vi.fn((key: string) => Promise.resolve(values.get(key))),
-      set: vi.fn((key: string, value: Awaited<ReturnType<typeof client.getParamsetDescription>>) => {
-        values.set(key, value);
-        return Promise.resolve();
-      }),
+      set: vi.fn(
+        (
+          key: string,
+          value: Awaited<ReturnType<typeof client.getParamsetDescription>>,
+        ) => {
+          values.set(key, value);
+          return Promise.resolve();
+        },
+      ),
       delete: vi.fn().mockResolvedValue(undefined),
     };
     const options = {

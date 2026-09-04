@@ -67,7 +67,9 @@ describe("HmIpXmlRpcClient", () => {
       });
 
       const read = client.getValue("001:1", "STATE");
-      const readExpectation = expect(read).rejects.toMatchObject({ code: "timeout" });
+      const readExpectation = expect(read).rejects.toMatchObject({
+        code: "timeout",
+      });
       await vi.advanceTimersByTimeAsync(10);
       await readExpectation;
       expect(client.getDiagnostics()).toMatchObject({

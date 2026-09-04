@@ -1,0 +1,18 @@
+{
+  "id": "HmIP-SWO-PR",
+  "name": { "en": "HmIP-SWO-PR" },
+  "class": "sensor",
+  "capabilities": [],
+  "images": {
+    "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+    "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": { "next": "add_devices" }
+    },
+    { "id": "add_devices", "template": "add_devices" }
+  ]
+}
