@@ -18,6 +18,8 @@ export abstract class RuntimeBackedDevice extends Homey.Device {
       await this.setUnavailable("Invalid OpenCCU device identity");
       return;
     }
+    const logicalId =
+      typeof data.logicalId === "string" ? data.logicalId : undefined;
     const app = this.homey.app;
     if (!isRuntimeProvidingApp(app)) {
       await this.setUnavailable("OpenCCU runtime is not initialized");
@@ -42,13 +44,13 @@ export abstract class RuntimeBackedDevice extends Homey.Device {
             const device = runtime.devices.get(data.address as string);
             return device === undefined
               ? undefined
-              : resolveDeviceMapping(device).bindings;
+              : resolveDeviceMapping(device, undefined, logicalId).bindings;
           },
           resolveButtonEvents: () => {
             const device = runtime.devices.get(data.address as string);
             return device === undefined
               ? []
-              : resolveDeviceMapping(device).buttonEvents;
+              : resolveDeviceMapping(device, undefined, logicalId).buttonEvents;
           },
           persistBindings: async (updatedBindings) => {
             await this.setStoreValue("bindings", updatedBindings);

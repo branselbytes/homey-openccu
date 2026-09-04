@@ -80,4 +80,70 @@ describe("createPairingCandidates", () => {
       store: { generic: true },
     });
   });
+
+  it("creates one stable Homey candidate per logical multi-channel output", () => {
+    const outputChannels = [6, 10, 14, 18];
+    const devices = buildHmIpDeviceGraph({
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+      descriptions: [
+        {
+          ADDRESS: "401",
+          TYPE: "HmIP-DRSI4",
+          CHILDREN: outputChannels.map((channel) => `401:${channel}`),
+        },
+        ...outputChannels.map((channel) => ({
+          ADDRESS: `401:${channel}`,
+          TYPE: "SWITCH_VIRTUAL_RECEIVER",
+          PARENT: "401",
+          PARAMSETS: ["VALUES"],
+        })),
+      ],
+      paramsets: new Map(
+        outputChannels.map((channel) => [
+          `401:${channel}`,
+          { STATE: { TYPE: "BOOL" as const, OPERATIONS: 7, FLAGS: 1 } },
+        ]),
+      ),
+    });
+
+    const candidates = createPairingCandidates(devices, {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+      names: new Map([
+        ["401", "DIN rail actor"],
+        ["401:10", "Kitchen relay"],
+      ]),
+    });
+
+    expect(candidates).toHaveLength(4);
+    expect(candidates.map(({ data }) => data.id).sort()).toEqual([
+      "ccu-1/HmIP-RF/401/output-1",
+      "ccu-1/HmIP-RF/401/output-2",
+      "ccu-1/HmIP-RF/401/output-3",
+      "ccu-1/HmIP-RF/401/output-4",
+    ]);
+    const secondOutput = candidates.find(
+      ({ data }) => data.logicalId === "output-2",
+    );
+    expect(secondOutput).toMatchObject({
+      driverId: "HmIP-DRSI4",
+      name: "Kitchen relay",
+      data: { logicalId: "output-2" },
+      capabilities: ["onoff"],
+      store: { logicalId: "output-2" },
+      mapping: {
+        logicalId: "output-2",
+        bindings: [
+          {
+            channelAddress: "401:10",
+            writeChannelAddress: "401:10",
+          },
+        ],
+      },
+    });
+    expect(
+      candidates.some(({ name }) => name === "DIN rail actor Output 1"),
+    ).toBe(true);
+  });
 });

@@ -15,17 +15,27 @@ export interface ProfileBinding {
   readonly transform?: ValueTransform;
 }
 
-export interface DeviceProfile {
-  readonly id: string;
-  readonly driverId: string;
-  readonly deviceTypes: readonly string[];
+export interface ProfileMappingDefinition {
   readonly bindings: readonly ProfileBinding[];
   readonly buttonChannels?: readonly number[];
 }
 
+export interface LogicalDeviceProfile extends ProfileMappingDefinition {
+  readonly id: string;
+  readonly nameSuffix: string;
+  readonly nameChannel?: number;
+}
+
+export interface DeviceProfile extends ProfileMappingDefinition {
+  readonly id: string;
+  readonly driverId: string;
+  readonly deviceTypes: readonly string[];
+  readonly logicalDevices?: readonly LogicalDeviceProfile[];
+}
+
 export function resolveProfileButtonEvents(
   device: OpenCcuDevice,
-  profile: DeviceProfile,
+  profile: ProfileMappingDefinition,
 ): readonly ButtonEventBinding[] {
   const result: ButtonEventBinding[] = [];
   for (const channelIndex of profile.buttonChannels ?? []) {
@@ -51,7 +61,7 @@ export function resolveProfileButtonEvents(
 
 export function resolveProfileBindings(
   device: OpenCcuDevice,
-  profile: DeviceProfile,
+  profile: ProfileMappingDefinition,
 ): readonly CapabilityBinding[] {
   const result: CapabilityBinding[] = [];
   for (const definition of profile.bindings) {

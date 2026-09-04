@@ -172,6 +172,24 @@ describe("ProfileRegistry", () => {
     ).toThrow(/multiple profiles/);
   });
 
+  it("rejects duplicate logical device identities within one profile", () => {
+    expect(
+      () =>
+        new ProfileRegistry([
+          {
+            id: "multi",
+            driverId: "multi",
+            deviceTypes: ["multi"],
+            bindings: [],
+            logicalDevices: [
+              { id: "output-1", nameSuffix: "Output 1", bindings: [] },
+              { id: "output-1", nameSuffix: "Output 2", bindings: [] },
+            ],
+          },
+        ]),
+    ).toThrow(/declared multiple times/);
+  });
+
   it.each([
     ["HmIP-eTRV-B-2", "HmIP-eTRV-B-2"],
     ["HmIP-eTRV-B-2 R4M", "HmIP-eTRV-B-2"],
@@ -254,6 +272,8 @@ describe("ProfileRegistry", () => {
     ["HmIP-PCBS", "HmIP-PCBS"],
     ["HmIP-PCBS-BAT", "HmIP-PCBS-BAT"],
     ["HmIP-DRSI1", "HmIP-DRSI1"],
+    ["HmIP-DRSI4", "HmIP-DRSI4"],
+    ["HmIP-MOD-OC8", "HmIP-MOD-OC8"],
     ["HmIP-SWDO-I", "HmIP-SWDO-I"],
     ["HmIP-SWDM", "HmIP-SWDM"],
     ["HMIP-WTH", "HMIP-WTH"],

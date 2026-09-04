@@ -1,4 +1,4 @@
-import type { DeviceProfile } from "./types";
+import type { DeviceProfile, LogicalDeviceProfile } from "./types";
 
 const SWITCH_BINDINGS: DeviceProfile["bindings"] = [
   { capability: "onoff", channel: 3, parameter: "STATE" },
@@ -30,6 +30,33 @@ const HMIP_DRSI1_PROFILE: DeviceProfile = {
   driverId: "HmIP-DRSI1",
   deviceTypes: ["HmIP-DRSI1"],
   bindings: SWITCH_BINDINGS,
+};
+
+function switchOutputs(
+  channels: readonly number[],
+): readonly LogicalDeviceProfile[] {
+  return channels.map((channel, index) => ({
+    id: `output-${index + 1}`,
+    nameSuffix: `Output ${index + 1}`,
+    nameChannel: channel,
+    bindings: [{ capability: "onoff", channel, parameter: "STATE" }],
+  }));
+}
+
+const HMIP_DRSI4_PROFILE: DeviceProfile = {
+  id: "hmip-drsi4",
+  driverId: "HmIP-DRSI4",
+  deviceTypes: ["HmIP-DRSI4"],
+  bindings: [],
+  logicalDevices: switchOutputs([6, 10, 14, 18]),
+};
+
+const HMIP_MOD_OC8_PROFILE: DeviceProfile = {
+  id: "hmip-mod-oc8",
+  driverId: "HmIP-MOD-OC8",
+  deviceTypes: ["HmIP-MOD-OC8"],
+  bindings: [],
+  logicalDevices: switchOutputs([10, 14, 18, 22, 26, 30, 34, 38]),
 };
 
 export const HMIP_POWER_METER_PROFILE: DeviceProfile = {
@@ -482,6 +509,8 @@ export const HMIP_PROFILES = [
   HMIP_PCBS_PROFILE,
   HMIP_PCBS_BAT_PROFILE,
   HMIP_DRSI1_PROFILE,
+  HMIP_DRSI4_PROFILE,
+  HMIP_MOD_OC8_PROFILE,
   HMIP_POWER_METER_PROFILE,
   HMIP_CONTACT_PROFILE,
   HMIP_SWDO_I_PROFILE,

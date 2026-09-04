@@ -121,6 +121,8 @@ Homey-specific classes consume the domain model rather than performing RPC direc
 
 Homey Compose remains the source of manifests. Each explicitly supported product keeps a dedicated Homey driver, backed by shared profiles and mapping services rather than copied logic. A separate generic fallback driver handles safe capabilities and diagnostics for unknown products. Manifest generation and consistency tests prevent the dedicated-driver catalog from drifting.
 
+Multi-channel actuators remain one product driver but resolve into one pairable logical Homey device per output. Their stable identity appends a profile-owned logical ID to the central/interface/device address; existing single-device identities remain unchanged. Each logical device stores and re-resolves only its own bindings. OpenCCU channel names take precedence for output names when available, with a deterministic product/output fallback.
+
 Flow cards should be capability-driven where Homey already supplies standard cards. Custom cards are reserved for Homematic events or commands without a standard Homey representation. Program execution and system-variable access belong to separate hub-level adapters/cards, not arbitrary device classes.
 
 ### 5. Events, availability, and diagnostics
@@ -190,6 +192,7 @@ Observed OpenCCU product suffixes such as `R4M` and `I9F` are normalized for pro
 - `docs/adr/0003-typed-core-boundaries.md`: Homey-independent typed protocol, domain, cache, event, and diagnostic boundaries.
 - `docs/adr/0004-bounded-rpc-and-confirmed-writes.md`: prioritized XML-RPC admission, persistent descriptions, repaired bindings, and verified commands.
 - `docs/adr/0005-profile-driven-device-events.md`: discovery-checked stateless event bindings and shared Homey device triggers.
+- `docs/adr/0006-logical-multi-channel-devices.md`: stable logical subdevices for independently controllable actuator outputs.
 
 ## Architectural decisions still open
 
