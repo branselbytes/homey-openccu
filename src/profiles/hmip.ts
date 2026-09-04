@@ -168,6 +168,30 @@ const HMIP_DRDI3_PROFILE: DeviceProfile = {
   logicalDevices: dimmerOutputs([5, 9, 13]),
 };
 
+const HMIP_BSM_PROFILE: DeviceProfile = {
+  id: "hmip-bsm",
+  driverId: "HmIP-BSM",
+  deviceTypes: ["HmIP-BSM"],
+  bindings: [
+    { capability: "onoff", channel: 4, parameter: "STATE" },
+    { capability: "measure_power", channel: 7, parameter: "POWER" },
+    { capability: "measure_voltage", channel: 7, parameter: "VOLTAGE" },
+    {
+      capability: "measure_current",
+      channel: 7,
+      parameter: "CURRENT",
+      transform: "milliamp-to-amp",
+    },
+    {
+      capability: "meter_power",
+      channel: 7,
+      parameter: "ENERGY_COUNTER",
+      transform: "watt-hour-to-kilowatt-hour",
+    },
+  ],
+  buttonChannels: [1, 2],
+};
+
 export const HMIP_POWER_METER_PROFILE: DeviceProfile = {
   id: "hmip-power-meter-switch",
   driverId: "HMIP-PSM",
@@ -736,6 +760,7 @@ export const HMIP_PROFILES = [
   HMIP_FDT_PROFILE,
   HMIP_PDT_PROFILE,
   HMIP_DRDI3_PROFILE,
+  HMIP_BSM_PROFILE,
   HMIP_POWER_METER_PROFILE,
   HMIP_CONTACT_PROFILE,
   HMIP_SWDO_I_PROFILE,

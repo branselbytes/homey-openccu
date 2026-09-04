@@ -119,6 +119,7 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 - [x] Add native lock/unlock and garage open/close mappings for DLD and MOD-HO/MOD-TM with explicit enum commands.
 - [x] Add SWSD intrusion-siren control and atomic default alarm commands for HmIP-ASIR.
 - [x] Add basic HmIP-WSM irrigation-valve open/close control on its dedicated valve channel.
+- [x] Add HmIP-BSM switching, energy measurements, and local button events.
 - Add programs and system variables to Flow/UI surfaces.
 - Use OpenCCU names, rooms, and functions to improve pairing and diagnostics according to the approved naming policy.
 - Port additional legacy knowledge into profiles, backed by fixtures and hardware reports.

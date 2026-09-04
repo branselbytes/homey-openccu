@@ -297,6 +297,7 @@ describe("ProfileRegistry", () => {
     ["HmIP-STHO", "HmIP-STHO"],
     ["HmIP-ASIR", "HmIP-ASIR"],
     ["HmIP-WSM", "HmIP-WSM"],
+    ["HmIP-BSM", "HmIP-BSM"],
   ])("routes %s to product driver %s", (type, driverId) => {
     expect(new ProfileRegistry().find(type)?.driverId).toBe(driverId);
   });
@@ -327,6 +328,31 @@ describe("ProfileRegistry", () => {
     ).toMatchObject([
       { capability: "onoff", channelAddress: "sensor:4" },
       { capability: "alarm_battery", channelAddress: "sensor:0" },
+    ]);
+  });
+
+  it("maps HmIP-BSM switching, metering, and both button channels", () => {
+    const mapping = resolveDeviceMapping(
+      sensor("HmIP-BSM", [
+        [1, "PRESS_SHORT", "ACTION"],
+        [2, "PRESS_LONG", "ACTION"],
+        [4, "STATE", "BOOL"],
+        [7, "POWER", "FLOAT"],
+        [7, "VOLTAGE", "FLOAT"],
+        [7, "CURRENT", "FLOAT"],
+        [7, "ENERGY_COUNTER", "FLOAT"],
+      ]),
+    );
+    expect(mapping.bindings.map(({ capability }) => capability)).toEqual([
+      "onoff",
+      "measure_power",
+      "measure_voltage",
+      "measure_current",
+      "meter_power",
+    ]);
+    expect(mapping.buttonEvents).toMatchObject([
+      { button: 1, pressType: "short" },
+      { button: 2, pressType: "long" },
     ]);
   });
 
