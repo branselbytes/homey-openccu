@@ -20,6 +20,7 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 | Radiator thermostat    | HMIP-eTRV/HmIP-eTRV, HmIP-eTRV-2, HmIP-eTRV-B, HmIP-eTRV-B-2, HmIP-eTRV-C, HmIP-eTRV-E/E-A      | hardware/fixture; individual product drivers; extended actions pending |
 | Switch                 | HMIP-PS/HmIP-PS, HmIP-PCBS, HmIP-PCBS-BAT, HmIP-DRSI1, HmIP-FSI, HmIP-FS6, HmIP-USBSM, HmIP-WGC | fixture; individual product drivers; standard on/off subset            |
 | Multi-output switch    | HmIP-DRSI4, HmIP-MOD-OC8, HmIP-PCBS2, HmIP-BS2, HmIP-WHS2                                       | fixture; one Homey device per output                                   |
+| Dimmer                 | HmIP-BDT, HmIP-FDT, HmIP-PDT, HmIP-DRDI3                                                        | fixture; on/off plus level; DRDI3 split into three outputs             |
 | Power-meter switch     | HMIP-PSM, HmIP-PSM                                                                              | fixture                                                                |
 | Cover                  | HmIP-BROLL, HmIP-FROLL, HmIP-FBL                                                                | fixture; individual product drivers; slat semantics pending            |
 | Weather sensor         | HmIP-SWO-PR                                                                                     | fixture; standard temperature/humidity/luminance subset                |
@@ -43,5 +44,5 @@ Both external references are MIT licensed. Concepts and datapoint semantics are 
 ## Next batches
 
 1. Extended weather sensors.
-2. More multi-channel switches, dimmers, enhanced covers/blinds, locks, sirens, valves, and RGBW/DALI lighting.
+2. Enhanced covers/blinds, locks, sirens, valves, combined devices, and RGBW/DALI lighting.
 3. Add redacted OpenCCU fixtures and promote devices to hardware verified as equipment becomes available.

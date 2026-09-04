@@ -47,6 +47,29 @@ function switchOutputs(
   }));
 }
 
+function dimmerBindings(channel: number): DeviceProfile["bindings"] {
+  return [
+    {
+      capability: "onoff",
+      channel,
+      parameter: "LEVEL",
+      transform: "positive-number-to-boolean",
+    },
+    { capability: "dim", channel, parameter: "LEVEL" },
+  ];
+}
+
+function dimmerOutputs(
+  channels: readonly number[],
+): readonly LogicalDeviceProfile[] {
+  return channels.map((channel, index) => ({
+    id: `output-${index + 1}`,
+    nameSuffix: `Output ${index + 1}`,
+    nameChannel: channel,
+    bindings: dimmerBindings(channel),
+  }));
+}
+
 const HMIP_DRSI4_PROFILE: DeviceProfile = {
   id: "hmip-drsi4",
   driverId: "HmIP-DRSI4",
@@ -113,6 +136,36 @@ const HMIP_WHS2_PROFILE: DeviceProfile = {
   deviceTypes: ["HmIP-WHS2"],
   bindings: [],
   logicalDevices: switchOutputs([2, 6]),
+};
+
+const HMIP_BDT_PROFILE: DeviceProfile = {
+  id: "hmip-bdt",
+  driverId: "HmIP-BDT",
+  deviceTypes: ["HmIP-BDT"],
+  bindings: dimmerBindings(4),
+  buttonChannels: [1, 2],
+};
+
+const HMIP_FDT_PROFILE: DeviceProfile = {
+  id: "hmip-fdt",
+  driverId: "HmIP-FDT",
+  deviceTypes: ["HmIP-FDT"],
+  bindings: dimmerBindings(2),
+};
+
+const HMIP_PDT_PROFILE: DeviceProfile = {
+  id: "hmip-pdt",
+  driverId: "HmIP-PDT",
+  deviceTypes: ["HmIP-PDT"],
+  bindings: dimmerBindings(3),
+};
+
+const HMIP_DRDI3_PROFILE: DeviceProfile = {
+  id: "hmip-drdi3",
+  driverId: "HmIP-DRDI3",
+  deviceTypes: ["HmIP-DRDI3"],
+  bindings: [],
+  logicalDevices: dimmerOutputs([5, 9, 13]),
 };
 
 export const HMIP_POWER_METER_PROFILE: DeviceProfile = {
@@ -574,6 +627,10 @@ export const HMIP_PROFILES = [
   HMIP_PCBS2_PROFILE,
   HMIP_BS2_PROFILE,
   HMIP_WHS2_PROFILE,
+  HMIP_BDT_PROFILE,
+  HMIP_FDT_PROFILE,
+  HMIP_PDT_PROFILE,
+  HMIP_DRDI3_PROFILE,
   HMIP_POWER_METER_PROFILE,
   HMIP_CONTACT_PROFILE,
   HMIP_SWDO_I_PROFILE,

@@ -329,6 +329,31 @@
       ]
     },
     {
+      "id": "HmIP-BDT",
+      "name": {
+        "en": "HmIP-BDT"
+      },
+      "class": "light",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-BRC2",
       "name": {
         "en": "HmIP-BRC2"
@@ -429,6 +454,31 @@
       ]
     },
     {
+      "id": "HmIP-DRDI3",
+      "name": {
+        "en": "HmIP-DRDI3"
+      },
+      "class": "light",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-DRSI1",
       "name": {
         "en": "HmIP-DRSI1"
@@ -488,6 +538,31 @@
       "images": {
         "large": "/drivers/HmIP-BROLL/assets/images/large.png",
         "small": "/drivers/HmIP-BROLL/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-FDT",
+      "name": {
+        "en": "HmIP-FDT"
+      },
+      "class": "light",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
       },
       "pair": [
         {
@@ -659,6 +734,31 @@
         "en": "HmIP-PCBS2"
       },
       "class": "socket",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-PDT",
+      "name": {
+        "en": "HmIP-PDT"
+      },
+      "class": "light",
       "capabilities": [],
       "images": {
         "large": "/drivers/HMIP-PS/assets/images/large.png",

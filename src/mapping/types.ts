@@ -9,6 +9,7 @@ export const VALUE_TRANSFORMS = [
   "enum-number-to-string",
   "identity",
   "milliamp-to-amp",
+  "positive-number-to-boolean",
   "ratio-to-percent",
   "smoke-status-to-boolean",
   "watt-hour-to-kilowatt-hour",

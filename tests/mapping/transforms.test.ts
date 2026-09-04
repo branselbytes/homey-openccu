@@ -32,4 +32,14 @@ describe("value transforms", () => {
       transformFromOpenCcu("smoke-status-to-boolean", "PRIMARY_ALARM"),
     ).toBe(true);
   });
+
+  it("derives on/off from a dim level and writes exact boundary levels", () => {
+    expect(transformFromOpenCcu("positive-number-to-boolean", 0)).toBe(false);
+    expect(transformFromOpenCcu("positive-number-to-boolean", 0.42)).toBe(true);
+    expect(transformToOpenCcu("positive-number-to-boolean", false)).toBe(0);
+    expect(transformToOpenCcu("positive-number-to-boolean", true)).toBe(1);
+    expect(() => transformToOpenCcu("positive-number-to-boolean", 0.5)).toThrow(
+      /Cannot apply/,
+    );
+  });
 });

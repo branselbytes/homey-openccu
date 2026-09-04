@@ -22,6 +22,8 @@ export function transformFromOpenCcu(
       throw invalidTransform(transform, value);
     case "milliamp-to-amp":
       return numeric(value, transform) / 1_000;
+    case "positive-number-to-boolean":
+      return numeric(value, transform) > 0;
     case "ratio-to-percent":
       return numeric(value, transform) * 100;
     case "smoke-status-to-boolean":
@@ -47,6 +49,9 @@ export function transformToOpenCcu(
       throw invalidTransform(transform, value);
     case "milliamp-to-amp":
       return numeric(value, transform) * 1_000;
+    case "positive-number-to-boolean":
+      if (typeof value !== "boolean") throw invalidTransform(transform, value);
+      return value ? 1 : 0;
     case "ratio-to-percent":
       return numeric(value, transform) / 100;
     case "smoke-status-to-boolean":

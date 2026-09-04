@@ -284,6 +284,10 @@ describe("ProfileRegistry", () => {
     ["HmIP-PCBS2", "HmIP-PCBS2"],
     ["HmIP-BS2", "HmIP-BS2"],
     ["HmIP-WHS2", "HmIP-WHS2"],
+    ["HmIP-BDT", "HmIP-BDT"],
+    ["HmIP-FDT", "HmIP-FDT"],
+    ["HmIP-PDT", "HmIP-PDT"],
+    ["HmIP-DRDI3", "HmIP-DRDI3"],
     ["HmIP-SWDO-I", "HmIP-SWDO-I"],
     ["HmIP-SWDM", "HmIP-SWDM"],
     ["HMIP-WTH", "HMIP-WTH"],
@@ -328,6 +332,52 @@ describe("ProfileRegistry", () => {
     expect(mappings.map(({ bindings }) => bindings[0]?.channelAddress)).toEqual(
       channels.map((channel) => `sensor:${channel}`),
     );
+  });
+
+  it.each([
+    ["HmIP-BDT", 4],
+    ["HmIP-FDT", 2],
+    ["HmIP-PDT", 3],
+  ])("maps %s LEVEL on channel %i to on/off and dim", (type, channel) => {
+    expect(
+      resolveDeviceMapping(sensor(type, [[channel, "LEVEL", "FLOAT"]]))
+        .bindings,
+    ).toMatchObject([
+      {
+        capability: "onoff",
+        channelAddress: `sensor:${channel}`,
+        transform: "positive-number-to-boolean",
+      },
+      {
+        capability: "dim",
+        channelAddress: `sensor:${channel}`,
+        transform: "identity",
+      },
+    ]);
+  });
+
+  it("maps HmIP-DRDI3 to three logical dimmer outputs", () => {
+    const mappings = resolveDeviceMappings(
+      sensor("HmIP-DRDI3", [
+        [5, "LEVEL", "FLOAT"],
+        [9, "LEVEL", "FLOAT"],
+        [13, "LEVEL", "FLOAT"],
+      ]),
+    );
+    expect(mappings.map(({ logicalId }) => logicalId)).toEqual([
+      "output-1",
+      "output-2",
+      "output-3",
+    ]);
+    expect(
+      mappings.map(({ bindings }) =>
+        bindings.map(({ capability }) => capability),
+      ),
+    ).toEqual([
+      ["onoff", "dim"],
+      ["onoff", "dim"],
+      ["onoff", "dim"],
+    ]);
   });
 
   it.each([
