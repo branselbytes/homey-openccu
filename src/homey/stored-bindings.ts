@@ -1,12 +1,8 @@
-import type { CapabilityBinding, ValueTransform } from "../mapping/types";
-
-const TRANSFORMS: readonly ValueTransform[] = [
-  "boolean",
-  "identity",
-  "milliamp-to-amp",
-  "ratio-to-percent",
-  "watt-hour-to-kilowatt-hour",
-];
+import {
+  VALUE_TRANSFORMS,
+  type CapabilityBinding,
+  type ValueTransform,
+} from "../mapping/types";
 
 export function parseStoredBindings(value: unknown): readonly CapabilityBinding[] {
   if (!Array.isArray(value)) throw new TypeError("Stored OpenCCU bindings must be an array");
@@ -21,7 +17,10 @@ function parseBinding(value: unknown, index: number): CapabilityBinding {
   if (typeof value.readable !== "boolean" || typeof value.writable !== "boolean") {
     throw new TypeError(`Stored binding ${index} must define readable and writable booleans`);
   }
-  if (typeof value.transform !== "string" || !TRANSFORMS.includes(value.transform as ValueTransform)) {
+  if (
+    typeof value.transform !== "string" ||
+    !VALUE_TRANSFORMS.includes(value.transform as ValueTransform)
+  ) {
     throw new TypeError(`Stored binding ${index} has an unsupported transform`);
   }
   const writeChannelAddress = optionalString(value.writeChannelAddress, index, "writeChannelAddress");

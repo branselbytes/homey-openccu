@@ -1,12 +1,15 @@
 import type { OpenCcuChannel, OpenCcuDataPoint, OpenCcuDevice } from "../domain/model";
 
-export type ValueTransform =
-  | "boolean"
-  | "enum-number-to-string"
-  | "identity"
-  | "milliamp-to-amp"
-  | "ratio-to-percent"
-  | "watt-hour-to-kilowatt-hour";
+export const VALUE_TRANSFORMS = [
+  "boolean",
+  "enum-number-to-string",
+  "identity",
+  "milliamp-to-amp",
+  "ratio-to-percent",
+  "watt-hour-to-kilowatt-hour",
+] as const;
+
+export type ValueTransform = (typeof VALUE_TRANSFORMS)[number];
 
 export interface CapabilityBinding {
   readonly capability: string;

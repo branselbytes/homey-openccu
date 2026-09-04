@@ -31,4 +31,21 @@ describe("parseStoredBindings", () => {
       ]),
     ).toThrow("no write target");
   });
+
+  it("accepts the enum transform used by dedicated thermostat profiles", () => {
+    expect(
+      parseStoredBindings([
+        {
+          capability: "homematic_thermostat_mode",
+          channelAddress: "301:1",
+          parameter: "SET_POINT_MODE",
+          writeChannelAddress: "301:1",
+          writeParameter: "CONTROL_MODE",
+          readable: true,
+          writable: true,
+          transform: "enum-number-to-string",
+        },
+      ]),
+    ).toHaveLength(1);
+  });
 });

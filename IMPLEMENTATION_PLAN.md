@@ -101,7 +101,7 @@ Exit criterion: end-to-end hardware tests pass for the agreed initial matrix, in
 
 ### Current handoff point
 
-HmIP-RF registration, discovery, pairing, temperature commands, delayed write acknowledgement, callback updates, and restart/reconnect have been exercised on Homey Test against OpenCCU. The next hardware gate is re-pairing an HmIP-eTRV-B-2 through its dedicated profile and validating mode, boost, week profile, valve position, deletion, and re-pairing. Redacted real responses should then become regression fixtures before coverage expands.
+HmIP-RF registration, discovery, pairing, temperature commands, delayed write acknowledgement, callback updates, and restart/reconnect have been exercised on Homey Test against OpenCCU. Dedicated `HmIP-eTRV-2` pairing and activation have also been verified for HmIP-eTRV-B-2, HmIP-eTRV-E-A, and HmIP-eTRV-2 variants; a stored-binding parser regression found during that test now has automated coverage. The remaining hardware gate is validating mode, boost, week profile, valve position, deletion, and re-pairing. Redacted real responses should then become regression fixtures before coverage expands.
 
 ## Phase 6 — Hub features and coverage expansion
 
