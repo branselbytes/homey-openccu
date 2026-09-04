@@ -479,6 +479,31 @@
       ]
     },
     {
+      "id": "HmIP-DLD",
+      "name": {
+        "en": "HmIP-DLD"
+      },
+      "class": "lock",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-DRDI3",
       "name": {
         "en": "HmIP-DRDI3"
@@ -679,6 +704,31 @@
       ]
     },
     {
+      "id": "HmIP-MOD-HO",
+      "name": {
+        "en": "HmIP-MOD-HO"
+      },
+      "class": "garagedoor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-BROLL/assets/images/large.png",
+        "small": "/drivers/HmIP-BROLL/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-MOD-OC8",
       "name": {
         "en": "HmIP-MOD-OC8"
@@ -688,6 +738,31 @@
       "images": {
         "large": "/drivers/HMIP-PS/assets/images/large.png",
         "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-MOD-TM",
+      "name": {
+        "en": "HmIP-MOD-TM"
+      },
+      "class": "garagedoor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-BROLL/assets/images/large.png",
+        "small": "/drivers/HmIP-BROLL/assets/images/small.png"
       },
       "pair": [
         {

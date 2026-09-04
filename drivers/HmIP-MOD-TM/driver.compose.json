@@ -1,0 +1,18 @@
+{
+  "id": "HmIP-MOD-TM",
+  "name": { "en": "HmIP-MOD-TM" },
+  "class": "garagedoor",
+  "capabilities": [],
+  "images": {
+    "large": "/drivers/HmIP-BROLL/assets/images/large.png",
+    "small": "/drivers/HmIP-BROLL/assets/images/small.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": { "next": "add_devices" }
+    },
+    { "id": "add_devices", "template": "add_devices" }
+  ]
+}

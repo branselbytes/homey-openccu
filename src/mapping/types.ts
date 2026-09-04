@@ -9,6 +9,8 @@ export const VALUE_TRANSFORMS = [
   "boolean",
   "enum-number-to-string",
   "identity",
+  "garage-door-state-to-closed",
+  "lock-state-to-boolean",
   "milliamp-to-amp",
   "positive-number-to-boolean",
   "ratio-to-percent",
@@ -18,7 +20,11 @@ export const VALUE_TRANSFORMS = [
 
 export type ValueTransform = (typeof VALUE_TRANSFORMS)[number];
 
-export const WRITE_STRATEGIES = ["direct", "cover-state"] as const;
+export const WRITE_STRATEGIES = [
+  "direct",
+  "cover-state",
+  "garage-closed",
+] as const;
 export type WriteStrategy = (typeof WRITE_STRATEGIES)[number];
 
 export interface CapabilityBinding {

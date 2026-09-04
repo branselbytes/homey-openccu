@@ -115,4 +115,82 @@ describe("profile write targets", () => {
       ]),
     );
   });
+
+  it("maps DLD state and lock commands on its lock channel", () => {
+    const device = buildHmIpDeviceGraph({
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+      descriptions: [
+        { ADDRESS: "501", TYPE: "HmIP-DLD", CHILDREN: ["501:1"] },
+        {
+          ADDRESS: "501:1",
+          TYPE: "DOOR_LOCK_STATE_TRANSCEIVER",
+          PARENT: "501",
+          PARAMSETS: ["VALUES"],
+        },
+      ],
+      paramsets: new Map([
+        [
+          "501:1",
+          {
+            LOCK_STATE: { TYPE: "ENUM" as const, OPERATIONS: 5, FLAGS: 1 },
+            LOCK_TARGET_LEVEL: {
+              TYPE: "ENUM" as const,
+              OPERATIONS: 2,
+              FLAGS: 1,
+            },
+          },
+        ],
+      ]),
+    }).get("501");
+    expect(device).toBeDefined();
+    expect(resolveDeviceMapping(device!).bindings).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          capability: "locked",
+          parameter: "LOCK_STATE",
+          writeParameter: "LOCK_TARGET_LEVEL",
+          transform: "lock-state-to-boolean",
+          writable: true,
+        }),
+      ]),
+    );
+  });
+
+  it("maps MOD-HO door state and commands to Homey's garage capability", () => {
+    const device = buildHmIpDeviceGraph({
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+      descriptions: [
+        { ADDRESS: "601", TYPE: "HmIP-MOD-HO", CHILDREN: ["601:1"] },
+        {
+          ADDRESS: "601:1",
+          TYPE: "GARAGE_DOOR_TRANSCEIVER",
+          PARENT: "601",
+          PARAMSETS: ["VALUES"],
+        },
+      ],
+      paramsets: new Map([
+        [
+          "601:1",
+          {
+            DOOR_STATE: { TYPE: "ENUM" as const, OPERATIONS: 5, FLAGS: 1 },
+            DOOR_COMMAND: {
+              TYPE: "ENUM" as const,
+              OPERATIONS: 2,
+              FLAGS: 1,
+            },
+          },
+        ],
+      ]),
+    }).get("601");
+    expect(device).toBeDefined();
+    expect(resolveDeviceMapping(device!).bindings[0]).toMatchObject({
+      capability: "garagedoor_closed",
+      parameter: "DOOR_STATE",
+      writeParameter: "DOOR_COMMAND",
+      writeStrategy: "garage-closed",
+      writable: true,
+    });
+  });
 });

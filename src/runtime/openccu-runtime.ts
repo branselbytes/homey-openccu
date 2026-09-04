@@ -228,6 +228,14 @@ function resolveWriteOperation(
     if (value === "idle") return { parameter: "STOP", value: true };
     throw new TypeError("Unsupported Homey cover state");
   }
+  if (binding.writeStrategy === "garage-closed") {
+    if (typeof value !== "boolean")
+      throw new TypeError("Unsupported Homey garage door state");
+    return {
+      parameter: "DOOR_COMMAND",
+      value: value ? "CLOSE" : "OPEN",
+    };
+  }
   return {
     parameter: binding.writeParameter as string,
     value: transformToOpenCcu(binding.transform, value),

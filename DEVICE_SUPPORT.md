@@ -24,6 +24,8 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 | Power-meter switch     | HMIP-PSM, HmIP-PSM                                                                              | fixture                                                                |
 | Cover                  | HmIP-BROLL, HmIP-FROLL                                                                          | fixture; position and explicit up/down/stop                            |
 | Blind                  | HmIP-FBL, HmIP-BBL                                                                              | fixture; position, explicit up/down/stop, and slat position            |
+| Door lock              | HmIP-DLD                                                                                        | fixture; native Homey lock/unlock; latch-open action pending           |
+| Garage door            | HmIP-MOD-HO, HmIP-MOD-TM                                                                        | fixture; native open/close; stop and ventilation actions pending       |
 | Weather sensor         | HmIP-SWO-PR                                                                                     | fixture; standard temperature/humidity/luminance subset                |
 | Light sensor           | HmIP-SLO                                                                                        | fixture; current illuminance subset                                    |
 | Temperature sensor     | HmIP-STE2-PCB                                                                                   | fixture; first probe only                                              |

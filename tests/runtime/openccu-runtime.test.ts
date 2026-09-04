@@ -119,4 +119,38 @@ describe("OpenCcuRuntime", () => {
       );
     },
   );
+
+  it.each([
+    [true, "CLOSE"],
+    [false, "OPEN"],
+  ] as const)(
+    "maps Homey garage closed=%s to OpenCCU %s",
+    async (closed, command) => {
+      const setValue = vi.fn();
+      const runtime = new OpenCcuRuntime(
+        { ...createClient(), setValue },
+        { centralId: "ccu-1", interfaceId: "HmIP-RF" },
+      );
+      await runtime.write(
+        {
+          capability: "garagedoor_closed",
+          channelAddress: "401:1",
+          parameter: "DOOR_STATE",
+          writeChannelAddress: "401:1",
+          writeParameter: "DOOR_COMMAND",
+          writeStrategy: "garage-closed",
+          readable: true,
+          writable: true,
+          transform: "garage-door-state-to-closed",
+        },
+        closed,
+      );
+      expect(setValue).toHaveBeenCalledWith(
+        "401:1",
+        "DOOR_COMMAND",
+        command,
+        undefined,
+      );
+    },
+  );
 });

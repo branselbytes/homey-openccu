@@ -634,6 +634,47 @@ const HMIP_BBL_PROFILE: DeviceProfile = {
   buttonChannels: [1, 2],
 };
 
+const HMIP_DLD_PROFILE: DeviceProfile = {
+  id: "hmip-dld",
+  driverId: "HmIP-DLD",
+  deviceTypes: ["HmIP-DLD"],
+  bindings: [
+    SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK,
+    {
+      capability: "locked",
+      channel: 1,
+      parameter: "LOCK_STATE",
+      setParameter: "LOCK_TARGET_LEVEL",
+      transform: "lock-state-to-boolean",
+    },
+  ],
+};
+
+const GARAGE_BINDINGS: DeviceProfile["bindings"] = [
+  {
+    capability: "garagedoor_closed",
+    channel: 1,
+    parameter: "DOOR_STATE",
+    setParameter: "DOOR_COMMAND",
+    transform: "garage-door-state-to-closed",
+    writeStrategy: "garage-closed",
+  },
+];
+
+const HMIP_MOD_HO_PROFILE: DeviceProfile = {
+  id: "hmip-mod-ho",
+  driverId: "HmIP-MOD-HO",
+  deviceTypes: ["HmIP-MOD-HO"],
+  bindings: [...GARAGE_BINDINGS, ...switchBindings(2)],
+};
+
+const HMIP_MOD_TM_PROFILE: DeviceProfile = {
+  id: "hmip-mod-tm",
+  driverId: "HmIP-MOD-TM",
+  deviceTypes: ["HmIP-MOD-TM"],
+  bindings: GARAGE_BINDINGS,
+};
+
 export const HMIP_PROFILES = [
   HMIP_SWITCH_PROFILE,
   HMIP_PCBS_PROFILE,
@@ -687,4 +728,7 @@ export const HMIP_PROFILES = [
   HMIP_FROLL_PROFILE,
   HMIP_FBL_PROFILE,
   HMIP_BBL_PROFILE,
+  HMIP_DLD_PROFILE,
+  HMIP_MOD_HO_PROFILE,
+  HMIP_MOD_TM_PROFILE,
 ] as const;

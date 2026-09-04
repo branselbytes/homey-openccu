@@ -54,4 +54,20 @@ describe("value transforms", () => {
       transformFromOpenCcu("activity-state-to-cover-state", "STABLE"),
     ).toBe("idle");
   });
+
+  it("maps HmIP lock and garage states to native Homey booleans", () => {
+    expect(transformFromOpenCcu("lock-state-to-boolean", "LOCKED")).toBe(true);
+    expect(transformFromOpenCcu("lock-state-to-boolean", 2)).toBe(false);
+    expect(transformToOpenCcu("lock-state-to-boolean", true)).toBe("LOCKED");
+    expect(transformToOpenCcu("lock-state-to-boolean", false)).toBe("UNLOCKED");
+    expect(transformFromOpenCcu("garage-door-state-to-closed", "CLOSED")).toBe(
+      true,
+    );
+    expect(
+      transformFromOpenCcu(
+        "garage-door-state-to-closed",
+        "VENTILATION_POSITION",
+      ),
+    ).toBe(false);
+  });
 });
