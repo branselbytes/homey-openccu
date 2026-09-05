@@ -431,6 +431,29 @@ const HMIP_SWDM_PROFILE: DeviceProfile = {
   bindings: CONTACT_BINDINGS,
 };
 
+const HMIP_SCI_PROFILE: DeviceProfile = {
+  id: "hmip-sci",
+  driverId: "HmIP-SCI",
+  deviceTypes: ["HmIP-SCI"],
+  bindings: CONTACT_BINDINGS,
+};
+
+const HMIP_FCI1_PROFILE: DeviceProfile = {
+  id: "hmip-fci1",
+  driverId: "HmIP-FCI1",
+  deviceTypes: ["HmIP-FCI1"],
+  bindings: CONTACT_BINDINGS,
+  buttonChannels: [1],
+};
+
+const HMIP_BRA_PROFILE: DeviceProfile = {
+  id: "hmip-bra",
+  driverId: "HmIP-BRA",
+  deviceTypes: ["HmIP-BRA"],
+  bindings: [SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK],
+  buttonChannels: [1, 2],
+};
+
 const HMIP_SRH_PROFILE: DeviceProfile = {
   id: "hmip-srh",
   driverId: "HmIP-SRH",
@@ -988,6 +1011,9 @@ export const HMIP_PROFILES = [
   HMIP_CONTACT_PROFILE,
   HMIP_SWDO_I_PROFILE,
   HMIP_SWDM_PROFILE,
+  HMIP_SCI_PROFILE,
+  HMIP_FCI1_PROFILE,
+  HMIP_BRA_PROFILE,
   HMIP_SRH_PROFILE,
   HMIP_CONTACT_2_PROFILE,
   HMIP_WEATHER_PROFILE,

@@ -604,6 +604,59 @@ describe("ProfileRegistry", () => {
     ]);
   });
 
+  it("maps HmIP-BRA as a two-button event device", () => {
+    const mapping = resolveDeviceMapping(
+      sensor("HmIP-BRA", [
+        [1, "PRESS_SHORT", "ACTION"],
+        [1, "PRESS_LONG", "ACTION"],
+        [2, "PRESS_SHORT", "ACTION"],
+        [2, "PRESS_LONG", "ACTION"],
+        [0, "LOW_BAT", "BOOL"],
+      ]),
+    );
+    expect(mapping.driverId).toBe("HmIP-BRA");
+    expect(mapping.bindings.map(({ capability }) => capability)).toEqual([
+      "alarm_battery",
+    ]);
+    expect(mapping.buttonEvents).toHaveLength(4);
+  });
+
+  it("maps HmIP-FCI1 from the datapoints enabled by its input mode", () => {
+    const contact = resolveDeviceMapping(
+      sensor("HmIP-FCI1", [
+        [1, "STATE", "BOOL"],
+        [0, "LOW_BAT", "BOOL"],
+      ]),
+    );
+    expect(contact.driverId).toBe("HmIP-FCI1");
+    expect(contact.bindings.map(({ capability }) => capability)).toEqual([
+      "alarm_contact",
+      "alarm_battery",
+    ]);
+
+    const button = resolveDeviceMapping(
+      sensor("HmIP-FCI1", [[1, "PRESS_SHORT", "ACTION"]]),
+    );
+    expect(button.bindings).toEqual([]);
+    expect(button.buttonEvents).toMatchObject([
+      { button: 1, pressType: "short" },
+    ]);
+  });
+
+  it("maps HmIP-SCI as a battery-powered contact", () => {
+    const mapping = resolveDeviceMapping(
+      sensor("HmIP-SCI", [
+        [1, "STATE", "BOOL"],
+        [0, "LOW_BAT", "BOOL"],
+      ]),
+    );
+    expect(mapping.driverId).toBe("HmIP-SCI");
+    expect(mapping.bindings.map(({ capability }) => capability)).toEqual([
+      "alarm_contact",
+      "alarm_battery",
+    ]);
+  });
+
   it("maps the rotary handle as a three-state value instead of a boolean contact", () => {
     expect(
       new ProfileRegistry().resolve(

@@ -127,6 +127,7 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 - [x] Add HmIP-DRG-DALI logical outputs 1–48 with discovered dim, hue, and saturation capabilities; defer metadata-normalized color temperature.
 - [x] Add selective profile-owned MASTER configuration reads and mode-aware HmIP-RGBW logical outputs with a safe single-dimmer fallback.
 - [x] Add separate HmIP-SWO-B/PL/PR drivers with discovery-filtered wind, rain, and sunshine-duration capabilities in matching units.
+- [x] Port the final three legacy HmIP product drivers: BRA button events, SCI contact, and discovery-adaptive FCI1 contact/button behavior.
 - Add programs and system variables to Flow/UI surfaces.
 - Use OpenCCU names, rooms, and functions to improve pairing and diagnostics according to the approved naming policy.
 - Port additional legacy knowledge into profiles, backed by fixtures and hardware reports.

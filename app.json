@@ -404,6 +404,31 @@
       ]
     },
     {
+      "id": "HmIP-BRA",
+      "name": {
+        "en": "HmIP-BRA"
+      },
+      "class": "button",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-BRC2",
       "name": {
         "en": "HmIP-BRC2"
@@ -663,6 +688,31 @@
       "images": {
         "large": "/drivers/HmIP-BROLL/assets/images/large.png",
         "small": "/drivers/HmIP-BROLL/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-FCI1",
+      "name": {
+        "en": "HmIP-FCI1"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
       },
       "pair": [
         {
@@ -1107,6 +1157,31 @@
       "id": "HmIP-SAM",
       "name": {
         "en": "HmIP-SAM"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-SCI",
+      "name": {
+        "en": "HmIP-SCI"
       },
       "class": "sensor",
       "capabilities": [],

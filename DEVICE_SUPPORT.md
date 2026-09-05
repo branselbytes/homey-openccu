@@ -12,7 +12,7 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 
 | Family                 | Product types                                                                                              | Verification                                                           |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| Contact                | HMIP-SWDO/HmIP-SWDO, HmIP-SWDO-I, HmIP-SWDM                                                                | fixture; individual product drivers                                    |
+| Contact                | HMIP-SWDO/HmIP-SWDO, HmIP-SWDO-I, HmIP-SWDM, HmIP-SCI, HmIP-FCI1                                           | fixture; FCI1 follows discovered contact/button datapoints             |
 | Contact                | HmIP-SWDO-2                                                                                                | fixture; hardware available for later re-pairing                       |
 | Rotary handle          | HmIP-SRH                                                                                                   | fixture; three-state handle position                                   |
 | Climate                | HMIP-WTH/HmIP-WTH, HmIP-STH, HmIP-STHD, HmIP-BWTH                                                          | fixture; individual product drivers                                    |
@@ -39,7 +39,7 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 | Smoke detector         | HmIP-SWSD                                                                                                  | fixture; smoke alarm and optional intrusion-siren control              |
 | Siren                  | HmIP-ASIR                                                                                                  | fixture; atomic acoustic/optical 30-second default alarm               |
 | Irrigation valve       | HmIP-WSM                                                                                                   | fixture; on/off, L/min flow, and cumulative m³; neutral Homey class    |
-| Buttons/remotes        | HmIP-BRC2, HMIP-WRC2/HmIP-WRC2, HmIP-WRC6, HmIP-RC8                                                        | fixture; short/long press device Flow trigger                          |
+| Buttons/remotes        | HmIP-BRA, HmIP-BRC2, HMIP-WRC2/HmIP-WRC2, HmIP-WRC6, HmIP-RC8                                              | fixture; short/long press device Flow trigger                          |
 
 ## Reference baseline
 
