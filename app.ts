@@ -3,6 +3,7 @@ import Homey from "homey";
 import { VersionedCache } from "./src/cache/versioned-cache";
 import { OpenCcuAppController } from "./src/homey/app-controller";
 import { HomeySettingsCacheStorage } from "./src/homey/cache-storage";
+import { registerHubFlowCards } from "./src/homey/hub-flow-controller";
 import { registerThermostatFlowCards } from "./src/homey/thermostat-flow-controller";
 import { callbackHostFromLocalAddress } from "./src/homey/callback-host";
 import { OpenCcuRuntimeProvider } from "./src/homey/runtime-provider";
@@ -55,6 +56,7 @@ export = class OpenCcuApp extends Homey.App {
     );
     await this.#controller.start();
     registerThermostatFlowCards(this.homey.flow);
+    registerHubFlowCards(this.homey.flow, this.runtimeProvider);
     this.log("OpenCCU for Homey initialized");
   }
 

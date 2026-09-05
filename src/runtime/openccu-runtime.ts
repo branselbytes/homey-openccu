@@ -7,8 +7,14 @@ import type { XmlRpcClient } from "../protocol/xmlrpc/types";
 import type { RpcValue } from "../protocol/xmlrpc/types";
 import type { XmlRpcClientDiagnostics } from "../protocol/xmlrpc/types";
 import type {
+  JsonRpcSession,
   MetadataIssue,
   OpenCcuMetadataResult,
+} from "../protocol/jsonrpc/metadata";
+import {
+  executeOpenCcuProgram,
+  loadOpenCcuMetadata,
+  setOpenCcuSystemVariable,
 } from "../protocol/jsonrpc/metadata";
 import {
   createPairingCandidates,
@@ -32,6 +38,7 @@ export interface OpenCcuRuntimeOptions {
   readonly interfaceId: string;
   readonly discoveryConcurrency?: number;
   readonly descriptionCache?: DescriptionCache;
+  readonly jsonRpcSession?: JsonRpcSession;
 }
 
 export interface OpenCcuRuntimeDiagnostics {
@@ -105,6 +112,65 @@ export class OpenCcuRuntime {
   updateMetadata(result: OpenCcuMetadataResult): void {
     this.#metadata = result.metadata;
     this.#metadataIssues = result.issues;
+  }
+
+  async refreshMetadata(
+    signal?: AbortSignal,
+  ): Promise<OpenCcuMetadataResult | undefined> {
+    if (this.#options.jsonRpcSession === undefined) return undefined;
+    const result = await loadOpenCcuMetadata(
+      this.#options.jsonRpcSession,
+      signal,
+    );
+    this.updateMetadata(result);
+    return result;
+  }
+
+  async executeProgram(id: string, signal?: AbortSignal): Promise<void> {
+    const session = this.#requireJsonRpcSession();
+    if (!this.#metadata.programs.some((program) => program.id === id)) {
+      throw new Error(`Unknown OpenCCU program ${id}`);
+    }
+    await executeOpenCcuProgram(session, id, signal);
+  }
+
+  async setSystemVariable(
+    id: string,
+    value: RpcValue,
+    signal?: AbortSignal,
+  ): Promise<void> {
+    const session = this.#requireJsonRpcSession();
+    const variable = this.#metadata.systemVariables.find(
+      (candidate) => candidate.id === id,
+    );
+    if (variable === undefined) {
+      throw new Error(`Unknown OpenCCU system variable ${id}`);
+    }
+    await setOpenCcuSystemVariable(
+      session,
+      id,
+      normalizeSystemVariableInput(variable.type, value),
+      signal,
+    );
+    await this.refreshMetadata(signal);
+  }
+
+  async systemVariableEquals(
+    id: string,
+    expected: RpcValue,
+    signal?: AbortSignal,
+  ): Promise<boolean> {
+    await this.refreshMetadata(signal);
+    const variable = this.#metadata.systemVariables.find(
+      (candidate) => candidate.id === id,
+    );
+    if (variable === undefined) {
+      throw new Error(`Unknown OpenCCU system variable ${id}`);
+    }
+    return (
+      variable.value ===
+      normalizeSystemVariableInput(variable.type, expected)
+    );
   }
 
   async refresh(signal?: AbortSignal): Promise<HmIpDiscoveryResult> {
@@ -256,6 +322,13 @@ export class OpenCcuRuntime {
     this.#events.clear();
   }
 
+  #requireJsonRpcSession(): JsonRpcSession {
+    if (this.#options.jsonRpcSession === undefined) {
+      throw new Error("OpenCCU JSON-RPC authentication is not configured");
+    }
+    return this.#options.jsonRpcSession;
+  }
+
   async #invalidateDescriptions(addresses: readonly string[]): Promise<void> {
     const cache = this.#options.descriptionCache;
     if (cache === undefined) return;
@@ -289,6 +362,28 @@ function emptyMetadata(): OpenCcuMetadata {
     programs: [],
     systemVariables: [],
   };
+}
+
+function normalizeSystemVariableInput(type: string, value: RpcValue): RpcValue {
+  if (type === "NUMBER") {
+    const number = typeof value === "number" ? value : Number(value);
+    if (!Number.isFinite(number)) {
+      throw new TypeError("OpenCCU NUMBER variable requires a numeric value");
+    }
+    return number;
+  }
+  if (type === "ALARM" || type === "LOGIC") {
+    if (typeof value === "boolean") return value;
+    if (typeof value === "string") {
+      if (value.toLowerCase() === "true" || value === "1") return true;
+      if (value.toLowerCase() === "false" || value === "0") return false;
+    }
+    throw new TypeError(`OpenCCU ${type} variable requires true or false`);
+  }
+  if (typeof value !== "string") {
+    throw new TypeError(`OpenCCU ${type} variable requires a text value`);
+  }
+  return value;
 }
 
 function resolveWriteOperation(

@@ -73,6 +73,37 @@
         "id": "hmip_button_pressed"
       }
     ],
+    "conditions": [
+      {
+        "title": {
+          "en": "OpenCCU variable [[variable]] equals [[value]]",
+          "de": "OpenCCU-Systemvariable [[variable]] entspricht [[value]]"
+        },
+        "titleFormatted": {
+          "en": "OpenCCU variable [[variable]] equals [[value]]",
+          "de": "OpenCCU-Systemvariable [[variable]] entspricht [[value]]"
+        },
+        "args": [
+          {
+            "name": "variable",
+            "type": "autocomplete",
+            "title": {
+              "en": "System variable",
+              "de": "Systemvariable"
+            }
+          },
+          {
+            "name": "value",
+            "type": "text",
+            "title": {
+              "en": "Value",
+              "de": "Wert"
+            }
+          }
+        ],
+        "id": "openccu_system_variable_equals"
+      }
+    ],
     "actions": [
       {
         "title": {
@@ -91,6 +122,56 @@
           }
         ],
         "id": "activate_thermostat_boost"
+      },
+      {
+        "title": {
+          "en": "Execute OpenCCU program [[program]]",
+          "de": "OpenCCU-Programm [[program]] ausführen"
+        },
+        "titleFormatted": {
+          "en": "Execute OpenCCU program [[program]]",
+          "de": "OpenCCU-Programm [[program]] ausführen"
+        },
+        "args": [
+          {
+            "name": "program",
+            "type": "autocomplete",
+            "title": {
+              "en": "Program",
+              "de": "Programm"
+            }
+          }
+        ],
+        "id": "execute_openccu_program"
+      },
+      {
+        "title": {
+          "en": "Set OpenCCU variable [[variable]] to [[value]]",
+          "de": "OpenCCU-Systemvariable [[variable]] auf [[value]] setzen"
+        },
+        "titleFormatted": {
+          "en": "Set OpenCCU variable [[variable]] to [[value]]",
+          "de": "OpenCCU-Systemvariable [[variable]] auf [[value]] setzen"
+        },
+        "args": [
+          {
+            "name": "variable",
+            "type": "autocomplete",
+            "title": {
+              "en": "System variable",
+              "de": "Systemvariable"
+            }
+          },
+          {
+            "name": "value",
+            "type": "text",
+            "title": {
+              "en": "Value",
+              "de": "Wert"
+            }
+          }
+        ],
+        "id": "set_openccu_system_variable"
       },
       {
         "title": {

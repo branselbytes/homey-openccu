@@ -9,10 +9,7 @@
   "description": {
     "en": "Connect Homematic and Homematic IP devices locally through OpenCCU"
   },
-  "category": [
-    "tools",
-    "appliances"
-  ],
+  "category": ["tools", "appliances"],
   "permissions": [],
   "images": {
     "large": "/assets/images/large.png",

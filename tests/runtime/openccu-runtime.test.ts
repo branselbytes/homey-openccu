@@ -30,6 +30,49 @@ function createClient(): XmlRpcClient {
 }
 
 describe("OpenCcuRuntime", () => {
+  it("validates and normalizes hub commands through the JSON-RPC session", async () => {
+    let logicValue = "false";
+    const call = vi.fn((method: string, params?: Record<string, unknown>) => {
+      if (method === "Program.execute") return Promise.resolve(true);
+      if (method === "SysVar.setValue") {
+        logicValue = String(params?.value);
+        return Promise.resolve(true);
+      }
+      if (method === "Program.getAll") {
+        return Promise.resolve([{ id: "20", name: "Night", isActive: true }]);
+      }
+      if (method === "SysVar.getAll") {
+        return Promise.resolve([
+          { id: "30", name: "Away", type: "LOGIC", value: logicValue },
+        ]);
+      }
+      return Promise.resolve([]);
+    });
+    const runtime = new OpenCcuRuntime(createClient(), {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+      jsonRpcSession: { call },
+    });
+    await runtime.refreshMetadata();
+
+    await runtime.executeProgram("20");
+    await runtime.setSystemVariable("30", "true");
+    await expect(runtime.systemVariableEquals("30", "true")).resolves.toBe(
+      true,
+    );
+
+    expect(call).toHaveBeenCalledWith(
+      "Program.execute",
+      { id: "20" },
+      undefined,
+    );
+    expect(call).toHaveBeenCalledWith(
+      "SysVar.setValue",
+      { id: "30", value: true },
+      undefined,
+    );
+  });
+
   it("uses OpenCCU metadata names for pairing and exposes safe counts", async () => {
     const runtime = new OpenCcuRuntime(createClient(), {
       centralId: "ccu-1",
@@ -42,7 +85,9 @@ describe("OpenCcuRuntime", () => {
         rooms: new Map([["Hall", ["10"]]]),
         functions: new Map([["Climate", ["10"]]]),
         programs: [{ id: "20", name: "Night", active: true }],
-        systemVariables: [{ id: "30", name: "Away", value: false }],
+        systemVariables: [
+          { id: "30", name: "Away", type: "LOGIC", value: false },
+        ],
       },
       issues: [],
     });

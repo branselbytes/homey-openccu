@@ -1,0 +1,28 @@
+{
+  "title": {
+    "en": "OpenCCU variable [[variable]] equals [[value]]",
+    "de": "OpenCCU-Systemvariable [[variable]] entspricht [[value]]"
+  },
+  "titleFormatted": {
+    "en": "OpenCCU variable [[variable]] equals [[value]]",
+    "de": "OpenCCU-Systemvariable [[variable]] entspricht [[value]]"
+  },
+  "args": [
+    {
+      "name": "variable",
+      "type": "autocomplete",
+      "title": {
+        "en": "System variable",
+        "de": "Systemvariable"
+      }
+    },
+    {
+      "name": "value",
+      "type": "text",
+      "title": {
+        "en": "Value",
+        "de": "Wert"
+      }
+    }
+  ]
+}

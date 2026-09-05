@@ -1,7 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  executeOpenCcuProgram,
   loadOpenCcuMetadata,
+  setOpenCcuSystemVariable,
   type JsonRpcSession,
 } from "../../src/protocol/jsonrpc/metadata";
 
@@ -20,11 +22,33 @@ describe("loadOpenCcuMetadata", () => {
       ],
       "Room.getAll": [{ name: "Hall", channelIds: ["10", 11, "12"] }],
       "Subsection.getAll": [{ name: "Climate", channelIds: ["12"] }],
-      "Program.getAll": [{ id: "20", name: "Night mode", isActive: true }],
+      "Program.getAll": [
+        { id: "20", name: "Night mode", isActive: true },
+        {
+          id: "21",
+          name: "Internal program",
+          isActive: true,
+          isInternal: true,
+        },
+      ],
       "SysVar.getAll": [
         { id: "30", name: "Temperature", type: "NUMBER", value: "21.5" },
         { id: "31", name: "Alarm", type: "ALARM", value: "true" },
         { id: "32", name: "Mode", type: "LIST", value: "Away" },
+        {
+          id: "33",
+          name: "Hidden",
+          type: "STRING",
+          value: "secret",
+          isVisible: false,
+        },
+        {
+          id: "34",
+          name: "Internal",
+          type: "STRING",
+          value: "internal",
+          isInternal: true,
+        },
       ],
     };
     const session: JsonRpcSession = {
@@ -43,11 +67,32 @@ describe("loadOpenCcuMetadata", () => {
       { id: "20", name: "Night mode", active: true },
     ]);
     expect(result.metadata.systemVariables).toEqual([
-      { id: "30", name: "Temperature", value: 21.5 },
-      { id: "31", name: "Alarm", value: true },
-      { id: "32", name: "Mode", value: "Away" },
+      { id: "30", name: "Temperature", type: "NUMBER", value: 21.5 },
+      { id: "31", name: "Alarm", type: "ALARM", value: true },
+      { id: "32", name: "Mode", type: "LIST", value: "Away" },
     ]);
     expect(result.issues).toEqual([]);
+  });
+
+  it("uses the live-tested JSON-RPC command methods", async () => {
+    const call = vi.fn().mockResolvedValue(true);
+    const session: JsonRpcSession = { call };
+
+    await executeOpenCcuProgram(session, "20");
+    await setOpenCcuSystemVariable(session, "30", 21.5);
+
+    expect(call).toHaveBeenNthCalledWith(
+      1,
+      "Program.execute",
+      { id: "20" },
+      undefined,
+    );
+    expect(call).toHaveBeenNthCalledWith(
+      2,
+      "SysVar.setValue",
+      { id: "30", value: 21.5 },
+      undefined,
+    );
   });
 
   it("keeps partial metadata when one method is unavailable", async () => {

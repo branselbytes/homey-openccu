@@ -43,6 +43,7 @@ interface RawProgram {
   readonly id?: unknown;
   readonly name?: unknown;
   readonly isActive?: unknown;
+  readonly isInternal?: unknown;
 }
 
 interface RawSystemVariable {
@@ -50,6 +51,8 @@ interface RawSystemVariable {
   readonly name?: unknown;
   readonly type?: unknown;
   readonly value?: unknown;
+  readonly isVisible?: unknown;
+  readonly isInternal?: unknown;
 }
 
 const METHODS = {
@@ -64,33 +67,37 @@ export async function loadOpenCcuMetadata(
   session: JsonRpcSession,
   signal?: AbortSignal,
 ): Promise<OpenCcuMetadataResult> {
-  const entries = await Promise.all(
-    Object.entries(METHODS).map(async ([key, method]) => {
-      try {
-        return [key, await session.call(method, {}, signal)] as const;
-      } catch (error) {
-        return [
-          key,
-          { issue: { method, message: safeErrorMessage(error) } },
-        ] as const;
-      }
-    }),
+  const issues: MetadataIssue[] = [];
+  const load = async <Result>(
+    method: string,
+    parse: (value: unknown) => Result,
+    fallback: Result,
+  ): Promise<Result> => {
+    try {
+      return parse(await session.call(method, {}, signal));
+    } catch (error) {
+      issues.push({ method, message: safeErrorMessage(error) });
+      return fallback;
+    }
+  };
+
+  const names = await load(METHODS.devices, parseNames, new Map());
+  const rooms = await load(METHODS.rooms, parseGroups, new Map());
+  const functions = await load(METHODS.functions, parseGroups, new Map());
+  const programs = await load(METHODS.programs, parsePrograms, []);
+  const systemVariables = await load(
+    METHODS.systemVariables,
+    parseSystemVariables,
+    [],
   );
-  const results = Object.fromEntries(entries) as Record<
-    keyof typeof METHODS,
-    unknown
-  >;
-  const issues = Object.values(results)
-    .filter(isIssueResult)
-    .map(({ issue }) => issue);
 
   return {
     metadata: {
-      names: parseNames(unwrap(results.devices)),
-      rooms: parseGroups(unwrap(results.rooms)),
-      functions: parseGroups(unwrap(results.functions)),
-      programs: parsePrograms(unwrap(results.programs)),
-      systemVariables: parseSystemVariables(unwrap(results.systemVariables)),
+      names,
+      rooms,
+      functions,
+      programs,
+      systemVariables,
     },
     issues,
   };
@@ -140,7 +147,8 @@ function parsePrograms(value: unknown): readonly OpenCcuProgram[] {
   return arrayOf<RawProgram>(value).flatMap((program) =>
     typeof program.id === "string" &&
     typeof program.name === "string" &&
-    typeof program.isActive === "boolean"
+    typeof program.isActive === "boolean" &&
+    program.isInternal !== true
       ? [{ id: program.id, name: program.name, active: program.isActive }]
       : [],
   );
@@ -150,17 +158,46 @@ function parseSystemVariables(
   value: unknown,
 ): readonly OpenCcuSystemVariable[] {
   return arrayOf<RawSystemVariable>(value).flatMap((variable) => {
-    if (typeof variable.id !== "string" || typeof variable.name !== "string") {
+    if (
+      typeof variable.id !== "string" ||
+      typeof variable.name !== "string" ||
+      variable.isInternal === true ||
+      variable.isVisible === false
+    ) {
       return [];
     }
     return [
       {
         id: variable.id,
         name: variable.name,
+        type: typeof variable.type === "string" ? variable.type : "UNKNOWN",
         value: parseSystemVariableValue(variable.type, variable.value),
       },
     ];
   });
+}
+
+export async function executeOpenCcuProgram(
+  session: JsonRpcSession,
+  id: string,
+  signal?: AbortSignal,
+): Promise<void> {
+  const result = await session.call("Program.execute", { id }, signal);
+  if (result === false) {
+    throw new Error(`OpenCCU did not execute program ${id}`);
+  }
+}
+
+export async function setOpenCcuSystemVariable(
+  session: JsonRpcSession,
+  id: string,
+  value: RpcValue,
+  signal?: AbortSignal,
+): Promise<void> {
+  const result = await session.call("SysVar.setValue", { id, value }, signal);
+  if (result === false) {
+    throw new Error(`OpenCCU did not update system variable ${id}`);
+  }
 }
 
 function parseSystemVariableValue(type: unknown, value: unknown): RpcValue {
@@ -190,16 +227,6 @@ function toRpcValue(value: unknown): RpcValue {
 
 function arrayOf<T>(value: unknown): readonly T[] {
   return Array.isArray(value) ? (value as readonly T[]) : [];
-}
-
-function isIssueResult(
-  value: unknown,
-): value is { readonly issue: MetadataIssue } {
-  return typeof value === "object" && value !== null && "issue" in value;
-}
-
-function unwrap(value: unknown): unknown {
-  return isIssueResult(value) ? [] : value;
 }
 
 function safeErrorMessage(error: unknown): string {

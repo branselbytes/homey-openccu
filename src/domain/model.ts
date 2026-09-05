@@ -75,6 +75,7 @@ export interface OpenCcuProgram {
 export interface OpenCcuSystemVariable {
   readonly id: string;
   readonly name: string;
+  readonly type: string;
   readonly value: RpcValue;
 }
 
@@ -97,8 +98,12 @@ export interface DeviceGraphInput {
   >;
 }
 
-export function buildHmIpDeviceGraph(input: DeviceGraphInput): ReadonlyMap<string, OpenCcuDevice> {
-  const descriptions = new Map(input.descriptions.map((description) => [description.ADDRESS, description]));
+export function buildHmIpDeviceGraph(
+  input: DeviceGraphInput,
+): ReadonlyMap<string, OpenCcuDevice> {
+  const descriptions = new Map(
+    input.descriptions.map((description) => [description.ADDRESS, description]),
+  );
   const devices = new Map<string, OpenCcuDevice>();
 
   for (const description of input.descriptions) {
@@ -107,7 +112,11 @@ export function buildHmIpDeviceGraph(input: DeviceGraphInput): ReadonlyMap<strin
     for (const channelAddress of description.CHILDREN ?? []) {
       const channel = descriptions.get(channelAddress);
       if (!channel) continue;
-      const dataPoints = createDataPoints(input, channelAddress, input.paramsets.get(channelAddress));
+      const dataPoints = createDataPoints(
+        input,
+        channelAddress,
+        input.paramsets.get(channelAddress),
+      );
       channels.set(channelAddress, {
         address: channelAddress,
         type: channel.TYPE,
@@ -125,8 +134,8 @@ export function buildHmIpDeviceGraph(input: DeviceGraphInput): ReadonlyMap<strin
       availability: "unknown",
       channels,
       configuration: new Map(
-        [...(input.configuration?.entries() ?? [])].filter(
-          ([channelAddress]) => channelAddress.startsWith(`${description.ADDRESS}:`),
+        [...(input.configuration?.entries() ?? [])].filter(([channelAddress]) =>
+          channelAddress.startsWith(`${description.ADDRESS}:`),
         ),
       ),
     });
@@ -155,7 +164,10 @@ function createDataPoints(
   return result;
 }
 
-function hasOperation(metadata: ParameterDescription, operation: number): boolean {
+function hasOperation(
+  metadata: ParameterDescription,
+  operation: number,
+): boolean {
   return (metadata.OPERATIONS & operation) === operation;
 }
 

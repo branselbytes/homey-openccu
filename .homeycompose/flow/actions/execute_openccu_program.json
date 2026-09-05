@@ -1,0 +1,20 @@
+{
+  "title": {
+    "en": "Execute OpenCCU program [[program]]",
+    "de": "OpenCCU-Programm [[program]] ausführen"
+  },
+  "titleFormatted": {
+    "en": "Execute OpenCCU program [[program]]",
+    "de": "OpenCCU-Programm [[program]] ausführen"
+  },
+  "args": [
+    {
+      "name": "program",
+      "type": "autocomplete",
+      "title": {
+        "en": "Program",
+        "de": "Programm"
+      }
+    }
+  ]
+}

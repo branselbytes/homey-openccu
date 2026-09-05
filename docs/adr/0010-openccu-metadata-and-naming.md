@@ -27,5 +27,5 @@ Never rename an already paired Homey device automatically. User-chosen Homey nam
 - Pairing lists use familiar OpenCCU names without coupling control to JSON-RPC.
 - Multi-output actors can use channel-specific names.
 - Existing Homey naming choices are preserved.
-- Programs and system variables are available to future Flow adapters.
+- Programs and visible system variables feed hub-level Flow autocomplete, actions, and conditions; internal objects are filtered at the protocol boundary.
 - Diagnostics expose only counts and issue counts, never names, values, or credentials.

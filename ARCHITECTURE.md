@@ -191,6 +191,10 @@ Observed OpenCCU product suffixes such as `R4M` and `I9F` are normalized for pro
 
 Authenticated JSON-RPC metadata loading now follows XML-RPC discovery without becoming part of XML-RPC connection health. The live-tested response adapters normalize `Device.listAllDetail`, `Room.getAll`, `Subsection.getAll`, `Program.getAll`, and `SysVar.getAll`; failures remain isolated per method. New pairing candidates prefer channel names, then device names, while already paired Homey names are never changed automatically. Rooms, functions, programs, and typed system-variable values remain available at the runtime boundary for later Flow and opt-in organization features.
 
+Hub-level Flow cards use opaque central/object selections rather than exposing raw addressing. Autocomplete includes only non-internal programs and visible, non-internal system variables. Program execution calls `Program.execute`; variable writes call `SysVar.setValue` after normalizing NUMBER, ALARM, LOGIC, STRING, and LIST input. Equality conditions refresh JSON-RPC metadata before comparing, so Flow decisions do not rely on startup snapshots. Hub actions validate every selected ID against current metadata and remain separate from device capability commands.
+
+Metadata methods run sequentially and each raw response is normalized before the next is requested, limiting peak allocations on Homey. The current regular test process remains below the memory warning threshold, while remote inspector mode can exceed it; production memory headroom must therefore be re-measured as device and Flow coverage grows.
+
 ## Recorded decisions
 
 - `docs/adr/0001-initial-product-scope.md`: HmIP-RF first; programs and system variables in the first usable release.
@@ -216,6 +220,7 @@ Authenticated JSON-RPC metadata loading now follows XML-RPC discovery without be
 - XML-RPC push requires OpenCCU to reach a callback server inside the Homey app; VLAN, firewall, NAT, and address selection can break events.
 - Homematic channel semantics cannot always be inferred from datapoint types; complex devices require curated profiles.
 - Adding many capabilities dynamically can create unstable device presentations or exceed practical Homey limits.
+- The large static driver catalogue and remote debug inspector reduce memory headroom; release testing must track regular-process PSS separately from debug overhead.
 - Modern OpenCCU authentication/TLS combinations vary; permissive fallbacks could create security problems.
 - Useful device knowledge remains recoverable from the imported Git history, but only the currently profiled device families are active. Expanding dedicated coverage requires fixture- and hardware-backed profile work.
 - Without representative hardware or recorded fixtures, protocol compatibility and event recovery cannot be proven locally.

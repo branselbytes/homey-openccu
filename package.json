@@ -20,8 +20,8 @@
   "scripts": {
     "build": "tsc",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm test",
-    "format": "prettier --write AGENTS.md ARCHITECTURE.md DEVICE_SUPPORT.md IMPLEMENTATION_PLAN.md README.md app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts .github/workflows settings locales tests docs/adr drivers",
-    "format:check": "prettier --check AGENTS.md ARCHITECTURE.md DEVICE_SUPPORT.md IMPLEMENTATION_PLAN.md README.md app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts .github/workflows settings locales tests docs/adr drivers",
+    "format": "prettier --write AGENTS.md ARCHITECTURE.md DEVICE_SUPPORT.md IMPLEMENTATION_PLAN.md README.md app.json app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts .github/workflows .homeycompose settings locales tests docs/adr drivers",
+    "format:check": "prettier --check AGENTS.md ARCHITECTURE.md DEVICE_SUPPORT.md IMPLEMENTATION_PLAN.md README.md app.json app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts .github/workflows .homeycompose settings locales tests docs/adr drivers",
     "lint": "eslint app.ts src/**/*.ts drivers/**/*.ts tests/**/*.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit && tsc --project tsconfig.test.json"

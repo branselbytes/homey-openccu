@@ -1,0 +1,28 @@
+{
+  "title": {
+    "en": "Set OpenCCU variable [[variable]] to [[value]]",
+    "de": "OpenCCU-Systemvariable [[variable]] auf [[value]] setzen"
+  },
+  "titleFormatted": {
+    "en": "Set OpenCCU variable [[variable]] to [[value]]",
+    "de": "OpenCCU-Systemvariable [[variable]] auf [[value]] setzen"
+  },
+  "args": [
+    {
+      "name": "variable",
+      "type": "autocomplete",
+      "title": {
+        "en": "System variable",
+        "de": "Systemvariable"
+      }
+    },
+    {
+      "name": "value",
+      "type": "text",
+      "title": {
+        "en": "Value",
+        "de": "Wert"
+      }
+    }
+  ]
+}

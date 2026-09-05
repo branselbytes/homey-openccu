@@ -130,12 +130,16 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 - [x] Add selective profile-owned MASTER configuration reads and mode-aware HmIP-RGBW logical outputs with a safe single-dimmer fallback.
 - [x] Add separate HmIP-SWO-B/PL/PR drivers with discovery-filtered wind, rain, and sunshine-duration capabilities in matching units.
 - [x] Port the final three legacy HmIP product drivers: BRA button events, SCI contact, and discovery-adaptive FCI1 contact/button behavior.
-- Add programs and system variables to Flow/UI surfaces.
+- [x] Add program execution, typed system-variable writes, and refreshed equality checks to Homey Flow with dynamic autocomplete.
 - Decide whether rooms and functions should optionally create Homey zones/tags; never change them implicitly.
 - Port additional legacy knowledge into profiles, backed by fixtures and hardware reports.
 - Add a privacy-reviewed diagnostic export suitable for issue reports.
 
 Exit criterion: documented coverage matrix, regression fixtures, and a repeatable unsupported-device intake process.
+
+The hub Flow cards are manifest-, fixture-, and read-path verified on Homey Test. Live metadata filtering exposes 9 non-internal programs and 14 visible, non-internal system variables on the current OpenCCU. A dedicated disposable program or system variable is still required before write execution can be hardware verified without affecting production automation.
+
+The regular Homey Test process stabilized at 92.8–93.5 MB PSS and 0% idle CPU while XML-RPC callbacks continued. Remote debug/inspector mode crossed Homey's memory warning threshold, although the JSON-RPC payloads total only about 153 KB. Metadata responses are normalized sequentially to avoid concurrent response trees. Memory headroom, debug-mode behavior, and the static driver count remain explicit Phase 7 performance-review items.
 
 ## Phase 7 — Release readiness
 

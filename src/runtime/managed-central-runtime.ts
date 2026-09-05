@@ -12,10 +12,9 @@ import {
   OpenCcuJsonRpcClient,
   OpenCcuJsonRpcSession,
 } from "../protocol/jsonrpc/client";
-import {
-  loadOpenCcuMetadata,
-  type JsonRpcSession,
-  type OpenCcuMetadataResult,
+import type {
+  JsonRpcSession,
+  OpenCcuMetadataResult,
 } from "../protocol/jsonrpc/metadata";
 import type { RuntimeFactory } from "./application-lifecycle";
 import { OpenCcuRuntime } from "./openccu-runtime";
@@ -111,14 +110,15 @@ export class ManagedCentralRuntimeFactory implements RuntimeFactory<ManagedCentr
         username: config.username,
         password: config.password,
       });
+    const jsonRpcSession =
+      this.#options.createJsonRpcSession?.(config) ??
+      createJsonRpcSession(config);
     const core = new OpenCcuRuntime(client, {
       centralId: config.centralId,
       interfaceId: HMIP_RF_INTERFACE_ID,
       descriptionCache: this.#options.descriptionCache,
+      jsonRpcSession,
     });
-    const jsonRpcSession =
-      this.#options.createJsonRpcSession?.(config) ??
-      createJsonRpcSession(config);
     const callbackServer =
       this.#options.createCallbackServer?.({
         host: this.#options.callbackBindHost ?? "0.0.0.0",
@@ -139,9 +139,10 @@ export class ManagedCentralRuntimeFactory implements RuntimeFactory<ManagedCentr
         await client.init(callbackUrl, HMIP_RF_INTERFACE_ID, signal);
         await core.refresh(signal);
         if (jsonRpcSession !== undefined) {
-          const result = await loadOpenCcuMetadata(jsonRpcSession, signal);
-          core.updateMetadata(result);
-          this.#options.onMetadataLoaded?.(config.centralId, result);
+          const result = await core.refreshMetadata(signal);
+          if (result !== undefined) {
+            this.#options.onMetadataLoaded?.(config.centralId, result);
+          }
         }
       },
       disconnect: async () => {
