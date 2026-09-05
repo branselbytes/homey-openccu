@@ -5,6 +5,7 @@ import {
   resolveProfileBindings,
   type DeviceProfile,
   type ProfileMappingDefinition,
+  type ProfileConfigurationParameter,
 } from "./types";
 
 export class ProfileRegistry {
@@ -32,6 +33,12 @@ export class ProfileRegistry {
         (type) => normalizeDeviceType(type) === normalized,
       ),
     );
+  }
+
+  configurationParameters(
+    deviceType: string,
+  ): readonly ProfileConfigurationParameter[] {
+    return this.find(deviceType)?.configurationParameters ?? [];
   }
 
   resolve(

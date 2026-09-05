@@ -125,6 +125,7 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 - [x] Add individual HmIP-FSM and HmIP-FSM16 switching and energy-measurement drivers.
 - [x] Add individual HmIP-FSI6 and HmIP-FSI16 switch drivers on the input-layout receiver channel.
 - [x] Add HmIP-DRG-DALI logical outputs 1–48 with discovered dim, hue, and saturation capabilities; defer metadata-normalized color temperature.
+- [x] Add selective profile-owned MASTER configuration reads and mode-aware HmIP-RGBW logical outputs with a safe single-dimmer fallback.
 - Add programs and system variables to Flow/UI surfaces.
 - Use OpenCCU names, rooms, and functions to improve pairing and diagnostics according to the approved naming policy.
 - Port additional legacy knowledge into profiles, backed by fixtures and hardware reports.

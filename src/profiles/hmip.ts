@@ -95,6 +95,42 @@ function daliOutputs(): readonly LogicalDeviceProfile[] {
   });
 }
 
+const RGB_MODES = ["RGB", "RGBW"] as const;
+const PWM_MODE = ["4_PWM"] as const;
+const TUNABLE_WHITE_OR_PWM_MODES = ["2_TUNABLE_WHITE", "4_PWM"] as const;
+
+function operationModeCondition(oneOf: readonly string[]) {
+  return [{ channel: 0, parameter: "DEVICE_OPERATION_MODE", oneOf }] as const;
+}
+
+function rgbwOutput(
+  channel: number,
+  modes?: readonly string[],
+): LogicalDeviceProfile {
+  return {
+    id: `output-${channel}`,
+    nameSuffix: `Output ${channel}`,
+    nameChannel: channel,
+    ...(modes === undefined ? {} : { conditions: operationModeCondition(modes) }),
+    bindings: [
+      ...dimmerBindings(channel),
+      {
+        capability: "light_hue",
+        channel,
+        parameter: "HUE",
+        transform: "hue-degrees-to-ratio",
+        conditions: operationModeCondition(RGB_MODES),
+      },
+      {
+        capability: "light_saturation",
+        channel,
+        parameter: "SATURATION",
+        conditions: operationModeCondition(RGB_MODES),
+      },
+    ],
+  };
+}
+
 const HMIP_DRSI4_PROFILE: DeviceProfile = {
   id: "hmip-drsi4",
   driverId: "HmIP-DRSI4",
@@ -213,6 +249,22 @@ const HMIP_DRG_DALI_PROFILE: DeviceProfile = {
   deviceTypes: ["HmIP-DRG-DALI"],
   bindings: [],
   logicalDevices: daliOutputs(),
+};
+
+const HMIP_RGBW_PROFILE: DeviceProfile = {
+  id: "hmip-rgbw",
+  driverId: "HmIP-RGBW",
+  deviceTypes: ["HmIP-RGBW"],
+  bindings: [],
+  configurationParameters: [
+    { channel: 0, parameter: "DEVICE_OPERATION_MODE" },
+  ],
+  logicalDevices: [
+    rgbwOutput(1),
+    rgbwOutput(2, TUNABLE_WHITE_OR_PWM_MODES),
+    rgbwOutput(3, PWM_MODE),
+    rgbwOutput(4, PWM_MODE),
+  ],
 };
 
 const HMIP_BSM_PROFILE: DeviceProfile = {
@@ -884,6 +936,7 @@ export const HMIP_PROFILES = [
   HMIP_PDT_PROFILE,
   HMIP_DRDI3_PROFILE,
   HMIP_DRG_DALI_PROFILE,
+  HMIP_RGBW_PROFILE,
   HMIP_BSM_PROFILE,
   HMIP_FSM_PROFILE,
   HMIP_FSM16_PROFILE,

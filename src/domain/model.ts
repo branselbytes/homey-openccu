@@ -46,6 +46,10 @@ export interface OpenCcuDevice {
   readonly updatable: boolean;
   readonly availability: Availability;
   readonly channels: ReadonlyMap<string, OpenCcuChannel>;
+  readonly configuration?: ReadonlyMap<
+    string,
+    Readonly<Record<string, RpcValue>>
+  >;
 }
 
 export interface OpenCcuInterface {
@@ -87,6 +91,10 @@ export interface DeviceGraphInput {
   readonly interfaceId: string;
   readonly descriptions: readonly DeviceDescription[];
   readonly paramsets: ReadonlyMap<string, ParamsetDescription>;
+  readonly configuration?: ReadonlyMap<
+    string,
+    Readonly<Record<string, RpcValue>>
+  >;
 }
 
 export function buildHmIpDeviceGraph(input: DeviceGraphInput): ReadonlyMap<string, OpenCcuDevice> {
@@ -116,6 +124,11 @@ export function buildHmIpDeviceGraph(input: DeviceGraphInput): ReadonlyMap<strin
       updatable: description.UPDATABLE ?? false,
       availability: "unknown",
       channels,
+      configuration: new Map(
+        [...(input.configuration?.entries() ?? [])].filter(
+          ([channelAddress]) => channelAddress.startsWith(`${description.ADDRESS}:`),
+        ),
+      ),
     });
   }
   return devices;

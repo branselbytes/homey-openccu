@@ -2,6 +2,7 @@ import { buildHmIpDeviceGraph, type OpenCcuDevice } from "../domain/model";
 import type {
   DeviceDescription,
   ParamsetDescription,
+  RpcValue,
   XmlRpcClient,
 } from "../protocol/xmlrpc/types";
 import { createDescriptionCacheKey } from "../cache/versioned-cache";
@@ -17,6 +18,9 @@ export interface DiscoveryOptions {
   readonly interfaceId: string;
   readonly concurrency?: number;
   readonly descriptionCache?: DescriptionCache;
+  readonly configurationParameters?: (
+    deviceType: string,
+  ) => readonly { readonly channel: number; readonly parameter: string }[];
 }
 
 export interface ParamsetDiscoveryIssue {
@@ -49,6 +53,10 @@ export async function discoverHmIpDevices(
   );
   const paramsets = new Map<string, ParamsetDescription>();
   const issues: ParamsetDiscoveryIssue[] = [];
+  const configuration = new Map<
+    string,
+    Readonly<Record<string, RpcValue>>
+  >();
 
   await mapConcurrent(channels, concurrency, async (channel) => {
     const cacheKey = createDescriptionCacheKey(
@@ -73,17 +81,85 @@ export async function discoverHmIpDevices(
     }
   });
 
+  const configurationRequests = descriptions
+    .filter((description) => description.PARENT === undefined)
+    .flatMap((device) =>
+      groupConfigurationParameters(
+        device.ADDRESS,
+        options.configurationParameters?.(device.TYPE) ?? [],
+      ),
+    );
+  await mapConcurrent(configurationRequests, concurrency, async (request) => {
+    try {
+      const [metadata, values] = await Promise.all([
+        client.getParamsetDescription(request.channelAddress, "MASTER", signal),
+        client.getParamset(request.channelAddress, "MASTER", signal),
+      ]);
+      configuration.set(
+        request.channelAddress,
+        Object.fromEntries(
+          request.parameters.flatMap((parameter) => {
+            if (!(parameter in values)) return [];
+            return [
+              [
+                parameter,
+                normalizeConfigurationValue(values[parameter], metadata[parameter]),
+              ],
+            ];
+          }),
+        ),
+      );
+    } catch (error) {
+      if (signal?.aborted) throw error;
+      issues.push({
+        channelAddress: request.channelAddress,
+        message: safeErrorMessage(error),
+      });
+    }
+  });
+
   return {
     devices: buildHmIpDeviceGraph({
       centralId: options.centralId,
       interfaceId: options.interfaceId,
       descriptions,
       paramsets,
+      configuration,
     }),
     descriptions,
     paramsets,
     issues,
   };
+}
+
+function groupConfigurationParameters(
+  deviceAddress: string,
+  parameters: readonly { readonly channel: number; readonly parameter: string }[],
+): readonly { readonly channelAddress: string; readonly parameters: readonly string[] }[] {
+  const grouped = new Map<number, string[]>();
+  for (const entry of parameters) {
+    const values = grouped.get(entry.channel) ?? [];
+    if (!values.includes(entry.parameter)) values.push(entry.parameter);
+    grouped.set(entry.channel, values);
+  }
+  return [...grouped].map(([channel, values]) => ({
+    channelAddress: `${deviceAddress}:${channel}`,
+    parameters: values,
+  }));
+}
+
+function normalizeConfigurationValue(
+  value: RpcValue,
+  metadata: ParamsetDescription[string] | undefined,
+): RpcValue {
+  if (
+    metadata?.TYPE === "ENUM" &&
+    typeof value === "number" &&
+    Number.isInteger(value)
+  ) {
+    return metadata.VALUE_LIST?.[value] ?? value;
+  }
+  return value;
 }
 
 export function descriptionCacheKey(

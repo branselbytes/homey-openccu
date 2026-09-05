@@ -15,6 +15,7 @@ import {
   transformToOpenCcu,
 } from "../mapping/transforms";
 import type { CapabilityBinding } from "../mapping/types";
+import { ProfileRegistry } from "../profiles/registry";
 import {
   descriptionCacheKey,
   discoverHmIpDevices,
@@ -40,6 +41,7 @@ export class OpenCcuRuntime {
   readonly #client: XmlRpcClient;
   readonly #options: OpenCcuRuntimeOptions;
   readonly #events = new TypedEventBus<OpenCcuEvents>();
+  readonly #profiles = new ProfileRegistry();
   #discovery?: HmIpDiscoveryResult;
   #connectionState: ConnectionState = "stopped";
 
@@ -78,6 +80,8 @@ export class OpenCcuRuntime {
         interfaceId: this.#options.interfaceId,
         concurrency: this.#options.discoveryConcurrency,
         descriptionCache: this.#options.descriptionCache,
+        configurationParameters: (deviceType) =>
+          this.#profiles.configurationParameters(deviceType),
       },
       signal,
     );
@@ -92,6 +96,7 @@ export class OpenCcuRuntime {
       centralId: this.#options.centralId,
       interfaceId: this.#options.interfaceId,
       names,
+      profiles: this.#profiles,
     });
   }
 

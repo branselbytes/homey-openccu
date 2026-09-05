@@ -1,7 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 
 import { OpenCcuRuntime } from "../../src/runtime/openccu-runtime";
-import type { XmlRpcClient } from "../../src/protocol/xmlrpc/types";
+import type {
+  ParamsetDescription,
+  RpcValue,
+  XmlRpcClient,
+} from "../../src/protocol/xmlrpc/types";
 
 function createClient(): XmlRpcClient {
   return {
@@ -58,6 +62,75 @@ describe("OpenCcuRuntime", () => {
     ).toMatchObject([
       { driverId: "HMIP-PS", name: "Licht", capabilities: ["onoff"] },
     ]);
+  });
+
+  it("uses profile-owned MASTER configuration for RGBW pairing topology", async () => {
+    const getParamsetDescription = vi.fn(
+      (_address: string, paramsetKey = "VALUES") => {
+        const response: ParamsetDescription =
+          paramsetKey === "MASTER"
+            ? {
+                DEVICE_OPERATION_MODE: {
+                  TYPE: "ENUM" as const,
+                  OPERATIONS: 3,
+                  FLAGS: 1,
+                  VALUE_LIST: ["RGB", "RGBW", "2_TUNABLE_WHITE", "4_PWM"],
+                },
+              }
+            : {
+                LEVEL: { TYPE: "FLOAT" as const, OPERATIONS: 7, FLAGS: 1 },
+              };
+        return Promise.resolve(response);
+      },
+    );
+    const client: XmlRpcClient = {
+      ...createClient(),
+      listDevices: vi.fn().mockResolvedValue([
+        {
+          ADDRESS: "501",
+          TYPE: "HmIP-RGBW",
+          CHILDREN: ["501:0", "501:1", "501:2", "501:3", "501:4"],
+        },
+        {
+          ADDRESS: "501:0",
+          TYPE: "DEVICE_CONFIG",
+          PARENT: "501",
+          PARAMSETS: ["MASTER"],
+        },
+        ...[1, 2, 3, 4].map((channel) => ({
+          ADDRESS: `501:${channel}`,
+          TYPE: "DIMMER",
+          PARENT: "501",
+          PARAMSETS: ["VALUES"],
+        })),
+      ]),
+      getParamsetDescription,
+      getParamset: vi.fn((_address: string, paramsetKey = "VALUES") => {
+        const response: Readonly<Record<string, RpcValue>> =
+          paramsetKey === "MASTER"
+            ? { DEVICE_OPERATION_MODE: 3 }
+            : { LEVEL: 0 };
+        return Promise.resolve(response);
+      }),
+    };
+    const runtime = new OpenCcuRuntime(client, {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+    });
+
+    await runtime.refresh();
+
+    expect(
+      runtime.pairingCandidates().map(({ driverId, data }) => ({
+        driverId,
+        logicalId: data.logicalId,
+      })),
+    ).toEqual(
+      [1, 2, 3, 4].map((channel) => ({
+        driverId: "HmIP-RGBW",
+        logicalId: `output-${channel}`,
+      })),
+    );
   });
 
   it("routes callback events through listener-specific subscriptions", async () => {

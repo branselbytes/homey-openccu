@@ -140,6 +140,18 @@ function sensor(
   };
 }
 
+function withOperationMode(
+  device: OpenCcuDevice,
+  mode: "RGB" | "RGBW" | "2_TUNABLE_WHITE" | "4_PWM",
+): OpenCcuDevice {
+  return {
+    ...device,
+    configuration: new Map([
+      [`${device.address}:0`, { DEVICE_OPERATION_MODE: mode }],
+    ]),
+  };
+}
+
 describe("ProfileRegistry", () => {
   it("resolves a dedicated HmIP power-meter profile", () => {
     expect(
@@ -505,6 +517,50 @@ describe("ProfileRegistry", () => {
       "onoff",
       "dim",
     ]);
+  });
+
+  it.each([
+    ["RGBW", ["output-1"], ["onoff", "dim", "light_hue", "light_saturation"]],
+    ["2_TUNABLE_WHITE", ["output-1", "output-2"], ["onoff", "dim"]],
+    [
+      "4_PWM",
+      ["output-1", "output-2", "output-3", "output-4"],
+      ["onoff", "dim"],
+    ],
+  ] as const)(
+    "maps HmIP-RGBW operation mode %s to its active logical outputs",
+    (mode, logicalIds, firstCapabilities) => {
+      const device = withOperationMode(
+        sensor("HmIP-RGBW", [
+          ...[1, 2, 3, 4].flatMap((channel) => [
+            [channel, "LEVEL", "FLOAT"] as const,
+            [channel, "HUE", "INTEGER"] as const,
+            [channel, "SATURATION", "FLOAT"] as const,
+          ]),
+        ]),
+        mode,
+      );
+      const mappings = resolveDeviceMappings(device);
+
+      expect(new ProfileRegistry().find("HmIP-RGBW")?.driverId).toBe(
+        "HmIP-RGBW",
+      );
+      expect(mappings.map(({ logicalId }) => logicalId)).toEqual(logicalIds);
+      expect(mappings[0]?.bindings.map(({ capability }) => capability)).toEqual(
+        firstCapabilities,
+      );
+    },
+  );
+
+  it("falls back to one safe RGBW dimmer output when mode discovery fails", () => {
+    const mappings = resolveDeviceMappings(
+      sensor("HmIP-RGBW", [[1, "LEVEL", "FLOAT"]]),
+    );
+    expect(mappings).toHaveLength(1);
+    expect(mappings[0]).toMatchObject({
+      driverId: "HmIP-RGBW",
+      logicalId: "output-1",
+    });
   });
 
   it.each([

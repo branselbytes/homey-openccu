@@ -5,6 +5,18 @@ import type {
   ValueTransform,
   WriteStrategy,
 } from "../mapping/types";
+import type { RpcScalar } from "../protocol/xmlrpc/types";
+
+export interface ProfileConfigurationParameter {
+  readonly channel: number;
+  readonly parameter: string;
+}
+
+export interface ProfileCondition {
+  readonly channel: number;
+  readonly parameter: string;
+  readonly oneOf: readonly RpcScalar[];
+}
 
 export interface ProfileBinding {
   readonly capability: string;
@@ -17,11 +29,13 @@ export interface ProfileBinding {
   readonly requiredWriteParameters?: readonly string[];
   readonly transform?: ValueTransform;
   readonly writeStrategy?: WriteStrategy;
+  readonly conditions?: readonly ProfileCondition[];
 }
 
 export interface ProfileMappingDefinition {
   readonly bindings: readonly ProfileBinding[];
   readonly buttonChannels?: readonly number[];
+  readonly conditions?: readonly ProfileCondition[];
 }
 
 export interface LogicalDeviceProfile extends ProfileMappingDefinition {
@@ -35,12 +49,14 @@ export interface DeviceProfile extends ProfileMappingDefinition {
   readonly driverId: string;
   readonly deviceTypes: readonly string[];
   readonly logicalDevices?: readonly LogicalDeviceProfile[];
+  readonly configurationParameters?: readonly ProfileConfigurationParameter[];
 }
 
 export function resolveProfileButtonEvents(
   device: OpenCcuDevice,
   profile: ProfileMappingDefinition,
 ): readonly ButtonEventBinding[] {
+  if (!matchesConditions(device, profile.conditions)) return [];
   const result: ButtonEventBinding[] = [];
   for (const channelIndex of profile.buttonChannels ?? []) {
     const channel = [...device.channels.values()].find(
@@ -67,8 +83,10 @@ export function resolveProfileBindings(
   device: OpenCcuDevice,
   profile: ProfileMappingDefinition,
 ): readonly CapabilityBinding[] {
+  if (!matchesConditions(device, profile.conditions)) return [];
   const result: CapabilityBinding[] = [];
   for (const definition of profile.bindings) {
+    if (!matchesConditions(device, definition.conditions)) continue;
     const channel = [...device.channels.values()].find(
       (candidate) => candidate.index === definition.channel,
     );
@@ -100,6 +118,18 @@ export function resolveProfileBindings(
     });
   }
   return result;
+}
+
+function matchesConditions(
+  device: OpenCcuDevice,
+  conditions: readonly ProfileCondition[] | undefined,
+): boolean {
+  return (conditions ?? []).every((condition) => {
+    const value = device.configuration?.get(
+      `${device.address}:${condition.channel}`,
+    )?.[condition.parameter];
+    return condition.oneOf.some((expected) => Object.is(expected, value));
+  });
 }
 
 function hasRequiredWriteParameters(
