@@ -28,7 +28,7 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 | Blind                  | HmIP-FBL, HmIP-BBL                                                                                         | fixture; position, explicit up/down/stop, and slat position            |
 | Door lock              | HmIP-DLD                                                                                                   | fixture; native Homey lock/unlock; latch-open action pending           |
 | Garage door            | HmIP-MOD-HO, HmIP-MOD-TM                                                                                   | fixture; native open/close; stop and ventilation actions pending       |
-| Weather sensor         | HmIP-SWO-PR                                                                                                | fixture; standard temperature/humidity/luminance subset                |
+| Weather sensor         | HmIP-SWO-B, HmIP-SWO-PL, HmIP-SWO-PR                                                                       | fixture; discovery-filtered climate, wind, rain, and sunshine values   |
 | Light sensor           | HmIP-SLO                                                                                                   | fixture; current illuminance subset                                    |
 | Temperature sensor     | HmIP-STE2-PCB                                                                                              | fixture; first probe only                                              |
 | CO₂ sensor + relay     | HmIP-SCTH230                                                                                               | fixture; CO₂, temperature, humidity, relay; indicator LED pending      |
@@ -51,6 +51,6 @@ Both external references are MIT licensed. Concepts and datapoint semantics are 
 
 ## Next batches
 
-1. Extended weather sensors.
-2. Enhanced covers/blinds, locks, siren/valve options, combined devices, and metadata-normalized light color temperature.
+1. Enhanced covers/blinds, locks, siren/valve options, and combined devices.
+2. Add metadata-normalized light color temperature.
 3. Add redacted OpenCCU fixtures and promote devices to hardware verified as equipment becomes available.

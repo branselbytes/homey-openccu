@@ -635,6 +635,40 @@ describe("ProfileRegistry", () => {
     ).toEqual(["measure_temperature", "measure_humidity", "alarm_battery"]);
   });
 
+  it.each([
+    ["HmIP-SWO-B", "HmIP-SWO-B"],
+    ["HmIP-SWO-PL", "HmIP-SWO-PL"],
+    ["HmIP-SWO-PR", "HmIP-SWO-PR"],
+  ])("maps %s weather datapoints through driver %s", (type, driverId) => {
+    const registry = new ProfileRegistry();
+    expect(registry.find(type)?.driverId).toBe(driverId);
+    expect(
+      resolveDeviceMapping(
+        sensor(type, [
+          [1, "ACTUAL_TEMPERATURE", "FLOAT"],
+          [1, "HUMIDITY", "FLOAT"],
+          [1, "ILLUMINATION", "FLOAT"],
+          [1, "WIND_SPEED", "FLOAT"],
+          [1, "WIND_DIRECTION", "FLOAT"],
+          [1, "RAINING", "BOOL"],
+          [1, "RAIN_COUNTER", "FLOAT"],
+          [1, "SUNSHINEDURATION", "INTEGER"],
+          [0, "LOW_BAT", "BOOL"],
+        ]),
+      ).bindings.map(({ capability }) => capability),
+    ).toEqual([
+      "measure_temperature",
+      "measure_humidity",
+      "measure_luminance",
+      "measure_wind_strength",
+      "measure_wind_angle",
+      "alarm_rain",
+      "measure_rain",
+      "homematic_sunshine_duration",
+      "alarm_battery",
+    ]);
+  });
+
   it("maps HmIP-SCTH230 air quality, climate, and physical relay", () => {
     const registry = new ProfileRegistry();
     expect(registry.find("HmIP-SCTH230")?.driverId).toBe("HmIP-SCTH230");

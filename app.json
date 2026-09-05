@@ -1504,6 +1504,56 @@
       ]
     },
     {
+      "id": "HmIP-SWO-B",
+      "name": {
+        "en": "HmIP-SWO-B"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-SWO-PL",
+      "name": {
+        "en": "HmIP-SWO-PL"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-SWO-PR",
       "name": {
         "en": "HmIP-SWO-PR"
@@ -1878,6 +1928,21 @@
       "uiComponent": "picker",
       "getable": true,
       "setable": false
+    },
+    "homematic_sunshine_duration": {
+      "type": "number",
+      "title": {
+        "en": "Sunshine duration",
+        "de": "Sonnenscheindauer"
+      },
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "units": {
+        "en": "min",
+        "de": "min"
+      },
+      "decimals": 0
     },
     "homematic_thermostat_boost": {
       "type": "boolean",

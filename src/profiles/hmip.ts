@@ -461,21 +461,65 @@ export const HMIP_CONTACT_2_PROFILE: DeviceProfile = {
   ],
 };
 
-export const HMIP_WEATHER_PROFILE: DeviceProfile = {
-  id: "hmip-weather",
-  driverId: "HmIP-SWO-PR",
-  deviceTypes: ["HmIP-SWO-PR"],
-  bindings: [
-    {
-      capability: "measure_temperature",
-      channel: 1,
-      parameter: "ACTUAL_TEMPERATURE",
-    },
-    { capability: "measure_humidity", channel: 1, parameter: "HUMIDITY" },
-    { capability: "measure_luminance", channel: 1, parameter: "ILLUMINATION" },
-    SENSOR_MAINTENANCE_BINDING,
-  ],
-};
+const WEATHER_BINDINGS: DeviceProfile["bindings"] = [
+  {
+    capability: "measure_temperature",
+    channel: 1,
+    parameter: "ACTUAL_TEMPERATURE",
+  },
+  { capability: "measure_humidity", channel: 1, parameter: "HUMIDITY" },
+  { capability: "measure_luminance", channel: 1, parameter: "ILLUMINATION" },
+  {
+    capability: "measure_wind_strength",
+    channel: 1,
+    parameter: "WIND_SPEED",
+  },
+  {
+    capability: "measure_wind_angle",
+    channel: 1,
+    parameter: "WIND_DIRECTION",
+    fallbackParameters: ["WIND_DIR"],
+  },
+  {
+    capability: "alarm_rain",
+    channel: 1,
+    parameter: "RAINING",
+    transform: "boolean",
+  },
+  { capability: "measure_rain", channel: 1, parameter: "RAIN_COUNTER" },
+  {
+    capability: "homematic_sunshine_duration",
+    channel: 1,
+    parameter: "SUNSHINEDURATION",
+  },
+  SENSOR_MAINTENANCE_BINDING,
+];
+
+function weatherProfile(
+  id: string,
+  driverId: string,
+  deviceType: string,
+): DeviceProfile {
+  return { id, driverId, deviceTypes: [deviceType], bindings: WEATHER_BINDINGS };
+}
+
+export const HMIP_WEATHER_PROFILE = weatherProfile(
+  "hmip-weather-pro",
+  "HmIP-SWO-PR",
+  "HmIP-SWO-PR",
+);
+
+const HMIP_WEATHER_BASIC_PROFILE = weatherProfile(
+  "hmip-weather-basic",
+  "HmIP-SWO-B",
+  "HmIP-SWO-B",
+);
+
+const HMIP_WEATHER_PLUS_PROFILE = weatherProfile(
+  "hmip-weather-plus",
+  "HmIP-SWO-PL",
+  "HmIP-SWO-PL",
+);
 
 export const HMIP_LIGHT_SENSOR_PROFILE: DeviceProfile = {
   id: "hmip-light-sensor",
@@ -947,6 +991,8 @@ export const HMIP_PROFILES = [
   HMIP_SRH_PROFILE,
   HMIP_CONTACT_2_PROFILE,
   HMIP_WEATHER_PROFILE,
+  HMIP_WEATHER_BASIC_PROFILE,
+  HMIP_WEATHER_PLUS_PROFILE,
   HMIP_LIGHT_SENSOR_PROFILE,
   HMIP_TEMPERATURE_SENSOR_PROFILE,
   HMIP_SCTH230_PROFILE,

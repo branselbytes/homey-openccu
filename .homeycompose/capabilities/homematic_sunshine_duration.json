@@ -1,0 +1,15 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Sunshine duration",
+    "de": "Sonnenscheindauer"
+  },
+  "getable": true,
+  "setable": false,
+  "insights": true,
+  "units": {
+    "en": "min",
+    "de": "min"
+  },
+  "decimals": 0
+}
