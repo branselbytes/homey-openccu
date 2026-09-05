@@ -11,7 +11,7 @@ This plan deliberately separates repository modernization from behavior changes.
 - [x] Add contributor and architecture documentation.
 - [x] Record the initial interface, hub-feature, driver, identity, TypeScript, and branch decisions.
 - [x] Confirm Node.js 22 as the Homey runtime and verify the current Homey CLI with a checksummed temporary Node.js 24 toolchain.
-- [ ] Confirm access to a test Homey Pro and dedicated or recorded OpenCCU environment.
+- [x] Confirm access to Homey Test and the local OpenCCU environment.
 
 Exit criterion: architecture and initial scope are approved, and local tool versions are recorded.
 
@@ -92,7 +92,7 @@ Exit criterion: the prototype pairs representative devices, processes live event
 - [x] Add explicit thermostat mode, boost, and week-profile Flow actions.
 - [x] Remove inactive legacy drivers, transports, API surfaces, tools, Flow cards, and runtime dependencies from the active tree.
 - [x] Validate pairing, dynamic capabilities, callbacks, temperature commands, restart, and reconnect on Homey Pro with OpenCCU.
-- [ ] Publish a hardware-verified initial device matrix.
+- [x] Start a hardware-verified device matrix in `DEVICE_SUPPORT.md` (expand it as more hardware becomes available).
 - Map standard capabilities and capability-provided Flow cards first.
 - Add Homematic-specific Flow triggers/actions only where standard cards are insufficient.
 - Preserve unknown-device diagnostics instead of silently ignoring devices.
@@ -101,7 +101,7 @@ Exit criterion: end-to-end hardware tests pass for the agreed initial matrix, in
 
 ### Current handoff point
 
-HmIP-RF registration, discovery, pairing, temperature commands, delayed write acknowledgement, callback updates, and restart/reconnect have been exercised on Homey Test against OpenCCU. Dedicated `HmIP-eTRV-2` pairing and activation have also been verified for HmIP-eTRV-B-2, HmIP-eTRV-E-A, and HmIP-eTRV-2 variants; a stored-binding parser regression found during that test now has automated coverage. The remaining hardware gate is validating mode, boost, week profile, valve position, deletion, and re-pairing. Redacted real responses should then become regression fixtures before coverage expands.
+HmIP-RF registration, discovery, pairing, temperature commands, delayed write acknowledgement, callback updates, and restart/reconnect have been exercised on Homey Test against OpenCCU. Dedicated `HmIP-eTRV-2` pairing and activation have also been verified for HmIP-eTRV-B-2, HmIP-eTRV-E-A, and HmIP-eTRV-2 variants; a stored-binding parser regression found during that test now has automated coverage. The dedicated `HmIP-SWO-PR` driver has additionally been paired and verified with live initial reads and subsequent XML-RPC push updates for illuminance and wind data. The remaining thermostat hardware gate is validating mode, boost, week profile, valve position, deletion, and re-pairing. Redacted real responses should then become regression fixtures before coverage expands.
 
 ## Phase 6 — Hub features and coverage expansion
 

@@ -28,7 +28,8 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 | Blind                  | HmIP-FBL, HmIP-BBL                                                                                         | fixture; position, explicit up/down/stop, and slat position            |
 | Door lock              | HmIP-DLD                                                                                                   | fixture; native Homey lock/unlock; latch-open action pending           |
 | Garage door            | HmIP-MOD-HO, HmIP-MOD-TM                                                                                   | fixture; native open/close; stop and ventilation actions pending       |
-| Weather sensor         | HmIP-SWO-B, HmIP-SWO-PL, HmIP-SWO-PR                                                                       | fixture; discovery-filtered climate, wind, rain, and sunshine values   |
+| Weather sensor         | HmIP-SWO-B, HmIP-SWO-PL                                                                                    | fixture; discovery-filtered climate, wind, rain, and sunshine values   |
+| Weather sensor         | HmIP-SWO-PR                                                                                                | hardware/fixture; live reads and XML-RPC push updates verified         |
 | Light sensor           | HmIP-SLO                                                                                                   | fixture; current illuminance subset                                    |
 | Temperature sensor     | HmIP-STE2-PCB                                                                                              | fixture; first probe only                                              |
 | CO₂ sensor + relay     | HmIP-SCTH230                                                                                               | fixture; CO₂, temperature, humidity, relay; indicator LED pending      |
@@ -48,6 +49,17 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 - `homematicip_local` commit `761b0eb24d23223c86215ac440f759191262489d`: Home Assistant adapter and entity-boundary reference.
 
 Both external references are MIT licensed. Concepts and datapoint semantics are independently adapted to strict TypeScript; Python is not included at runtime.
+
+## Hardware matrix
+
+Hardware results describe only the exercised functions, not blanket support for every datapoint or firmware version. Device serial numbers and credentials are deliberately omitted.
+
+| Date       | Homey environment              | OpenCCU interface | Product       | Pairing | Initial reads | Commands                | Push events | Restart/reconnect | Remaining checks                         |
+| ---------- | ------------------------------ | ----------------- | ------------- | ------- | ------------- | ----------------------- | ----------- | ----------------- | ---------------------------------------- |
+| 2026-09-05 | Homey Pro gen. 2, Homey 13.4.1 | HmIP-RF           | HmIP-SWO-PR   | pass    | pass          | n/a                     | pass        | pass              | OpenCCU outage, deletion and re-pairing  |
+| earlier    | Homey Test                     | HmIP-RF           | HmIP-eTRV-B-2 | pass    | pass          | target temperature pass | pass        | pass              | mode, boost, week profile, valve, delete |
+
+For the HmIP-SWO-PR run, all nine discovered capabilities were populated: temperature, humidity, illuminance, wind strength, wind angle, rain state, cumulative rain, sunshine duration, and battery alarm. Illuminance and wind strength changed again after the initial read while the app remained healthy, demonstrating callback delivery through the live XML-RPC event path. After a targeted app restart, the runtime returned to its healthy state in about three seconds, the device remained available, and subsequent values proved that the callback was registered again. The cumulative metrics retain their OpenCCU units (`mm` and `min`).
 
 ## Next batches
 
