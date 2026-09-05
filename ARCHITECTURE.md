@@ -189,6 +189,8 @@ The shared device-binding controller reconciles dynamic capabilities, reads init
 
 Observed OpenCCU product suffixes such as `R4M` and `I9F` are normalized for profile selection. HmIP-eTRV-B-2 and eTRV-E variants use the shared radiator-thermostat profile. Custom Flow actions cover thermostat mode, boost, and week profile; standard Homey capabilities continue to supply temperature cards.
 
+Authenticated JSON-RPC metadata loading now follows XML-RPC discovery without becoming part of XML-RPC connection health. The live-tested response adapters normalize `Device.listAllDetail`, `Room.getAll`, `Subsection.getAll`, `Program.getAll`, and `SysVar.getAll`; failures remain isolated per method. New pairing candidates prefer channel names, then device names, while already paired Homey names are never changed automatically. Rooms, functions, programs, and typed system-variable values remain available at the runtime boundary for later Flow and opt-in organization features.
+
 ## Recorded decisions
 
 - `docs/adr/0001-initial-product-scope.md`: HmIP-RF first; programs and system variables in the first usable release.
@@ -200,11 +202,12 @@ Observed OpenCCU product suffixes such as `R4M` and `I9F` are normalized for pro
 - `docs/adr/0007-product-command-strategies.md`: discovery-gated single-datapoint and atomic product commands.
 - `docs/adr/0008-profile-configuration-conditions.md`: selective MASTER configuration reads and conditional profile topology.
 - `docs/adr/0009-commonjs-build-output.md`: CommonJS runtime output generated from strict TypeScript into the ignored Homey build directory.
+- `docs/adr/0010-openccu-metadata-and-naming.md`: best-effort JSON-RPC metadata loading and non-destructive pairing-name precedence.
 
 ## Architectural decisions still open
 
 1. Authentication baseline: supported OpenCCU versions, TLS modes, self-signed certificates, and firewall configuration guidance.
-2. Naming precedence between OpenCCU names and user-chosen Homey names, and whether room/function metadata only assists pairing or also maps into Homey zones/tags.
+2. Whether room/function metadata remains informational or can be mapped into Homey zones/tags through an explicit opt-in workflow.
 3. Policy and review process for adapting device profiles or test fixtures from MIT reference projects.
 
 ## Principal risks

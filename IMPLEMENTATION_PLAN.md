@@ -106,6 +106,8 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 ## Phase 6 — Hub features and coverage expansion
 
 - [x] Establish `DEVICE_SUPPORT.md` with explicit fixture- and hardware-verification levels and pinned reference revisions.
+- [x] Load and normalize live-tested JSON-RPC device/channel names, rooms, functions, programs, and system variables without coupling them to XML-RPC health.
+- [x] Use OpenCCU device and logical-channel names for new pairing candidates while preserving user-chosen names after pairing.
 - [x] Add the first passive-sensor driver batch: HmIP-SWDO-2, HmIP-SWO-PR, HmIP-SLO, and HmIP-STE2-PCB.
 - [x] Split switch, contact, and climate families into individual product-facing drivers and correct HmIP-SRH/HmIP-STHO semantics.
 - [x] Split remaining shared thermostat and cover profiles into individual product-facing Homey drivers.
@@ -129,7 +131,7 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 - [x] Add separate HmIP-SWO-B/PL/PR drivers with discovery-filtered wind, rain, and sunshine-duration capabilities in matching units.
 - [x] Port the final three legacy HmIP product drivers: BRA button events, SCI contact, and discovery-adaptive FCI1 contact/button behavior.
 - Add programs and system variables to Flow/UI surfaces.
-- Use OpenCCU names, rooms, and functions to improve pairing and diagnostics according to the approved naming policy.
+- Decide whether rooms and functions should optionally create Homey zones/tags; never change them implicitly.
 - Port additional legacy knowledge into profiles, backed by fixtures and hardware reports.
 - Add a privacy-reviewed diagnostic export suitable for issue reports.
 

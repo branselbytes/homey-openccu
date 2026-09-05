@@ -30,6 +30,32 @@ function createClient(): XmlRpcClient {
 }
 
 describe("OpenCcuRuntime", () => {
+  it("uses OpenCCU metadata names for pairing and exposes safe counts", async () => {
+    const runtime = new OpenCcuRuntime(createClient(), {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+    });
+    await runtime.refresh();
+    runtime.updateMetadata({
+      metadata: {
+        names: new Map([["301", "Hall thermostat"]]),
+        rooms: new Map([["Hall", ["10"]]]),
+        functions: new Map([["Climate", ["10"]]]),
+        programs: [{ id: "20", name: "Night", active: true }],
+        systemVariables: [{ id: "30", name: "Away", value: false }],
+      },
+      issues: [],
+    });
+
+    expect(runtime.pairingCandidates()[0]?.name).toBe("Hall thermostat");
+    expect(runtime.getDiagnostics().metadataCounts).toEqual({
+      names: 1,
+      rooms: 1,
+      functions: 1,
+      programs: 1,
+      systemVariables: 1,
+    });
+  });
   it("retains the latest connection state for late subscribers", () => {
     const runtime = new OpenCcuRuntime(createClient(), {
       centralId: "ccu-1",

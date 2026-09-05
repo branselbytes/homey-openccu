@@ -8,6 +8,15 @@ import {
   XmlRpcCallbackServer,
 } from "../protocol/xmlrpc/homematic-adapter";
 import type { XmlRpcClient } from "../protocol/xmlrpc/types";
+import {
+  OpenCcuJsonRpcClient,
+  OpenCcuJsonRpcSession,
+} from "../protocol/jsonrpc/client";
+import {
+  loadOpenCcuMetadata,
+  type JsonRpcSession,
+  type OpenCcuMetadataResult,
+} from "../protocol/jsonrpc/metadata";
 import type { RuntimeFactory } from "./application-lifecycle";
 import { OpenCcuRuntime } from "./openccu-runtime";
 import type { DescriptionCache } from "./discovery";
@@ -23,6 +32,11 @@ export interface ManagedCentralRuntimeFactoryOptions {
   readonly callbackBindHost?: string;
   readonly callbackAdvertisedHost: string;
   readonly createClient?: (config: OpenCcuConnectionConfig) => XmlRpcClient;
+  readonly createJsonRpcSession?: (
+    config: OpenCcuConnectionConfig,
+  ) =>
+    | (JsonRpcSession & { close(signal?: AbortSignal): Promise<void> })
+    | undefined;
   readonly createCallbackServer?: (options: {
     readonly host: string;
     readonly port: number;
@@ -35,6 +49,10 @@ export interface ManagedCentralRuntimeFactoryOptions {
     centralId: string,
     state: ConnectionState,
     error?: unknown,
+  ) => void;
+  readonly onMetadataLoaded?: (
+    centralId: string,
+    result: OpenCcuMetadataResult,
   ) => void;
 }
 
@@ -82,7 +100,9 @@ export class ManagedCentralRuntimeFactory implements RuntimeFactory<ManagedCentr
     this.#options = options;
   }
 
-  async create(config: OpenCcuConnectionConfig): Promise<ManagedCentralRuntime> {
+  async create(
+    config: OpenCcuConnectionConfig,
+  ): Promise<ManagedCentralRuntime> {
     const client =
       this.#options.createClient?.(config) ??
       createHmIpXmlRpcClient({
@@ -96,6 +116,9 @@ export class ManagedCentralRuntimeFactory implements RuntimeFactory<ManagedCentr
       interfaceId: HMIP_RF_INTERFACE_ID,
       descriptionCache: this.#options.descriptionCache,
     });
+    const jsonRpcSession =
+      this.#options.createJsonRpcSession?.(config) ??
+      createJsonRpcSession(config);
     const callbackServer =
       this.#options.createCallbackServer?.({
         host: this.#options.callbackBindHost ?? "0.0.0.0",
@@ -115,11 +138,22 @@ export class ManagedCentralRuntimeFactory implements RuntimeFactory<ManagedCentr
       connect: async (signal) => {
         await client.init(callbackUrl, HMIP_RF_INTERFACE_ID, signal);
         await core.refresh(signal);
+        if (jsonRpcSession !== undefined) {
+          const result = await loadOpenCcuMetadata(jsonRpcSession, signal);
+          core.updateMetadata(result);
+          this.#options.onMetadataLoaded?.(config.centralId, result);
+        }
       },
       disconnect: async () => {
-        await client
-          .init("", HMIP_RF_INTERFACE_ID, AbortSignal.timeout(2_000))
-          .catch(() => undefined);
+        try {
+          await client
+            .init("", HMIP_RF_INTERFACE_ID, AbortSignal.timeout(2_000))
+            .catch(() => undefined);
+        } finally {
+          await jsonRpcSession
+            ?.close(AbortSignal.timeout(2_000))
+            .catch(() => undefined);
+        }
       },
       initialDelayMs: this.#options.initialRetryDelayMs,
       maxDelayMs: this.#options.maxRetryDelayMs,
@@ -134,7 +168,25 @@ export class ManagedCentralRuntimeFactory implements RuntimeFactory<ManagedCentr
   }
 }
 
+function createJsonRpcSession(
+  config: OpenCcuConnectionConfig,
+): OpenCcuJsonRpcSession | undefined {
+  if (config.username === undefined || config.password === undefined) {
+    return undefined;
+  }
+  return new OpenCcuJsonRpcSession({
+    client: new OpenCcuJsonRpcClient({
+      endpoint: config.jsonRpcUrl,
+      username: config.username,
+      password: config.password,
+    }),
+    username: config.username,
+    password: config.password,
+  });
+}
+
 export function buildCallbackUrl(host: string, port: number): string {
-  const urlHost = host.includes(":") && !host.startsWith("[") ? `[${host}]` : host;
+  const urlHost =
+    host.includes(":") && !host.startsWith("[") ? `[${host}]` : host;
   return `http://${urlHost}:${port}`;
 }

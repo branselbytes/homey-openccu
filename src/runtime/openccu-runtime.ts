@@ -1,4 +1,4 @@
-import type { OpenCcuDevice } from "../domain/model";
+import type { OpenCcuDevice, OpenCcuMetadata } from "../domain/model";
 import { TypedEventBus, type Unsubscribe } from "../events/event-bus";
 import type { OpenCcuEvents } from "../events/openccu-events";
 import type { ConnectionState } from "../protocol/connection-supervisor";
@@ -6,6 +6,10 @@ import { XmlRpcCallbackDispatcher } from "../protocol/xmlrpc/callback-dispatcher
 import type { XmlRpcClient } from "../protocol/xmlrpc/types";
 import type { RpcValue } from "../protocol/xmlrpc/types";
 import type { XmlRpcClientDiagnostics } from "../protocol/xmlrpc/types";
+import type {
+  MetadataIssue,
+  OpenCcuMetadataResult,
+} from "../protocol/jsonrpc/metadata";
 import {
   createPairingCandidates,
   type PairingCandidate,
@@ -34,6 +38,14 @@ export interface OpenCcuRuntimeDiagnostics {
   readonly connectionState: ConnectionState;
   readonly deviceCount: number;
   readonly discoveryIssueCount: number;
+  readonly metadataIssueCount: number;
+  readonly metadataCounts: {
+    readonly names: number;
+    readonly rooms: number;
+    readonly functions: number;
+    readonly programs: number;
+    readonly systemVariables: number;
+  };
   readonly transport?: XmlRpcClientDiagnostics;
 }
 
@@ -43,6 +55,8 @@ export class OpenCcuRuntime {
   readonly #events = new TypedEventBus<OpenCcuEvents>();
   readonly #profiles = new ProfileRegistry();
   #discovery?: HmIpDiscoveryResult;
+  #metadata: OpenCcuMetadata = emptyMetadata();
+  #metadataIssues: readonly MetadataIssue[] = [];
   #connectionState: ConnectionState = "stopped";
 
   constructor(client: XmlRpcClient, options: OpenCcuRuntimeOptions) {
@@ -62,14 +76,35 @@ export class OpenCcuRuntime {
     return this.#connectionState;
   }
 
+  get metadata(): OpenCcuMetadata {
+    return this.#metadata;
+  }
+
+  get metadataIssues(): readonly MetadataIssue[] {
+    return this.#metadataIssues;
+  }
+
   getDiagnostics(): OpenCcuRuntimeDiagnostics {
     const transport = this.#client.getDiagnostics?.();
     return {
       connectionState: this.#connectionState,
       deviceCount: this.devices.size,
       discoveryIssueCount: this.discoveryIssues.length,
+      metadataIssueCount: this.#metadataIssues.length,
+      metadataCounts: {
+        names: this.#metadata.names.size,
+        rooms: this.#metadata.rooms.size,
+        functions: this.#metadata.functions.size,
+        programs: this.#metadata.programs.length,
+        systemVariables: this.#metadata.systemVariables.length,
+      },
       ...(transport === undefined ? {} : { transport }),
     };
+  }
+
+  updateMetadata(result: OpenCcuMetadataResult): void {
+    this.#metadata = result.metadata;
+    this.#metadataIssues = result.issues;
   }
 
   async refresh(signal?: AbortSignal): Promise<HmIpDiscoveryResult> {
@@ -90,7 +125,7 @@ export class OpenCcuRuntime {
   }
 
   pairingCandidates(
-    names?: ReadonlyMap<string, string>,
+    names: ReadonlyMap<string, string> = this.#metadata.names,
   ): readonly PairingCandidate[] {
     return createPairingCandidates(this.devices, {
       centralId: this.#options.centralId,
@@ -244,6 +279,16 @@ export class OpenCcuRuntime {
         ),
     );
   }
+}
+
+function emptyMetadata(): OpenCcuMetadata {
+  return {
+    names: new Map(),
+    rooms: new Map(),
+    functions: new Map(),
+    programs: [],
+    systemVariables: [],
+  };
 }
 
 function resolveWriteOperation(

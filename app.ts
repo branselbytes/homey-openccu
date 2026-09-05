@@ -32,6 +32,14 @@ export = class OpenCcuApp extends Homey.App {
           error === undefined ? "" : ` (${safeErrorKind(error)})`;
         this.log(`OpenCCU ${centralId}: ${state}${errorKind}`);
       },
+      onMetadataLoaded: (centralId, { metadata, issues }) => {
+        this.log(
+          `OpenCCU ${centralId}: metadata loaded ` +
+            `(names=${metadata.names.size}, rooms=${metadata.rooms.size}, ` +
+            `functions=${metadata.functions.size}, programs=${metadata.programs.length}, ` +
+            `systemVariables=${metadata.systemVariables.length}, issues=${issues.length})`,
+        );
+      },
     });
     const lifecycle = new OpenCcuApplicationLifecycle<ManagedCentralRuntime>(
       this.homey.settings,
