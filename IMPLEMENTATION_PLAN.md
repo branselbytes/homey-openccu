@@ -23,9 +23,9 @@ Exit criterion: architecture and initial scope are approved, and local tool vers
 - [x] Generate and track a lockfile after dependency installation.
 - [x] Convert the transport/settings constants as the first strict TypeScript production seam without changing their values.
 - [x] Validate formatting, lint, strict type-checking, unit tests, build, and Homey publish-level manifest rules locally.
-- [ ] Add the same checks to CI, but do not publish.
+- [x] Add non-publishing CI for clean install, formatting, lint, types, tests, build, Homey validation, and production audit.
 - [x] Record the initial product-scope and driver-strategy decisions.
-- [ ] Record decisions for module format and build output policy after the first production TypeScript conversion.
+- [x] Record CommonJS module format and ignored, reproducible build output policy in ADR 0009.
 
 Exit criterion: clean install, build, lint, type-check, unit tests, and Homey app validation run reproducibly without changing device behavior.
 

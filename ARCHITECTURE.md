@@ -199,6 +199,7 @@ Observed OpenCCU product suffixes such as `R4M` and `I9F` are normalized for pro
 - `docs/adr/0006-logical-multi-channel-devices.md`: stable logical subdevices for independently controllable actuator outputs.
 - `docs/adr/0007-product-command-strategies.md`: discovery-gated single-datapoint and atomic product commands.
 - `docs/adr/0008-profile-configuration-conditions.md`: selective MASTER configuration reads and conditional profile topology.
+- `docs/adr/0009-commonjs-build-output.md`: CommonJS runtime output generated from strict TypeScript into the ignored Homey build directory.
 
 ## Architectural decisions still open
 
