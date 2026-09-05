@@ -474,6 +474,39 @@ describe("ProfileRegistry", () => {
     ]);
   });
 
+  it("maps only discovered HmIP-DRG-DALI outputs with optional color controls", () => {
+    const registry = new ProfileRegistry();
+    expect(registry.find("HmIP-DRG-DALI")?.driverId).toBe("HmIP-DRG-DALI");
+
+    const mappings = resolveDeviceMappings(
+      sensor("HmIP-DRG-DALI", [
+        [1, "LEVEL", "FLOAT"],
+        [1, "HUE", "INTEGER"],
+        [1, "SATURATION", "FLOAT"],
+        [48, "LEVEL", "FLOAT"],
+      ]),
+    );
+
+    expect(mappings.map(({ logicalId }) => logicalId)).toEqual([
+      "output-1",
+      "output-48",
+    ]);
+    expect(mappings[0]?.bindings).toMatchObject([
+      { capability: "onoff", channelAddress: "sensor:1" },
+      { capability: "dim", channelAddress: "sensor:1" },
+      {
+        capability: "light_hue",
+        channelAddress: "sensor:1",
+        transform: "hue-degrees-to-ratio",
+      },
+      { capability: "light_saturation", channelAddress: "sensor:1" },
+    ]);
+    expect(mappings[1]?.bindings.map(({ capability }) => capability)).toEqual([
+      "onoff",
+      "dim",
+    ]);
+  });
+
   it.each([
     ["HmIP-BRC2", "HmIP-BRC2"],
     ["HMIP-WRC2", "HMIP-WRC2"],

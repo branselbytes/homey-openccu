@@ -24,6 +24,12 @@ export function transformFromOpenCcu(
       )
         return false;
       throw invalidTransform(transform, value);
+    case "hue-degrees-to-ratio": {
+      const degrees = numeric(value, transform);
+      if (degrees < 0 || degrees > 360)
+        throw invalidTransform(transform, value);
+      return degrees / 360;
+    }
     case "lock-state-to-boolean":
       if (value === "LOCKED" || value === 1) return true;
       if (value === "UNLOCKED" || value === 2) return false;
@@ -67,6 +73,11 @@ export function transformToOpenCcu(
       return value;
     case "garage-door-state-to-closed":
       throw invalidTransform(transform, value);
+    case "hue-degrees-to-ratio": {
+      const ratio = numeric(value, transform);
+      if (ratio < 0 || ratio > 1) throw invalidTransform(transform, value);
+      return Math.round(ratio * 360);
+    }
     case "lock-state-to-boolean":
       if (typeof value !== "boolean") throw invalidTransform(transform, value);
       return value ? "LOCKED" : "UNLOCKED";

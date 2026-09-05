@@ -10,6 +10,7 @@ export const VALUE_TRANSFORMS = [
   "enum-number-to-string",
   "identity",
   "garage-door-state-to-closed",
+  "hue-degrees-to-ratio",
   "lock-state-to-boolean",
   "liter-to-cubic-meter",
   "milliamp-to-amp",

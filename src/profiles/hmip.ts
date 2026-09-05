@@ -70,6 +70,31 @@ function dimmerOutputs(
   }));
 }
 
+function daliOutputs(): readonly LogicalDeviceProfile[] {
+  return Array.from({ length: 48 }, (_, index) => {
+    const channel = index + 1;
+    return {
+      id: `output-${channel}`,
+      nameSuffix: `Output ${channel}`,
+      nameChannel: channel,
+      bindings: [
+        ...dimmerBindings(channel),
+        {
+          capability: "light_hue",
+          channel,
+          parameter: "HUE",
+          transform: "hue-degrees-to-ratio" as const,
+        },
+        {
+          capability: "light_saturation",
+          channel,
+          parameter: "SATURATION",
+        },
+      ],
+    };
+  });
+}
+
 const HMIP_DRSI4_PROFILE: DeviceProfile = {
   id: "hmip-drsi4",
   driverId: "HmIP-DRSI4",
@@ -180,6 +205,14 @@ const HMIP_DRDI3_PROFILE: DeviceProfile = {
   deviceTypes: ["HmIP-DRDI3"],
   bindings: [],
   logicalDevices: dimmerOutputs([5, 9, 13]),
+};
+
+const HMIP_DRG_DALI_PROFILE: DeviceProfile = {
+  id: "hmip-drg-dali",
+  driverId: "HmIP-DRG-DALI",
+  deviceTypes: ["HmIP-DRG-DALI"],
+  bindings: [],
+  logicalDevices: daliOutputs(),
 };
 
 const HMIP_BSM_PROFILE: DeviceProfile = {
@@ -850,6 +883,7 @@ export const HMIP_PROFILES = [
   HMIP_FDT_PROFILE,
   HMIP_PDT_PROFILE,
   HMIP_DRDI3_PROFILE,
+  HMIP_DRG_DALI_PROFILE,
   HMIP_BSM_PROFILE,
   HMIP_FSM_PROFILE,
   HMIP_FSM16_PROFILE,

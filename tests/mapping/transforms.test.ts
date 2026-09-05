@@ -21,6 +21,18 @@ describe("value transforms", () => {
     );
   });
 
+  it("converts OpenCCU hue degrees to Homey's normalized ratio", () => {
+    expect(transformFromOpenCcu("hue-degrees-to-ratio", 180)).toBe(0.5);
+    expect(transformToOpenCcu("hue-degrees-to-ratio", 0.5)).toBe(180);
+    expect(transformToOpenCcu("hue-degrees-to-ratio", 1 / 3)).toBe(120);
+    expect(() => transformFromOpenCcu("hue-degrees-to-ratio", 361)).toThrow(
+      /Cannot apply/,
+    );
+    expect(() => transformToOpenCcu("hue-degrees-to-ratio", -0.1)).toThrow(
+      /Cannot apply/,
+    );
+  });
+
   it("converts numeric OpenCCU enums to Homey string IDs and back", () => {
     expect(transformFromOpenCcu("enum-number-to-string", 2)).toBe("2");
     expect(transformToOpenCcu("enum-number-to-string", "2")).toBe(2);

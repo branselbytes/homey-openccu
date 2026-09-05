@@ -21,6 +21,7 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 | Switch                 | HMIP-PS/HmIP-PS, HmIP-PCBS, HmIP-PCBS-BAT, HmIP-DRSI1, HmIP-FSI/FSI6/FSI16, HmIP-FS6, HmIP-USBSM, HmIP-WGC | fixture; individual product drivers; standard on/off subset            |
 | Multi-output switch    | HmIP-DRSI4, HmIP-MOD-OC8, HmIP-PCBS2, HmIP-BS2, HmIP-WHS2                                                  | fixture; one Homey device per output                                   |
 | Dimmer                 | HmIP-BDT, HmIP-FDT, HmIP-PDT, HmIP-DRDI3                                                                   | fixture; on/off plus level; DRDI3 split into three outputs             |
+| DALI gateway           | HmIP-DRG-DALI                                                                                              | fixture; discovered outputs 1–48; level, hue, and saturation subset    |
 | Power-meter switch     | HMIP-PSM, HmIP-PSM, HmIP-BSM, HmIP-FSM, HmIP-FSM16                                                         | fixture; BSM includes both local button channels                       |
 | Cover                  | HmIP-BROLL, HmIP-FROLL                                                                                     | fixture; position and explicit up/down/stop                            |
 | Blind                  | HmIP-FBL, HmIP-BBL                                                                                         | fixture; position, explicit up/down/stop, and slat position            |
@@ -50,5 +51,5 @@ Both external references are MIT licensed. Concepts and datapoint semantics are 
 ## Next batches
 
 1. Extended weather sensors.
-2. Enhanced covers/blinds, locks, siren/valve options, combined devices, and RGBW/DALI lighting.
+2. Enhanced covers/blinds, locks, siren/valve options, combined devices, and mode-aware RGBW lighting.
 3. Add redacted OpenCCU fixtures and promote devices to hardware verified as equipment becomes available.
