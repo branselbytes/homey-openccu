@@ -11,6 +11,12 @@
   },
   "category": ["tools", "appliances"],
   "permissions": [],
+  "api": {
+    "getDiagnostics": {
+      "method": "get",
+      "path": "/diagnostics"
+    }
+  },
   "images": {
     "large": "/assets/images/large.png",
     "small": "/assets/images/small.png"

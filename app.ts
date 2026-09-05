@@ -1,6 +1,7 @@
 import Homey from "homey";
 
 import { VersionedCache } from "./src/cache/versioned-cache";
+import { createSupportReport } from "./src/diagnostics/support-report";
 import { OpenCcuAppController } from "./src/homey/app-controller";
 import { HomeySettingsCacheStorage } from "./src/homey/cache-storage";
 import { registerHubFlowCards } from "./src/homey/hub-flow-controller";
@@ -63,10 +64,33 @@ export = class OpenCcuApp extends Homey.App {
   onUninit(): Promise<void> {
     return this.#controller?.stop() ?? Promise.resolve();
   }
+
+  generateSupportReport(): unknown {
+    return createSupportReport({
+      app: {
+        id: this.id,
+        version: manifestVersion(this.manifest as unknown),
+        node: process.version,
+      },
+      runtimes: this.runtimeProvider?.diagnostics() ?? [],
+    });
+  }
 };
 
 function safeErrorKind(error: unknown): string {
   return error instanceof Error && error.name !== ""
     ? error.name
     : "unknown error";
+}
+
+function manifestVersion(manifest: unknown): string {
+  if (
+    typeof manifest === "object" &&
+    manifest !== null &&
+    "version" in manifest &&
+    typeof manifest.version === "string"
+  ) {
+    return manifest.version;
+  }
+  return "unknown";
 }

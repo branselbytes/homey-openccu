@@ -179,7 +179,7 @@ Stateless button presses are resolved separately from persistent capability bind
 
 The Phase 5 integration adds a Homey-independent HmIP discovery pipeline and runtime facade. It fetches channel `VALUES` paramsets with bounded concurrency, retains partial-discovery errors for diagnostics, builds stable pairing identities, and produces serializable candidates for either a dedicated profile driver or the generic fallback. XML-RPC callbacks enter the same typed event bus.
 
-Manual connection settings now have a strict parsing boundary that normalizes the central ID, host, HmIP-RF port, JSON-RPC URL, and optional credential pair. Diagnostic views receive only a credential-free projection. A runtime registry provides replace/remove/shutdown semantics and attempts to stop every configured central even when one shutdown fails. Homey settings persistence and credential ownership remain adapter concerns and are the next integration task.
+Manual connection settings have a strict parsing boundary that normalizes the central ID, host, HmIP-RF port, JSON-RPC URL, and optional credential pair. A runtime registry provides replace/remove/shutdown semantics and attempts to stop every configured central even when one shutdown fails. Homey settings persistence and credential ownership remain isolated in the Homey adapter.
 
 The Homey boundary reads a versionable `openccu_connections` array, validates duplicate central identities, serializes reload operations, preserves an existing runtime when new settings are invalid, and removes settings listeners before shutdown. The settings page writes this format for one manually configured OpenCCU and no longer exposes MQTT, CCU-Jack, RedMatic, or legacy bridge controls.
 
@@ -194,6 +194,8 @@ Authenticated JSON-RPC metadata loading now follows XML-RPC discovery without be
 Hub-level Flow cards use opaque central/object selections rather than exposing raw addressing. Autocomplete includes only non-internal programs and visible, non-internal system variables. Program execution calls `Program.execute`; variable writes call `SysVar.setValue` after normalizing NUMBER, ALARM, LOGIC, STRING, and LIST input. Equality conditions refresh JSON-RPC metadata before comparing, so Flow decisions do not rely on startup snapshots. Hub actions validate every selected ID against current metadata and remain separate from device capability commands.
 
 Metadata methods run sequentially and each raw response is normalized before the next is requested, limiting peak allocations on Homey. The current regular test process remains below the memory warning threshold, while remote inspector mode can exceed it; production memory headroom must therefore be re-measured as device and Flow coverage grows.
+
+The protected settings Web API exposes a downloadable support report assembled from aggregate runtime diagnostics. Centrals receive report-local aliases; credentials, network addresses, central IDs, OpenCCU object names, and datapoint values are excluded. A recursive redaction pass remains the final boundary in case diagnostic structures acquire sensitive fields later.
 
 ## Recorded decisions
 

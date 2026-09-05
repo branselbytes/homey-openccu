@@ -13,6 +13,11 @@
       "hint": "The initial release uses the local HmIP-RF XML-RPC interface. Enter the host without http:// or a path."
     },
     "save": "Save changes",
-    "saved": "OpenCCU settings saved"
+    "saved": "OpenCCU settings saved",
+    "diagnostics": {
+      "title": "Diagnostics",
+      "hint": "Download an anonymous support report with connection states and aggregate counters. Credentials, addresses, OpenCCU names and datapoint values are not included.",
+      "download": "Download diagnostics"
+    }
   }
 }

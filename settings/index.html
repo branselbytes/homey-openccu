@@ -54,6 +54,15 @@
 
     <button id="save" class="right" data-i18n="settings.save"></button>
 
+    <fieldset>
+      <legend data-i18n="settings.diagnostics.title"></legend>
+      <p data-i18n="settings.diagnostics.hint"></p>
+      <button
+        id="download-diagnostics"
+        data-i18n="settings.diagnostics.download"
+      ></button>
+    </fieldset>
+
     <script>
       "use strict";
 
@@ -93,6 +102,29 @@
             Homey.alert(Homey.__("settings.saved"));
           });
         });
+
+        document
+          .getElementById("download-diagnostics")
+          .addEventListener("click", () => {
+            Homey.api("GET", "/diagnostics", (error, report) => {
+              if (error) return Homey.alert(error);
+              downloadJson("openccu-for-homey-diagnostics.json", report);
+            });
+          });
+      }
+
+      function downloadJson(filename, value) {
+        const blob = new Blob([JSON.stringify(value, null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
       }
 
       function readConnection() {
