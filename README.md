@@ -2,7 +2,7 @@
 
 OpenCCU for Homey is an independent, open-source Homey Pro app for integrating Homematic IP devices locally through OpenCCU.
 
-The typed local runtime and initial HmIP driver slice are implemented, but hardware validation is still pending and the app is not ready for daily use. Devices from the predecessor Homey app will not be migrated; they will be paired again in this app.
+The typed local runtime and broad HmIP driver foundation are implemented. Pairing, callbacks, thermostat commands, reconnect behavior, and one weather-sensor driver have been validated on hardware, but the full device matrix and release-readiness checks are still pending. Devices from the predecessor Homey app will not be migrated; they will be paired again in this app.
 
 ## Planned scope
 

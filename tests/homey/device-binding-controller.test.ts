@@ -81,11 +81,8 @@ describe("DeviceBindingController", () => {
     expect(setCapabilityValue).toHaveBeenNthCalledWith(1, "onoff", true);
     expect(setCapabilityValue).toHaveBeenNthCalledWith(2, "onoff", false);
     expect(setValue).toHaveBeenCalledWith("301:4", "STATE", false, undefined);
-    expect(device.log).toHaveBeenNthCalledWith(
-      1,
-      "Writing onoff to 301:4/STATE",
-    );
-    expect(device.log).toHaveBeenNthCalledWith(2, "Wrote onoff to 301:4/STATE");
+    expect(device.log).toHaveBeenNthCalledWith(1, "Writing onoff to OpenCCU");
+    expect(device.log).toHaveBeenNthCalledWith(2, "Wrote onoff to OpenCCU");
   });
 
   it("logs a failed write without logging its value and rethrows it", async () => {
@@ -100,9 +97,9 @@ describe("DeviceBindingController", () => {
       "XML-RPC timeout",
     );
 
-    expect(device.log).toHaveBeenCalledWith("Writing onoff to 301:4/STATE");
+    expect(device.log).toHaveBeenCalledWith("Writing onoff to OpenCCU");
     expect(device.error).toHaveBeenCalledWith(
-      "Failed to write onoff to 301:4/STATE",
+      "Failed to write onoff to OpenCCU",
       failure,
     );
     expect(device.log).not.toHaveBeenCalledWith(
@@ -132,7 +129,7 @@ describe("DeviceBindingController", () => {
       await vi.advanceTimersByTimeAsync(1_500);
       await expect(write).resolves.toBeUndefined();
       expect(device.log).toHaveBeenCalledWith(
-        "Accepted onoff write to 301:4/STATE; awaiting OpenCCU confirmation",
+        "Accepted onoff write; awaiting OpenCCU confirmation",
       );
 
       confirmWrite?.();

@@ -141,6 +141,8 @@ The hub Flow cards are manifest-, fixture-, and read-path verified on Homey Test
 
 The settings page can download a protected JSON support report containing only anonymous central aliases, connection states, aggregate discovery/metadata counts, and XML-RPC request counters. Credentials, addresses, central IDs, OpenCCU object names, and datapoint values are omitted; a final recursive redaction pass guards future diagnostic fields.
 
+Homey command logs likewise omit concrete Homematic channel addresses and datapoint values. A clean `npm ci` confirms that the production tree contains only `homematic-xmlrpc` and its two parser/builder dependencies; previously observed MQTT, BIN-RPC, and Axios packages were untracked leftovers in the local `node_modules` directory rather than declared runtime dependencies.
+
 The regular Homey Test process stabilized at 92.8–93.5 MB PSS and 0% idle CPU while XML-RPC callbacks continued. Remote debug/inspector mode crossed Homey's memory warning threshold, although the JSON-RPC payloads total only about 153 KB. Metadata responses are normalized sequentially to avoid concurrent response trees. Memory headroom, debug-mode behavior, and the static driver count remain explicit Phase 7 performance-review items.
 
 ## Phase 7 — Release readiness

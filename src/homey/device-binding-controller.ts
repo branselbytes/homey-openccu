@@ -133,8 +133,7 @@ export class DeviceBindingController {
         if (!binding.writable) continue;
         this.#unsubscribers.push(
           this.#device.onCapabilityWrite(binding.capability, async (value) => {
-            const target = `${binding.writeChannelAddress}/${binding.writeParameter}`;
-            this.#device.log(`Writing ${binding.capability} to ${target}`);
+            this.#device.log(`Writing ${binding.capability} to OpenCCU`);
             const pending = this.#beginWriteVerification(binding, value);
             const writeOutcome: Promise<WriteOutcome> = this.#runtime
               .write(binding, value)
@@ -148,17 +147,17 @@ export class DeviceBindingController {
             ]);
             if (outcome.status === "pending") {
               this.#device.log(
-                `Accepted ${binding.capability} write to ${target}; awaiting OpenCCU confirmation`,
+                `Accepted ${binding.capability} write; awaiting OpenCCU confirmation`,
               );
               void writeOutcome.then((lateOutcome) => {
                 this.#scheduleWriteVerification(pending, 0);
                 if (lateOutcome.status === "confirmed") {
                   this.#device.log(
-                    `Confirmed ${binding.capability} write to ${target}`,
+                    `Confirmed ${binding.capability} write`,
                   );
                 } else {
                   this.#device.error(
-                    `OpenCCU did not confirm ${binding.capability} write to ${target}`,
+                    `OpenCCU did not confirm ${binding.capability} write`,
                     lateOutcome.error,
                   );
                 }
@@ -166,13 +165,13 @@ export class DeviceBindingController {
               return;
             }
             if (outcome.status === "confirmed") {
-              this.#device.log(`Wrote ${binding.capability} to ${target}`);
+              this.#device.log(`Wrote ${binding.capability} to OpenCCU`);
               this.#scheduleWriteVerification(pending, 0);
               return;
             }
             this.#clearPendingWrite(pending);
             this.#device.error(
-              `Failed to write ${binding.capability} to ${target}`,
+              `Failed to write ${binding.capability} to OpenCCU`,
               outcome.error,
             );
             throw outcome.error;
