@@ -13,7 +13,7 @@ The typed local runtime and broad HmIP driver foundation are implemented. Pairin
 - dedicated Homey drivers backed by shared profiles plus a generic fallback for unknown products
 - no required Home Assistant, Python, MQTT, CCU-Jack, or RedMatic runtime
 
-See [ARCHITECTURE.md](ARCHITECTURE.md) for the design and [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for the staged delivery plan.
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the design, [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for staged delivery, [DEVICE_SUPPORT.md](DEVICE_SUPPORT.md) for coverage, and [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for setup and support guidance.
 
 ## Development
 
@@ -37,8 +37,10 @@ The application itself targets the Node.js 22 runtime used by Homey software 12.
 
 Do not publish, push releases, or modify the upstream repository without explicit project-owner approval.
 
+Contributors should follow [CONTRIBUTING.md](CONTRIBUTING.md). Release preparation is tracked in [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md).
+
 ## History and license
 
 This repository preserves the Git history of [LRuesink-WebArray/homey-matic](https://github.com/LRuesink-WebArray/homey-matic), originally developed by Timo Wendt with contributions from Bjoern Welker and others. The original repository remains configured as the `upstream` Git remote.
 
-The project is distributed under the MIT License. See [LICENSE](LICENSE). Concepts from the MIT-licensed `aiohomematic` and `homematicip_local` projects may be studied and independently adapted for TypeScript; they are not runtime dependencies.
+The project is distributed under the MIT License. See [LICENSE](LICENSE) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Concepts from the MIT-licensed `aiohomematic` and `homematicip_local` projects may be studied and independently adapted for TypeScript; they are not runtime dependencies.

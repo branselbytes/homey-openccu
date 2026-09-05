@@ -157,6 +157,8 @@ The regular Homey Test process stabilized at 92.8–93.5 MB PSS and 0% idle CPU 
 - Finalize user documentation, troubleshooting, contributor workflow, and release checklist.
 - Push, create repository settings, publish, or submit to the Homey App Store only after explicit approval.
 
+Initial troubleshooting, contributor, release-checklist, and third-party-notice documents now exist. They deliberately retain open hardware, compatibility, performance, language, and release-approval gates rather than presenting the app as release-ready.
+
 ## Test strategy
 
 - Unit tests: codecs, normalization, profile matching, capability conversion, retry state machines, redaction.
