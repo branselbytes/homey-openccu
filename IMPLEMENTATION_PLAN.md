@@ -159,6 +159,8 @@ The regular Homey Test process stabilized at 92.8–93.5 MB PSS and 0% idle CPU 
 
 Initial troubleshooting, contributor, release-checklist, and third-party-notice documents now exist. They deliberately retain open hardware, compatibility, performance, language, and release-approval gates rather than presenting the app as release-ready.
 
+The development toolchain is pinned to the compatible patch releases Homey CLI 4.4.4 and ESLint 10.10.0. `npm audit --omit=dev` remains at zero findings. The full audit currently reports 20 transitive development-only findings through the Homey CLI; npm's proposed aggregate remedy downgrades Homey to 3.7.1 and is therefore not accepted. These findings must be reassessed when Athom publishes updated CLI dependencies, and the CLI should only process trusted app assets in the meantime.
+
 ## Test strategy
 
 - Unit tests: codecs, normalization, profile matching, capability conversion, retry state machines, redaction.

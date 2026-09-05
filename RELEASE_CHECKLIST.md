@@ -14,6 +14,7 @@ This checklist prepares a release but does not authorize pushing, publishing, ta
 - [ ] Run `npm ci` from a clean checkout.
 - [ ] Run `npm run check`, `npm run build`, and `npx homey app validate --level publish`.
 - [ ] Run `npm audit --omit=dev` and review the complete dependency tree and licenses.
+- [ ] Review and disposition development-only Homey CLI audit findings; do not accept a CLI downgrade as an automatic fix.
 - [ ] Verify the packaged archive contains no extraneous modules, credentials, captures, caches, or generated diagnostics.
 - [ ] Recheck callback source filtering, credential handling, log privacy, diagnostic redaction, and LAN-only guidance.
 - [ ] Measure regular-process idle/load memory and CPU without the remote inspector.
