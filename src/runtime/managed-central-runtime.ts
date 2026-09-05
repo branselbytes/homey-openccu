@@ -39,6 +39,7 @@ export interface ManagedCentralRuntimeFactoryOptions {
   readonly createCallbackServer?: (options: {
     readonly host: string;
     readonly port: number;
+    readonly expectedRemoteHost: string;
     readonly runtime: OpenCcuRuntime;
   }) => CallbackServer;
   readonly initialRetryDelayMs?: number;
@@ -123,11 +124,13 @@ export class ManagedCentralRuntimeFactory implements RuntimeFactory<ManagedCentr
       this.#options.createCallbackServer?.({
         host: this.#options.callbackBindHost ?? "0.0.0.0",
         port: config.callbackPort,
+        expectedRemoteHost: config.host,
         runtime: core,
       }) ??
       new XmlRpcCallbackServer({
         host: this.#options.callbackBindHost ?? "0.0.0.0",
         port: config.callbackPort,
+        expectedRemoteHost: config.host,
         dispatcher: core.createCallbackDispatcher(),
       });
     const callbackUrl = buildCallbackUrl(

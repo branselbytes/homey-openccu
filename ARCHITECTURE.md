@@ -185,6 +185,8 @@ The Homey boundary reads a versionable `openccu_connections` array, validates du
 
 The concrete managed-central runtime now owns one configured callback port per central. It waits until the callback server is listening, registers the advertised Homey address with HmIP-RF, refreshes discovery, retries failures with bounded backoff, publishes connection states, and performs best-effort deregistration before closing the server. Startup is deliberately non-blocking with respect to OpenCCU availability, so an offline central cannot prevent the Homey app from initializing. Callback address reachability has been verified on the current Homey Test/OpenCCU LAN, including live thermostat and weather-sensor events; VLAN, firewall, NAT, and alternate address-selection scenarios remain environment-specific risks.
 
+Callback TCP connections are admitted only when their normalized remote address matches the configured OpenCCU host. Host names are resolved while a new socket is paused; mismatches and resolution failures are rejected before XML parsing. This reduces LAN event-injection risk but deliberately does not claim cryptographic authentication, and source-NAT or proxy deployments require an explicit future trust model.
+
 The shared device-binding controller reconciles dynamic capabilities, reads initial values, routes commands and push events through the typed runtime, mirrors connection availability, and owns listener-specific cleanup. Resolved bindings retain separate read and write channel/parameter targets. Thin product-specific Homey adapters use shared HmIP profiles alongside `openccu-generic`; all other imported drivers and transports were removed from the active tree after their history was preserved.
 
 Observed OpenCCU product suffixes such as `R4M` and `I9F` are normalized for profile selection. HmIP-eTRV-B-2 and eTRV-E variants use the shared radiator-thermostat profile. Custom Flow actions cover thermostat mode, boost, and week profile; standard Homey capabilities continue to supply temperature cards.
@@ -209,6 +211,7 @@ The protected settings Web API exposes a downloadable support report assembled f
 - `docs/adr/0008-profile-configuration-conditions.md`: selective MASTER configuration reads and conditional profile topology.
 - `docs/adr/0009-commonjs-build-output.md`: CommonJS runtime output generated from strict TypeScript into the ignored Homey build directory.
 - `docs/adr/0010-openccu-metadata-and-naming.md`: best-effort JSON-RPC metadata loading and non-destructive pairing-name precedence.
+- `docs/adr/0011-restrict-callback-source.md`: source-address admission for the unauthenticated XML-RPC callback listener.
 
 ## Architectural decisions still open
 

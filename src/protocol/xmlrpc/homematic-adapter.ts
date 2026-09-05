@@ -1,3 +1,7 @@
+import { lookup } from "node:dns/promises";
+import { isIP } from "node:net";
+import type { Socket } from "node:net";
+
 import * as xmlrpc from "homematic-xmlrpc";
 
 import { toProtocolError } from "../errors";
@@ -36,6 +40,7 @@ export function createHmIpXmlRpcClient(endpoint: HmIpXmlRpcEndpoint): HmIpXmlRpc
 export interface XmlRpcCallbackServerOptions {
   readonly host: string;
   readonly port: number;
+  readonly expectedRemoteHost: string;
   readonly dispatcher: XmlRpcCallbackDispatcher;
 }
 
@@ -51,6 +56,9 @@ export class XmlRpcCallbackServer {
     this.#server = xmlrpc.createServer({ host: options.host, port: options.port }, () =>
       markReady?.(),
     );
+    this.#server.httpServer.prependListener("connection", (socket: Socket) => {
+      void authorizeRemoteSocket(socket, options.expectedRemoteHost);
+    });
     registerCallbackMethods(this.#server, options.dispatcher);
   }
 
@@ -61,6 +69,54 @@ export class XmlRpcCallbackServer {
   async close(): Promise<void> {
     await new Promise<void>((resolve) => this.#server.close(resolve));
   }
+}
+
+interface RemoteSocket {
+  readonly remoteAddress?: string;
+  pause(): unknown;
+  resume(): unknown;
+  destroy(): unknown;
+}
+
+type HostResolver = (host: string) => Promise<ReadonlySet<string>>;
+
+export async function authorizeRemoteSocket(
+  socket: RemoteSocket,
+  expectedHost: string,
+  resolveHost: HostResolver = resolveHostAddresses,
+): Promise<boolean> {
+  socket.pause();
+  try {
+    const addresses = await resolveHost(expectedHost);
+    const remoteAddress = normalizeIpAddress(socket.remoteAddress);
+    if (remoteAddress !== undefined && addresses.has(remoteAddress)) {
+      socket.resume();
+      return true;
+    }
+  } catch {
+    // Resolution failure denies the connection. The supervisor continues to
+    // retry registration and later callback connections resolve again.
+  }
+  socket.destroy();
+  return false;
+}
+
+async function resolveHostAddresses(host: string): Promise<ReadonlySet<string>> {
+  const literal = normalizeIpAddress(host);
+  if (literal !== undefined && isIP(literal) !== 0) return new Set([literal]);
+  const addresses = await lookup(host, { all: true, verbatim: true });
+  return new Set(
+    addresses
+      .map(({ address }) => normalizeIpAddress(address))
+      .filter((address): address is string => address !== undefined),
+  );
+}
+
+function normalizeIpAddress(address: string | undefined): string | undefined {
+  if (address === undefined || address === "") return undefined;
+  if (address.startsWith("::ffff:")) return address.slice("::ffff:".length);
+  const zoneIndex = address.indexOf("%");
+  return (zoneIndex === -1 ? address : address.slice(0, zoneIndex)).toLowerCase();
 }
 
 export interface CallbackMethodRegistry {

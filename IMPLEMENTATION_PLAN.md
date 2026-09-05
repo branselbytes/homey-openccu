@@ -143,6 +143,10 @@ The settings page can download a protected JSON support report containing only a
 
 Homey command logs likewise omit concrete Homematic channel addresses and datapoint values. A clean `npm ci` confirms that the production tree contains only `homematic-xmlrpc` and its two parser/builder dependencies; previously observed MQTT, BIN-RPC, and Axios packages were untracked leftovers in the local `node_modules` directory rather than declared runtime dependencies.
 
+The XML-RPC callback listener now rejects TCP connections whose normalized source address does not match the configured OpenCCU host. This closes straightforward LAN event injection while keeping source-NAT/proxy layouts an explicit compatibility risk rather than accepting all senders.
+
+On the current routed Homey Test/OpenCCU network, live weather events continued after source filtering, while a valid non-mutating XML-RPC request from the development host was rejected before dispatch. Hostname, IPv6, proxy, and source-NAT layouts remain unverified.
+
 The regular Homey Test process stabilized at 92.8–93.5 MB PSS and 0% idle CPU while XML-RPC callbacks continued. Remote debug/inspector mode crossed Homey's memory warning threshold, although the JSON-RPC payloads total only about 153 KB. Metadata responses are normalized sequentially to avoid concurrent response trees. Memory headroom, debug-mode behavior, and the static driver count remain explicit Phase 7 performance-review items.
 
 ## Phase 7 — Release readiness

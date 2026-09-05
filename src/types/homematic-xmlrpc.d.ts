@@ -15,6 +15,7 @@ export interface Client {
 
 export type ServerCallback = (error: unknown, value: unknown) => void;
 export interface Server {
+  readonly httpServer: HttpServer;
   on(
     method: string,
     listener: (error: unknown, params: unknown[], callback: ServerCallback) => void,
@@ -27,3 +28,4 @@ export function createServer(
   options: { readonly host: string; readonly port: number },
   callback?: () => void,
 ): Server;
+import type { Server as HttpServer } from "node:http";
