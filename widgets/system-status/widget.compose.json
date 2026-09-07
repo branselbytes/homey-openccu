@@ -1,0 +1,13 @@
+{
+  "name": {
+    "en": "OpenCCU system status",
+    "de": "OpenCCU Systemstatus"
+  },
+  "settings": [],
+  "api": {
+    "getSystemStatus": {
+      "method": "GET",
+      "path": "/"
+    }
+  }
+}

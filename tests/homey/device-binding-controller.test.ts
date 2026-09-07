@@ -35,10 +35,17 @@ function fixture() {
   });
   let writeListener: ((value: boolean) => Promise<void>) | undefined;
   const setCapabilityValue = vi.fn().mockResolvedValue(undefined);
+  const capabilities = new Set(["old_capability"]);
   const device = {
-    getCapabilities: () => ["old_capability"],
-    addCapability: vi.fn().mockResolvedValue(undefined),
-    removeCapability: vi.fn().mockResolvedValue(undefined),
+    getCapabilities: () => [...capabilities],
+    addCapability: vi.fn((capability: string) => {
+      capabilities.add(capability);
+      return Promise.resolve();
+    }),
+    removeCapability: vi.fn((capability: string) => {
+      capabilities.delete(capability);
+      return Promise.resolve();
+    }),
     setCapabilityValue,
     triggerButtonEvent: vi.fn().mockResolvedValue(undefined),
     onCapabilityWrite: vi.fn(
@@ -151,12 +158,27 @@ describe("DeviceBindingController", () => {
     await controller.start();
     expect(setCapabilityValue).not.toHaveBeenCalled();
     expect(device.setUnavailable).toHaveBeenCalledWith(
-      "Waiting for OpenCCU HmIP-RF connection",
+      "Waiting for OpenCCU device interface",
     );
 
     runtime.publishConnectionState("healthy");
     await vi.waitFor(() => expect(setCapabilityValue).toHaveBeenCalledOnce());
     expect(device.setAvailable).toHaveBeenCalledOnce();
+  });
+
+  it("does not include a channel address in read error messages", async () => {
+    const { runtime, device, getParamset } = fixture();
+    runtime.publishConnectionState("healthy");
+    getParamset.mockRejectedValueOnce(new Error("read failed"));
+    const controller = new DeviceBindingController(runtime, device, [binding]);
+
+    await controller.start();
+
+    expect(device.error).toHaveBeenCalledWith(
+      "Failed to read an OpenCCU channel",
+      expect.any(Error),
+    );
+    expect(JSON.stringify(device.error.mock.calls)).not.toContain("301:3");
   });
 
   it("repairs stored bindings from current discovery before activation", async () => {
@@ -202,6 +224,42 @@ describe("DeviceBindingController", () => {
     await vi.waitFor(() =>
       expect(device.triggerButtonEvent).toHaveBeenCalledWith(2, "long"),
     );
+  });
+
+  it("reconciles read-only organization tags when metadata changes", async () => {
+    const { runtime, device, setCapabilityValue } = fixture();
+    let information: Record<string, string> = {
+      openccu_room: "Workshop",
+    };
+    runtime.publishConnectionState("healthy");
+    const controller = new DeviceBindingController(runtime, device, [binding], {
+      resolveInformationalCapabilities: () => information,
+    });
+
+    await controller.start();
+    expect(device.addCapability).toHaveBeenCalledWith("openccu_room");
+    expect(setCapabilityValue).toHaveBeenCalledWith("openccu_room", "Workshop");
+
+    information = { openccu_functions: "Security" };
+    runtime.updateMetadata({
+      metadata: {
+        names: new Map(),
+        rooms: new Map(),
+        functions: new Map(),
+        programs: [],
+        systemVariables: [],
+      },
+      issues: [],
+    });
+
+    await vi.waitFor(() =>
+      expect(setCapabilityValue).toHaveBeenCalledWith(
+        "openccu_functions",
+        "Security",
+      ),
+    );
+    expect(device.removeCapability).toHaveBeenCalledWith("openccu_room");
+    expect(device.addCapability).toHaveBeenCalledWith("openccu_functions");
   });
 
   it("contains Homey Flow trigger failures at the device boundary", async () => {

@@ -4,6 +4,7 @@ import { isRuntimeProvidingApp } from "./runtime-providing-app";
 
 export abstract class RuntimeBackedDriver extends Homey.Driver {
   protected abstract readonly openCcuDriverId: string;
+  protected readonly pairedDeviceClass?: string;
 
   onPairListDevices(): Promise<unknown[]> {
     const app = this.homey.app;
@@ -16,6 +17,9 @@ export abstract class RuntimeBackedDriver extends Homey.Driver {
         .map((candidate) => ({
           name: candidate.name,
           data: candidate.data,
+          ...(this.pairedDeviceClass === undefined
+            ? {}
+            : { class: this.pairedDeviceClass }),
           capabilities: candidate.capabilities,
           store: candidate.store,
         })),

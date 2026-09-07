@@ -24,6 +24,7 @@ export interface OpenCcuMetadataResult {
 }
 
 interface RawChannel {
+  readonly id?: unknown;
   readonly address?: unknown;
   readonly name?: unknown;
 }
@@ -81,9 +82,20 @@ export async function loadOpenCcuMetadata(
     }
   };
 
-  const names = await load(METHODS.devices, parseNames, new Map());
-  const rooms = await load(METHODS.rooms, parseGroups, new Map());
-  const functions = await load(METHODS.functions, parseGroups, new Map());
+  const devices = await load(METHODS.devices, parseDevices, {
+    names: new Map<string, string>(),
+    channelAddressesById: new Map<string, string>(),
+  });
+  const rooms = await load<ReadonlyMap<string, readonly string[]>>(
+    METHODS.rooms,
+    (value) => parseGroups(value, devices.channelAddressesById),
+    new Map(),
+  );
+  const functions = await load<ReadonlyMap<string, readonly string[]>>(
+    METHODS.functions,
+    (value) => parseGroups(value, devices.channelAddressesById),
+    new Map(),
+  );
   const programs = await load(METHODS.programs, parsePrograms, []);
   const systemVariables = await load(
     METHODS.systemVariables,
@@ -93,7 +105,7 @@ export async function loadOpenCcuMetadata(
 
   return {
     metadata: {
-      names,
+      names: devices.names,
       rooms,
       functions,
       programs,
@@ -103,15 +115,23 @@ export async function loadOpenCcuMetadata(
   };
 }
 
-function parseNames(value: unknown): ReadonlyMap<string, string> {
+function parseDevices(value: unknown): {
+  readonly names: ReadonlyMap<string, string>;
+  readonly channelAddressesById: ReadonlyMap<string, string>;
+} {
   const names = new Map<string, string>();
+  const channelAddressesById = new Map<string, string>();
   for (const device of arrayOf<RawDevice>(value)) {
     addName(names, device.address, device.name);
     for (const channel of arrayOf<RawChannel>(device.channels)) {
       addName(names, channel.address, channel.name);
+      const id = identifier(channel.id);
+      if (id !== undefined && typeof channel.address === "string") {
+        channelAddressesById.set(id, channel.address);
+      }
     }
   }
-  return names;
+  return { names, channelAddressesById };
 }
 
 function addName(
@@ -129,18 +149,31 @@ function addName(
   }
 }
 
-function parseGroups(value: unknown): ReadonlyMap<string, readonly string[]> {
+function parseGroups(
+  value: unknown,
+  channelAddressesById: ReadonlyMap<string, string>,
+): ReadonlyMap<string, readonly string[]> {
   const groups = new Map<string, readonly string[]>();
   for (const group of arrayOf<RawGroup>(value)) {
     if (typeof group.name !== "string" || group.name.trim() === "") continue;
     groups.set(
       group.name.trim(),
-      arrayOf<unknown>(group.channelIds).filter(
-        (id): id is string => typeof id === "string" && id !== "",
-      ),
+      arrayOf<unknown>(group.channelIds).flatMap((rawId) => {
+        const id = identifier(rawId);
+        if (id === undefined) return [];
+        const address = channelAddressesById.get(id);
+        if (address !== undefined) return [address];
+        return id.includes(":") ? [id] : [];
+      }),
     );
   }
   return groups;
+}
+
+function identifier(value: unknown): string | undefined {
+  if (typeof value === "string" && value !== "") return value;
+  if (typeof value === "number" && Number.isFinite(value)) return String(value);
+  return undefined;
 }
 
 function parsePrograms(value: unknown): readonly OpenCcuProgram[] {
@@ -222,7 +255,13 @@ function toRpcValue(value: unknown): RpcValue {
   ) {
     return value;
   }
-  return String(value);
+  if (typeof value === "bigint") return value.toString();
+  if (value === undefined) return "undefined";
+  try {
+    return JSON.stringify(value) ?? "unsupported JSON-RPC value";
+  } catch {
+    return "unsupported JSON-RPC value";
+  }
 }
 
 function arrayOf<T>(value: unknown): readonly T[] {

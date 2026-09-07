@@ -1,0 +1,11 @@
+{
+  "type": "number",
+  "title": { "en": "Carrier sense", "de": "Carrier Sense" },
+  "getable": true,
+  "setable": false,
+  "insights": true,
+  "units": { "en": "%", "de": "%" },
+  "decimals": 0,
+  "min": 0,
+  "max": 100
+}

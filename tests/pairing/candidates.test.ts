@@ -81,6 +81,43 @@ describe("createPairingCandidates", () => {
     });
   });
 
+  it("adds assigned OpenCCU rooms and functions as device Flow tags", () => {
+    const devices = buildHmIpDeviceGraph({
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+      descriptions: [
+        { ADDRESS: "301", TYPE: "HmIP-PS", CHILDREN: ["301:3"] },
+        {
+          ADDRESS: "301:3",
+          TYPE: "SWITCH",
+          PARENT: "301",
+          PARAMSETS: ["VALUES"],
+        },
+      ],
+      paramsets: new Map([
+        ["301:3", { STATE: { TYPE: "BOOL", OPERATIONS: 7, FLAGS: 1 } }],
+      ]),
+    });
+
+    const [candidate] = createPairingCandidates(devices, {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+      metadata: {
+        names: new Map(),
+        rooms: new Map([["Workshop", ["301:3"]]]),
+        functions: new Map([["Light", ["301:3"]]]),
+        programs: [],
+        systemVariables: [],
+      },
+    });
+
+    expect(candidate?.capabilities).toEqual([
+      "onoff",
+      "openccu_room",
+      "openccu_functions",
+    ]);
+  });
+
   it("creates one stable Homey candidate per logical multi-channel output", () => {
     const outputChannels = [6, 10, 14, 18];
     const devices = buildHmIpDeviceGraph({
@@ -145,5 +182,101 @@ describe("createPairingCandidates", () => {
     expect(
       candidates.some(({ name }) => name === "DIN rail actor Output 1"),
     ).toBe(true);
+  });
+
+  it("creates a dedicated thermostat candidate for a VirtualDevices heating group", () => {
+    const address = "VCU-GROUP-1";
+    const channelAddress = `${address}:1`;
+    const devices = buildHmIpDeviceGraph({
+      centralId: "ccu-1",
+      interfaceId: "VirtualDevices",
+      descriptions: [
+        {
+          ADDRESS: address,
+          TYPE: "HmIP-HEATING",
+          CHILDREN: [channelAddress],
+        },
+        {
+          ADDRESS: channelAddress,
+          TYPE: "HEATING_CLIMATECONTROL_TRANSCEIVER",
+          PARENT: address,
+          PARAMSETS: ["VALUES"],
+        },
+      ],
+      paramsets: new Map([
+        [
+          channelAddress,
+          {
+            ACTUAL_TEMPERATURE: {
+              TYPE: "FLOAT",
+              OPERATIONS: 5,
+              FLAGS: 1,
+            },
+            HUMIDITY: { TYPE: "INTEGER", OPERATIONS: 5, FLAGS: 1 },
+            SET_POINT_TEMPERATURE: {
+              TYPE: "FLOAT",
+              OPERATIONS: 7,
+              FLAGS: 1,
+              MIN: 4.5,
+              MAX: 30.5,
+            },
+            SET_POINT_MODE: {
+              TYPE: "INTEGER",
+              OPERATIONS: 5,
+              FLAGS: 1,
+            },
+            CONTROL_MODE: {
+              TYPE: "INTEGER",
+              OPERATIONS: 2,
+              FLAGS: 1,
+            },
+            BOOST_MODE: { TYPE: "BOOL", OPERATIONS: 6, FLAGS: 1 },
+            ACTIVE_PROFILE: {
+              TYPE: "INTEGER",
+              OPERATIONS: 7,
+              FLAGS: 1,
+            },
+          },
+        ],
+      ]),
+    });
+
+    const [candidate] = createPairingCandidates(devices, {
+      centralId: "ccu-1",
+      interfaceId: "VirtualDevices",
+      names: new Map([[address, "Heating ground floor"]]),
+    });
+
+    expect(candidate).toMatchObject({
+      driverId: "openccu-heating-group",
+      name: "Heating ground floor",
+      data: {
+        id: `ccu-1/VirtualDevices/${address}`,
+        interfaceId: "VirtualDevices",
+        address,
+      },
+      capabilities: [
+        "measure_temperature",
+        "measure_humidity",
+        "target_temperature",
+        "homematic_thermostat_mode",
+        "homematic_thermostat_boost",
+        "homematic_thermostat_weekprofile",
+      ],
+      store: {
+        deviceType: "HmIP-HEATING",
+        profileId: "openccu-heating-group",
+        generic: false,
+      },
+    });
+    expect(
+      candidate?.mapping.bindings.find(
+        ({ capability }) => capability === "target_temperature",
+      ),
+    ).toMatchObject({
+      channelAddress,
+      writeChannelAddress: channelAddress,
+      writeParameter: "SET_POINT_TEMPERATURE",
+    });
   });
 });

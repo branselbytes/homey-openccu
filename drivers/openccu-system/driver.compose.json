@@ -1,0 +1,25 @@
+{
+  "id": "openccu-system",
+  "name": { "en": "OpenCCU system", "de": "OpenCCU-System" },
+  "class": "sensor",
+  "capabilities": [
+    "openccu_connection_status",
+    "openccu_measure_devices",
+    "openccu_measure_service_messages",
+    "openccu_alarm_service_messages",
+    "openccu_measure_duty_cycle",
+    "openccu_measure_carrier_sense"
+  ],
+  "images": {
+    "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+    "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": { "next": "add_devices" }
+    },
+    { "id": "add_devices", "template": "add_devices" }
+  ]
+}

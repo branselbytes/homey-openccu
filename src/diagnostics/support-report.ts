@@ -1,7 +1,7 @@
 import type { OpenCcuRuntimeDiagnostics } from "../runtime/openccu-runtime";
 import { redactDiagnosticValue } from "./redact";
 
-export const SUPPORT_REPORT_SCHEMA_VERSION = 1;
+export const SUPPORT_REPORT_SCHEMA_VERSION = 2;
 
 export interface SupportReportRuntime {
   readonly centralId: string;
@@ -28,8 +28,9 @@ export interface SupportReport {
 }
 
 /**
- * Produces a support report containing only aggregate runtime facts. Central
- * identifiers, addresses, names, datapoint values and credentials are omitted.
+ * Produces a support report containing safe runtime and device-model facts.
+ * Central identifiers, addresses, names, datapoint values and credentials are
+ * omitted.
  */
 export function createSupportReport(
   input: SupportReportInput,

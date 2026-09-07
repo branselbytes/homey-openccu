@@ -1,0 +1,9 @@
+{
+  "type": "number",
+  "title": { "en": "HmIP devices", "de": "HmIP-Geräte" },
+  "getable": true,
+  "setable": false,
+  "insights": false,
+  "decimals": 0,
+  "min": 0
+}

@@ -1,0 +1,381 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        max-width: 100%;
+        overflow: hidden;
+        width: 100%;
+      }
+      .header,
+      .central-header,
+      .state,
+      .interface-header,
+      .interface-values {
+        display: flex;
+        align-items: center;
+      }
+      .header,
+      .central-header,
+      .interface-header {
+        justify-content: space-between;
+      }
+      .header {
+        gap: var(--homey-su-2);
+        margin-bottom: var(--homey-su-2);
+        min-width: 0;
+      }
+      .header .homey-title {
+        flex: 1 1 auto;
+        margin: 0;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .refresh {
+        appearance: none;
+        border: 0;
+        border-radius: 999px;
+        background: var(--homey-color-mono-200);
+        color: inherit;
+        cursor: pointer;
+        flex: 0 0 auto;
+        font: inherit;
+        padding: var(--homey-su-1) var(--homey-su-2);
+        white-space: nowrap;
+      }
+      .refresh:disabled {
+        cursor: wait;
+        opacity: 0.6;
+      }
+      .centrals {
+        min-width: 0;
+      }
+      .central + .central {
+        border-top: 1px solid var(--homey-color-mono-200);
+        margin-top: var(--homey-su-3);
+        padding-top: var(--homey-su-3);
+      }
+      .central-title {
+        margin: 0;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .state {
+        flex: 0 0 auto;
+        gap: var(--homey-su-1);
+        white-space: nowrap;
+      }
+      .indicator {
+        background: #32b768;
+        border-radius: 50%;
+        flex: 0 0 10px;
+        height: 10px;
+      }
+      .indicator.warning {
+        background: #e7a329;
+      }
+      .indicator.offline {
+        background: #e64b4b;
+      }
+      .metrics {
+        display: grid;
+        gap: var(--homey-su-1);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: var(--homey-su-2);
+      }
+      .metric {
+        background: var(--homey-color-mono-100);
+        border-radius: var(--homey-border-radius-default);
+        min-width: 0;
+        padding: var(--homey-su-1) var(--homey-su-2);
+      }
+      .metric-label,
+      .interface-type,
+      .updated {
+        color: var(--homey-color-mono-600);
+        font-size: 0.8em;
+      }
+      .metric-label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .metric-value {
+        font-size: 1.15em;
+        font-weight: 600;
+        margin-top: 2px;
+      }
+      .interfaces {
+        margin-top: var(--homey-su-2);
+      }
+      .interfaces-title {
+        margin: 0 0 var(--homey-su-1);
+      }
+      .interface {
+        border-top: 1px solid var(--homey-color-mono-200);
+        padding: var(--homey-su-1) 0;
+      }
+      .interface-values {
+        flex: 0 0 auto;
+        gap: var(--homey-su-3);
+        justify-content: flex-end;
+        white-space: nowrap;
+      }
+      .empty,
+      .error {
+        padding: var(--homey-su-5) 0;
+        text-align: center;
+      }
+      .updated {
+        margin-top: var(--homey-su-1);
+        text-align: right;
+      }
+      @media (max-width: 320px) {
+        .header .homey-title {
+          font-size: 1em;
+        }
+        .refresh {
+          font-size: 0.8em;
+        }
+        .state {
+          font-size: 0.8em;
+        }
+      }
+    </style>
+  </head>
+  <body class="homey-widget">
+    <div class="header">
+      <h2 class="homey-title" data-i18n="title">System status</h2>
+      <button class="refresh" id="refresh" type="button" data-i18n="refresh">
+        Refresh
+      </button>
+    </div>
+    <div class="centrals" id="centrals" aria-live="polite"></div>
+    <div class="updated" id="updated"></div>
+
+    <script>
+      const translations = {
+        de: {
+          title: "Systemstatus",
+          refresh: "Aktualisieren",
+          loading: "Systeminformationen werden geladen …",
+          empty: "Keine OpenCCU konfiguriert",
+          error: "Systemstatus konnte nicht geladen werden",
+          devices: "Geräte",
+          messages: "Servicemeldungen",
+          dutyCycle: "Duty Cycle",
+          carrierSense: "Carrier Sense",
+          interfaces: "Funkinterfaces",
+          interface: "Funkinterface",
+          updated: "Aktualisiert",
+          states: {
+            healthy: "Verbunden",
+            connecting: "Verbindungsaufbau",
+            disconnected: "Getrennt",
+            stopped: "Gestoppt",
+          },
+        },
+        en: {
+          title: "System status",
+          refresh: "Refresh",
+          loading: "Loading system information…",
+          empty: "No OpenCCU configured",
+          error: "Could not load system status",
+          devices: "Devices",
+          messages: "Service messages",
+          dutyCycle: "Duty cycle",
+          carrierSense: "Carrier sense",
+          interfaces: "Radio interfaces",
+          interface: "Radio interface",
+          updated: "Updated",
+          states: {
+            healthy: "Connected",
+            connecting: "Connecting",
+            disconnected: "Disconnected",
+            stopped: "Stopped",
+          },
+        },
+      };
+
+      let HomeyApi;
+      let refreshTimer;
+      const language = navigator.language.toLowerCase().startsWith("de")
+        ? "de"
+        : "en";
+      const t = translations[language];
+
+      function translateStaticText() {
+        document.querySelectorAll("[data-i18n]").forEach((element) => {
+          element.textContent = t[element.dataset.i18n];
+        });
+      }
+
+      function metric(label, value, unit = "") {
+        const card = document.createElement("div");
+        card.className = "metric";
+        const title = document.createElement("div");
+        title.className = "metric-label";
+        title.textContent = label;
+        const reading = document.createElement("div");
+        reading.className = "metric-value";
+        reading.textContent = value === undefined ? "—" : `${value}${unit}`;
+        card.append(title, reading);
+        return card;
+      }
+
+      function stateClass(central) {
+        if (central.unavailable || central.connectionState === "disconnected")
+          return "offline";
+        if (central.partial || central.connectionState !== "healthy")
+          return "warning";
+        return "";
+      }
+
+      function renderCentral(central) {
+        const section = document.createElement("section");
+        section.className = "central";
+        const header = document.createElement("div");
+        header.className = "central-header";
+        const title = document.createElement("h3");
+        title.className = "central-title homey-text-small";
+        title.textContent = central.centralId;
+        const state = document.createElement("div");
+        state.className = "state homey-text-small";
+        const indicator = document.createElement("span");
+        indicator.className = `indicator ${stateClass(central)}`.trim();
+        const stateText = document.createElement("span");
+        stateText.textContent =
+          t.states[central.connectionState] || central.connectionState;
+        state.append(indicator, stateText);
+        header.append(title, state);
+
+        const metrics = document.createElement("div");
+        metrics.className = "metrics";
+        metrics.append(
+          metric(t.devices, central.deviceCount),
+          metric(t.messages, central.serviceMessageCount),
+          metric(t.dutyCycle, central.dutyCycle, "%"),
+          metric(t.carrierSense, central.carrierSense, "%"),
+        );
+        section.append(header, metrics);
+
+        if (central.radioInterfaces.length > 1) {
+          const interfaces = document.createElement("div");
+          interfaces.className = "interfaces";
+          const heading = document.createElement("h4");
+          heading.className = "interfaces-title homey-text-small";
+          heading.textContent = t.interfaces;
+          interfaces.append(heading);
+          central.radioInterfaces.forEach((radio, index) => {
+            const row = document.createElement("div");
+            row.className = "interface";
+            const rowHeader = document.createElement("div");
+            rowHeader.className = "interface-header";
+            const name = document.createElement("span");
+            name.textContent = radio.name || `${t.interface} ${index + 1}`;
+            const values = document.createElement("span");
+            values.className = "interface-values homey-text-small";
+            values.textContent = [
+              radio.dutyCycle === undefined
+                ? undefined
+                : `DC ${radio.dutyCycle}%`,
+              radio.carrierSense === undefined
+                ? undefined
+                : `CS ${radio.carrierSense}%`,
+            ]
+              .filter(Boolean)
+              .join(" · ");
+            rowHeader.append(name, values);
+            row.append(rowHeader);
+            if (radio.type) {
+              const type = document.createElement("div");
+              type.className = "interface-type";
+              type.textContent = radio.type;
+              row.append(type);
+            }
+            interfaces.append(row);
+          });
+          section.append(interfaces);
+        }
+        return section;
+      }
+
+      function renderOverview(overview) {
+        const container = document.getElementById("centrals");
+        container.replaceChildren();
+        if (overview.centrals.length === 0) {
+          const empty = document.createElement("p");
+          empty.className = "empty";
+          empty.textContent = t.empty;
+          container.append(empty);
+        } else {
+          overview.centrals.forEach((central) =>
+            container.append(renderCentral(central)),
+          );
+        }
+        document.getElementById("updated").textContent =
+          `${t.updated}: ${new Date(overview.refreshedAt).toLocaleTimeString()}`;
+        resizeWidget();
+      }
+
+      function resizeWidget() {
+        requestAnimationFrame(() => {
+          const contentBottom = document
+            .getElementById("updated")
+            .getBoundingClientRect().bottom;
+          const paddingBottom =
+            Number.parseFloat(getComputedStyle(document.body).paddingBottom) ||
+            0;
+          const height = Math.ceil(contentBottom + paddingBottom);
+          HomeyApi.setHeight(Math.max(160, height));
+        });
+      }
+
+      async function refresh() {
+        const button = document.getElementById("refresh");
+        button.disabled = true;
+        document.getElementById("centrals").textContent = t.loading;
+        try {
+          renderOverview(await HomeyApi.api("GET", "/", {}));
+        } catch {
+          const container = document.getElementById("centrals");
+          container.replaceChildren();
+          const error = document.createElement("p");
+          error.className = "error";
+          error.textContent = t.error;
+          container.append(error);
+          resizeWidget();
+        } finally {
+          button.disabled = false;
+        }
+      }
+
+      function onHomeyReady(Homey) {
+        HomeyApi = Homey;
+        translateStaticText();
+        document.getElementById("refresh").addEventListener("click", refresh);
+        Homey.ready();
+        resizeWidget();
+        void refresh();
+        refreshTimer = setInterval(refresh, 60_000);
+      }
+
+      window.addEventListener("beforeunload", () =>
+        clearInterval(refreshTimer),
+      );
+    </script>
+  </body>
+</html>

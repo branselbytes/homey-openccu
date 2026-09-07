@@ -8,13 +8,20 @@ import { isRuntimeProvidingApp } from "./runtime-providing-app";
 import { parseStoredBindings } from "./stored-bindings";
 import type { RpcValue } from "../protocol/xmlrpc/types";
 import { resolveDeviceMapping } from "../mapping/device-resolver";
+import { resolveOrganizationCapabilities } from "./device-organization-capabilities";
+import { safeErrorKind } from "../diagnostics/safe-error";
 
 export abstract class RuntimeBackedDevice extends Homey.Device {
   #controller?: DeviceBindingController;
 
   async onInit(): Promise<void> {
     const data = this.getData() as unknown;
-    if (!isRecord(data) || typeof data.centralId !== "string") {
+    if (
+      !isRecord(data) ||
+      typeof data.centralId !== "string" ||
+      typeof data.interfaceId !== "string" ||
+      typeof data.address !== "string"
+    ) {
       await this.setUnavailable("Invalid OpenCCU device identity");
       return;
     }
@@ -25,7 +32,7 @@ export abstract class RuntimeBackedDevice extends Homey.Device {
       await this.setUnavailable("OpenCCU runtime is not initialized");
       return;
     }
-    const runtime = app.runtimeProvider.get(data.centralId);
+    const runtime = app.runtimeProvider.get(data.centralId, data.interfaceId);
     if (!runtime) {
       await this.setUnavailable("Configured OpenCCU is unavailable");
       return;
@@ -52,6 +59,16 @@ export abstract class RuntimeBackedDevice extends Homey.Device {
               ? []
               : resolveDeviceMapping(device, undefined, logicalId).buttonEvents;
           },
+          resolveInformationalCapabilities: () => {
+            const device = runtime.devices.get(data.address as string);
+            if (device === undefined) return {};
+            const mapping = resolveDeviceMapping(device, undefined, logicalId);
+            return resolveOrganizationCapabilities(
+              runtime.metadata,
+              device.address,
+              mapping,
+            );
+          },
           persistBindings: async (updatedBindings) => {
             await this.setStoreValue("bindings", updatedBindings);
           },
@@ -59,7 +76,7 @@ export abstract class RuntimeBackedDevice extends Homey.Device {
       );
       await this.#controller.start();
     } catch (error) {
-      this.error("Failed to initialize OpenCCU device", error);
+      this.error("Failed to initialize OpenCCU device", safeErrorKind(error));
       await this.setUnavailable(
         "Invalid or unsupported OpenCCU device mapping",
       );
@@ -97,7 +114,7 @@ function createDevicePort(device: Homey.Device): HomeyDevicePort {
       await device.setUnavailable(message);
     },
     log: (message) => device.log(message),
-    error: (message, error) => device.error(message, error),
+    error: (message, error) => device.error(message, safeErrorKind(error)),
   };
 }
 

@@ -44,6 +44,9 @@ export interface DeviceBindingControllerOptions {
     bindings: readonly CapabilityBinding[],
   ) => Promise<void>;
   readonly resolveButtonEvents?: () => readonly ButtonEventBinding[];
+  readonly resolveInformationalCapabilities?: () => Readonly<
+    Record<string, RpcValue>
+  >;
 }
 
 export class DeviceBindingController {
@@ -52,6 +55,7 @@ export class DeviceBindingController {
   readonly #options: DeviceBindingControllerOptions;
   #bindings: readonly CapabilityBinding[];
   #buttonEvents: readonly ButtonEventBinding[] = [];
+  #informationalCapabilities: Readonly<Record<string, RpcValue>> = {};
   readonly #unsubscribers: Unsubscribe[] = [];
   readonly #pendingWrites = new Map<string, PendingWrite>();
   #activated = false;
@@ -103,17 +107,26 @@ export class DeviceBindingController {
         if (state === "healthy") void this.#activate();
         if (state === "disconnected") {
           void this.#device.setUnavailable(
-            "OpenCCU HmIP-RF connection unavailable",
+            "OpenCCU device interface unavailable",
           );
         }
+      }),
+      this.#runtime.subscribe("metadata", () => {
+        if (!this.#activated) return;
+        void this.#refreshInformationalCapabilities().catch(
+          (error: unknown) => {
+            this.#device.error(
+              "Failed to update OpenCCU organization tags",
+              error,
+            );
+          },
+        );
       }),
     );
     if (this.#runtime.connectionState === "healthy") {
       await this.#activate();
     } else {
-      await this.#device.setUnavailable(
-        "Waiting for OpenCCU HmIP-RF connection",
-      );
+      await this.#device.setUnavailable("Waiting for OpenCCU device interface");
     }
   }
 
@@ -128,6 +141,8 @@ export class DeviceBindingController {
           "Updated stored bindings from current OpenCCU discovery",
         );
       }
+      this.#informationalCapabilities =
+        this.#options.resolveInformationalCapabilities?.() ?? {};
       await this.#reconcile();
       for (const binding of this.#bindings) {
         if (!binding.writable) continue;
@@ -152,9 +167,7 @@ export class DeviceBindingController {
               void writeOutcome.then((lateOutcome) => {
                 this.#scheduleWriteVerification(pending, 0);
                 if (lateOutcome.status === "confirmed") {
-                  this.#device.log(
-                    `Confirmed ${binding.capability} write`,
-                  );
+                  this.#device.log(`Confirmed ${binding.capability} write`);
                 } else {
                   this.#device.error(
                     `OpenCCU did not confirm ${binding.capability} write`,
@@ -182,6 +195,7 @@ export class DeviceBindingController {
     }
     await this.#device.setAvailable();
     await this.#readInitialValues();
+    await this.#setInformationalCapabilityValues();
   }
 
   stop(): void {
@@ -193,14 +207,33 @@ export class DeviceBindingController {
   }
 
   async #reconcile(): Promise<void> {
-    const changes = reconcileCapabilities(
-      this.#device.getCapabilities(),
-      this.#bindings.map((binding) => binding.capability),
-    );
+    const changes = reconcileCapabilities(this.#device.getCapabilities(), [
+      ...this.#bindings.map((binding) => binding.capability),
+      ...Object.keys(this.#informationalCapabilities),
+    ]);
     for (const capability of changes.remove)
       await this.#device.removeCapability(capability);
     for (const capability of changes.add)
       await this.#device.addCapability(capability);
+  }
+
+  async #refreshInformationalCapabilities(): Promise<void> {
+    this.#informationalCapabilities =
+      this.#options.resolveInformationalCapabilities?.() ?? {};
+    await this.#reconcile();
+    await this.#setInformationalCapabilityValues();
+  }
+
+  async #setInformationalCapabilityValues(): Promise<void> {
+    for (const [capability, value] of Object.entries(
+      this.#informationalCapabilities,
+    )) {
+      try {
+        await this.#device.setCapabilityValue(capability, value);
+      } catch (error) {
+        this.#device.error(`Failed to update ${capability}`, error);
+      }
+    }
   }
 
   async #readInitialValues(): Promise<void> {
@@ -221,10 +254,7 @@ export class DeviceBindingController {
           );
         }
       } catch (error) {
-        this.#device.error(
-          `Failed to read OpenCCU channel ${channelAddress}`,
-          error,
-        );
+        this.#device.error("Failed to read an OpenCCU channel", error);
       }
     }
   }

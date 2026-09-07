@@ -284,6 +284,27 @@ describe("ProfileRegistry", () => {
   );
 
   it.each([
+    ["HmIP-SMI", "ILLUMINATION"],
+    ["HmIP-SPI", "ILLUMINATION"],
+    ["HmIP-SMI55", "CURRENT_ILLUMINATION"],
+    ["HmIP-SMO-A", "CURRENT_ILLUMINATION"],
+  ])("selects the reliable luminance datapoint for %s", (type, parameter) => {
+    const motionParameter =
+      type === "HmIP-SPI" ? "PRESENCE_DETECTION_STATE" : "MOTION";
+    const luminance = new ProfileRegistry()
+      .resolve(
+        sensor(type, [
+          [1, motionParameter, "BOOL"],
+          [1, "CURRENT_ILLUMINATION", "FLOAT"],
+          [1, "ILLUMINATION", "FLOAT"],
+        ]),
+      )
+      .find(({ capability }) => capability === "measure_luminance");
+
+    expect(luminance).toMatchObject({ parameter });
+  });
+
+  it.each([
     ["HmIP-PCBS", "HmIP-PCBS"],
     ["HmIP-PCBS-BAT", "HmIP-PCBS-BAT"],
     ["HmIP-DRSI1", "HmIP-DRSI1"],

@@ -100,6 +100,36 @@ describe("OpenCcuRuntime", () => {
       programs: 1,
       systemVariables: 1,
     });
+    expect(runtime.getDiagnostics().devices).toEqual([
+      {
+        alias: "device-1",
+        type: "HmIP-PS",
+        availability: "unknown",
+        channels: [
+          {
+            index: 3,
+            type: "SWITCH",
+            dataPoints: [
+              {
+                parameter: "STATE",
+                type: "BOOL",
+                operations: 7,
+                flags: 1,
+              },
+            ],
+          },
+        ],
+        mappings: [
+          {
+            driverId: "HMIP-PS",
+            profileId: "hmip-switch",
+            generic: false,
+            capabilities: ["onoff"],
+          },
+        ],
+      },
+    ]);
+    expect(JSON.stringify(runtime.getDiagnostics())).not.toContain("301");
   });
   it("retains the latest connection state for late subscribers", () => {
     const runtime = new OpenCcuRuntime(createClient(), {

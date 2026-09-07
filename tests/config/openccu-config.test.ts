@@ -20,7 +20,9 @@ describe("OpenCCU configuration", () => {
       centralId: "ccu-1",
       host: "192.0.2.10",
       hmIpRfPort: 2010,
+      virtualDevicesPort: 9292,
       callbackPort: 12010,
+      virtualDevicesCallbackPort: 12011,
       jsonRpcUrl: "http://192.0.2.10/api/homematic.cgi",
     });
     expect(JSON.stringify(publicOpenCcuConfig(config))).not.toContain("secret");
@@ -32,6 +34,15 @@ describe("OpenCCU configuration", () => {
     [{ centralId: "ccu", host: "openccu.local/path" }, "path"],
     [{ centralId: "ccu", host: "openccu.local", hmIpRfPort: 70_000 }, "port"],
     [{ centralId: "ccu", host: "openccu.local", callbackPort: 0 }, "callback"],
+    [
+      {
+        centralId: "ccu",
+        host: "openccu.local",
+        callbackPort: 12010,
+        virtualDevicesCallbackPort: 12010,
+      },
+      "different",
+    ],
     [
       { centralId: "ccu", host: "openccu.local", username: "homey" },
       "together",

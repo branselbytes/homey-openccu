@@ -17,7 +17,7 @@ Exit criterion: architecture and initial scope are approved, and local tool vers
 
 ## Phase 1 — Reproducible SDK v3 TypeScript baseline
 
-- [x] Change app identity and metadata to `io.github.branselbytes.openccu` / **OpenCCU for Homey**, while preserving license attribution and history.
+- [x] Change app identity to `io.github.branselbytes.openccu` and the guideline-compatible Store display name to **OpenCCU Local**, while preserving the OpenCCU for Homey project name, license attribution, and history.
 - [x] Select Node.js 22 as the current Homey app runtime target and add strict TypeScript configuration.
 - [x] Add formatter, linter, unit-test runner, and build scripts.
 - [x] Generate and track a lockfile after dependency installation.
@@ -38,9 +38,11 @@ The inherited Axios, BIN-RPC, MQTT, CCU-Jack, and discovery paths have been remo
 - [x] Implement bounded backoff, connection state, cancellation, and shutdown primitives.
 - [x] Add an HTTP JSON-RPC 1.1 client with basic authentication, managed OpenCCU sessions, timeout, abort handling, and categorized errors.
 - [x] Add HmIP-RF endpoint detection for manually configured hosts.
-- [ ] Integrate UDP convenience discovery during Homey pairing while retaining manual-host fallback.
+- [x] Add explicit UDP convenience discovery in settings before pairing while retaining manual-host fallback (ADR 0015).
 - [x] Use fake transports and redacted representative descriptions for unit/contract tests.
 - [ ] Add recorded responses from a real OpenCCU after a test system is available.
+
+The eQ-3 UDP request and response layout are verified read-only against the project OpenCCU. The stored test structure uses a synthetic serial and redacted trailing fields. Broadcast discovery is intentionally same-subnet only; the current routed Homey/OpenCCU topology continues to use manual host configuration.
 
 Exit criterion: fixture tests cover discovery, reads, writes, push events, reconnect, malformed responses, and JSON-RPC authentication without Homey dependencies.
 
@@ -131,7 +133,11 @@ HmIP-RF registration, discovery, pairing, temperature commands, delayed write ac
 - [x] Add separate HmIP-SWO-B/PL/PR drivers with discovery-filtered wind, rain, and sunshine-duration capabilities in matching units.
 - [x] Port the final three legacy HmIP product drivers: BRA button events, SCI contact, and discovery-adaptive FCI1 contact/button behavior.
 - [x] Add program execution, typed system-variable writes, and refreshed equality checks to Homey Flow with dynamic autocomplete.
-- Decide whether rooms and functions should optionally create Homey zones/tags; never change them implicitly.
+- [x] Add one read-only OpenCCU system device per central for connection state, device count, service-message count, duty cycle, and carrier sense.
+- [x] Add a cached, privacy-reduced dashboard widget for OpenCCU connection and radio-system status.
+- [x] Add a privacy-reduced dashboard widget for detailed active service messages with app-level request coalescing and caching.
+- [x] Add an independently supervised VirtualDevices XML-RPC runtime and a dedicated fixture-backed `HmIP-HEATING` group driver; live pairing, commands, and callbacks remain the hardware gate.
+- [x] Expose rooms and functions as read-only per-device Flow tags; never create or move Homey zones implicitly (ADR 0016).
 - Port additional legacy knowledge into profiles, backed by fixtures and hardware reports.
 - [x] Add a privacy-reviewed diagnostic export suitable for issue reports.
 
@@ -139,7 +145,13 @@ Exit criterion: documented coverage matrix, regression fixtures, and a repeatabl
 
 The hub Flow cards are manifest-, fixture-, and read-path verified on Homey Test. Live metadata filtering exposes 9 non-internal programs and 14 visible, non-internal system variables on the current OpenCCU. A dedicated disposable program or system variable is still required before write execution can be hardware verified without affecting production automation.
 
-The settings page can download a protected JSON support report containing only anonymous central aliases, connection states, aggregate discovery/metadata counts, and XML-RPC request counters. Credentials, addresses, central IDs, OpenCCU object names, and datapoint values are omitted; a final recursive redaction pass guards future diagnostic fields.
+The system device uses two isolated JSON-RPC reads per minute and central. Unsupported metrics remain unknown. Live pairing, callback-backed connection state, and the current OpenCCU response shape are verified on Homey Test; Insights history and multi-interface aggregation remain hardware gates.
+
+The service-message widget queries details only while a dashboard containing it is open. It uses one read-only ReGa script per central at most once every 30 seconds across widget instances, strips raw device addresses at the app API boundary, and renders configured names with safe DOM text nodes. Live list contents and Homey dashboard rendering remain hardware gates.
+
+The system-status widget uses the existing typed JSON-RPC system-information path. Widget requests are deduplicated and cached for 30 seconds, and interface addresses are removed at the app API boundary. Live dashboard layout and refresh behavior remain a Homey Test gate.
+
+The settings page creates a sanitized JSON support report and offers native file sharing, browser download, and clipboard/manual-copy fallbacks for embedded Homey views. It contains anonymous central/device aliases, connection states, aggregate counters, device types, firmware versions, channel/datapoint definitions, and selected drivers/capabilities. Credentials, addresses, central IDs, OpenCCU object names, and current datapoint values are omitted; a final recursive redaction pass guards future diagnostic fields.
 
 Homey command logs likewise omit concrete Homematic channel addresses and datapoint values. A clean `npm ci` confirms that the production tree contains only `homematic-xmlrpc` and its two parser/builder dependencies; previously observed MQTT, BIN-RPC, and Axios packages were untracked leftovers in the local `node_modules` directory rather than declared runtime dependencies.
 
@@ -157,7 +169,9 @@ The regular Homey Test process stabilized at 92.8–93.5 MB PSS and 0% idle CPU 
 - Finalize user documentation, troubleshooting, contributor workflow, and release checklist.
 - Push, create repository settings, publish, or submit to the Homey App Store only after explicit approval.
 
-Initial troubleshooting, contributor, release-checklist, and third-party-notice documents now exist. They deliberately retain open hardware, compatibility, performance, language, and release-approval gates rather than presenting the app as release-ready.
+Initial changelog, compatibility matrix, troubleshooting, contributor, release-checklist, and third-party-notice documents now exist. They deliberately retain open hardware, compatibility, performance, and release-approval gates rather than presenting the app as release-ready.
+
+The release audit passed a clean locked install and was extended on 2026-09-07 through 252 passing tests, formatting, lint, strict types, build, and publish validation. The production audit remains at zero findings, runtime licenses are MIT-compatible, and the minimized package retains required license notices while excluding development documentation, configuration, and source maps. English and German settings and custom-capability labels are now consistency-tested. A beta-testing guide, public issue template, and Homey Community announcement draft are prepared locally; no external publication has occurred.
 
 The development toolchain is pinned to the compatible patch releases Homey CLI 4.4.4 and ESLint 10.10.0. `npm audit --omit=dev` remains at zero findings. The full audit currently reports 20 transitive development-only findings through the Homey CLI; npm's proposed aggregate remedy downgrades Homey to 3.7.1 and is therefore not accepted. These findings must be reassessed when Athom publishes updated CLI dependencies, and the CLI should only process trusted app assets in the meantime.
 

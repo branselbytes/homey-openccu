@@ -14,7 +14,7 @@
       "homematic-xmlrpc": ["src/types/homematic-xmlrpc"]
     },
     "skipLibCheck": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "strict": true,
     "target": "ES2023",
     "types": ["node", "vitest/globals"]
@@ -23,6 +23,7 @@
     "api.ts",
     "app.ts",
     "src/**/*.ts",
+    "widgets/**/*.ts",
     "drivers/**/*.js",
     "drivers/**/*.ts"
   ],

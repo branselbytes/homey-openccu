@@ -2,7 +2,7 @@
 
 ## Scope
 
-This repository contains the Homey Pro app **OpenCCU for Homey** (`io.github.branselbytes.openccu`). It communicates locally with OpenCCU and targets the current Homey Apps SDK v3.
+This repository contains the Homey Pro app **OpenCCU Local** (`io.github.branselbytes.openccu`), developed as the **OpenCCU for Homey** project. It communicates locally with OpenCCU and targets the current Homey Apps SDK v3.
 
 ## Working rules
 

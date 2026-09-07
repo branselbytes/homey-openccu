@@ -21,16 +21,28 @@ import { OpenCcuRuntime } from "./openccu-runtime";
 import type { DescriptionCache } from "./discovery";
 
 export const HMIP_RF_INTERFACE_ID = "HmIP-RF";
+export const VIRTUAL_DEVICES_INTERFACE_ID = "VirtualDevices";
 
 export interface CallbackServer {
   ready(): Promise<void>;
   close(): Promise<void>;
 }
 
+interface ManagedInterfaceRuntime {
+  readonly interfaceId: string;
+  readonly core: OpenCcuRuntime;
+  readonly supervisor: ConnectionSupervisor;
+  readonly callbackServer: CallbackServer;
+}
+
 export interface ManagedCentralRuntimeFactoryOptions {
   readonly callbackBindHost?: string;
   readonly callbackAdvertisedHost: string;
+  readonly enableVirtualDevices?: boolean;
   readonly createClient?: (config: OpenCcuConnectionConfig) => XmlRpcClient;
+  readonly createVirtualDevicesClient?: (
+    config: OpenCcuConnectionConfig,
+  ) => XmlRpcClient;
   readonly createJsonRpcSession?: (
     config: OpenCcuConnectionConfig,
   ) =>
@@ -40,6 +52,7 @@ export interface ManagedCentralRuntimeFactoryOptions {
     readonly host: string;
     readonly port: number;
     readonly expectedRemoteHost: string;
+    readonly interfaceId: string;
     readonly runtime: OpenCcuRuntime;
   }) => CallbackServer;
   readonly initialRetryDelayMs?: number;
@@ -47,6 +60,7 @@ export interface ManagedCentralRuntimeFactoryOptions {
   readonly descriptionCache?: DescriptionCache;
   readonly onConnectionState?: (
     centralId: string,
+    interfaceId: string,
     state: ConnectionState,
     error?: unknown,
   ) => void;
@@ -57,38 +71,66 @@ export interface ManagedCentralRuntimeFactoryOptions {
 }
 
 export class ManagedCentralRuntime {
-  readonly core: OpenCcuRuntime;
-  readonly #supervisor: ConnectionSupervisor;
-  readonly #callbackServer: CallbackServer;
+  readonly #interfaces: readonly ManagedInterfaceRuntime[];
   #started = false;
 
-  constructor(
-    core: OpenCcuRuntime,
-    supervisor: ConnectionSupervisor,
-    callbackServer: CallbackServer,
-  ) {
-    this.core = core;
-    this.#supervisor = supervisor;
-    this.#callbackServer = callbackServer;
+  constructor(interfaces: readonly ManagedInterfaceRuntime[]) {
+    if (interfaces.length === 0) {
+      throw new Error("Managed OpenCCU runtime requires an interface");
+    }
+    this.#interfaces = interfaces;
+  }
+
+  get core(): OpenCcuRuntime {
+    const primary = this.getCore(HMIP_RF_INTERFACE_ID);
+    if (primary === undefined) {
+      throw new Error("Managed OpenCCU runtime has no HmIP-RF interface");
+    }
+    return primary;
+  }
+
+  getCore(interfaceId: string): OpenCcuRuntime | undefined {
+    return this.#interfaces.find(
+      (candidate) => candidate.interfaceId === interfaceId,
+    )?.core;
+  }
+
+  interfaceCores(): readonly (readonly [string, OpenCcuRuntime])[] {
+    return this.#interfaces.map(({ interfaceId, core }) => [interfaceId, core]);
   }
 
   async start(): Promise<void> {
     if (this.#started) return;
-    await this.#callbackServer.ready();
-    this.#supervisor.start();
+    await Promise.all(
+      this.#interfaces.map(({ callbackServer }) => callbackServer.ready()),
+    );
+    for (const { supervisor } of this.#interfaces) supervisor.start();
     this.#started = true;
   }
 
   async stop(): Promise<void> {
-    try {
-      await this.#supervisor.stop();
-    } finally {
+    let firstError: unknown;
+    for (const { supervisor } of this.#interfaces) {
       try {
-        await this.#callbackServer.close();
-      } finally {
-        this.core.clearSubscriptions();
-        this.#started = false;
+        await supervisor.stop();
+      } catch (error) {
+        firstError ??= error;
       }
+    }
+    for (const { callbackServer, core } of this.#interfaces) {
+      try {
+        await callbackServer.close();
+      } catch (error) {
+        firstError ??= error;
+      } finally {
+        core.clearSubscriptions();
+      }
+    }
+    this.#started = false;
+    if (firstError !== undefined) {
+      throw firstError instanceof Error
+        ? firstError
+        : new Error("Failed to stop OpenCCU runtime", { cause: firstError });
     }
   }
 }
@@ -103,55 +145,98 @@ export class ManagedCentralRuntimeFactory implements RuntimeFactory<ManagedCentr
   async create(
     config: OpenCcuConnectionConfig,
   ): Promise<ManagedCentralRuntime> {
-    const client =
-      this.#options.createClient?.(config) ??
-      createHmIpXmlRpcClient({
-        host: config.host,
-        port: config.hmIpRfPort,
-        username: config.username,
-        password: config.password,
-      });
     const jsonRpcSession =
       this.#options.createJsonRpcSession?.(config) ??
       createJsonRpcSession(config);
+    const interfaces: ManagedInterfaceRuntime[] = [
+      this.#createInterface({
+        config,
+        interfaceId: HMIP_RF_INTERFACE_ID,
+        callbackPort: config.callbackPort,
+        client:
+          this.#options.createClient?.(config) ??
+          createHmIpXmlRpcClient({
+            host: config.host,
+            port: config.hmIpRfPort,
+            username: config.username,
+            password: config.password,
+          }),
+        jsonRpcSession,
+      }),
+    ];
+    if (this.#options.enableVirtualDevices === true) {
+      interfaces.push(
+        this.#createInterface({
+          config,
+          interfaceId: VIRTUAL_DEVICES_INTERFACE_ID,
+          callbackPort: config.virtualDevicesCallbackPort,
+          client:
+            this.#options.createVirtualDevicesClient?.(config) ??
+            createHmIpXmlRpcClient({
+              host: config.host,
+              port: config.virtualDevicesPort,
+              path: "/groups",
+              username: config.username,
+              password: config.password,
+            }),
+        }),
+      );
+    }
+    const runtime = new ManagedCentralRuntime(interfaces);
+    await runtime.start();
+    return runtime;
+  }
+
+  #createInterface(options: {
+    readonly config: OpenCcuConnectionConfig;
+    readonly interfaceId: string;
+    readonly callbackPort: number;
+    readonly client: XmlRpcClient;
+    readonly jsonRpcSession?: JsonRpcSession & {
+      close(signal?: AbortSignal): Promise<void>;
+    };
+  }): ManagedInterfaceRuntime {
+    const { config, interfaceId, client, jsonRpcSession } = options;
     const core = new OpenCcuRuntime(client, {
       centralId: config.centralId,
-      interfaceId: HMIP_RF_INTERFACE_ID,
+      interfaceId,
       descriptionCache: this.#options.descriptionCache,
       jsonRpcSession,
     });
     const callbackServer =
       this.#options.createCallbackServer?.({
         host: this.#options.callbackBindHost ?? "0.0.0.0",
-        port: config.callbackPort,
+        port: options.callbackPort,
         expectedRemoteHost: config.host,
+        interfaceId,
         runtime: core,
       }) ??
       new XmlRpcCallbackServer({
         host: this.#options.callbackBindHost ?? "0.0.0.0",
-        port: config.callbackPort,
+        port: options.callbackPort,
         expectedRemoteHost: config.host,
         dispatcher: core.createCallbackDispatcher(),
       });
     const callbackUrl = buildCallbackUrl(
       this.#options.callbackAdvertisedHost,
-      config.callbackPort,
+      options.callbackPort,
     );
     const supervisor = new ConnectionSupervisor({
       connect: async (signal) => {
-        await client.init(callbackUrl, HMIP_RF_INTERFACE_ID, signal);
+        await client.init(callbackUrl, interfaceId, signal);
         await core.refresh(signal);
         if (jsonRpcSession !== undefined) {
-          const result = await core.refreshMetadata(signal);
-          if (result !== undefined) {
-            this.#options.onMetadataLoaded?.(config.centralId, result);
+          const metadataResult = await core.refreshMetadata(signal);
+          await core.refreshSystemInformation(signal);
+          if (metadataResult !== undefined) {
+            this.#options.onMetadataLoaded?.(config.centralId, metadataResult);
           }
         }
       },
       disconnect: async () => {
         try {
           await client
-            .init("", HMIP_RF_INTERFACE_ID, AbortSignal.timeout(2_000))
+            .init("", interfaceId, AbortSignal.timeout(2_000))
             .catch(() => undefined);
         } finally {
           await jsonRpcSession
@@ -163,12 +248,15 @@ export class ManagedCentralRuntimeFactory implements RuntimeFactory<ManagedCentr
       maxDelayMs: this.#options.maxRetryDelayMs,
       onStateChange: (state, error) => {
         core.publishConnectionState(state, error);
-        this.#options.onConnectionState?.(config.centralId, state, error);
+        this.#options.onConnectionState?.(
+          config.centralId,
+          interfaceId,
+          state,
+          error,
+        );
       },
     });
-    const runtime = new ManagedCentralRuntime(core, supervisor, callbackServer);
-    await runtime.start();
-    return runtime;
+    return { interfaceId, core, supervisor, callbackServer };
   }
 }
 

@@ -1,28 +1,29 @@
 {
   "type": "enum",
   "title": {
-    "en": "Weekprofile"
+    "en": "Weekprofile",
+    "de": "Wochenprofil"
   },
   "values": [
     {
       "id": "1",
       "title": {
         "en": "1",
-        "nl": "1"
+        "de": "1"
       }
     },
     {
       "id": "2",
       "title": {
         "en": "2",
-        "nl": "2"
+        "de": "2"
       }
     },
     {
       "id": "3",
       "title": {
         "en": "3",
-        "nl": "3"
+        "de": "3"
       }
     }
   ],

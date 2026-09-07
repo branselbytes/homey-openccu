@@ -30,6 +30,19 @@
       </div>
       <div class="field row">
         <label
+          for="virtual-devices-port"
+          data-i18n="settings.connection.virtual_devices_port"
+        ></label>
+        <input
+          id="virtual-devices-port"
+          type="number"
+          min="1"
+          max="65535"
+          value="9292"
+        />
+      </div>
+      <div class="field row">
+        <label
           for="callback-port"
           data-i18n="settings.connection.callback_port"
         ></label>
@@ -42,6 +55,19 @@
         />
       </div>
       <div class="field row">
+        <label
+          for="virtual-devices-callback-port"
+          data-i18n="settings.connection.virtual_devices_callback_port"
+        ></label>
+        <input
+          id="virtual-devices-callback-port"
+          type="number"
+          min="1"
+          max="65535"
+          value="12011"
+        />
+      </div>
+      <div class="field row">
         <label for="username" data-i18n="settings.connection.username"></label>
         <input id="username" type="text" autocomplete="username" />
       </div>
@@ -50,6 +76,18 @@
         <input id="password" type="password" autocomplete="current-password" />
       </div>
       <p data-i18n="settings.connection.hint"></p>
+      <button
+        id="discover"
+        type="button"
+        data-i18n="settings.discovery.button"
+      ></button>
+      <div id="discovery-results" hidden>
+        <label
+          for="discovered-ccu"
+          data-i18n="settings.discovery.results"
+        ></label>
+        <select id="discovered-ccu"></select>
+      </div>
     </fieldset>
 
     <button id="save" class="right" data-i18n="settings.save"></button>
@@ -59,8 +97,35 @@
       <p data-i18n="settings.diagnostics.hint"></p>
       <button
         id="download-diagnostics"
+        type="button"
         data-i18n="settings.diagnostics.download"
       ></button>
+      <div id="diagnostics-export" hidden>
+        <p id="diagnostics-status" aria-live="polite"></p>
+        <label
+          id="diagnostics-content-label"
+          for="diagnostics-content"
+          data-i18n="settings.diagnostics.content"
+        ></label>
+        <textarea
+          id="diagnostics-content"
+          rows="10"
+          readonly
+          spellcheck="false"
+          aria-labelledby="diagnostics-content-label"
+          style="box-sizing: border-box; width: 100%; resize: vertical"
+        ></textarea>
+        <button
+          id="save-diagnostics"
+          type="button"
+          data-i18n="settings.diagnostics.save"
+        ></button>
+        <button
+          id="copy-diagnostics"
+          type="button"
+          data-i18n="settings.diagnostics.copy"
+        ></button>
+      </div>
     </fieldset>
 
     <script>
@@ -71,7 +136,11 @@
         centralId: document.getElementById("central-id"),
         host: document.getElementById("host"),
         hmIpRfPort: document.getElementById("hmip-port"),
+        virtualDevicesPort: document.getElementById("virtual-devices-port"),
         callbackPort: document.getElementById("callback-port"),
+        virtualDevicesCallbackPort: document.getElementById(
+          "virtual-devices-callback-port",
+        ),
         username: document.getElementById("username"),
         password: document.getElementById("password"),
       };
@@ -86,7 +155,11 @@
             fields.centralId.value = connection.centralId || "";
             fields.host.value = connection.host || "";
             fields.hmIpRfPort.value = connection.hmIpRfPort || 2010;
+            fields.virtualDevicesPort.value =
+              connection.virtualDevicesPort || 9292;
             fields.callbackPort.value = connection.callbackPort || 12010;
+            fields.virtualDevicesCallbackPort.value =
+              connection.virtualDevicesCallbackPort || 12011;
             fields.username.value = connection.username || "";
             fields.password.value = connection.password || "";
           }
@@ -103,20 +176,119 @@
           });
         });
 
+        document.getElementById("discover").addEventListener("click", () => {
+          const button = document.getElementById("discover");
+          button.disabled = true;
+          Homey.api("GET", "/discovery", (error, results) => {
+            button.disabled = false;
+            if (error) return Homey.alert(error);
+            if (!Array.isArray(results) || results.length === 0) {
+              return Homey.alert(Homey.__("settings.discovery.none"));
+            }
+            showDiscoveryResults(results);
+          });
+        });
+
+        document
+          .getElementById("discovered-ccu")
+          .addEventListener("change", applyDiscoveredOpenCcu);
+
         document
           .getElementById("download-diagnostics")
           .addEventListener("click", () => {
+            const button = document.getElementById("download-diagnostics");
+            button.disabled = true;
             Homey.api("GET", "/diagnostics", (error, report) => {
+              button.disabled = false;
               if (error) return Homey.alert(error);
-              downloadJson("openccu-for-homey-diagnostics.json", report);
+              const content = JSON.stringify(report, null, 2);
+              document.getElementById("diagnostics-content").value = content;
+              document.getElementById("diagnostics-export").hidden = false;
+              setDiagnosticsStatus("settings.diagnostics.ready");
             });
+          });
+
+        document
+          .getElementById("save-diagnostics")
+          .addEventListener("click", async () => {
+            try {
+              const result = await saveDiagnosticsFile(
+                "openccu-for-homey-diagnostics.json",
+                document.getElementById("diagnostics-content").value,
+              );
+              setDiagnosticsStatus(
+                result === "shared"
+                  ? "settings.diagnostics.shared"
+                  : "settings.diagnostics.saved",
+              );
+            } catch (error) {
+              if (error && error.name === "AbortError") return;
+              setDiagnosticsStatus("settings.diagnostics.save_failed");
+            }
+          });
+
+        document
+          .getElementById("copy-diagnostics")
+          .addEventListener("click", async () => {
+            const content = document.getElementById("diagnostics-content");
+            try {
+              await copyText(content);
+              setDiagnosticsStatus("settings.diagnostics.copied");
+            } catch {
+              setDiagnosticsStatus("settings.diagnostics.copy_failed");
+            }
           });
       }
 
-      function downloadJson(filename, value) {
-        const blob = new Blob([JSON.stringify(value, null, 2)], {
+      function showDiscoveryResults(results) {
+        const select = document.getElementById("discovered-ccu");
+        select.replaceChildren();
+        for (const result of results) {
+          if (
+            !result ||
+            typeof result.address !== "string" ||
+            typeof result.serial !== "string" ||
+            typeof result.type !== "string"
+          )
+            continue;
+          const option = document.createElement("option");
+          option.value = JSON.stringify(result);
+          option.textContent = `${result.type} · ${result.address} (${result.serial})`;
+          select.appendChild(option);
+        }
+        if (select.options.length === 0) return;
+        document.getElementById("discovery-results").hidden = false;
+        select.selectedIndex = 0;
+        applyDiscoveredOpenCcu();
+      }
+
+      function applyDiscoveredOpenCcu() {
+        const value = document.getElementById("discovered-ccu").value;
+        if (!value) return;
+        const result = JSON.parse(value);
+        fields.host.value = result.address;
+        if (!fields.centralId.value.trim())
+          fields.centralId.value = result.serial;
+      }
+
+      async function saveDiagnosticsFile(filename, content) {
+        const blob = new Blob([content], {
           type: "application/json",
         });
+        if (
+          typeof File === "function" &&
+          typeof navigator.share === "function"
+        ) {
+          const file = new File([blob], filename, { type: blob.type });
+          const shareData = { files: [file], title: filename };
+          if (
+            typeof navigator.canShare !== "function" ||
+            navigator.canShare(shareData)
+          ) {
+            await navigator.share(shareData);
+            return "shared";
+          }
+        }
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
@@ -124,7 +296,23 @@
         document.body.appendChild(link);
         link.click();
         link.remove();
-        URL.revokeObjectURL(url);
+        window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+        return "downloaded";
+      }
+
+      async function copyText(textarea) {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(textarea.value);
+          return;
+        }
+        textarea.focus();
+        textarea.select();
+        if (!document.execCommand("copy")) throw new Error("Copy failed");
+      }
+
+      function setDiagnosticsStatus(key) {
+        document.getElementById("diagnostics-status").textContent =
+          Homey.__(key);
       }
 
       function readConnection() {
@@ -134,42 +322,67 @@
           centralId: fields.centralId.value.trim(),
           host: fields.host.value.trim(),
           hmIpRfPort: Number(fields.hmIpRfPort.value),
+          virtualDevicesPort: Number(fields.virtualDevicesPort.value),
           callbackPort: Number(fields.callbackPort.value),
+          virtualDevicesCallbackPort: Number(
+            fields.virtualDevicesCallbackPort.value,
+          ),
           ...(username === "" && password === "" ? {} : { username, password }),
         };
       }
 
       function validateConnection(connection) {
-        if (!connection.centralId) return "Central ID is required";
-        if (!connection.host) return "OpenCCU host is required";
+        if (!connection.centralId)
+          return Homey.__("settings.validation.central_id_required");
+        if (!connection.host)
+          return Homey.__("settings.validation.host_required");
         if (
           connection.host.includes("://") ||
           /[/?#\s]/u.test(connection.host)
         ) {
-          return "Enter a host name or IP address without protocol or path";
+          return Homey.__("settings.validation.host_invalid");
         }
         if (
           !Number.isInteger(connection.hmIpRfPort) ||
           connection.hmIpRfPort < 1 ||
           connection.hmIpRfPort > 65535
         ) {
-          return "HmIP-RF port must be an integer between 1 and 65535";
+          return Homey.__("settings.validation.hmip_port_invalid");
+        }
+        if (
+          !Number.isInteger(connection.virtualDevicesPort) ||
+          connection.virtualDevicesPort < 1 ||
+          connection.virtualDevicesPort > 65535
+        ) {
+          return Homey.__("settings.validation.virtual_devices_port_invalid");
         }
         if (
           !Number.isInteger(connection.callbackPort) ||
           connection.callbackPort < 1 ||
           connection.callbackPort > 65535
         ) {
-          return "Callback port must be an integer between 1 and 65535";
+          return Homey.__("settings.validation.callback_port_invalid");
+        }
+        if (
+          !Number.isInteger(connection.virtualDevicesCallbackPort) ||
+          connection.virtualDevicesCallbackPort < 1 ||
+          connection.virtualDevicesCallbackPort > 65535
+        ) {
+          return Homey.__(
+            "settings.validation.virtual_devices_callback_port_invalid",
+          );
+        }
+        if (connection.callbackPort === connection.virtualDevicesCallbackPort) {
+          return Homey.__("settings.validation.callback_ports_distinct");
         }
         if (
           (connection.username === undefined) !==
           (connection.password === undefined)
         ) {
-          return "Username and password must both be set or both be empty";
+          return Homey.__("settings.validation.credentials_together");
         }
         if (connection.username === "" || connection.password === "") {
-          return "Username and password must both be set or both be empty";
+          return Homey.__("settings.validation.credentials_together");
         }
         return undefined;
       }

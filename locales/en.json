@@ -1,6 +1,11 @@
 {
   "settings": {
-    "title": "OpenCCU for Homey",
+    "discovery": {
+      "button": "Find OpenCCU on the local network",
+      "results": "Discovered OpenCCU",
+      "none": "No OpenCCU was found. You can continue using the manual host setting."
+    },
+    "title": "OpenCCU Local",
     "subtitle": "Configure the local OpenCCU connection used for Homematic IP devices.",
     "connection": {
       "title": "OpenCCU connection",
@@ -10,14 +15,36 @@
       "callback_port": "Homey XML-RPC callback port",
       "username": "Username (optional)",
       "password": "Password (optional)",
-      "hint": "The initial release uses the local HmIP-RF XML-RPC interface. Enter the host without http:// or a path."
+      "hint": "HmIP-RF provides physical devices. VirtualDevices provides OpenCCU heating groups. Enter the host without http:// or a path.",
+      "virtual_devices_port": "VirtualDevices XML-RPC port",
+      "virtual_devices_callback_port": "VirtualDevices callback port"
     },
     "save": "Save changes",
     "saved": "OpenCCU settings saved",
     "diagnostics": {
       "title": "Diagnostics",
-      "hint": "Download an anonymous support report with connection states and aggregate counters. Credentials, addresses, OpenCCU names and datapoint values are not included.",
-      "download": "Download diagnostics"
+      "hint": "Create a sanitized support report with connection states, device types, firmware versions and datapoint definitions. Credentials, addresses, OpenCCU names and current values are not included. Please still review the report before sharing it.",
+      "download": "Create diagnostics report",
+      "content": "Diagnostics report contents",
+      "ready": "The report is ready. You can save or share it as a file, or copy it to the clipboard.",
+      "save": "Save or share file",
+      "shared": "The diagnostics report was shared.",
+      "saved": "The diagnostics report download was started.",
+      "save_failed": "The file could not be saved from this view. Please copy the report to the clipboard instead.",
+      "copy": "Copy report",
+      "copied": "The diagnostics report was copied to the clipboard.",
+      "copy_failed": "The report could not be copied automatically. Please select the displayed text and copy it manually."
+    },
+    "validation": {
+      "central_id_required": "Central ID is required",
+      "host_required": "OpenCCU host is required",
+      "host_invalid": "Enter a host name or IP address without protocol or path",
+      "hmip_port_invalid": "HmIP-RF port must be an integer between 1 and 65535",
+      "virtual_devices_port_invalid": "VirtualDevices port must be an integer between 1 and 65535",
+      "callback_port_invalid": "Callback port must be an integer between 1 and 65535",
+      "virtual_devices_callback_port_invalid": "VirtualDevices callback port must be an integer between 1 and 65535",
+      "callback_ports_distinct": "Callback ports must be different",
+      "credentials_together": "Username and password must both be set or both be empty"
     }
   }
 }

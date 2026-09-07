@@ -1,0 +1,50 @@
+{
+  "settings": {
+    "discovery": {
+      "button": "OpenCCU im lokalen Netzwerk suchen",
+      "results": "Gefundene OpenCCU",
+      "none": "Es wurde keine OpenCCU gefunden. Du kannst die Host-Adresse weiterhin manuell eingeben."
+    },
+    "title": "OpenCCU Local",
+    "subtitle": "Konfiguriere die lokale OpenCCU-Verbindung für Homematic-IP-Geräte.",
+    "connection": {
+      "title": "OpenCCU-Verbindung",
+      "central_id": "Zentralen-ID",
+      "host": "Hostname oder IP-Adresse",
+      "hmip_port": "HmIP-RF-XML-RPC-Port",
+      "virtual_devices_port": "VirtualDevices-XML-RPC-Port",
+      "callback_port": "Homey-XML-RPC-Callback-Port",
+      "virtual_devices_callback_port": "VirtualDevices-Callback-Port",
+      "username": "Benutzername (optional)",
+      "password": "Passwort (optional)",
+      "hint": "HmIP-RF stellt physische Geräte bereit. VirtualDevices stellt OpenCCU-Heizgruppen bereit. Den Host ohne http:// und ohne Pfad eingeben."
+    },
+    "save": "Änderungen speichern",
+    "saved": "OpenCCU-Einstellungen gespeichert",
+    "validation": {
+      "central_id_required": "Die Zentralen-ID ist erforderlich",
+      "host_required": "Der OpenCCU-Host ist erforderlich",
+      "host_invalid": "Hostname oder IP-Adresse ohne Protokoll und Pfad eingeben",
+      "hmip_port_invalid": "Der HmIP-RF-Port muss eine ganze Zahl zwischen 1 und 65535 sein",
+      "virtual_devices_port_invalid": "Der VirtualDevices-Port muss eine ganze Zahl zwischen 1 und 65535 sein",
+      "callback_port_invalid": "Der Callback-Port muss eine ganze Zahl zwischen 1 und 65535 sein",
+      "virtual_devices_callback_port_invalid": "Der VirtualDevices-Callback-Port muss eine ganze Zahl zwischen 1 und 65535 sein",
+      "callback_ports_distinct": "Die Callback-Ports müssen unterschiedlich sein",
+      "credentials_together": "Benutzername und Passwort müssen entweder beide gesetzt oder beide leer sein"
+    },
+    "diagnostics": {
+      "title": "Diagnose",
+      "hint": "Erstelle einen bereinigten Supportbericht mit Verbindungszuständen, Gerätetypen, Firmwareständen und Datenpunktdefinitionen. Zugangsdaten, Adressen, OpenCCU-Namen und aktuelle Werte sind nicht enthalten. Prüfe den Bericht trotzdem vor dem Versenden.",
+      "download": "Diagnosebericht erstellen",
+      "content": "Inhalt des Diagnoseberichts",
+      "ready": "Der Bericht ist bereit. Du kannst ihn als Datei speichern beziehungsweise teilen oder in die Zwischenablage kopieren.",
+      "save": "Datei speichern oder teilen",
+      "shared": "Der Diagnosebericht wurde geteilt.",
+      "saved": "Der Download des Diagnoseberichts wurde gestartet.",
+      "save_failed": "Die Datei konnte in dieser Ansicht nicht gespeichert werden. Bitte kopiere den Bericht stattdessen in die Zwischenablage.",
+      "copy": "Bericht kopieren",
+      "copied": "Der Diagnosebericht wurde in die Zwischenablage kopiert.",
+      "copy_failed": "Der Bericht konnte nicht automatisch kopiert werden. Bitte markiere den angezeigten Text und kopiere ihn manuell."
+    }
+  }
+}

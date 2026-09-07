@@ -1,0 +1,14 @@
+{
+  "name": {
+    "en": "OpenCCU service messages",
+    "de": "OpenCCU Servicemeldungen"
+  },
+  "height": 320,
+  "settings": [],
+  "api": {
+    "getServiceMessages": {
+      "method": "GET",
+      "path": "/"
+    }
+  }
+}

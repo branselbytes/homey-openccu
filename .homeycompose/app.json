@@ -4,14 +4,24 @@
   "compatibility": ">=12.9.0",
   "sdk": 3,
   "name": {
-    "en": "OpenCCU for Homey"
+    "en": "OpenCCU Local",
+    "de": "OpenCCU Local"
   },
   "description": {
-    "en": "Connect Homematic and Homematic IP devices locally through OpenCCU"
+    "en": "Connect Homematic IP devices locally through OpenCCU",
+    "de": "Homematic-IP-Geräte lokal über OpenCCU verbinden"
+  },
+  "tags": {
+    "en": ["OpenCCU", "Homematic IP", "HmIP", "local"],
+    "de": ["OpenCCU", "Homematic IP", "HmIP", "lokal"]
   },
   "category": ["tools", "appliances"],
   "permissions": [],
   "api": {
+    "getDiscovery": {
+      "method": "get",
+      "path": "/discovery"
+    },
     "getDiagnostics": {
       "method": "get",
       "path": "/diagnostics"
@@ -25,6 +35,12 @@
   "author": {
     "name": "branselbytes"
   },
+  "bugs": {
+    "url": "https://github.com/branselbytes/homey-openccu/issues"
+  },
+  "source": "https://github.com/branselbytes/homey-openccu",
+  "homepage": "https://github.com/branselbytes/homey-openccu",
+  "support": "https://github.com/branselbytes/homey-openccu/issues",
   "contributors": {
     "developers": [
       {

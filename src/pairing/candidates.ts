@@ -1,4 +1,5 @@
-import type { OpenCcuDevice } from "../domain/model";
+import type { OpenCcuDevice, OpenCcuMetadata } from "../domain/model";
+import { resolveOrganizationCapabilities } from "../homey/device-organization-capabilities";
 import {
   resolveDeviceMappings,
   type ResolvedDeviceMapping,
@@ -35,6 +36,7 @@ export interface PairingCandidateOptions {
   readonly centralId: string;
   readonly interfaceId: string;
   readonly names?: ReadonlyMap<string, string>;
+  readonly metadata?: OpenCcuMetadata;
   readonly profiles?: ProfileRegistry;
 }
 
@@ -64,6 +66,17 @@ function createCandidate(
   const capabilities = [
     ...new Set(mapping.bindings.map((binding) => binding.capability)),
   ];
+  if (options.metadata !== undefined) {
+    capabilities.push(
+      ...Object.keys(
+        resolveOrganizationCapabilities(
+          options.metadata,
+          device.address,
+          mapping,
+        ),
+      ),
+    );
+  }
   const logicalIdentity =
     mapping.logicalId === undefined ? "" : `/${mapping.logicalId}`;
   const baseName =

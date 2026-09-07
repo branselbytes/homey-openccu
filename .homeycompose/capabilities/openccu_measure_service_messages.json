@@ -1,0 +1,9 @@
+{
+  "type": "number",
+  "title": { "en": "Service messages", "de": "Servicemeldungen" },
+  "getable": true,
+  "setable": false,
+  "insights": true,
+  "decimals": 0,
+  "min": 0
+}

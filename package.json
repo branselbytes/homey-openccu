@@ -20,9 +20,9 @@
   "scripts": {
     "build": "tsc",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm test",
-    "format": "prettier --write AGENTS.md ARCHITECTURE.md CONTRIBUTING.md DEVICE_SUPPORT.md IMPLEMENTATION_PLAN.md README.md RELEASE_CHECKLIST.md THIRD_PARTY_NOTICES.md TROUBLESHOOTING.md api.ts app.json app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts .github/workflows .homeycompose settings locales tests docs/adr drivers",
-    "format:check": "prettier --check AGENTS.md ARCHITECTURE.md CONTRIBUTING.md DEVICE_SUPPORT.md IMPLEMENTATION_PLAN.md README.md RELEASE_CHECKLIST.md THIRD_PARTY_NOTICES.md TROUBLESHOOTING.md api.ts app.json app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts .github/workflows .homeycompose settings locales tests docs/adr drivers",
-    "lint": "eslint api.ts app.ts src/**/*.ts drivers/**/*.ts tests/**/*.ts",
+    "format": "prettier --write .homeychangelog.json AGENTS.md ARCHITECTURE.md BETA_TESTING.md CHANGELOG.md COMPATIBILITY.md CONTRIBUTING.md DEVICE_SUPPORT.md IMPLEMENTATION_PLAN.md README.md RELEASE_CHECKLIST.md THIRD_PARTY_NOTICES.md TROUBLESHOOTING.md api.ts app.json app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts .github/workflows .github/ISSUE_TEMPLATE .homeycompose settings locales tests docs drivers widgets",
+    "format:check": "prettier --check .homeychangelog.json AGENTS.md ARCHITECTURE.md BETA_TESTING.md CHANGELOG.md COMPATIBILITY.md CONTRIBUTING.md DEVICE_SUPPORT.md IMPLEMENTATION_PLAN.md README.md RELEASE_CHECKLIST.md THIRD_PARTY_NOTICES.md TROUBLESHOOTING.md api.ts app.json app.ts package.json tsconfig*.json eslint.config.mjs vitest.config.ts .github/workflows .github/ISSUE_TEMPLATE .homeycompose settings locales tests docs drivers widgets",
+    "lint": "eslint api.ts app.ts src/**/*.ts drivers/**/*.ts widgets/**/*.ts tests/**/*.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit && tsc --project tsconfig.test.json"
   },

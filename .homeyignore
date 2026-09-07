@@ -1,2 +1,17 @@
 .git
 README.template
+AGENTS.md
+ARCHITECTURE.md
+BETA_TESTING.md
+CHANGELOG.md
+COMPATIBILITY.md
+CONTRIBUTING.md
+DEVICE_SUPPORT.md
+IMPLEMENTATION_PLAN.md
+README.md
+RELEASE_CHECKLIST.md
+TROUBLESHOOTING.md
+docs
+eslint.config.mjs
+package-lock.json
+tsconfig.test.json

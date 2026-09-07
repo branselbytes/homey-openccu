@@ -1,0 +1,10 @@
+{
+  "type": "string",
+  "title": {
+    "en": "OpenCCU room",
+    "de": "OpenCCU-Raum"
+  },
+  "getable": true,
+  "setable": false,
+  "insights": false
+}

@@ -5,19 +5,20 @@
       "id": "0",
       "title": {
         "en": "Auto",
-        "nl": "Auto"
+        "de": "Automatik"
       }
     },
     {
       "id": "1",
       "title": {
         "en": "Manu",
-        "nl": "Manu"
+        "de": "Manuell"
       }
     }
   ],
   "title": {
-    "en": "Mode"
+    "en": "Mode",
+    "de": "Modus"
   },
   "uiComponent": "picker",
   "getable": true,

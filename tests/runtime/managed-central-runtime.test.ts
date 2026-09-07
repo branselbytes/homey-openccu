@@ -87,16 +87,19 @@ describe("ManagedCentralRuntimeFactory", () => {
 
     expect(onConnectionState).toHaveBeenCalledWith(
       "ccu-1",
+      "HmIP-RF",
       "connecting",
       undefined,
     );
     expect(onConnectionState).toHaveBeenCalledWith(
       "ccu-1",
+      "HmIP-RF",
       "healthy",
       undefined,
     );
     expect(onConnectionState).toHaveBeenLastCalledWith(
       "ccu-1",
+      "HmIP-RF",
       "stopped",
       undefined,
     );
@@ -123,6 +126,79 @@ describe("ManagedCentralRuntimeFactory", () => {
 
     expect(states).toContain("disconnected");
     expect(states.at(-1)).toBe("stopped");
+  });
+
+  it("runs VirtualDevices independently on its own endpoint and callback", async () => {
+    const primary = createClient();
+    const virtual = createClient();
+    const callbackPorts: number[] = [];
+    const factory = new ManagedCentralRuntimeFactory({
+      callbackAdvertisedHost: "192.0.2.20",
+      enableVirtualDevices: true,
+      createClient: () => primary.client,
+      createVirtualDevicesClient: () => virtual.client,
+      createCallbackServer: ({ port }: { readonly port: number }) => {
+        callbackPorts.push(port);
+        return {
+          ready: vi.fn().mockResolvedValue(undefined),
+          close: vi.fn().mockResolvedValue(undefined),
+        };
+      },
+      initialRetryDelayMs: 1,
+      maxRetryDelayMs: 1,
+    });
+
+    const runtime = await factory.create(
+      parseOpenCcuSettings({ centralId: "ccu-1", host: "openccu.local" }),
+    );
+    await new Promise((resolve) => setImmediate(resolve));
+
+    expect(runtime.interfaceCores().map(([id]) => id)).toEqual([
+      "HmIP-RF",
+      "VirtualDevices",
+    ]);
+    expect(callbackPorts).toEqual([12010, 12011]);
+    expect(primary.init).toHaveBeenCalledWith(
+      "http://192.0.2.20:12010",
+      "HmIP-RF",
+      expect.any(AbortSignal),
+    );
+    expect(virtual.init).toHaveBeenCalledWith(
+      "http://192.0.2.20:12011",
+      "VirtualDevices",
+      expect.any(AbortSignal),
+    );
+
+    await runtime.stop();
+  });
+
+  it("keeps HmIP-RF healthy when VirtualDevices discovery is offline", async () => {
+    const primary = createClient();
+    const virtual = createClient();
+    virtual.listDevices.mockRejectedValue(new Error("virtual offline"));
+    const factory = new ManagedCentralRuntimeFactory({
+      callbackAdvertisedHost: "192.0.2.20",
+      enableVirtualDevices: true,
+      createClient: () => primary.client,
+      createVirtualDevicesClient: () => virtual.client,
+      createCallbackServer: () => ({
+        ready: vi.fn().mockResolvedValue(undefined),
+        close: vi.fn().mockResolvedValue(undefined),
+      }),
+      initialRetryDelayMs: 1,
+      maxRetryDelayMs: 1,
+    });
+
+    const runtime = await factory.create(
+      parseOpenCcuSettings({ centralId: "ccu-1", host: "openccu.local" }),
+    );
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    expect(runtime.core.connectionState).toBe("healthy");
+    expect(runtime.getCore("VirtualDevices")?.connectionState).toBe(
+      "disconnected",
+    );
+    await runtime.stop();
   });
 });
 

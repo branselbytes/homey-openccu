@@ -1,0 +1,263 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        margin: 0;
+      }
+      .header,
+      .summary,
+      .message-main,
+      .message-meta {
+        display: flex;
+        align-items: center;
+      }
+      .header {
+        justify-content: space-between;
+        gap: var(--homey-su-2);
+      }
+      .refresh {
+        appearance: none;
+        border: 0;
+        border-radius: 999px;
+        background: var(--homey-color-mono-200);
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+        padding: var(--homey-su-1) var(--homey-su-3);
+      }
+      .refresh:disabled {
+        cursor: wait;
+        opacity: 0.6;
+      }
+      .summary {
+        gap: var(--homey-su-2);
+        margin: var(--homey-su-3) 0;
+      }
+      .indicator {
+        background: #32b768;
+        border-radius: 50%;
+        flex: 0 0 10px;
+        height: 10px;
+      }
+      .indicator.alert {
+        background: #e64b4b;
+      }
+      .messages {
+        max-height: 230px;
+        overflow-y: auto;
+      }
+      .central {
+        margin-top: var(--homey-su-3);
+      }
+      .central-title {
+        margin: 0 0 var(--homey-su-1);
+      }
+      .message {
+        border-top: 1px solid var(--homey-color-mono-200);
+        padding: var(--homey-su-2) 0;
+      }
+      .message-main {
+        justify-content: space-between;
+        gap: var(--homey-su-2);
+      }
+      .message-code {
+        font-weight: 600;
+      }
+      .message-meta {
+        color: var(--homey-color-mono-600);
+        font-size: 0.85em;
+        gap: var(--homey-su-2);
+        justify-content: space-between;
+        margin-top: var(--homey-su-1);
+      }
+      .error {
+        padding: var(--homey-su-5) 0;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body class="homey-widget">
+    <div class="header">
+      <h2 class="homey-title" data-i18n="title">Service messages</h2>
+      <button class="refresh" id="refresh" type="button" data-i18n="refresh">
+        Refresh
+      </button>
+    </div>
+    <div class="summary" id="summary" aria-live="polite"></div>
+    <div class="messages" id="messages"></div>
+
+    <script>
+      const translations = {
+        de: {
+          title: "Servicemeldungen",
+          refresh: "Aktualisieren",
+          loading: "Servicemeldungen werden geladen …",
+          none: "Keine aktiven Servicemeldungen",
+          one: "1 aktive Servicemeldung",
+          many: "{count} aktive Servicemeldungen",
+          unavailable: "Details derzeit nicht verfügbar",
+          unknownDevice: "Unbenanntes Gerät",
+          error: "Servicemeldungen konnten nicht geladen werden",
+          messages: {
+            UNREACH: "Nicht erreichbar",
+            STICKY_UNREACH: "Kommunikationsstörung",
+            LOWBAT: "Batterie schwach",
+            LOW_BAT: "Batterie schwach",
+            CONFIG_PENDING: "Konfiguration ausstehend",
+            UPDATE_PENDING: "Update ausstehend",
+            SABOTAGE: "Sabotage erkannt",
+            DUTY_CYCLE: "Duty Cycle überschritten",
+          },
+        },
+        en: {
+          title: "Service messages",
+          refresh: "Refresh",
+          loading: "Loading service messages…",
+          none: "No active service messages",
+          one: "1 active service message",
+          many: "{count} active service messages",
+          unavailable: "Details currently unavailable",
+          unknownDevice: "Unnamed device",
+          error: "Could not load service messages",
+          messages: {
+            UNREACH: "Not reachable",
+            STICKY_UNREACH: "Communication problem",
+            LOWBAT: "Low battery",
+            LOW_BAT: "Low battery",
+            CONFIG_PENDING: "Configuration pending",
+            UPDATE_PENDING: "Update pending",
+            SABOTAGE: "Sabotage detected",
+            DUTY_CYCLE: "Duty cycle exceeded",
+          },
+        },
+      };
+
+      let HomeyApi;
+      let refreshTimer;
+      const language = navigator.language.toLowerCase().startsWith("de")
+        ? "de"
+        : "en";
+      const t = translations[language];
+
+      function translateStaticText() {
+        document.querySelectorAll("[data-i18n]").forEach((element) => {
+          element.textContent = t[element.dataset.i18n];
+        });
+      }
+
+      function renderSummary(count, hasUnavailable) {
+        const summary = document.getElementById("summary");
+        summary.replaceChildren();
+        const indicator = document.createElement("span");
+        indicator.className = `indicator${count > 0 || hasUnavailable ? " alert" : ""}`;
+        const text = document.createElement("span");
+        text.textContent =
+          count === 0
+            ? t.none
+            : count === 1
+              ? t.one
+              : t.many.replace("{count}", count);
+        summary.append(indicator, text);
+      }
+
+      function labelFor(code) {
+        return t.messages[code] || code.replaceAll("_", " ");
+      }
+
+      function renderOverview(overview) {
+        const container = document.getElementById("messages");
+        container.replaceChildren();
+        const count = overview.centrals.reduce(
+          (total, central) => total + central.messages.length,
+          0,
+        );
+        const hasUnavailable = overview.centrals.some(
+          (central) => central.unavailable,
+        );
+        renderSummary(count, hasUnavailable);
+
+        overview.centrals.forEach((central) => {
+          if (central.messages.length === 0 && !central.unavailable) return;
+          const section = document.createElement("section");
+          section.className = "central";
+          if (overview.centrals.length > 1) {
+            const title = document.createElement("h3");
+            title.className = "central-title homey-text-small";
+            title.textContent = central.centralId;
+            section.append(title);
+          }
+          if (central.unavailable) {
+            const error = document.createElement("p");
+            error.className = "error homey-text-small";
+            error.textContent = t.unavailable;
+            section.append(error);
+          }
+          central.messages.forEach((message) => {
+            const row = document.createElement("article");
+            row.className = "message";
+            const main = document.createElement("div");
+            main.className = "message-main";
+            const code = document.createElement("span");
+            code.className = "message-code";
+            code.textContent = labelFor(message.code);
+            const device = document.createElement("span");
+            device.textContent = message.deviceName || t.unknownDevice;
+            main.append(code, device);
+            row.append(main);
+            const timestamp = message.lastOccurredAt || message.occurredAt;
+            if (timestamp || message.occurrenceCount > 1) {
+              const meta = document.createElement("div");
+              meta.className = "message-meta";
+              const time = document.createElement("span");
+              time.textContent = timestamp || "";
+              const counter = document.createElement("span");
+              counter.textContent =
+                message.occurrenceCount > 1
+                  ? `× ${message.occurrenceCount}`
+                  : "";
+              meta.append(time, counter);
+              row.append(meta);
+            }
+            section.append(row);
+          });
+          container.append(section);
+        });
+      }
+
+      async function refresh() {
+        const button = document.getElementById("refresh");
+        button.disabled = true;
+        document.getElementById("summary").textContent = t.loading;
+        try {
+          renderOverview(await HomeyApi.api("GET", "/", {}));
+        } catch {
+          renderSummary(0, true);
+          const container = document.getElementById("messages");
+          container.replaceChildren();
+          const error = document.createElement("p");
+          error.className = "error";
+          error.textContent = t.error;
+          container.append(error);
+        } finally {
+          button.disabled = false;
+        }
+      }
+
+      function onHomeyReady(Homey) {
+        HomeyApi = Homey;
+        translateStaticText();
+        document.getElementById("refresh").addEventListener("click", refresh);
+        Homey.ready();
+        void refresh();
+        refreshTimer = setInterval(refresh, 60_000);
+      }
+
+      window.addEventListener("beforeunload", () =>
+        clearInterval(refreshTimer),
+      );
+    </script>
+  </body>
+</html>

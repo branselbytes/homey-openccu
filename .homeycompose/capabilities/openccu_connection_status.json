@@ -1,0 +1,18 @@
+{
+  "type": "enum",
+  "title": { "en": "Connection", "de": "Verbindung" },
+  "values": [
+    { "id": "healthy", "title": { "en": "Connected", "de": "Verbunden" } },
+    {
+      "id": "connecting",
+      "title": { "en": "Connecting", "de": "Verbindungsaufbau" }
+    },
+    {
+      "id": "disconnected",
+      "title": { "en": "Disconnected", "de": "Getrennt" }
+    },
+    { "id": "stopped", "title": { "en": "Stopped", "de": "Gestoppt" } }
+  ],
+  "getable": true,
+  "setable": false
+}

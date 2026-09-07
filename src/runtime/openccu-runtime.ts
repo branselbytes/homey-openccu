@@ -17,9 +17,19 @@ import {
   setOpenCcuSystemVariable,
 } from "../protocol/jsonrpc/metadata";
 import {
+  loadOpenCcuServiceMessages,
+  type OpenCcuServiceMessage,
+} from "../protocol/jsonrpc/service-messages";
+import {
+  loadOpenCcuSystemInformation,
+  type OpenCcuSystemInformation,
+  type OpenCcuSystemInformationResult,
+} from "../protocol/jsonrpc/system-information";
+import {
   createPairingCandidates,
   type PairingCandidate,
 } from "../pairing/candidates";
+import { resolveDeviceMappings } from "../mapping/device-resolver";
 import {
   transformFromOpenCcu,
   transformToOpenCcu,
@@ -46,6 +56,8 @@ export interface OpenCcuRuntimeDiagnostics {
   readonly deviceCount: number;
   readonly discoveryIssueCount: number;
   readonly metadataIssueCount: number;
+  readonly systemInformationIssueCount: number;
+  readonly radioInterfaceCount: number;
   readonly metadataCounts: {
     readonly names: number;
     readonly rooms: number;
@@ -54,6 +66,35 @@ export interface OpenCcuRuntimeDiagnostics {
     readonly systemVariables: number;
   };
   readonly transport?: XmlRpcClientDiagnostics;
+  readonly devices: readonly OpenCcuDeviceDiagnostics[];
+}
+
+export interface OpenCcuDeviceDiagnostics {
+  readonly alias: string;
+  readonly type: string;
+  readonly firmware?: string;
+  readonly availability: OpenCcuDevice["availability"];
+  readonly channels: readonly {
+    readonly index?: number;
+    readonly type: string;
+    readonly dataPoints: readonly {
+      readonly parameter: string;
+      readonly type: string;
+      readonly operations: number;
+      readonly flags: number;
+      readonly unit?: string;
+      readonly min?: number;
+      readonly max?: number;
+      readonly valueList?: readonly string[];
+    }[];
+  }[];
+  readonly mappings: readonly {
+    readonly driverId: string;
+    readonly profileId?: string;
+    readonly logicalId?: string;
+    readonly generic: boolean;
+    readonly capabilities: readonly string[];
+  }[];
 }
 
 export class OpenCcuRuntime {
@@ -64,6 +105,8 @@ export class OpenCcuRuntime {
   #discovery?: HmIpDiscoveryResult;
   #metadata: OpenCcuMetadata = emptyMetadata();
   #metadataIssues: readonly MetadataIssue[] = [];
+  #systemInformation?: OpenCcuSystemInformation;
+  #systemInformationIssues: readonly MetadataIssue[] = [];
   #connectionState: ConnectionState = "stopped";
 
   constructor(client: XmlRpcClient, options: OpenCcuRuntimeOptions) {
@@ -91,6 +134,14 @@ export class OpenCcuRuntime {
     return this.#metadataIssues;
   }
 
+  get systemInformation(): OpenCcuSystemInformation | undefined {
+    return this.#systemInformation;
+  }
+
+  get systemInformationIssues(): readonly MetadataIssue[] {
+    return this.#systemInformationIssues;
+  }
+
   getDiagnostics(): OpenCcuRuntimeDiagnostics {
     const transport = this.#client.getDiagnostics?.();
     return {
@@ -98,6 +149,8 @@ export class OpenCcuRuntime {
       deviceCount: this.devices.size,
       discoveryIssueCount: this.discoveryIssues.length,
       metadataIssueCount: this.#metadataIssues.length,
+      systemInformationIssueCount: this.#systemInformationIssues.length,
+      radioInterfaceCount: this.#systemInformation?.radioInterfaces.length ?? 0,
       metadataCounts: {
         names: this.#metadata.names.size,
         rooms: this.#metadata.rooms.size,
@@ -106,12 +159,16 @@ export class OpenCcuRuntime {
         systemVariables: this.#metadata.systemVariables.length,
       },
       ...(transport === undefined ? {} : { transport }),
+      devices: [...this.devices.values()].map((device, index) =>
+        createDeviceDiagnostics(device, index),
+      ),
     };
   }
 
   updateMetadata(result: OpenCcuMetadataResult): void {
     this.#metadata = result.metadata;
     this.#metadataIssues = result.issues;
+    this.#events.publish("metadata", this.#metadata);
   }
 
   async refreshMetadata(
@@ -124,6 +181,26 @@ export class OpenCcuRuntime {
     );
     this.updateMetadata(result);
     return result;
+  }
+
+  async refreshSystemInformation(
+    signal?: AbortSignal,
+  ): Promise<OpenCcuSystemInformationResult | undefined> {
+    if (this.#options.jsonRpcSession === undefined) return undefined;
+    const result = await loadOpenCcuSystemInformation(
+      this.#options.jsonRpcSession,
+      this.#options.interfaceId,
+      signal,
+    );
+    this.#systemInformation = result.information;
+    this.#systemInformationIssues = result.issues;
+    return result;
+  }
+
+  async loadServiceMessages(
+    signal?: AbortSignal,
+  ): Promise<readonly OpenCcuServiceMessage[]> {
+    return loadOpenCcuServiceMessages(this.#requireJsonRpcSession(), signal);
   }
 
   async executeProgram(id: string, signal?: AbortSignal): Promise<void> {
@@ -168,8 +245,7 @@ export class OpenCcuRuntime {
       throw new Error(`Unknown OpenCCU system variable ${id}`);
     }
     return (
-      variable.value ===
-      normalizeSystemVariableInput(variable.type, expected)
+      variable.value === normalizeSystemVariableInput(variable.type, expected)
     );
   }
 
@@ -197,6 +273,7 @@ export class OpenCcuRuntime {
       centralId: this.#options.centralId,
       interfaceId: this.#options.interfaceId,
       names,
+      metadata: this.#metadata,
       profiles: this.#profiles,
     });
   }
@@ -352,6 +429,53 @@ export class OpenCcuRuntime {
         ),
     );
   }
+}
+
+function createDeviceDiagnostics(
+  device: OpenCcuDevice,
+  index: number,
+): OpenCcuDeviceDiagnostics {
+  return {
+    alias: `device-${index + 1}`,
+    type: device.type,
+    ...(device.firmware === undefined ? {} : { firmware: device.firmware }),
+    availability: device.availability,
+    channels: [...device.channels.values()]
+      .sort((left, right) => (left.index ?? 0) - (right.index ?? 0))
+      .map((channel) => ({
+        ...(channel.index === undefined ? {} : { index: channel.index }),
+        type: channel.type,
+        dataPoints: [...channel.dataPoints.values()]
+          .sort((left, right) => left.parameter.localeCompare(right.parameter))
+          .map(({ parameter, metadata }) => ({
+            parameter,
+            type: metadata.TYPE,
+            operations: metadata.OPERATIONS,
+            flags: metadata.FLAGS,
+            ...(metadata.UNIT === undefined ? {} : { unit: metadata.UNIT }),
+            ...(metadata.MIN === undefined ? {} : { min: metadata.MIN }),
+            ...(metadata.MAX === undefined ? {} : { max: metadata.MAX }),
+            ...(metadata.VALUE_LIST === undefined
+              ? {}
+              : { valueList: metadata.VALUE_LIST }),
+          })),
+      })),
+    mappings: resolveDeviceMappings(device)
+      .map((mapping) => ({
+        driverId: mapping.driverId,
+        ...(mapping.profileId === undefined
+          ? {}
+          : { profileId: mapping.profileId }),
+        ...(mapping.logicalId === undefined
+          ? {}
+          : { logicalId: mapping.logicalId }),
+        generic: mapping.generic,
+        capabilities: [
+          ...new Set(mapping.bindings.map(({ capability }) => capability)),
+        ].sort(),
+      }))
+      .sort((left, right) => left.driverId.localeCompare(right.driverId)),
+  };
 }
 
 function emptyMetadata(): OpenCcuMetadata {

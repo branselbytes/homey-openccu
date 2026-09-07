@@ -15,8 +15,8 @@ describe("loadOpenCcuMetadata", () => {
           address: "301",
           name: " Hall thermostat ",
           channels: [
-            { address: "301:1", name: "" },
-            { address: "301:4", name: "Heating" },
+            { id: "10", address: "301:1", name: "" },
+            { id: 12, address: "301:4", name: "Heating" },
           ],
         },
       ],
@@ -61,8 +61,8 @@ describe("loadOpenCcuMetadata", () => {
       ["301", "Hall thermostat"],
       ["301:4", "Heating"],
     ]);
-    expect([...result.metadata.rooms]).toEqual([["Hall", ["10", "12"]]]);
-    expect([...result.metadata.functions]).toEqual([["Climate", ["12"]]]);
+    expect([...result.metadata.rooms]).toEqual([["Hall", ["301:1", "301:4"]]]);
+    expect([...result.metadata.functions]).toEqual([["Climate", ["301:4"]]]);
     expect(result.metadata.programs).toEqual([
       { id: "20", name: "Night mode", active: true },
     ]);

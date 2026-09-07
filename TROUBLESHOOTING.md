@@ -2,13 +2,14 @@
 
 ## Connection checklist
 
-Open **Apps → OpenCCU for Homey → Settings** and verify the central ID, OpenCCU host, HmIP-RF port (normally `2010`), Homey callback port (default `12010`), and optional credential pair. Enter only a host name or IP address, without `http://` or a path.
+Open **Apps → OpenCCU Local → Settings** and verify the central ID, OpenCCU host, HmIP-RF port (normally `2010`), VirtualDevices port (normally `9292`), both Homey callback ports (defaults `12010` and `12011`), and optional credential pair. Enter only a host name or IP address, without `http://` or a path.
 
 The network must permit:
 
 - Homey → OpenCCU TCP `2010` for HmIP-RF XML-RPC;
+- Homey → OpenCCU TCP `9292` with path `/groups` for heating groups through VirtualDevices;
 - Homey → OpenCCU HTTP for JSON-RPC metadata;
-- OpenCCU → Homey TCP on the configured callback port for push events.
+- OpenCCU → Homey TCP on both configured callback ports (normally `12010` and `12011`) for push events.
 
 The callback source must be the configured OpenCCU host. A TCP proxy or source NAT changes that source address and is not supported yet. Firewall changes should be limited to the relevant Homey/OpenCCU addresses; do not expose either service to the internet.
 
@@ -24,7 +25,7 @@ Do not assume a Homey tile update alone proves delivery: writable values are ver
 
 ## Values do not update from OpenCCU
 
-If initial values appear but later OpenCCU changes do not, the callback direction is blocked or the source address differs. Verify OpenCCU can reach Homey's current LAN address and callback port. VLAN routing must preserve OpenCCU's source address.
+If initial values appear but later OpenCCU changes do not, the callback direction is blocked or the source address differs. Verify OpenCCU can reach Homey's current LAN address on the callback port for the affected interface: HmIP-RF normally uses `12010` and VirtualDevices normally uses `12011`. VLAN routing must preserve OpenCCU's source address.
 
 ## Pairing and unknown devices
 
@@ -34,6 +35,6 @@ There is no migration from the predecessor app. Devices must be paired again, an
 
 ## Support report
 
-In the app settings, select **Download diagnostics**. The JSON report contains anonymous connection states and aggregate counters only. It omits credentials, network addresses, central IDs, OpenCCU names, device addresses, and datapoint values. Review the file before attaching it to a public issue.
+In the app settings, select **Create diagnostics report**, then save/share the JSON file or copy its contents. The sanitized report includes connection states, counters, device types, firmware versions, channel/datapoint definitions, and the selected driver/capabilities. It omits credentials, network addresses, central IDs, OpenCCU names, device addresses, and current datapoint values. Review the report before attaching it to a public issue.
 
 When reporting a problem, include the app/Homey/OpenCCU versions, product type and firmware, the operation performed, observed behavior, and the diagnostic report. Never post credentials or an unredacted OpenCCU backup.

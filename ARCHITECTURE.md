@@ -2,7 +2,7 @@
 
 ## Purpose and boundaries
 
-**OpenCCU for Homey** is an independent Homey Pro app for locally pairing and operating Homematic and Homematic IP devices through OpenCCU. Existing devices from the former Homematic Homey app are not migrated; users pair them again in this app.
+**OpenCCU Local**, developed in the **OpenCCU for Homey** project, is an independent Homey Pro app for locally pairing and operating Homematic and Homematic IP devices through OpenCCU. Existing devices from the former Homematic Homey app are not migrated; users pair them again in this app.
 
 Required boundaries:
 
@@ -160,6 +160,7 @@ Phases 2 and 3 provide a strict-TypeScript core under `src/`:
 - a concrete HmIP-RF client adapter on port 2010 and a closeable callback server with direct and multicall event dispatch;
 - a Fetch-based JSON-RPC 1.1 client with HTTP authentication, deduplicated OpenCCU login, session renewal/logout, abort/timeout handling, and categorized errors;
 - a manual-host HmIP-RF reachability probe that classifies unavailable endpoints;
+- bounded, explicit UDP convenience discovery for same-subnet OpenCCU setup while preserving manual host configuration;
 - bounded reconnect supervision with deterministic shutdown;
 - normalized central, interface, device, channel, datapoint, program, and system-variable types;
 - a device-graph builder deriving readable, writable, and eventable datapoints from operation flags;
@@ -181,9 +182,11 @@ The Phase 5 integration adds a Homey-independent HmIP discovery pipeline and run
 
 Manual connection settings have a strict parsing boundary that normalizes the central ID, host, HmIP-RF port, JSON-RPC URL, and optional credential pair. A runtime registry provides replace/remove/shutdown semantics and attempts to stop every configured central even when one shutdown fails. Homey settings persistence and credential ownership remain isolated in the Homey adapter.
 
-The Homey boundary reads a versionable `openccu_connections` array, validates duplicate central identities, serializes reload operations, preserves an existing runtime when new settings are invalid, and removes settings listeners before shutdown. The settings page writes this format for one manually configured OpenCCU and no longer exposes MQTT, CCU-Jack, RedMatic, or legacy bridge controls.
+The Homey boundary reads a versionable `openccu_connections` array, validates duplicate central identities, serializes reload operations, preserves an existing runtime when new settings are invalid, and removes settings listeners before shutdown. The settings page writes this format for one configured OpenCCU and no longer exposes MQTT, CCU-Jack, RedMatic, or legacy bridge controls. An explicit two-second UDP scan can prefill a discovered same-subnet address and serial and directly probes already configured IPv4 hosts across routed networks. It never accepts an API-supplied target or saves settings automatically; manual entry remains authoritative for initial routed setup and whenever discovery is unavailable.
 
-The concrete managed-central runtime now owns one configured callback port per central. It waits until the callback server is listening, registers the advertised Homey address with HmIP-RF, refreshes discovery, retries failures with bounded backoff, publishes connection states, and performs best-effort deregistration before closing the server. Startup is deliberately non-blocking with respect to OpenCCU availability, so an offline central cannot prevent the Homey app from initializing. Callback address reachability has been verified on the current Homey Test/OpenCCU LAN, including live thermostat and weather-sensor events; VLAN, firewall, NAT, and alternate address-selection scenarios remain environment-specific risks.
+The concrete managed-central runtime owns independently supervised HmIP-RF and VirtualDevices XML-RPC interfaces. It waits until both callback servers are listening, registers distinct advertised Homey callback ports, refreshes each inventory, retries failures independently with bounded backoff, and performs best-effort deregistration before shutdown. VirtualDevices uses OpenCCU port 9292 and `/groups`; its failure cannot make physical HmIP-RF devices unavailable. Startup remains non-blocking with respect to OpenCCU availability. Callback address reachability has been verified for HmIP-RF on the current Homey Test/OpenCCU LAN; the new VirtualDevices callback path remains a hardware gate.
+
+The heating-group driver uses Homey's fixed `other` class in the add-device selector so it is separated from physical thermostat drivers; Homey does not support application-defined device-selection categories. Pairing overrides the created device to the `thermostat` class, preserving thermostat UI and ecosystem semantics.
 
 Callback TCP connections are admitted only when their normalized remote address matches the configured OpenCCU host. Host names are resolved while a new socket is paused; mismatches and resolution failures are rejected before XML parsing. This reduces LAN event-injection risk but deliberately does not claim cryptographic authentication, and source-NAT or proxy deployments require an explicit future trust model.
 
@@ -191,9 +194,13 @@ The shared device-binding controller reconciles dynamic capabilities, reads init
 
 Observed OpenCCU product suffixes such as `R4M` and `I9F` are normalized for profile selection. HmIP-eTRV-B-2 and eTRV-E variants use the shared radiator-thermostat profile. Custom Flow actions cover thermostat mode, boost, and week profile; standard Homey capabilities continue to supply temperature cards.
 
-Authenticated JSON-RPC metadata loading now follows XML-RPC discovery without becoming part of XML-RPC connection health. The live-tested response adapters normalize `Device.listAllDetail`, `Room.getAll`, `Subsection.getAll`, `Program.getAll`, and `SysVar.getAll`; failures remain isolated per method. New pairing candidates prefer channel names, then device names, while already paired Homey names are never changed automatically. Rooms, functions, programs, and typed system-variable values remain available at the runtime boundary for later Flow and opt-in organization features.
+Authenticated JSON-RPC metadata loading now follows XML-RPC discovery without becoming part of XML-RPC connection health. The live-tested response adapters normalize `Device.listAllDetail`, `Room.getAll`, `Subsection.getAll`, `Program.getAll`, and `SysVar.getAll`; failures remain isolated per method. New pairing candidates prefer channel names, then device names, while already paired Homey names are never changed automatically. OpenCCU channel IDs are normalized to XML-RPC channel addresses so rooms and functions can be exposed as read-only device Flow tags. Multiple assignments are sorted and combined; Homey zones are never created or changed implicitly.
 
 Hub-level Flow cards use opaque central/object selections rather than exposing raw addressing. Autocomplete includes only non-internal programs and visible, non-internal system variables. Program execution calls `Program.execute`; variable writes call `SysVar.setValue` after normalizing NUMBER, ALARM, LOGIC, STRING, and LIST input. Equality conditions refresh JSON-RPC metadata before comparing, so Flow decisions do not rely on startup snapshots. Hub actions validate every selected ID against current metadata and remain separate from device capability commands.
+
+Central health is represented by one dedicated `openccu-system` Homey device per configured OpenCCU rather than by a synthetic Homematic radio device. It exposes read-only connection, inventory, service-message, duty-cycle, and carrier-sense capabilities. Two independent JSON-RPC calls run every 60 seconds while connected; unsupported values remain unknown, and multiple radio-interface loads are conservatively aggregated by their maximum.
+
+The system-status widget reads the same typed runtime state and refresh methods through a privacy-reduced provider view. It exposes connection state, device and service-message counts, aggregate duty cycle and carrier sense, plus radio-interface names, types, and loads without returning interface addresses. Requests are deduplicated and cached for 30 seconds so multiple dashboards do not multiply JSON-RPC load.
 
 Metadata methods run sequentially and each raw response is normalized before the next is requested, limiting peak allocations on Homey. The current regular test process remains below the memory warning threshold, while remote inspector mode can exceed it; production memory headroom must therefore be re-measured as device and Flow coverage grows.
 
@@ -211,12 +218,17 @@ The protected settings Web API exposes a downloadable support report assembled f
 - `docs/adr/0008-profile-configuration-conditions.md`: selective MASTER configuration reads and conditional profile topology.
 - `docs/adr/0009-commonjs-build-output.md`: CommonJS runtime output generated from strict TypeScript into the ignored Homey build directory.
 - `docs/adr/0010-openccu-metadata-and-naming.md`: best-effort JSON-RPC metadata loading and non-destructive pairing-name precedence.
+- `docs/adr/0016-room-and-function-tags.md`: read-only device Flow tags for OpenCCU organization without implicit Homey zone changes.
 - `docs/adr/0011-restrict-callback-source.md`: source-address admission for the unauthenticated XML-RPC callback listener.
+- `docs/adr/0012-openccu-system-device.md`: one central-level Homey device with bounded, best-effort system polling.
+- `docs/adr/0013-virtual-devices-heating-groups.md`: independently supervised VirtualDevices transport and a dedicated HmIP heating-group driver.
+- `docs/adr/0014-device-icon-sourcing.md`: MIT-safe sourcing for product-specific and functional driver icons.
+- `docs/adr/0015-udp-convenience-discovery.md`: bounded, explicit same-subnet discovery in settings with manual fallback.
 
 ## Architectural decisions still open
 
 1. Authentication baseline: supported OpenCCU versions, TLS modes, self-signed certificates, and firewall configuration guidance.
-2. Whether room/function metadata remains informational or can be mapped into Homey zones/tags through an explicit opt-in workflow.
+2. Whether a future explicit workflow should additionally map one OpenCCU room into a Homey zone.
 3. Policy and review process for adapting device profiles or test fixtures from MIT reference projects.
 
 ## Principal risks

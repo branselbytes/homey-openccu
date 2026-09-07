@@ -13,6 +13,7 @@ export const DEFAULT_HMIP_RF_XML_RPC_PORT = 2010;
 export interface HmIpXmlRpcEndpoint extends HmIpXmlRpcClientOptions {
   readonly host: string;
   readonly port?: number;
+  readonly path?: string;
   readonly username?: string;
   readonly password?: string;
 }
@@ -25,6 +26,7 @@ export function createHmIpXmlRpcClient(endpoint: HmIpXmlRpcEndpoint): HmIpXmlRpc
     xmlrpc.createClient({
       host: endpoint.host,
       port: endpoint.port ?? DEFAULT_HMIP_RF_XML_RPC_PORT,
+      ...(endpoint.path === undefined ? {} : { path: endpoint.path }),
       ...(endpoint.username === undefined
         ? {}
         : { basic_auth: { user: endpoint.username, pass: endpoint.password as string } }),

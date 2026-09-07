@@ -12,6 +12,7 @@ export default tseslint.config(
       "api.ts",
       "app.ts",
       "src/**/*.ts",
+      "widgets/**/*.ts",
       "drivers/**/*.ts",
       "tests/**/*.ts",
     ],

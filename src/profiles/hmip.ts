@@ -111,7 +111,9 @@ function rgbwOutput(
     id: `output-${channel}`,
     nameSuffix: `Output ${channel}`,
     nameChannel: channel,
-    ...(modes === undefined ? {} : { conditions: operationModeCondition(modes) }),
+    ...(modes === undefined
+      ? {}
+      : { conditions: operationModeCondition(modes) }),
     bindings: [
       ...dimmerBindings(channel),
       {
@@ -256,9 +258,7 @@ const HMIP_RGBW_PROFILE: DeviceProfile = {
   driverId: "HmIP-RGBW",
   deviceTypes: ["HmIP-RGBW"],
   bindings: [],
-  configurationParameters: [
-    { channel: 0, parameter: "DEVICE_OPERATION_MODE" },
-  ],
+  configurationParameters: [{ channel: 0, parameter: "DEVICE_OPERATION_MODE" }],
   logicalDevices: [
     rgbwOutput(1),
     rgbwOutput(2, TUNABLE_WHITE_OR_PWM_MODES),
@@ -304,7 +304,11 @@ function meteredSwitchProfile(
     deviceTypes: [deviceType],
     bindings: [
       { capability: "onoff", channel: switchChannel, parameter: "STATE" },
-      { capability: "measure_power", channel: meterChannel, parameter: "POWER" },
+      {
+        capability: "measure_power",
+        channel: meterChannel,
+        parameter: "POWER",
+      },
       {
         capability: "measure_voltage",
         channel: meterChannel,
@@ -523,7 +527,12 @@ function weatherProfile(
   driverId: string,
   deviceType: string,
 ): DeviceProfile {
-  return { id, driverId, deviceTypes: [deviceType], bindings: WEATHER_BINDINGS };
+  return {
+    id,
+    driverId,
+    deviceTypes: [deviceType],
+    bindings: WEATHER_BINDINGS,
+  };
 }
 
 export const HMIP_WEATHER_PROFILE = weatherProfile(
@@ -588,27 +597,39 @@ const HMIP_SCTH230_PROFILE: DeviceProfile = {
   ],
 };
 
-const MOTION_SENSOR_BINDINGS: DeviceProfile["bindings"] = [
-  {
-    capability: "alarm_motion",
-    channel: 1,
-    parameter: "MOTION",
-    transform: "boolean",
-  },
-  {
-    capability: "measure_luminance",
-    channel: 1,
-    parameter: "CURRENT_ILLUMINATION",
-    fallbackParameters: ["ILLUMINATION"],
-  },
-  SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK,
-];
+function motionSensorBindings(
+  preferredLuminance: "CURRENT_ILLUMINATION" | "ILLUMINATION",
+): DeviceProfile["bindings"] {
+  const fallbackLuminance =
+    preferredLuminance === "ILLUMINATION"
+      ? "CURRENT_ILLUMINATION"
+      : "ILLUMINATION";
+  return [
+    {
+      capability: "alarm_motion",
+      channel: 1,
+      parameter: "MOTION",
+      transform: "boolean",
+    },
+    {
+      capability: "measure_luminance",
+      channel: 1,
+      parameter: preferredLuminance,
+      fallbackParameters: [fallbackLuminance],
+    },
+    SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK,
+  ];
+}
+
+const MOTION_SENSOR_BINDINGS = motionSensorBindings("CURRENT_ILLUMINATION");
+const MOTION_SENSOR_EVENT_ILLUMINANCE_BINDINGS =
+  motionSensorBindings("ILLUMINATION");
 
 const HMIP_SMI_PROFILE: DeviceProfile = {
   id: "hmip-smi",
   driverId: "HmIP-SMI",
   deviceTypes: ["HmIP-SMI"],
-  bindings: MOTION_SENSOR_BINDINGS,
+  bindings: MOTION_SENSOR_EVENT_ILLUMINANCE_BINDINGS,
 };
 
 const HMIP_SMI55_PROFILE: DeviceProfile = {
@@ -669,7 +690,7 @@ const HMIP_SPI_PROFILE: DeviceProfile = {
       parameter: "PRESENCE_DETECTION_STATE",
       transform: "boolean",
     },
-    ...MOTION_SENSOR_BINDINGS.filter(
+    ...MOTION_SENSOR_EVENT_ILLUMINANCE_BINDINGS.filter(
       (binding) => binding.capability !== "alarm_motion",
     ),
   ],
@@ -789,6 +810,13 @@ export const HMIP_CLIMATE_PROFILE: DeviceProfile = {
   id: "hmip-climate",
   driverId: "HmIP-STH",
   deviceTypes: ["HmIP-STH"],
+  bindings: CLIMATE_BINDINGS,
+};
+
+export const OPENCCU_HEATING_GROUP_PROFILE: DeviceProfile = {
+  id: "openccu-heating-group",
+  driverId: "openccu-heating-group",
+  deviceTypes: ["HmIP-HEATING"],
   bindings: CLIMATE_BINDINGS,
 };
 
@@ -1034,6 +1062,7 @@ export const HMIP_PROFILES = [
   HMIP_SWD_PROFILE,
   HMIP_SWSD_PROFILE,
   HMIP_ASIR_PROFILE,
+  OPENCCU_HEATING_GROUP_PROFILE,
   HMIP_CLIMATE_PROFILE,
   HMIP_WTH_PROFILE,
   HMIP_BWTH_PROFILE,

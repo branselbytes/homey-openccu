@@ -1,0 +1,7 @@
+{
+  "type": "boolean",
+  "title": { "en": "Service message active", "de": "Servicemeldung aktiv" },
+  "getable": true,
+  "setable": false,
+  "insights": true
+}

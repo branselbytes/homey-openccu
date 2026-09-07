@@ -1,14 +1,21 @@
 import Homey from "homey";
+import { isIP } from "node:net";
 
 import { VersionedCache } from "./src/cache/versioned-cache";
 import { createSupportReport } from "./src/diagnostics/support-report";
+import { safeErrorKind } from "./src/diagnostics/safe-error";
 import { OpenCcuAppController } from "./src/homey/app-controller";
+import { loadOpenCcuConnections } from "./src/homey/settings-adapter";
 import { HomeySettingsCacheStorage } from "./src/homey/cache-storage";
 import { registerHubFlowCards } from "./src/homey/hub-flow-controller";
 import { registerThermostatFlowCards } from "./src/homey/thermostat-flow-controller";
 import { callbackHostFromLocalAddress } from "./src/homey/callback-host";
 import { OpenCcuRuntimeProvider } from "./src/homey/runtime-provider";
 import type { ParamsetDescription } from "./src/protocol/xmlrpc/types";
+import {
+  discoverOpenCcus,
+  type DiscoveredOpenCcu,
+} from "./src/protocol/udp-discovery";
 import { OpenCcuApplicationLifecycle } from "./src/runtime/application-lifecycle";
 import {
   ManagedCentralRuntime,
@@ -29,14 +36,15 @@ export = class OpenCcuApp extends Homey.App {
     const factory = new ManagedCentralRuntimeFactory({
       callbackAdvertisedHost: callbackHostFromLocalAddress(localAddress),
       descriptionCache,
-      onConnectionState: (centralId, state, error) => {
+      enableVirtualDevices: true,
+      onConnectionState: (_centralId, interfaceId, state, error) => {
         const errorKind =
           error === undefined ? "" : ` (${safeErrorKind(error)})`;
-        this.log(`OpenCCU ${centralId}: ${state}${errorKind}`);
+        this.log(`OpenCCU ${interfaceId}: ${state}${errorKind}`);
       },
-      onMetadataLoaded: (centralId, { metadata, issues }) => {
+      onMetadataLoaded: (_centralId, { metadata, issues }) => {
         this.log(
-          `OpenCCU ${centralId}: metadata loaded ` +
+          "OpenCCU metadata loaded " +
             `(names=${metadata.names.size}, rooms=${metadata.rooms.size}, ` +
             `functions=${metadata.functions.size}, programs=${metadata.programs.length}, ` +
             `systemVariables=${metadata.systemVariables.length}, issues=${issues.length})`,
@@ -52,13 +60,13 @@ export = class OpenCcuApp extends Homey.App {
       this.homey.settings,
       lifecycle,
       {
-        error: (message, error) => this.error(message, error),
+        error: (message, error) => this.error(message, safeErrorKind(error)),
       },
     );
     await this.#controller.start();
     registerThermostatFlowCards(this.homey.flow);
     registerHubFlowCards(this.homey.flow, this.runtimeProvider);
-    this.log("OpenCCU for Homey initialized");
+    this.log("OpenCCU Local initialized");
   }
 
   onUninit(): Promise<void> {
@@ -75,13 +83,19 @@ export = class OpenCcuApp extends Homey.App {
       runtimes: this.runtimeProvider?.diagnostics() ?? [],
     });
   }
-};
 
-function safeErrorKind(error: unknown): string {
-  return error instanceof Error && error.name !== ""
-    ? error.name
-    : "unknown error";
-}
+  discoverOpenCcus(): Promise<readonly DiscoveredOpenCcu[]> {
+    let unicastAddresses: readonly string[] = [];
+    try {
+      unicastAddresses = loadOpenCcuConnections(this.homey.settings)
+        .map(({ host }) => host)
+        .filter((host) => isIP(host) === 4);
+    } catch {
+      // Invalid stored settings must not disable broadcast discovery or manual setup.
+    }
+    return discoverOpenCcus({ unicastAddresses });
+  }
+};
 
 function manifestVersion(manifest: unknown): string {
   if (

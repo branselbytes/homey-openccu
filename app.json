@@ -5,17 +5,24 @@
   "compatibility": ">=12.9.0",
   "sdk": 3,
   "name": {
-    "en": "OpenCCU for Homey"
+    "en": "OpenCCU Local",
+    "de": "OpenCCU Local"
   },
   "description": {
-    "en": "Connect Homematic and Homematic IP devices locally through OpenCCU"
+    "en": "Connect Homematic IP devices locally through OpenCCU",
+    "de": "Homematic-IP-Geräte lokal über OpenCCU verbinden"
   },
-  "category": [
-    "tools",
-    "appliances"
-  ],
+  "tags": {
+    "en": ["OpenCCU", "Homematic IP", "HmIP", "local"],
+    "de": ["OpenCCU", "Homematic IP", "HmIP", "lokal"]
+  },
+  "category": ["tools", "appliances"],
   "permissions": [],
   "api": {
+    "getDiscovery": {
+      "method": "get",
+      "path": "/discovery"
+    },
     "getDiagnostics": {
       "method": "get",
       "path": "/diagnostics"
@@ -29,6 +36,12 @@
   "author": {
     "name": "branselbytes"
   },
+  "bugs": {
+    "url": "https://github.com/branselbytes/homey-openccu/issues"
+  },
+  "source": "https://github.com/branselbytes/homey-openccu",
+  "homepage": "https://github.com/branselbytes/homey-openccu",
+  "support": "https://github.com/branselbytes/homey-openccu/issues",
   "contributors": {
     "developers": [
       {
@@ -2039,8 +2052,98 @@
           "template": "add_devices"
         }
       ]
+    },
+    {
+      "id": "openccu-heating-group",
+      "name": {
+        "en": "OpenCCU groups",
+        "de": "OpenCCU Gruppen"
+      },
+      "class": "other",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HmIP-eTRV-2/assets/images/large.png",
+        "small": "/drivers/HmIP-eTRV-2/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "openccu-system",
+      "name": {
+        "en": "OpenCCU system",
+        "de": "OpenCCU-System"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "openccu_connection_status",
+        "openccu_measure_devices",
+        "openccu_measure_service_messages",
+        "openccu_alarm_service_messages",
+        "openccu_measure_duty_cycle",
+        "openccu_measure_carrier_sense"
+      ],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
     }
   ],
+  "widgets": {
+    "service-messages": {
+      "name": {
+        "en": "OpenCCU service messages",
+        "de": "OpenCCU Servicemeldungen"
+      },
+      "height": 320,
+      "settings": [],
+      "api": {
+        "getServiceMessages": {
+          "method": "GET",
+          "path": "/"
+        }
+      },
+      "id": "service-messages"
+    },
+    "system-status": {
+      "name": {
+        "en": "OpenCCU system status",
+        "de": "OpenCCU Systemstatus"
+      },
+      "settings": [],
+      "api": {
+        "getSystemStatus": {
+          "method": "GET",
+          "path": "/"
+        }
+      },
+      "id": "system-status"
+    }
+  },
   "capabilities": {
     "homematic_measure_valve": {
       "type": "number",
@@ -2109,7 +2212,8 @@
     "homematic_thermostat_boost": {
       "type": "boolean",
       "title": {
-        "en": "Boost"
+        "en": "Boost",
+        "de": "Boost"
       },
       "uiComponent": "button",
       "getable": true,
@@ -2122,19 +2226,20 @@
           "id": "0",
           "title": {
             "en": "Auto",
-            "nl": "Auto"
+            "de": "Automatik"
           }
         },
         {
           "id": "1",
           "title": {
             "en": "Manu",
-            "nl": "Manu"
+            "de": "Manuell"
           }
         }
       ],
       "title": {
-        "en": "Mode"
+        "en": "Mode",
+        "de": "Modus"
       },
       "uiComponent": "picker",
       "getable": true,
@@ -2143,34 +2248,162 @@
     "homematic_thermostat_weekprofile": {
       "type": "enum",
       "title": {
-        "en": "Weekprofile"
+        "en": "Weekprofile",
+        "de": "Wochenprofil"
       },
       "values": [
         {
           "id": "1",
           "title": {
             "en": "1",
-            "nl": "1"
+            "de": "1"
           }
         },
         {
           "id": "2",
           "title": {
             "en": "2",
-            "nl": "2"
+            "de": "2"
           }
         },
         {
           "id": "3",
           "title": {
             "en": "3",
-            "nl": "3"
+            "de": "3"
           }
         }
       ],
       "uiComponent": "picker",
       "getable": true,
       "setable": true
+    },
+    "openccu_alarm_service_messages": {
+      "type": "boolean",
+      "title": {
+        "en": "Service message active",
+        "de": "Servicemeldung aktiv"
+      },
+      "getable": true,
+      "setable": false,
+      "insights": true
+    },
+    "openccu_connection_status": {
+      "type": "enum",
+      "title": {
+        "en": "Connection",
+        "de": "Verbindung"
+      },
+      "values": [
+        {
+          "id": "healthy",
+          "title": {
+            "en": "Connected",
+            "de": "Verbunden"
+          }
+        },
+        {
+          "id": "connecting",
+          "title": {
+            "en": "Connecting",
+            "de": "Verbindungsaufbau"
+          }
+        },
+        {
+          "id": "disconnected",
+          "title": {
+            "en": "Disconnected",
+            "de": "Getrennt"
+          }
+        },
+        {
+          "id": "stopped",
+          "title": {
+            "en": "Stopped",
+            "de": "Gestoppt"
+          }
+        }
+      ],
+      "getable": true,
+      "setable": false
+    },
+    "openccu_functions": {
+      "type": "string",
+      "title": {
+        "en": "OpenCCU functions",
+        "de": "OpenCCU-Gewerke"
+      },
+      "getable": true,
+      "setable": false,
+      "insights": false
+    },
+    "openccu_measure_carrier_sense": {
+      "type": "number",
+      "title": {
+        "en": "Carrier sense",
+        "de": "Carrier Sense"
+      },
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "units": {
+        "en": "%",
+        "de": "%"
+      },
+      "decimals": 0,
+      "min": 0,
+      "max": 100
+    },
+    "openccu_measure_devices": {
+      "type": "number",
+      "title": {
+        "en": "HmIP devices",
+        "de": "HmIP-Geräte"
+      },
+      "getable": true,
+      "setable": false,
+      "insights": false,
+      "decimals": 0,
+      "min": 0
+    },
+    "openccu_measure_duty_cycle": {
+      "type": "number",
+      "title": {
+        "en": "Duty cycle",
+        "de": "Duty Cycle"
+      },
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "units": {
+        "en": "%",
+        "de": "%"
+      },
+      "decimals": 0,
+      "min": 0,
+      "max": 100
+    },
+    "openccu_measure_service_messages": {
+      "type": "number",
+      "title": {
+        "en": "Service messages",
+        "de": "Servicemeldungen"
+      },
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "decimals": 0,
+      "min": 0
+    },
+    "openccu_room": {
+      "type": "string",
+      "title": {
+        "en": "OpenCCU room",
+        "de": "OpenCCU-Raum"
+      },
+      "getable": true,
+      "setable": false,
+      "insights": false
     }
   }
 }

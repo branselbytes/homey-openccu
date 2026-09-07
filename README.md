@@ -7,13 +7,14 @@ The typed local runtime and broad HmIP driver foundation are implemented. Pairin
 ## Planned scope
 
 - current Homey Pro, Homey Apps SDK v3, and Node.js 22
-- HmIP-RF in the first implementation
+- HmIP-RF for physical devices and the OpenCCU VirtualDevices interface for HmIP heating groups
 - XML-RPC for device discovery, values, commands, and push events
 - JSON-RPC for names, rooms, functions, programs, and system variables
 - dedicated Homey drivers backed by shared profiles plus a generic fallback for unknown products
+- optional same-subnet OpenCCU discovery in settings, with manual host entry for routed networks
 - no required Home Assistant, Python, MQTT, CCU-Jack, or RedMatic runtime
 
-See [ARCHITECTURE.md](ARCHITECTURE.md) for the design, [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for staged delivery, [DEVICE_SUPPORT.md](DEVICE_SUPPORT.md) for coverage, and [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for setup and support guidance.
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the design, [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for staged delivery, [DEVICE_SUPPORT.md](DEVICE_SUPPORT.md) for device coverage, [COMPATIBILITY.md](COMPATIBILITY.md) for platform status, [BETA_TESTING.md](BETA_TESTING.md) for community testing, and [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for setup and support guidance.
 
 ## Development
 

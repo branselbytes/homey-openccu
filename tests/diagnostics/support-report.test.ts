@@ -19,6 +19,8 @@ describe("support report", () => {
               deviceCount: 12,
               discoveryIssueCount: 1,
               metadataIssueCount: 0,
+              systemInformationIssueCount: 0,
+              radioInterfaceCount: 1,
               metadataCounts: {
                 names: 20,
                 rooms: 3,
@@ -34,6 +36,7 @@ describe("support report", () => {
                 failedRequests: 1,
                 timedOutRequests: 0,
               },
+              devices: [],
             },
           },
         ],
@@ -42,7 +45,7 @@ describe("support report", () => {
     );
 
     expect(report).toMatchObject({
-      schemaVersion: 1,
+      schemaVersion: 2,
       generatedAt: "2026-09-05T12:00:00.000Z",
       centrals: [
         {
@@ -65,6 +68,8 @@ describe("support report", () => {
             deviceCount: 0,
             discoveryIssueCount: 0,
             metadataIssueCount: 0,
+            systemInformationIssueCount: 2,
+            radioInterfaceCount: 0,
             metadataCounts: {
               names: 0,
               rooms: 0,
@@ -72,6 +77,7 @@ describe("support report", () => {
               programs: 0,
               systemVariables: 0,
             },
+            devices: [],
             host: "192.0.2.1",
             token: "secret-token",
             value: "private-value",

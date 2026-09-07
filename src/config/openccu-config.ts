@@ -2,12 +2,15 @@ import { DEFAULT_HMIP_RF_XML_RPC_PORT } from "../protocol/xmlrpc/homematic-adapt
 
 export const DEFAULT_JSON_RPC_PATH = "/api/homematic.cgi";
 export const DEFAULT_XML_RPC_CALLBACK_PORT = 12010;
+export const DEFAULT_VIRTUAL_DEVICES_XML_RPC_PORT = 9292;
 
 export interface OpenCcuConnectionConfig {
   readonly centralId: string;
   readonly host: string;
   readonly hmIpRfPort: number;
+  readonly virtualDevicesPort: number;
   readonly callbackPort: number;
+  readonly virtualDevicesCallbackPort: number;
   readonly jsonRpcUrl: string;
   readonly username?: string;
   readonly password?: string;
@@ -17,7 +20,9 @@ export interface OpenCcuSettingsInput {
   readonly centralId?: unknown;
   readonly host?: unknown;
   readonly hmIpRfPort?: unknown;
+  readonly virtualDevicesPort?: unknown;
   readonly callbackPort?: unknown;
+  readonly virtualDevicesCallbackPort?: unknown;
   readonly username?: unknown;
   readonly password?: unknown;
 }
@@ -26,7 +31,18 @@ export function parseOpenCcuSettings(input: OpenCcuSettingsInput): OpenCcuConnec
   const centralId = requiredText(input.centralId, "centralId");
   const host = parseHost(requiredText(input.host, "host"));
   const hmIpRfPort = parsePort(input.hmIpRfPort ?? DEFAULT_HMIP_RF_XML_RPC_PORT);
+  const virtualDevicesPort = parsePort(
+    input.virtualDevicesPort ?? DEFAULT_VIRTUAL_DEVICES_XML_RPC_PORT,
+    "VirtualDevices",
+  );
   const callbackPort = parsePort(input.callbackPort ?? DEFAULT_XML_RPC_CALLBACK_PORT, "callback");
+  const virtualDevicesCallbackPort = parsePort(
+    input.virtualDevicesCallbackPort ?? callbackPort + 1,
+    "VirtualDevices callback",
+  );
+  if (callbackPort === virtualDevicesCallbackPort) {
+    throw new Error("OpenCCU callback ports must be different");
+  }
   const username = optionalText(input.username);
   const password = optionalText(input.password);
   if ((username === undefined) !== (password === undefined)) {
@@ -37,7 +53,9 @@ export function parseOpenCcuSettings(input: OpenCcuSettingsInput): OpenCcuConnec
     centralId,
     host,
     hmIpRfPort,
+    virtualDevicesPort,
     callbackPort,
+    virtualDevicesCallbackPort,
     jsonRpcUrl: new URL(DEFAULT_JSON_RPC_PATH, `http://${formatUrlHost(host)}`).toString(),
     ...(username === undefined ? {} : { username, password }),
   };
@@ -52,7 +70,9 @@ export function publicOpenCcuConfig(config: OpenCcuConnectionConfig): Omit<
     centralId: config.centralId,
     host: config.host,
     hmIpRfPort: config.hmIpRfPort,
+    virtualDevicesPort: config.virtualDevicesPort,
     callbackPort: config.callbackPort,
+    virtualDevicesCallbackPort: config.virtualDevicesCallbackPort,
     jsonRpcUrl: config.jsonRpcUrl,
     authenticated: config.username !== undefined,
   };

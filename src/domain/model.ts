@@ -6,6 +6,10 @@ import type {
 } from "../protocol/xmlrpc/types";
 
 export const HMIP_RF_INTERFACE = "HmIP-RF" as const;
+export const VIRTUAL_DEVICES_INTERFACE = "VirtualDevices" as const;
+export type OpenCcuInterfaceType =
+  | typeof HMIP_RF_INTERFACE
+  | typeof VIRTUAL_DEVICES_INTERFACE;
 export const PARAMETER_OPERATION = {
   read: 1,
   write: 2,
@@ -54,7 +58,7 @@ export interface OpenCcuDevice {
 
 export interface OpenCcuInterface {
   readonly id: string;
-  readonly type: typeof HMIP_RF_INTERFACE;
+  readonly type: OpenCcuInterfaceType;
   readonly devices: ReadonlyMap<string, OpenCcuDevice>;
 }
 
