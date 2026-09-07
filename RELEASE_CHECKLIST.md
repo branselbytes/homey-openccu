@@ -37,12 +37,13 @@ This checklist prepares a release but does not authorize pushing, publishing, ta
 - [x] Confirm root MIT history/license preservation and `THIRD_PARTY_NOTICES.md`.
 - [x] Review settings and user-facing strings in supported languages.
 - [x] Obtain explicit project-owner approval for the public GitHub push and Homey App Store Draft upload.
-- [ ] Obtain separate approval before certification submission, Test/Live activation, tagging, GitHub release creation, or forum publication.
+- [x] Submit Draft build 1 for initial certification without automatic Live publication.
+- [ ] Obtain separate approval before Test/Live activation, tagging, GitHub release creation, or forum publication.
 
 ## Current 0.1.0 audit snapshot
 
 The release audit includes a clean locked install and, as of 2026-09-07, the subsequently extended suite of all 252 tests, formatting, lint, strict TypeScript checks, Homey build, and publish-level validation. The production dependency audit reports zero vulnerabilities. The runtime tree contains only `homematic-xmlrpc`, `sax`, and `xmlbuilder`; all declare MIT licenses. Development-only findings remain isolated to the Homey CLI toolchain as documented in the implementation plan.
 
-The public GitHub repository now contains the preserved history on `main`. Homey App Store version `0.1.0` is uploaded as Draft build 1; it has not been submitted for certification or activated as Test/Live.
+The public GitHub repository now contains the preserved history on `main`. Homey App Store version `0.1.0`, Draft build 1, was submitted for initial certification without automatic Live publication and is currently under review. It has not been activated as Test/Live.
 
 Package inspection found no credentials, captures, caches, generated diagnostics, private keys, or environment files. Development documentation, configuration, and source maps are excluded from the install archive; the root MIT license, third-party notice, and dependency licenses remain packaged. This snapshot does not complete the open hardware and compatibility gates above.
