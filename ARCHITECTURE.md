@@ -241,3 +241,13 @@ The protected settings Web API exposes a downloadable support report assembled f
 - Modern OpenCCU authentication/TLS combinations vary; permissive fallbacks could create security problems.
 - Useful device knowledge remains recoverable from the imported Git history, but only the currently profiled device families are active. Expanding dedicated coverage requires fixture- and hardware-backed profile work.
 - Without representative hardware or recorded fixtures, protocol compatibility and event recovery cannot be proven locally.
+
+## Configurable Wired inputs
+
+ADR 0016 adds HmIPW-DRS8 physical-feedback/virtual-command outputs and HmIPW-DRI16 logical inputs. Each input reads its own MASTER CHANNEL_OPERATION_MODE during discovery. Binary state bindings and button event bindings have independent profile conditions. Completed discovery notifies paired read-only/event devices to reconcile their capabilities and routes; updateDevice callbacks invalidate descriptions and refresh discovery. Logical input identity stays stable across mode changes, although Flows referencing removed capabilities may need adjustment.
+
+## Wired infrastructure monitoring
+
+ADR 0017 adds the HmIPW-DRAP as one read-only diagnostic device with separately titled standard Homey sub-capabilities for bus voltage/current and individual faults. HmIPW-SPI uses the shared presence/illuminance capability model. HmIP-BRC2 retains its existing two-button profile, now verified against an event-only recorded device description.
+
+The HmIP-SWO-PR profile additionally derives a read-only eight-point compass enum from the same WIND_DIRECTION (or WIND_DIR fallback) as measure_wind_angle. The transform is locale-independent; Homey capability titles render German Nord/Nordost/Ost/Südost/Süd/Südwest/West/Nordwest or English equivalents. Both bindings follow the same initial read and callback path. Each sector spans 45 degrees, with boundaries at 22.5-degree offsets; 360 degrees maps to north. Invalid non-finite or out-of-range values are rejected.

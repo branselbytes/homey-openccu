@@ -2,5 +2,9 @@
   "0.1.0": {
     "en": "Initial beta with local HmIP-RF and heating-group support, dedicated and generic device drivers, push updates, Flow cards, system widgets, and sanitized diagnostics.",
     "de": "Erste Beta mit lokaler HmIP-RF- und Heizgruppenunterstützung, eigenen und generischen Gerätetreibern, Push-Aktualisierungen, Flow-Karten, System-Widgets und bereinigten Diagnosen."
+  },
+  "0.1.1": {
+    "en": "Add Wired DRS8 outputs, configurable DRI16 inputs, DRAP diagnostics and Wired presence sensors. Add named compass directions for SWO-PR and fix configuration discovery and input mode updates.",
+    "de": "Wired-DRS8-Ausgänge, konfigurierbare DRI16-Eingänge, DRAP-Diagnosen und Wired-Präsenzmelder ergänzt. Ausgeschriebene Windrichtungen für SWO-PR sowie Korrekturen bei Geräteerkennung und Eingangsbetriebsarten."
   }
 }

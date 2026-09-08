@@ -68,3 +68,20 @@ For the HmIP-SWO-PR run, all nine discovered capabilities were populated: temper
 1. Enhanced covers/blinds, locks, siren/valve options, and combined devices.
 2. Add metadata-normalized light color temperature.
 3. Add redacted OpenCCU fixtures and promote devices to hardware verified as equipment becomes available.
+
+## Wired multi-channel devices
+
+- **HmIPW-DRS8:** eight logical output devices; feedback channels 1/5/9/13/17/21/25/29, first virtual command channels 2/6/10/14/18/22/26/30. Descriptions and state reads verified live; commands verified with a recorded fixture. The user confirmed physical output switching on Homey Test on 2026-09-08.
+- **HmIPW-DRI16:** channels 1–16 independently follow MASTER CHANNEL_OPERATION_MODE. Binary inputs expose contact state and native Homey alarm-contact Flow cards; key/switch modes expose the existing button Flow trigger with channel and short/long tokens. Inactive/unknown modes have no active mapping. Live descriptions/configuration reads and recorded-fixture mode transitions verified. The user confirmed the practical tests work on Homey Test on 2026-09-08; individual channels, press variants, and live mode-change scenarios were not itemized.
+
+Changes reported by OpenCCU through updateDevice refresh existing input mappings without re-pairing. Restart the app if a configuration change is not reported. A Flow using a function removed by a mode change may need adjustment.
+
+User acceptance follow-up (2026-09-08): the user confirmed that the DRS8/DRI16 tests work after the pairing investigation. This records user-reported practical success, not exhaustive verification of all channels, input modes, or reconnect scenarios.
+
+## Wired infrastructure and presence
+
+- **HmIPW-DRAP:** temperature, supply voltage, bus 1/2 voltage and current, and eight separate fault/reachability indicators. Read-only profile backed by a recorded device description. No bus control or configuration writes.
+- **HmIPW-SPI:** presence via alarm_motion and illuminance; four units found on the test OpenCCU. Recorded descriptions and simulated callback routing verified; hardware presence changes pending.
+- **HmIP-BRC2:** existing driver confirmed against the live device description; both buttons support short/long Flow events. This unit exposes no battery datapoint. Recorded callback tests verified; physical button events pending.
+
+HmIP-SWO-PR additionally displays a derived eight-point wind direction (German Nord, Nordost, Ost, Südost, Süd, Südwest, West, Nordwest). The original degree value remains available. The new capability is added to existing devices on app startup without re-pairing and follows the same wind-direction events.

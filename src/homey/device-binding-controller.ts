@@ -59,6 +59,7 @@ export class DeviceBindingController {
   readonly #unsubscribers: Unsubscribe[] = [];
   readonly #pendingWrites = new Map<string, PendingWrite>();
   #activated = false;
+  #refreshQueue: Promise<void> = Promise.resolve();
 
   constructor(
     runtime: OpenCcuRuntime,
@@ -110,6 +111,32 @@ export class DeviceBindingController {
             "OpenCCU device interface unavailable",
           );
         }
+      }),
+      this.#runtime.subscribe("discovery", () => {
+        if (!this.#activated) return;
+        this.#refreshQueue = this.#refreshQueue
+          .then(async () => {
+            const resolved = this.#options.resolveBindings?.();
+            // Live reconciliation is currently limited to read-only/event devices.
+            if (
+              this.#bindings.some((binding) => binding.writable) ||
+              resolved?.some((binding) => binding.writable)
+            )
+              return;
+            this.#buttonEvents = this.#options.resolveButtonEvents?.() ?? [];
+            if (resolved !== undefined) {
+              this.#bindings = resolved;
+              await this.#options.persistBindings?.(resolved);
+            }
+            await this.#refreshInformationalCapabilities();
+            await this.#readInitialValues();
+          })
+          .catch((error: unknown) =>
+            this.#device.error(
+              "Failed to refresh OpenCCU input mapping",
+              error,
+            ),
+          );
       }),
       this.#runtime.subscribe("metadata", () => {
         if (!this.#activated) return;

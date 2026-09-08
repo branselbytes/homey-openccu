@@ -1,0 +1,506 @@
+[
+  {
+    "description": {
+      "ADDRESS": "RECORDED1",
+      "TYPE": "HmIPW-SPI",
+      "PARENT": "",
+      "CHILDREN": ["RECORDED1:0", "RECORDED1:1", "RECORDED1:2", "RECORDED1:3"]
+    },
+    "channels": [
+      {
+        "description": {
+          "ADDRESS": "RECORDED1:0",
+          "TYPE": "MAINTENANCE",
+          "PARENT": "RECORDED1",
+          "PARAMSETS": ["VALUES"],
+          "INDEX": 0
+        },
+        "parameters": {
+          "CONFIG_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9
+          },
+          "COMBINED_PARAMETER": {
+            "TYPE": "STRING",
+            "OPERATIONS": 2,
+            "FLAGS": 1
+          },
+          "INSTALL_TEST": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 3,
+            "FLAGS": 2
+          },
+          "UNREACH": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 25
+          },
+          "IDENTIFICATION_MODE_KEY_VISUAL": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 2,
+            "FLAGS": 1
+          },
+          "IDENTIFY_TARGET_LEVEL": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "UNIT": "100%"
+          },
+          "OPERATING_VOLTAGE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "EXTERNAL"]
+          },
+          "IDENTIFY_DURATION": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "UNIT": "s"
+          },
+          "OPERATING_VOLTAGE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "UNIT": "V"
+          },
+          "BOOTED": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "ERROR_CODE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 9
+          },
+          "UPDATE_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "RECORDED1:1",
+          "TYPE": "PRESENCEDETECTOR_TRANSCEIVER",
+          "PARENT": "RECORDED1",
+          "PARAMSETS": ["VALUES"],
+          "INDEX": 1
+        },
+        "parameters": {
+          "PRESENCE_DETECTION_STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "ILLUMINATION": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "ON_TIME": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 2,
+            "FLAGS": 1
+          },
+          "RESET_PRESENCE": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 2,
+            "FLAGS": 1
+          },
+          "CURRENT_ILLUMINATION": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESENCE_DETECTION_ACTIVE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          },
+          "CURRENT_ILLUMINATION_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW"]
+          },
+          "ILLUMINATION_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW"]
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "RECORDED1:2",
+          "TYPE": "STATE_RESET_RECEIVER",
+          "PARENT": "RECORDED1",
+          "PARAMSETS": ["VALUES"],
+          "INDEX": 2
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "RECORDED1:3",
+          "TYPE": "ALARM_COND_SWITCH_TRANSMITTER",
+          "PARENT": "RECORDED1",
+          "PARAMSETS": ["VALUES"],
+          "INDEX": 3
+        },
+        "parameters": {}
+      }
+    ]
+  },
+  {
+    "description": {
+      "ADDRESS": "RECORDED2",
+      "TYPE": "HmIP-BRC2",
+      "PARENT": "",
+      "CHILDREN": ["RECORDED2:0", "RECORDED2:1", "RECORDED2:2", "RECORDED2:3"]
+    },
+    "channels": [
+      {
+        "description": {
+          "ADDRESS": "RECORDED2:0",
+          "TYPE": "MAINTENANCE",
+          "PARENT": "RECORDED2",
+          "PARAMSETS": ["VALUES"],
+          "INDEX": 0
+        },
+        "parameters": {
+          "CONFIG_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9
+          },
+          "DUTY_CYCLE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "INSTALL_TEST": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 3,
+            "FLAGS": 2
+          },
+          "UNREACH": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 25
+          },
+          "OPERATING_VOLTAGE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "EXTERNAL"]
+          },
+          "RSSI_DEVICE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "OPERATING_VOLTAGE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "UNIT": "V"
+          },
+          "RSSI_PEER": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "BOOTED": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "UPDATE_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "RECORDED2:1",
+          "TYPE": "KEY_TRANSCEIVER",
+          "PARENT": "RECORDED2",
+          "PARAMSETS": ["VALUES"],
+          "INDEX": 1
+        },
+        "parameters": {
+          "PRESS_LONG_RELEASE": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "PRESS_LONG_START": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "RECORDED2:2",
+          "TYPE": "KEY_TRANSCEIVER",
+          "PARENT": "RECORDED2",
+          "PARAMSETS": ["VALUES"],
+          "INDEX": 2
+        },
+        "parameters": {
+          "PRESS_LONG_RELEASE": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "PRESS_LONG_START": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "RECORDED2:3",
+          "TYPE": "ALARM_COND_SWITCH_TRANSMITTER",
+          "PARENT": "RECORDED2",
+          "PARAMSETS": ["VALUES"],
+          "INDEX": 3
+        },
+        "parameters": {}
+      }
+    ]
+  },
+  {
+    "description": {
+      "ADDRESS": "RECORDED3",
+      "TYPE": "HmIPW-DRAP",
+      "PARENT": "",
+      "CHILDREN": ["RECORDED3:0", "RECORDED3:1", "RECORDED3:2"]
+    },
+    "channels": [
+      {
+        "description": {
+          "ADDRESS": "RECORDED3:0",
+          "TYPE": "MAINTENANCE",
+          "PARENT": "RECORDED3",
+          "PARAMSETS": ["VALUES"],
+          "INDEX": 0
+        },
+        "parameters": {
+          "CONFIG_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9
+          },
+          "COMBINED_PARAMETER": {
+            "TYPE": "STRING",
+            "OPERATIONS": 2,
+            "FLAGS": 1
+          },
+          "ERROR_POWER_SHORT_CIRCUIT_BUS_2": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9
+          },
+          "INSTALL_TEST": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 3,
+            "FLAGS": 2
+          },
+          "ERROR_POWER_SHORT_CIRCUIT_BUS_1": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9
+          },
+          "ERROR_OVERHEAT": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9
+          },
+          "ERROR_SHORT_CIRCUIT_DATA_LINE_BUS_2": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9
+          },
+          "IDENTIFICATION_MODE_KEY_VISUAL": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 2,
+            "FLAGS": 1
+          },
+          "ERROR_SHORT_CIRCUIT_DATA_LINE_BUS_1": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9
+          },
+          "IDENTIFICATION_MODE_LCD_BACKLIGHT": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 2,
+            "FLAGS": 1
+          },
+          "IDENTIFY_TARGET_LEVEL": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "UNIT": "100%"
+          },
+          "OPERATING_VOLTAGE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "EXTERNAL"]
+          },
+          "IDENTIFY_DURATION": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "UNIT": "s"
+          },
+          "BOOTED": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "ERROR_CODE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 9
+          },
+          "ERROR_UNDERVOLTAGE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9
+          },
+          "UNREACH": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 25
+          },
+          "ERROR_BUS_CONFIG_MISMATCH": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9
+          },
+          "ACTUAL_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "UNIT": "�C"
+          },
+          "IP_ADDRESS": {
+            "TYPE": "STRING",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "OPERATING_VOLTAGE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "UNIT": "V"
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "RECORDED3:1",
+          "TYPE": "ACCESSPOINT_GENERIC_RECEIVER",
+          "PARENT": "RECORDED3",
+          "PARAMSETS": ["VALUES"],
+          "INDEX": 1
+        },
+        "parameters": {
+          "VOLTAGE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "UNIT": "V"
+          },
+          "CURRENT_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW"]
+          },
+          "VOLTAGE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW"]
+          },
+          "CURRENT": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "UNIT": "mA"
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "RECORDED3:2",
+          "TYPE": "ACCESSPOINT_GENERIC_RECEIVER",
+          "PARENT": "RECORDED3",
+          "PARAMSETS": ["VALUES"],
+          "INDEX": 2
+        },
+        "parameters": {
+          "VOLTAGE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "UNIT": "V"
+          },
+          "CURRENT_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW"]
+          },
+          "VOLTAGE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW"]
+          },
+          "CURRENT": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "UNIT": "mA"
+          }
+        }
+      }
+    ]
+  }
+]

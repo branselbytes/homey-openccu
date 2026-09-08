@@ -740,6 +740,7 @@ describe("ProfileRegistry", () => {
       "measure_rain",
       "homematic_sunshine_duration",
       "alarm_battery",
+      ...(type === "HmIP-SWO-PR" ? ["homematic_wind_direction"] : []),
     ]);
   });
 

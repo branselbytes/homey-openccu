@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "io.github.branselbytes.openccu",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "compatibility": ">=12.9.0",
   "sdk": 3,
   "name": {
@@ -2029,6 +2029,195 @@
       ]
     },
     {
+      "id": "HmIPW-DRAP",
+      "name": {
+        "en": "HmIPW-DRAP"
+      },
+      "class": "other",
+      "capabilities": [
+        "measure_temperature",
+        "measure_voltage",
+        "measure_voltage.bus_1",
+        "measure_current.bus_1",
+        "measure_voltage.bus_2",
+        "measure_current.bus_2",
+        "alarm_generic.unreachable",
+        "alarm_generic.overheat",
+        "alarm_generic.undervoltage",
+        "alarm_generic.bus_config",
+        "alarm_generic.power_bus_1",
+        "alarm_generic.power_bus_2",
+        "alarm_generic.data_bus_1",
+        "alarm_generic.data_bus_2"
+      ],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "capabilitiesOptions": {
+        "alarm_generic.unreachable": {
+          "title": {
+            "en": "Unreachable",
+            "de": "Nicht erreichbar"
+          }
+        },
+        "alarm_generic.overheat": {
+          "title": {
+            "en": "Overheating",
+            "de": "Überhitzung"
+          }
+        },
+        "alarm_generic.undervoltage": {
+          "title": {
+            "en": "Undervoltage",
+            "de": "Unterspannung"
+          }
+        },
+        "alarm_generic.bus_config": {
+          "title": {
+            "en": "Bus configuration mismatch",
+            "de": "Bus-Konfigurationsfehler"
+          }
+        },
+        "alarm_generic.power_bus_1": {
+          "title": {
+            "en": "Power short circuit bus 1",
+            "de": "Kurzschluss Versorgung Bus 1"
+          }
+        },
+        "alarm_generic.power_bus_2": {
+          "title": {
+            "en": "Power short circuit bus 2",
+            "de": "Kurzschluss Versorgung Bus 2"
+          }
+        },
+        "alarm_generic.data_bus_1": {
+          "title": {
+            "en": "Data short circuit bus 1",
+            "de": "Kurzschluss Datenleitung Bus 1"
+          }
+        },
+        "alarm_generic.data_bus_2": {
+          "title": {
+            "en": "Data short circuit bus 2",
+            "de": "Kurzschluss Datenleitung Bus 2"
+          }
+        },
+        "measure_voltage.bus_1": {
+          "title": {
+            "en": "Bus 1 voltage",
+            "de": "Spannung Bus 1"
+          }
+        },
+        "measure_current.bus_1": {
+          "title": {
+            "en": "Bus 1 current",
+            "de": "Strom Bus 1"
+          }
+        },
+        "measure_voltage.bus_2": {
+          "title": {
+            "en": "Bus 2 voltage",
+            "de": "Spannung Bus 2"
+          }
+        },
+        "measure_current.bus_2": {
+          "title": {
+            "en": "Bus 2 current",
+            "de": "Strom Bus 2"
+          }
+        }
+      }
+    },
+    {
+      "id": "HmIPW-DRI16",
+      "name": {
+        "en": "HmIPW-DRI16"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIPW-DRS8",
+      "name": {
+        "en": "HmIPW-DRS8"
+      },
+      "class": "socket",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-PS/assets/images/large.png",
+        "small": "/drivers/HMIP-PS/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIPW-SPI",
+      "name": {
+        "en": "HmIPW-SPI"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "large": "/drivers/HMIP-SWDO/assets/images/large.png",
+        "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "openccu-generic",
       "name": {
         "en": "Generic OpenCCU device"
@@ -2277,6 +2466,74 @@
       "uiComponent": "picker",
       "getable": true,
       "setable": true
+    },
+    "homematic_wind_direction": {
+      "type": "enum",
+      "title": {
+        "en": "Wind direction",
+        "de": "Windrichtung"
+      },
+      "values": [
+        {
+          "id": "n",
+          "title": {
+            "en": "North",
+            "de": "Nord"
+          }
+        },
+        {
+          "id": "ne",
+          "title": {
+            "en": "Northeast",
+            "de": "Nordost"
+          }
+        },
+        {
+          "id": "e",
+          "title": {
+            "en": "East",
+            "de": "Ost"
+          }
+        },
+        {
+          "id": "se",
+          "title": {
+            "en": "Southeast",
+            "de": "Südost"
+          }
+        },
+        {
+          "id": "s",
+          "title": {
+            "en": "South",
+            "de": "Süd"
+          }
+        },
+        {
+          "id": "sw",
+          "title": {
+            "en": "Southwest",
+            "de": "Südwest"
+          }
+        },
+        {
+          "id": "w",
+          "title": {
+            "en": "West",
+            "de": "West"
+          }
+        },
+        {
+          "id": "nw",
+          "title": {
+            "en": "Northwest",
+            "de": "Nordwest"
+          }
+        }
+      ],
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false
     },
     "openccu_alarm_service_messages": {
       "type": "boolean",

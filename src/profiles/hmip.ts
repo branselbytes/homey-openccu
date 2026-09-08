@@ -133,6 +133,72 @@ function rgbwOutput(
   };
 }
 
+const WIRED_INPUT_CHANNELS = Array.from(
+  { length: 16 },
+  (_, index) => index + 1,
+);
+
+const HMIPW_DRI16_PROFILE: DeviceProfile = {
+  id: "hmipw-dri16",
+  driverId: "HmIPW-DRI16",
+  deviceTypes: ["HmIPW-DRI16"],
+  bindings: [],
+  configurationParameters: WIRED_INPUT_CHANNELS.map((channel) => ({
+    channel,
+    parameter: "CHANNEL_OPERATION_MODE",
+  })),
+  logicalDevices: WIRED_INPUT_CHANNELS.map((channel) => ({
+    id: `input-${channel}`,
+    nameSuffix: `Input ${channel}`,
+    nameChannel: channel,
+    bindings: [
+      {
+        capability: "alarm_contact",
+        channel,
+        parameter: "STATE",
+        transform: "boolean",
+        conditions: [
+          {
+            channel,
+            parameter: "CHANNEL_OPERATION_MODE",
+            oneOf: ["BINARY_BEHAVIOR"],
+          },
+        ],
+      },
+    ],
+    buttonChannels: [channel],
+    buttonConditions: [
+      {
+        channel,
+        parameter: "CHANNEL_OPERATION_MODE",
+        oneOf: ["KEY_BEHAVIOR", "SWITCH_BEHAVIOR"],
+      },
+    ],
+  })),
+};
+
+const HMIPW_DRS8_PROFILE: DeviceProfile = {
+  id: "hmipw-drs8",
+  driverId: "HmIPW-DRS8",
+  deviceTypes: ["HmIPW-DRS8"],
+  bindings: [],
+  logicalDevices: Array.from({ length: 8 }, (_, index) => ({
+    id: `output-${index + 1}`,
+    nameSuffix: `Output ${index + 1}`,
+    nameChannel: index * 4 + 2,
+    bindings: [
+      {
+        capability: "onoff",
+        channel: index * 4 + 1,
+        setChannel: index * 4 + 2,
+        parameter: "STATE",
+        transform: "boolean",
+        requiresWriteTarget: true,
+      },
+    ],
+  })),
+};
+
 const HMIP_DRSI4_PROFILE: DeviceProfile = {
   id: "hmip-drsi4",
   driverId: "HmIP-DRSI4",
@@ -535,11 +601,19 @@ function weatherProfile(
   };
 }
 
-export const HMIP_WEATHER_PROFILE = weatherProfile(
-  "hmip-weather-pro",
-  "HmIP-SWO-PR",
-  "HmIP-SWO-PR",
-);
+export const HMIP_WEATHER_PROFILE: DeviceProfile = {
+  ...weatherProfile("hmip-weather-pro", "HmIP-SWO-PR", "HmIP-SWO-PR"),
+  bindings: [
+    ...WEATHER_BINDINGS,
+    {
+      capability: "homematic_wind_direction",
+      channel: 1,
+      parameter: "WIND_DIRECTION",
+      fallbackParameters: ["WIND_DIR"],
+      transform: "degrees-to-compass-8",
+    },
+  ],
+};
 
 const HMIP_WEATHER_BASIC_PROFILE = weatherProfile(
   "hmip-weather-basic",
@@ -677,6 +751,114 @@ const HMIP_SMO_A_PROFILE: DeviceProfile = {
   driverId: "HmIP-SMO-A",
   deviceTypes: ["HmIP-SMO-A"],
   bindings: MOTION_SENSOR_BINDINGS,
+};
+
+const HMIPW_DRAP_PROFILE: DeviceProfile = {
+  id: "hmipw-drap",
+  driverId: "HmIPW-DRAP",
+  deviceTypes: ["HmIPW-DRAP"],
+  bindings: [
+    {
+      capability: "measure_temperature",
+      channel: 0,
+      parameter: "ACTUAL_TEMPERATURE",
+    },
+    {
+      capability: "measure_voltage",
+      channel: 0,
+      parameter: "OPERATING_VOLTAGE",
+    },
+    {
+      capability: "measure_voltage.bus_1",
+      channel: 1,
+      parameter: "VOLTAGE",
+    },
+    {
+      capability: "measure_current.bus_1",
+      channel: 1,
+      parameter: "CURRENT",
+      transform: "milliamp-to-amp",
+    },
+    {
+      capability: "measure_voltage.bus_2",
+      channel: 2,
+      parameter: "VOLTAGE",
+    },
+    {
+      capability: "measure_current.bus_2",
+      channel: 2,
+      parameter: "CURRENT",
+      transform: "milliamp-to-amp",
+    },
+    {
+      capability: "alarm_generic.unreachable",
+      channel: 0,
+      parameter: "UNREACH",
+      transform: "boolean",
+    },
+    {
+      capability: "alarm_generic.overheat",
+      channel: 0,
+      parameter: "ERROR_OVERHEAT",
+      transform: "boolean",
+    },
+    {
+      capability: "alarm_generic.undervoltage",
+      channel: 0,
+      parameter: "ERROR_UNDERVOLTAGE",
+      transform: "boolean",
+    },
+    {
+      capability: "alarm_generic.bus_config",
+      channel: 0,
+      parameter: "ERROR_BUS_CONFIG_MISMATCH",
+      transform: "boolean",
+    },
+    {
+      capability: "alarm_generic.power_bus_1",
+      channel: 0,
+      parameter: "ERROR_POWER_SHORT_CIRCUIT_BUS_1",
+      transform: "boolean",
+    },
+    {
+      capability: "alarm_generic.power_bus_2",
+      channel: 0,
+      parameter: "ERROR_POWER_SHORT_CIRCUIT_BUS_2",
+      transform: "boolean",
+    },
+    {
+      capability: "alarm_generic.data_bus_1",
+      channel: 0,
+      parameter: "ERROR_SHORT_CIRCUIT_DATA_LINE_BUS_1",
+      transform: "boolean",
+    },
+    {
+      capability: "alarm_generic.data_bus_2",
+      channel: 0,
+      parameter: "ERROR_SHORT_CIRCUIT_DATA_LINE_BUS_2",
+      transform: "boolean",
+    },
+  ],
+};
+
+const HMIPW_SPI_PROFILE: DeviceProfile = {
+  id: "hmipw-spi",
+  driverId: "HmIPW-SPI",
+  deviceTypes: ["HmIPW-SPI"],
+  bindings: [
+    {
+      capability: "alarm_motion",
+      channel: 1,
+      parameter: "PRESENCE_DETECTION_STATE",
+      transform: "boolean",
+    },
+    {
+      capability: "measure_luminance",
+      channel: 1,
+      parameter: "ILLUMINATION",
+      fallbackParameters: ["CURRENT_ILLUMINATION"],
+    },
+  ],
 };
 
 const HMIP_SPI_PROFILE: DeviceProfile = {
@@ -1015,6 +1197,8 @@ export const HMIP_PROFILES = [
   HMIP_PCBS_BAT_PROFILE,
   HMIP_DRSI1_PROFILE,
   HMIP_DRSI4_PROFILE,
+  HMIPW_DRS8_PROFILE,
+  HMIPW_DRI16_PROFILE,
   HMIP_MOD_OC8_PROFILE,
   HMIP_FSI_PROFILE,
   HMIP_FSI6_PROFILE,
@@ -1058,6 +1242,8 @@ export const HMIP_PROFILES = [
   HMIP_RC8_PROFILE,
   HMIP_SMO_A_PROFILE,
   HMIP_SPI_PROFILE,
+  HMIPW_SPI_PROFILE,
+  HMIPW_DRAP_PROFILE,
   HMIP_SAM_PROFILE,
   HMIP_SWD_PROFILE,
   HMIP_SWSD_PROFILE,

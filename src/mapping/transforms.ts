@@ -12,6 +12,14 @@ export function transformFromOpenCcu(
       if (value === "UP") return "up";
       if (value === "DOWN") return "down";
       return "idle";
+    case "degrees-to-compass-8": {
+      const degrees = numeric(value, transform);
+      if (degrees < 0 || degrees > 360)
+        throw invalidTransform(transform, value);
+      return ["n", "ne", "e", "se", "s", "sw", "w", "nw"][
+        Math.floor((degrees + 22.5) / 45) % 8
+      ];
+    }
     case "identity":
       return value;
     case "garage-door-state-to-closed":
@@ -67,6 +75,7 @@ export function transformToOpenCcu(
 ): RpcValue {
   switch (transform) {
     case "activity-state-to-cover-state":
+    case "degrees-to-compass-8":
       throw invalidTransform(transform, value);
     case "identity":
     case "boolean":

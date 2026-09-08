@@ -7,6 +7,7 @@ import type {
 export const VALUE_TRANSFORMS = [
   "activity-state-to-cover-state",
   "boolean",
+  "degrees-to-compass-8",
   "enum-number-to-string",
   "identity",
   "garage-door-state-to-closed",

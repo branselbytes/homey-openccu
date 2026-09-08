@@ -1,0 +1,68 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Wind direction",
+    "de": "Windrichtung"
+  },
+  "values": [
+    {
+      "id": "n",
+      "title": {
+        "en": "North",
+        "de": "Nord"
+      }
+    },
+    {
+      "id": "ne",
+      "title": {
+        "en": "Northeast",
+        "de": "Nordost"
+      }
+    },
+    {
+      "id": "e",
+      "title": {
+        "en": "East",
+        "de": "Ost"
+      }
+    },
+    {
+      "id": "se",
+      "title": {
+        "en": "Southeast",
+        "de": "Südost"
+      }
+    },
+    {
+      "id": "s",
+      "title": {
+        "en": "South",
+        "de": "Süd"
+      }
+    },
+    {
+      "id": "sw",
+      "title": {
+        "en": "Southwest",
+        "de": "Südwest"
+      }
+    },
+    {
+      "id": "w",
+      "title": {
+        "en": "West",
+        "de": "West"
+      }
+    },
+    {
+      "id": "nw",
+      "title": {
+        "en": "Northwest",
+        "de": "Nordwest"
+      }
+    }
+  ],
+  "uiComponent": "sensor",
+  "getable": true,
+  "setable": false
+}

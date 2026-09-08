@@ -3,6 +3,7 @@ import type { OpenCcuMetadata } from "../domain/model";
 import type { XmlRpcDeviceUpdate, XmlRpcEvent } from "../protocol/xmlrpc/types";
 
 export interface OpenCcuEvents {
+  readonly discovery: undefined;
   readonly metadata: OpenCcuMetadata;
   readonly connection: {
     readonly interfaceId: string;

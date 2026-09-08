@@ -263,6 +263,7 @@ export class OpenCcuRuntime {
       signal,
     );
     this.#discovery = discovery;
+    this.#events.publish("discovery", undefined);
     return discovery;
   }
 
@@ -373,9 +374,10 @@ export class OpenCcuRuntime {
           reason: "delete",
         });
       },
-      onUpdateDevice: (update) => {
+      onUpdateDevice: async (update) => {
         if (this.#discovery !== undefined) {
-          void this.#invalidateDescriptions([update.address]);
+          await this.#invalidateDescriptions([update.address]);
+          await this.refresh();
         }
         this.#events.publish("deviceUpdated", update);
         this.#events.publish("devicesChanged", {

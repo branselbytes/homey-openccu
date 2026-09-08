@@ -82,7 +82,7 @@ export async function discoverHmIpDevices(
   });
 
   const configurationRequests = descriptions
-    .filter((description) => description.PARENT === undefined)
+    .filter((description) => !description.PARENT)
     .flatMap((device) =>
       groupConfigurationParameters(
         device.ADDRESS,

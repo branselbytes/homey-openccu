@@ -184,3 +184,39 @@ The development toolchain is pinned to the compatible patch releases Homey CLI 4
 - Hardware matrix: record device model, firmware, interface, profile, readable/writable datapoints, and event results.
 
 Every implementation pull request should state which layers changed, list exact verification commands, and call out missing hardware coverage.
+
+### Wired device support (2026-09-08)
+
+- [x] Read HmIPW-DRS8 and HmIPW-DRI16 descriptions and current input modes from OpenCCU without writes.
+- [x] Add eight logical outputs with separate physical feedback and command targets.
+- [x] Add per-channel configured input modes, stable identities, and live reconciliation after updateDevice/discovery.
+- [x] Add redacted recorded fixtures and tests for output commands, all input modes, and paired input mode transitions.
+- [ ] Install the updated app on Homey with approval, pair outputs/inputs, and verify physical switching and Flow triggers.
+
+Validation for this change: `npm run check` passed (formatter, ESLint, strict type checks, 255 tests in 47 files); `npm run build`, `npx homey app build`, and `npx homey app validate` passed (Homey publish validation). The read-only live probe using the compiled runtime returned eight output candidates, 16 input candidates, zero discovery issues, and 11 successful mapped state reads. No commands or callback registrations were sent. The probe also exposed and fixed configuration discovery skipping main devices with an empty PARENT string. Physical writes, button callbacks, and Homey pairing remain unverified until installation is approved.
+
+Installation follow-up (2026-09-08): installed the updated app on **Homey Test** with explicit user approval, preserving existing app data. Homey reports the app enabled, running, and not crashed; both HmIPW-DRS8 and HmIPW-DRI16 drivers are present. Local probe credentials were not injected as app environment variables. Pairing the new channels and physical Flow/switch tests remain pending.
+
+User acceptance follow-up (2026-09-08): the user reports that the practical DRS8/DRI16 tests work on Homey Test. DRS8 output switching was explicitly confirmed earlier; the subsequent test confirmation closes the reported pairing/test issue at user-acceptance level. Per-channel, press-variant, live mode-change, and reconnect coverage was not individually reported.
+
+### Wired infrastructure and presence (2026-09-08)
+
+- [x] Read descriptions of one HmIPW-DRAP, four HmIPW-SPI units, and one HmIP-BRC2 from OpenCCU.
+- [x] Add a read-only DRAP diagnostic driver with distinct bus measurements and fault indicators.
+- [x] Add a dedicated Wired presence/illuminance driver.
+- [x] Verify the existing BRC2 profile with recorded two-button, event-only data.
+- [ ] Confirm real presence changes, bus fault events, and short/long BRC2 presses on Homey Test.
+
+Validation and deployment: `npm run check` passed (formatting, lint, strict type checks, 259 tests in 48 files). `npx homey app build` and Homey publish-level validation passed. A read-only live integration using the compiled runtime confirmed six candidates and 22 successful mapped state reads with zero discovery issues. Updated Homey Test under the existing deployment approval, preserving app data. The app reports running/enabled/not crashed; actual pairing lists return one DRAP, four Wired presence detectors, and one BRC2. No devices were created and no physical control commands were sent during this verification.
+
+### Weather compass (2026-09-08)
+
+- [x] Add read-only homematic_wind_direction to HmIP-SWO-PR while retaining the original degree capability.
+- [x] Derive eight compass sectors with localized German/English labels.
+- [x] Cover sector boundaries, invalid values, existing-device reconciliation, and degree/compass callback updates with tests.
+
+Wind compass validation: `npm run check` passed (formatting, lint, type checks, 286 tests in 48 files); Homey build and publish validation passed. Installed on the previously approved Homey Test without clearing app data. The existing HmIP-SWO-PR remains available and automatically acquired the new localized capability. Its live 70-degree value matched enum e, displayed as German O. Synthetic callbacks cover subsequent updates; no device writes were performed.
+
+Wind compass label follow-up: display all eight direction names in full in German and English; enum identities and angle mapping remain unchanged.
+
+Release upload (2026-09-08): version 0.1.1 passed all 286 tests and Homey publish validation, then uploaded successfully to Athom as Build 2. The upload omitted local environment credentials and excluded recorded test fixtures from the package. No Test/Live activation was requested. The local GitHub device login was restored for the authorized origin/main push.

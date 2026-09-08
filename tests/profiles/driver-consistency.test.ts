@@ -7,6 +7,10 @@ import { GENERIC_DRIVER_ID } from "../../src/mapping/device-resolver";
 
 const SYSTEM_DRIVER_ID = "openccu-system";
 const DEFAULT_ICON_DRIVER_IDS = [
+  "HmIPW-DRAP",
+  "HmIPW-SPI",
+  "HmIPW-DRS8",
+  "HmIPW-DRI16",
   "HmIP-BBL",
   "HmIP-BS2",
   "HmIP-DLD",

@@ -35,6 +35,7 @@ export interface ProfileBinding {
 export interface ProfileMappingDefinition {
   readonly bindings: readonly ProfileBinding[];
   readonly buttonChannels?: readonly number[];
+  readonly buttonConditions?: readonly ProfileCondition[];
   readonly conditions?: readonly ProfileCondition[];
 }
 
@@ -56,7 +57,11 @@ export function resolveProfileButtonEvents(
   device: OpenCcuDevice,
   profile: ProfileMappingDefinition,
 ): readonly ButtonEventBinding[] {
-  if (!matchesConditions(device, profile.conditions)) return [];
+  if (
+    !matchesConditions(device, profile.conditions) ||
+    !matchesConditions(device, profile.buttonConditions)
+  )
+    return [];
   const result: ButtonEventBinding[] = [];
   for (const channelIndex of profile.buttonChannels ?? []) {
     const channel = [...device.channels.values()].find(

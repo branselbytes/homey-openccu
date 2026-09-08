@@ -1,0 +1,814 @@
+[
+  {
+    "type": "HmIPW-DRS8",
+    "address": "WIRED1",
+    "channels": [
+      {
+        "index": 1,
+        "type": "SWITCH_TRANSMITTER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 2,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 3,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 4,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 5,
+        "type": "SWITCH_TRANSMITTER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 6,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 7,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 8,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 9,
+        "type": "SWITCH_TRANSMITTER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 10,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 11,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 12,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 13,
+        "type": "SWITCH_TRANSMITTER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 14,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 15,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 16,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 17,
+        "type": "SWITCH_TRANSMITTER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 18,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 19,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 20,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 21,
+        "type": "SWITCH_TRANSMITTER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 22,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 23,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 24,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 25,
+        "type": "SWITCH_TRANSMITTER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 26,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 27,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 28,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 29,
+        "type": "SWITCH_TRANSMITTER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 30,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 31,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      },
+      {
+        "index": 32,
+        "type": "SWITCH_VIRTUAL_RECEIVER",
+        "parameters": {
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1
+          }
+        }
+      }
+    ]
+  },
+  {
+    "type": "HmIPW-DRI16",
+    "address": "WIRED2",
+    "channels": [
+      {
+        "index": 1,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 3,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      },
+      {
+        "index": 2,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 3,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      },
+      {
+        "index": 3,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 3,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      },
+      {
+        "index": 4,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 1,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      },
+      {
+        "index": 5,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 1,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      },
+      {
+        "index": 6,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 1,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      },
+      {
+        "index": 7,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 1,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      },
+      {
+        "index": 8,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 1,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      },
+      {
+        "index": 9,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 1,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      },
+      {
+        "index": 10,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 1,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      },
+      {
+        "index": 11,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 1,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      },
+      {
+        "index": 12,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 1,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      },
+      {
+        "index": 13,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 1,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      },
+      {
+        "index": 14,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 1,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      },
+      {
+        "index": 15,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 1,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      },
+      {
+        "index": 16,
+        "type": "MULTI_MODE_INPUT_TRANSMITTER",
+        "parameters": {
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1
+          }
+        },
+        "mode": 1,
+        "modes": [
+          "INACTIVE",
+          "KEY_BEHAVIOR",
+          "SWITCH_BEHAVIOR",
+          "BINARY_BEHAVIOR"
+        ]
+      }
+    ]
+  }
+]

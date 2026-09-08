@@ -290,3 +290,45 @@ describe("DeviceBindingController", () => {
     );
   });
 });
+
+it("adds a compass to an existing weather device and updates it with the degree value", async () => {
+  const { runtime, device, getParamset, setCapabilityValue } = fixture();
+  getParamset.mockResolvedValue({ WIND_DIRECTION: 90 });
+  const angle: CapabilityBinding = {
+    capability: "measure_wind_angle",
+    channelAddress: "WEATHER:1",
+    parameter: "WIND_DIRECTION",
+    readable: true,
+    writable: false,
+    transform: "identity",
+  };
+  const compass: CapabilityBinding = {
+    ...angle,
+    capability: "homematic_wind_direction",
+    transform: "degrees-to-compass-8",
+  };
+  const persistBindings = vi.fn().mockResolvedValue(undefined);
+  runtime.publishConnectionState("healthy");
+  const controller = new DeviceBindingController(runtime, device, [angle], {
+    resolveBindings: () => [angle, compass],
+    persistBindings,
+  });
+  await controller.start();
+  expect(device.addCapability).toHaveBeenCalledWith("homematic_wind_direction");
+  expect(persistBindings).toHaveBeenCalledWith([angle, compass]);
+  expect(setCapabilityValue).toHaveBeenCalledWith("measure_wind_angle", 90);
+  expect(setCapabilityValue).toHaveBeenCalledWith(
+    "homematic_wind_direction",
+    "e",
+  );
+  await runtime
+    .createCallbackDispatcher()
+    .dispatch("event", ["HmIP-RF", "WEATHER:1", "WIND_DIRECTION", 315]);
+  expect(setCapabilityValue).toHaveBeenCalledWith("measure_wind_angle", 315);
+  expect(setCapabilityValue).toHaveBeenLastCalledWith(
+    "homematic_wind_direction",
+    "nw",
+  );
+  expect(device.onCapabilityWrite).not.toHaveBeenCalled();
+  controller.stop();
+});

@@ -2,7 +2,22 @@
 
 All notable changes to OpenCCU for Homey will be documented in this file. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are not considered released until explicitly tagged and published by the project owner.
 
-## [Unreleased]
+## [0.1.1] — prepared 2026-09-08
+
+### Added
+
+- HmIPW-DRS8 with eight independent outputs and physical state feedback.
+- HmIPW-DRI16 with 16 independently configured binary/button inputs and live mode reconciliation.
+- HmIPW-DRAP diagnostics with separate bus measurements and fault indicators.
+- HmIPW-SPI presence and illuminance; recorded BRC2 button-event coverage.
+- HmIP-SWO-PR compass capability with full German/English direction names.
+
+### Fixed
+
+- Read MASTER configuration for devices whose PARENT field is empty.
+- Refresh paired read-only input mappings after OpenCCU configuration notifications.
+
+## [0.1.0] — initial beta
 
 ### Added
 

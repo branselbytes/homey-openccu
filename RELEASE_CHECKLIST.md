@@ -47,3 +47,9 @@ The release audit includes a clean locked install and, as of 2026-09-07, the sub
 The public GitHub repository now contains the preserved history on `main`. Homey App Store version `0.1.0`, Draft build 1, was submitted for initial certification without automatic Live publication and is currently under review. It has not been activated as Test/Live.
 
 Package inspection found no credentials, captures, caches, generated diagnostics, private keys, or environment files. Development documentation, configuration, and source maps are excluded from the install archive; the root MIT license, third-party notice, and dependency licenses remain packaged. This snapshot does not complete the open hardware and compatibility gates above.
+
+## 0.1.1 upload preparation (2026-09-08)
+
+The owner authorized committing and pushing the current work to GitHub and uploading it to Athom. Version 0.1.1 includes Wired DRS8/DRI16/DRAP/SPI support and the SWO-PR compass display. All 286 tests, formatting, lint, type checks, and Homey publish validation passed. Local credentials are excluded from Git and explicitly omitted from Athom build environment variables. Recorded test fixtures are excluded from the app package. The 0.1.0 build remains under certification review; this upload prepares a separate Draft without Test/Live activation.
+
+Athom upload completed: [version 0.1.1, Build 2](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/2). No Test/Live activation was performed.
