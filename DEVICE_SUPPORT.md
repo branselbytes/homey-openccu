@@ -35,8 +35,8 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 | Light sensor           | HmIP-SLO                                                                                                   | fixture; current illuminance subset                                                            |
 | Temperature sensor     | HmIP-STE2-PCB                                                                                              | fixture; first probe only                                                                      |
 | CO₂ sensor + relay     | HmIP-SCTH230                                                                                               | fixture; CO₂, temperature, humidity, relay; indicator LED pending                              |
-| Motion sensor          | HmIP-SMI, HmIP-SMI55, HmIP-SMO-A                                                                           | fixture; model-specific luminance priority; SMI live Lux retest pending                        |
-| Presence sensor        | HmIP-SPI                                                                                                   | fixture; exposed through Homey motion alarm                                                    |
+| Motion sensor          | HmIP-SMI, HmIP-SMI55, HmIP-SMO-A                                                                           | fixture; optional detection enable switch; SMI55 detection on channel 3; live retest pending   |
+| Presence sensor        | HmIP-SPI                                                                                                   | fixture; Homey motion alarm and optional detection enable switch                               |
 | Acceleration sensor    | HmIP-SAM                                                                                                   | fixture; exposed through Homey motion alarm                                                    |
 | Water sensor           | HmIP-SWD                                                                                                   | fixture; current and legacy datapoint variants                                                 |
 | Smoke detector         | HmIP-SWSD                                                                                                  | fixture; smoke alarm and optional intrusion-siren control                                      |
@@ -81,7 +81,15 @@ User acceptance follow-up (2026-09-08): the user confirmed that the DRS8/DRI16 t
 ## Wired infrastructure and presence
 
 - **HmIPW-DRAP:** temperature, supply voltage, bus 1/2 voltage and current, and eight separate fault/reachability indicators. Read-only profile backed by a recorded device description. No bus control or configuration writes.
-- **HmIPW-SPI:** presence via alarm_motion and illuminance; four units found on the test OpenCCU. Recorded descriptions and simulated callback routing verified; hardware presence changes pending.
+- **HmIPW-SPI:** presence via alarm_motion, illuminance and a discovery-checked detection enable switch; four units found on the test OpenCCU. Recorded descriptions and simulated callback routing verified; hardware presence changes pending.
 - **HmIP-BRC2:** existing driver confirmed against the live device description; both buttons support short/long Flow events. This unit exposes no battery datapoint. Recorded callback tests verified; physical button events pending.
 
 HmIP-SWO-PR additionally displays a derived eight-point wind direction (German Nord, Nordost, Ost, Südost, Süd, Südwest, West, Nordwest). The original degree value remains available. The new capability is added to existing devices on app startup without re-pairing and follows the same wind-direction events.
+
+### Motion and presence detection enable
+
+HmIP-SMI, HmIP-SMI55, HmIP-SMO-A, HmIP-SPI and HmIPW-SPI expose **Detection active / Erkennung aktiv** in the Homey device controls when the CCU describes the corresponding VALUES datapoint as writable. It writes MOTION_DETECTION_ACTIVE (motion) or PRESENCE_DETECTION_ACTIVE (presence), reads the current setting and follows CCU callbacks. The SMI55 uses detection channel 3; its button channels 1/2 remain independent. Other listed detectors use channel 1. Unsupported firmware does not receive a nonfunctional control.
+
+Existing paired devices gain the capability during initialization after an app restart and successful discovery; re-pairing is not required. A later firmware change that adds a writable datapoint requires another app restart. The motion alarm remains a separate CCU reading: disabling detection does not synthesize an alarm-clear or reset command. Profile and recorded Wired fixtures cover mapping, startup migration, writes and callbacks; live switching and battery-device timing still need hardware verification.
+
+Post-install verification on Homey Christian: existing HmIP-SMI and HmIPW-SPI devices both gained the control automatically and returned an active detection state. This verifies discovery, migration and initial reads, not live switching. The datapoint semantics and SMI55 channel assignment were cross-checked against the [FHEM HMCCU device definitions](https://github.com/mhop/fhem-mirror/blob/master/fhem/FHEM/HMCCUConf.pm); the Wired mapping additionally uses this repository's recorded CCU description.

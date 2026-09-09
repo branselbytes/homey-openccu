@@ -222,3 +222,14 @@ Wind compass validation: `npm run check` passed (formatting, lint, type checks, 
 Wind compass label follow-up: display all eight direction names in full in German and English; enum identities and angle mapping remain unchanged.
 
 Release upload (2026-09-08): version 0.1.1 passed all 286 tests and Homey publish validation, then uploaded successfully to Athom as Build 2. The upload omitted local environment credentials and excluded recorded test fixtures from the package. No Test/Live activation was requested. The local GitHub device login was restored for the authorized origin/main push.
+
+### Detection control
+
+- [x] Add the localized device control “Detection active / Erkennung aktiv” for supported motion and presence profiles, conditional on a discovered writable datapoint.
+- [x] Correct HmIP-SMI55 detection and illuminance to channel 3 while preserving button channels 1/2.
+- [x] Cover activation/deactivation, missing/read-only datapoints, startup capability migration and CCU callbacks with fixtures, including the recorded HmIPW-SPI description.
+- [ ] Verify live switching and update timing on physical motion/presence detectors.
+
+The switch uses existing runtime write confirmation and capability reconciliation. Disabling detection leaves the last CCU motion alarm intact until the CCU reports a new alarm state. No actual detectors were toggled during automated testing.
+
+Validation: `npm run check` passed formatting, lint, type-checks and all 301 tests, including 15 detection-control cases and the recorded Wired fixture. Production preprocessing/TypeScript build and `homey app validate --level publish` passed before installation on the previously approved Homey Christian. A read-only post-install check confirmed that the existing HmIP-SMI and HmIPW-SPI are available and expose `homematic_detection_active = true`. No real detection setting was changed; live command execution remains a hardware test. Homey Eltern remains pending because its remote upload failed in the preceding deployment.

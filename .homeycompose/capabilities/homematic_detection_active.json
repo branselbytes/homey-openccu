@@ -1,0 +1,9 @@
+{
+  "type": "boolean",
+  "title": { "en": "Detection active", "de": "Erkennung aktiv" },
+  "uiComponent": "button",
+  "getable": true,
+  "setable": true,
+  "insights": false,
+  "icon": "/assets/detection-active.svg"
+}

@@ -52,7 +52,7 @@ function runtimeFixture() {
     removeCapability: vi.fn(),
     setCapabilityValue: vi.fn().mockResolvedValue(undefined),
     triggerButtonEvent: vi.fn().mockResolvedValue(undefined),
-    onCapabilityWrite: vi.fn(),
+    onCapabilityWrite: vi.fn(() => vi.fn()),
     setAvailable: vi.fn(),
     setUnavailable: vi.fn(),
     log: vi.fn(),
@@ -110,16 +110,24 @@ describe("recorded DRAP, Wired presence and BRC2 profiles", () => {
     expect(port.onCapabilityWrite).not.toHaveBeenCalled();
     controller.stop();
   });
-  it("maps Wired presence and event illumination without a battery or reset control", async () => {
+  it("maps Wired presence, illumination and detection control without a battery or reset control", async () => {
     const d = device("HmIPW-SPI");
     const mapping = resolveDeviceMapping(d);
     expect(mapping.driverId).toBe("HmIPW-SPI");
     expect(mapping.bindings.map((b) => b.capability)).toEqual([
       "alarm_motion",
       "measure_luminance",
+      "homematic_detection_active",
     ]);
     expect(mapping.bindings[1].parameter).toBe("ILLUMINATION");
-    expect(mapping.bindings.every((b) => !b.writable)).toBe(true);
+    expect(mapping.bindings.filter((b) => b.writable)).toMatchObject([
+      {
+        capability: "homematic_detection_active",
+        parameter: "PRESENCE_DETECTION_ACTIVE",
+        writeChannelAddress: `${d.address}:1`,
+        writeParameter: "PRESENCE_DETECTION_ACTIVE",
+      },
+    ]);
     const { runtime, port } = runtimeFixture();
     runtime.publishConnectionState("healthy");
     const controller = new DeviceBindingController(
@@ -148,6 +156,16 @@ describe("recorded DRAP, Wired presence and BRC2 profiles", () => {
     expect(port.setCapabilityValue).toHaveBeenLastCalledWith(
       "measure_luminance",
       123,
+    );
+    await dispatcher.dispatch("event", [
+      "HmIP-RF",
+      `${d.address}:1`,
+      "PRESENCE_DETECTION_ACTIVE",
+      false,
+    ]);
+    expect(port.setCapabilityValue).toHaveBeenLastCalledWith(
+      "homematic_detection_active",
+      false,
     );
     controller.stop();
   });

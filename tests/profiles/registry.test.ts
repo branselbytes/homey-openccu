@@ -294,9 +294,9 @@ describe("ProfileRegistry", () => {
     const luminance = new ProfileRegistry()
       .resolve(
         sensor(type, [
-          [1, motionParameter, "BOOL"],
-          [1, "CURRENT_ILLUMINATION", "FLOAT"],
-          [1, "ILLUMINATION", "FLOAT"],
+          [type === "HmIP-SMI55" ? 3 : 1, motionParameter, "BOOL"],
+          [type === "HmIP-SMI55" ? 3 : 1, "CURRENT_ILLUMINATION", "FLOAT"],
+          [type === "HmIP-SMI55" ? 3 : 1, "ILLUMINATION", "FLOAT"],
         ]),
       )
       .find(({ capability }) => capability === "measure_luminance");
@@ -789,8 +789,8 @@ describe("ProfileRegistry", () => {
     expect(
       registry.resolve(
         sensor(type, [
-          [1, alarmParameter, "BOOL"],
-          [1, "ILLUMINATION", "FLOAT"],
+          [type === "HmIP-SMI55" ? 3 : 1, alarmParameter, "BOOL"],
+          [type === "HmIP-SMI55" ? 3 : 1, "ILLUMINATION", "FLOAT"],
           [0, "LOW_BAT", "BOOL"],
         ]),
       ),

@@ -2334,6 +2334,18 @@
     }
   },
   "capabilities": {
+    "homematic_detection_active": {
+      "type": "boolean",
+      "title": {
+        "en": "Detection active",
+        "de": "Erkennung aktiv"
+      },
+      "uiComponent": "button",
+      "getable": true,
+      "setable": true,
+      "insights": false,
+      "icon": "/assets/detection-active.svg"
+    },
     "homematic_measure_valve": {
       "type": "number",
       "title": {

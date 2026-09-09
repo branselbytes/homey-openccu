@@ -671,8 +671,22 @@ const HMIP_SCTH230_PROFILE: DeviceProfile = {
   ],
 };
 
+function detectionActiveBinding(
+  parameter: "MOTION_DETECTION_ACTIVE" | "PRESENCE_DETECTION_ACTIVE",
+  channel = 1,
+): DeviceProfile["bindings"][number] {
+  return {
+    capability: "homematic_detection_active",
+    channel,
+    parameter,
+    transform: "boolean",
+    requiresWriteTarget: true,
+  };
+}
+
 function motionSensorBindings(
   preferredLuminance: "CURRENT_ILLUMINATION" | "ILLUMINATION",
+  channel = 1,
 ): DeviceProfile["bindings"] {
   const fallbackLuminance =
     preferredLuminance === "ILLUMINATION"
@@ -681,17 +695,18 @@ function motionSensorBindings(
   return [
     {
       capability: "alarm_motion",
-      channel: 1,
+      channel,
       parameter: "MOTION",
       transform: "boolean",
     },
     {
       capability: "measure_luminance",
-      channel: 1,
+      channel,
       parameter: preferredLuminance,
       fallbackParameters: [fallbackLuminance],
     },
     SENSOR_MAINTENANCE_BINDING_WITH_FALLBACK,
+    detectionActiveBinding("MOTION_DETECTION_ACTIVE", channel),
   ];
 }
 
@@ -710,7 +725,7 @@ const HMIP_SMI55_PROFILE: DeviceProfile = {
   id: "hmip-smi55",
   driverId: "HmIP-SMI55",
   deviceTypes: ["HmIP-SMI55"],
-  bindings: MOTION_SENSOR_BINDINGS,
+  bindings: motionSensorBindings("CURRENT_ILLUMINATION", 3),
   buttonChannels: [1, 2],
 };
 
@@ -858,6 +873,7 @@ const HMIPW_SPI_PROFILE: DeviceProfile = {
       parameter: "ILLUMINATION",
       fallbackParameters: ["CURRENT_ILLUMINATION"],
     },
+    detectionActiveBinding("PRESENCE_DETECTION_ACTIVE"),
   ],
 };
 
@@ -873,8 +889,11 @@ const HMIP_SPI_PROFILE: DeviceProfile = {
       transform: "boolean",
     },
     ...MOTION_SENSOR_EVENT_ILLUMINANCE_BINDINGS.filter(
-      (binding) => binding.capability !== "alarm_motion",
+      (binding) =>
+        binding.capability !== "alarm_motion" &&
+        binding.capability !== "homematic_detection_active",
     ),
+    detectionActiveBinding("PRESENCE_DETECTION_ACTIVE"),
   ],
 };
 
