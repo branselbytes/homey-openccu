@@ -4,6 +4,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
+      :root {
+        color-scheme: light dark;
+        --widget-bg: var(--homey-background-color, #fff);
+        --widget-surface: var(--homey-color-mono-050, #f5f5f6);
+        --widget-text: var(--homey-text-color, #222);
+        --widget-muted: var(--homey-text-color-light, #6b6c70);
+        --widget-blue: var(--homey-color-blue, #0082fa);
+        --widget-green: var(--homey-color-green, #22a65a);
+        --widget-orange: var(--homey-color-orange, #ff9800);
+        --widget-red: var(--homey-color-red, #d94a47);
+      }
       *,
       *::before,
       *::after {
@@ -12,164 +23,239 @@
       html,
       body {
         margin: 0;
-        max-width: 100%;
-        overflow: hidden;
         width: 100%;
+        overflow: hidden;
+        background: var(--widget-bg);
+        color: var(--widget-text);
+      }
+      body.homey-widget {
+        padding: 12px;
+        font-family: var(
+          --homey-font-family,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif
+        );
+        font-size: 13px;
+        line-height: 18px;
       }
       .header,
       .central-header,
-      .state,
-      .interface-header,
-      .interface-values {
-        display: flex;
-        align-items: center;
-      }
-      .header,
-      .central-header,
-      .interface-header {
-        justify-content: space-between;
+      .metric,
+      .message,
+      .summary,
+      .interface {
+        background: var(--widget-surface);
+        border-radius: var(--homey-border-radius-small, 12px);
       }
       .header {
-        gap: var(--homey-su-2);
-        margin-bottom: var(--homey-su-2);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px;
+        margin-bottom: 8px;
+        min-height: 56px;
+      }
+      .heading {
+        flex: 1;
         min-width: 0;
       }
-      .header .homey-title {
-        flex: 1 1 auto;
+      .heading h2,
+      .central-title {
         margin: 0;
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        font-size: 13px;
+        line-height: 18px;
+        font-weight: 500;
+        overflow-wrap: anywhere;
+      }
+      .subtitle,
+      .updated,
+      .metric-label,
+      .interface-type,
+      .message-meta {
+        color: var(--widget-muted);
+        font-size: 11px;
+        line-height: 16px;
+      }
+      .icon {
+        display: block;
+        width: 20px;
+        height: 20px;
+        flex: 0 0 20px;
+        color: var(--widget-blue);
+      }
+      .header > .icon {
+        width: 26px;
+        height: 26px;
+        flex-basis: 26px;
+      }
+      .icon.orange {
+        color: var(--widget-orange);
+      }
+      .icon.green {
+        color: var(--widget-green);
       }
       .refresh {
         appearance: none;
         border: 0;
-        border-radius: 999px;
-        background: var(--homey-color-mono-200);
-        color: inherit;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--widget-blue);
         cursor: pointer;
-        flex: 0 0 auto;
-        font: inherit;
-        padding: var(--homey-su-1) var(--homey-su-2);
-        white-space: nowrap;
+        padding: 6px;
+        flex: 0 0 32px;
       }
       .refresh:disabled {
         cursor: wait;
-        opacity: 0.6;
+        opacity: 0.5;
       }
-      .centrals {
+      .refresh:focus-visible {
+        outline: 2px solid var(--widget-blue);
+        outline-offset: 1px;
+      }
+      .status-column {
+        margin-left: auto;
+        text-align: right;
         min-width: 0;
-      }
-      .central + .central {
-        border-top: 1px solid var(--homey-color-mono-200);
-        margin-top: var(--homey-su-3);
-        padding-top: var(--homey-su-3);
-      }
-      .central-title {
-        margin: 0;
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
       }
       .state {
-        flex: 0 0 auto;
-        gap: var(--homey-su-1);
-        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+        font-size: 12px;
+        line-height: 18px;
+        font-weight: 600;
       }
       .indicator {
-        background: #32b768;
+        background: var(--widget-green);
         border-radius: 50%;
-        flex: 0 0 10px;
-        height: 10px;
+        flex: 0 0 6px;
+        width: 6px;
+        height: 6px;
       }
       .indicator.warning {
-        background: #e7a329;
+        background: var(--widget-orange);
       }
-      .indicator.offline {
-        background: #e64b4b;
+      .indicator.offline,
+      .indicator.alert {
+        background: var(--widget-red);
       }
-      .metrics {
-        display: grid;
-        gap: var(--homey-su-1);
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        margin-top: var(--homey-su-2);
-      }
-      .metric {
-        background: var(--homey-color-mono-100);
-        border-radius: var(--homey-border-radius-default);
-        min-width: 0;
-        padding: var(--homey-su-1) var(--homey-su-2);
-      }
-      .metric-label,
-      .interface-type,
       .updated {
-        color: var(--homey-color-mono-600);
-        font-size: 0.8em;
-      }
-      .metric-label {
-        overflow: hidden;
-        text-overflow: ellipsis;
         white-space: nowrap;
-      }
-      .metric-value {
-        font-size: 1.15em;
-        font-weight: 600;
-        margin-top: 2px;
-      }
-      .interfaces {
-        margin-top: var(--homey-su-2);
-      }
-      .interfaces-title {
-        margin: 0 0 var(--homey-su-1);
-      }
-      .interface {
-        border-top: 1px solid var(--homey-color-mono-200);
-        padding: var(--homey-su-1) 0;
-      }
-      .interface-values {
-        flex: 0 0 auto;
-        gap: var(--homey-su-3);
-        justify-content: flex-end;
-        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
       }
       .empty,
       .error {
-        padding: var(--homey-su-5) 0;
+        padding: 16px 10px;
         text-align: center;
+        color: var(--widget-muted);
+        overflow-wrap: anywhere;
       }
-      .updated {
-        margin-top: var(--homey-su-1);
-        text-align: right;
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --widget-bg: var(--homey-background-color, #222225);
+          --widget-surface: var(--homey-color-mono-100, #303034);
+          --widget-text: var(--homey-text-color, #fafafa);
+          --widget-muted: var(--homey-text-color-light, #a7a7ad);
+        }
       }
-      @media (max-width: 320px) {
-        .header .homey-title {
-          font-size: 1em;
-        }
-        .refresh {
-          font-size: 0.8em;
-        }
-        .state {
-          font-size: 0.8em;
-        }
+      .homey-dark-mode {
+        color-scheme: dark;
+        --widget-bg: var(--homey-background-color, #222225);
+        --widget-surface: var(--homey-color-mono-100, #303034);
+        --widget-text: var(--homey-text-color, #fafafa);
+        --widget-muted: var(--homey-text-color-light, #a7a7ad);
+      }
+
+      .centrals,
+      .central {
+        min-width: 0;
+      }
+      .central + .central {
+        margin-top: 8px;
+      }
+      .central-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 10px;
+      }
+      .central-header .heading {
+        flex-basis: 40%;
+      }
+      .metrics {
+        display: grid;
+        gap: 6px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 6px;
+      }
+      .metric {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+        padding: 9px 10px;
+      }
+      .metric > div {
+        min-width: 0;
+      }
+      .metric-label {
+        overflow-wrap: anywhere;
+      }
+      .metric-value {
+        font-size: 17px;
+        line-height: 23px;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+      }
+      .interfaces {
+        margin-top: 8px;
+      }
+      .interfaces-title {
+        margin: 0 0 6px;
+        font-size: 11px;
+        line-height: 16px;
+        color: var(--widget-muted);
+        font-weight: 500;
+      }
+      .interface {
+        padding: 9px 10px;
+        margin-top: 6px;
+      }
+      .interface-header {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 4px 8px;
+        justify-content: space-between;
+      }
+      .interface-header > span {
+        overflow-wrap: anywhere;
+        min-width: 0;
+      }
+      .interface-values {
+        font-size: 12px;
+        font-variant-numeric: tabular-nums;
       }
     </style>
   </head>
   <body class="homey-widget">
-    <div class="header">
-      <h2 class="homey-title" data-i18n="title">System status</h2>
-      <button class="refresh" id="refresh" type="button" data-i18n="refresh">
-        Refresh
-      </button>
+    <div class="header" id="header">
+      <div class="heading">
+        <h2>OpenCCU</h2>
+        <div class="subtitle" data-i18n="title"></div>
+      </div>
+      <button class="refresh" id="refresh" type="button"></button>
     </div>
     <div class="centrals" id="centrals" aria-live="polite"></div>
-    <div class="updated" id="updated"></div>
 
     <script>
       const translations = {
         de: {
           title: "Systemstatus",
+          central: "Zentrale",
           refresh: "Aktualisieren",
           loading: "Systeminformationen werden geladen …",
           empty: "Keine OpenCCU konfiguriert",
@@ -190,6 +276,7 @@
         },
         en: {
           title: "System status",
+          central: "Central",
           refresh: "Refresh",
           loading: "Loading system information…",
           empty: "No OpenCCU configured",
@@ -217,13 +304,59 @@
         : "en";
       const t = translations[language];
 
+      // Original line icons; only the icons carry the Homey accent colours.
+      function icon(name, colour = "") {
+        const paths = {
+          hub: "M4 4h16v16H4z M7 8h10 M7 12h6 M8 16h.01 M12 16h.01 M16 16h.01",
+          refresh:
+            "M20 7v5h-5 M4 17v-5h5 M5.5 8a7 7 0 0 1 11.8-3L20 8 M4 16l2.7 3A7 7 0 0 0 18.5 16",
+          devices: "M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z",
+          messages: "M12 3 2 21h20L12 3z M12 9v5 M12 17h.01",
+          duty: "M4 18a9 9 0 1 1 16 0 M12 14l5-6 M6 14h.01 M12 6h.01 M18 14h.01",
+          radio:
+            "M12 14v7 M10 21h4 M8 7a6 6 0 0 0 0 8 M16 7a6 6 0 0 1 0 8 M5 4a10 10 0 0 0 0 14 M19 4a10 10 0 0 1 0 14 M12 10v2",
+          battery: "M8 3h8v2h2v16H6V5h2z M12 9v5 M12 17h.01",
+          check: "M4 12l5 5L20 6",
+        };
+        const svg = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "svg",
+        );
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("fill", "none");
+        svg.setAttribute("stroke", "currentColor");
+        svg.setAttribute("stroke-width", "1.7");
+        svg.setAttribute("stroke-linecap", "round");
+        svg.setAttribute("stroke-linejoin", "round");
+        svg.setAttribute("aria-hidden", "true");
+        svg.setAttribute("class", `icon ${colour}`.trim());
+        const path = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "path",
+        );
+        path.setAttribute("d", paths[name]);
+        svg.append(path);
+        return svg;
+      }
+
+      function shortDate(value) {
+        const date = new Date(value);
+        if (!value || Number.isNaN(date.getTime())) return "—";
+        return `${date.toLocaleDateString(language, { day: "2-digit", month: "2-digit" })} · ${date.toLocaleTimeString(language, { hour: "2-digit", minute: "2-digit" })}`;
+      }
+
       function translateStaticText() {
+        document.getElementById("header").prepend(icon("hub"));
+        const refreshButton = document.getElementById("refresh");
+        refreshButton.append(icon("refresh"));
+        refreshButton.title = t.refresh;
+        refreshButton.setAttribute("aria-label", t.refresh);
         document.querySelectorAll("[data-i18n]").forEach((element) => {
           element.textContent = t[element.dataset.i18n];
         });
       }
 
-      function metric(label, value, unit = "") {
+      function metric(label, value, unit = "", name = "devices", colour = "") {
         const card = document.createElement("div");
         card.className = "metric";
         const title = document.createElement("div");
@@ -232,7 +365,9 @@
         const reading = document.createElement("div");
         reading.className = "metric-value";
         reading.textContent = value === undefined ? "—" : `${value}${unit}`;
-        card.append(title, reading);
+        const content = document.createElement("div");
+        content.append(title, reading);
+        card.append(icon(name, colour), content);
         return card;
       }
 
@@ -244,31 +379,50 @@
         return "";
       }
 
-      function renderCentral(central) {
+      function renderCentral(central, refreshedAt) {
         const section = document.createElement("section");
         section.className = "central";
         const header = document.createElement("div");
         header.className = "central-header";
         const title = document.createElement("h3");
-        title.className = "central-title homey-text-small";
+        title.className = "central-title";
         title.textContent = central.centralId;
         const state = document.createElement("div");
-        state.className = "state homey-text-small";
+        state.className = "state";
         const indicator = document.createElement("span");
         indicator.className = `indicator ${stateClass(central)}`.trim();
         const stateText = document.createElement("span");
         stateText.textContent =
           t.states[central.connectionState] || central.connectionState;
         state.append(indicator, stateText);
-        header.append(title, state);
+        const heading = document.createElement("div");
+        heading.className = "heading";
+        const subtitle = document.createElement("div");
+        subtitle.className = "subtitle";
+        subtitle.textContent = t.central;
+        heading.append(title, subtitle);
+        const statusColumn = document.createElement("div");
+        statusColumn.className = "status-column";
+        const updated = document.createElement("div");
+        updated.className = "updated";
+        updated.textContent = shortDate(refreshedAt);
+        updated.title = `${t.updated}: ${new Date(refreshedAt).toLocaleString(language)}`;
+        statusColumn.append(state, updated);
+        header.append(heading, statusColumn);
 
         const metrics = document.createElement("div");
         metrics.className = "metrics";
         metrics.append(
           metric(t.devices, central.deviceCount),
-          metric(t.messages, central.serviceMessageCount),
-          metric(t.dutyCycle, central.dutyCycle, "%"),
-          metric(t.carrierSense, central.carrierSense, "%"),
+          metric(
+            t.messages,
+            central.serviceMessageCount,
+            "",
+            "messages",
+            "orange",
+          ),
+          metric(t.dutyCycle, central.dutyCycle, "%", "duty", "green"),
+          metric(t.carrierSense, central.carrierSense, "%", "radio", "orange"),
         );
         section.append(header, metrics);
 
@@ -276,7 +430,7 @@
           const interfaces = document.createElement("div");
           interfaces.className = "interfaces";
           const heading = document.createElement("h4");
-          heading.className = "interfaces-title homey-text-small";
+          heading.className = "interfaces-title";
           heading.textContent = t.interfaces;
           interfaces.append(heading);
           central.radioInterfaces.forEach((radio, index) => {
@@ -287,7 +441,7 @@
             const name = document.createElement("span");
             name.textContent = radio.name || `${t.interface} ${index + 1}`;
             const values = document.createElement("span");
-            values.className = "interface-values homey-text-small";
+            values.className = "interface-values";
             values.textContent = [
               radio.dutyCycle === undefined
                 ? undefined
@@ -323,18 +477,16 @@
           container.append(empty);
         } else {
           overview.centrals.forEach((central) =>
-            container.append(renderCentral(central)),
+            container.append(renderCentral(central, overview.refreshedAt)),
           );
         }
-        document.getElementById("updated").textContent =
-          `${t.updated}: ${new Date(overview.refreshedAt).toLocaleTimeString()}`;
         resizeWidget();
       }
 
       function resizeWidget() {
         requestAnimationFrame(() => {
           const contentBottom = document
-            .getElementById("updated")
+            .getElementById("centrals")
             .getBoundingClientRect().bottom;
           const paddingBottom =
             Number.parseFloat(getComputedStyle(document.body).paddingBottom) ||
@@ -366,6 +518,7 @@
       function onHomeyReady(Homey) {
         HomeyApi = Homey;
         translateStaticText();
+        window.addEventListener("resize", resizeWidget);
         document.getElementById("refresh").addEventListener("click", refresh);
         Homey.ready();
         resizeWidget();

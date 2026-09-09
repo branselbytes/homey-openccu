@@ -4,87 +4,262 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
+      :root {
+        color-scheme: light dark;
+        --widget-bg: var(--homey-background-color, #fff);
+        --widget-surface: var(--homey-color-mono-050, #f5f5f6);
+        --widget-text: var(--homey-text-color, #222);
+        --widget-muted: var(--homey-text-color-light, #6b6c70);
+        --widget-blue: var(--homey-color-blue, #0082fa);
+        --widget-green: var(--homey-color-green, #22a65a);
+        --widget-orange: var(--homey-color-orange, #ff9800);
+        --widget-red: var(--homey-color-red, #d94a47);
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html,
       body {
         margin: 0;
+        width: 100%;
+        overflow: hidden;
+        background: var(--widget-bg);
+        color: var(--widget-text);
+      }
+      body.homey-widget {
+        padding: 12px;
+        font-family: var(
+          --homey-font-family,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif
+        );
+        font-size: 13px;
+        line-height: 18px;
       }
       .header,
+      .central-header,
+      .metric,
+      .message,
       .summary,
-      .message-main,
-      .message-meta {
-        display: flex;
-        align-items: center;
+      .interface {
+        background: var(--widget-surface);
+        border-radius: var(--homey-border-radius-small, 12px);
       }
       .header {
-        justify-content: space-between;
-        gap: var(--homey-su-2);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px;
+        margin-bottom: 8px;
+        min-height: 56px;
+      }
+      .heading {
+        flex: 1;
+        min-width: 0;
+      }
+      .heading h2,
+      .central-title {
+        margin: 0;
+        font-size: 13px;
+        line-height: 18px;
+        font-weight: 500;
+        overflow-wrap: anywhere;
+      }
+      .subtitle,
+      .updated,
+      .metric-label,
+      .interface-type,
+      .message-meta {
+        color: var(--widget-muted);
+        font-size: 11px;
+        line-height: 16px;
+      }
+      .icon {
+        display: block;
+        width: 20px;
+        height: 20px;
+        flex: 0 0 20px;
+        color: var(--widget-blue);
+      }
+      .header > .icon {
+        width: 26px;
+        height: 26px;
+        flex-basis: 26px;
+      }
+      .icon.orange {
+        color: var(--widget-orange);
+      }
+      .icon.green {
+        color: var(--widget-green);
       }
       .refresh {
         appearance: none;
         border: 0;
-        border-radius: 999px;
-        background: var(--homey-color-mono-200);
-        color: inherit;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--widget-blue);
         cursor: pointer;
-        font: inherit;
-        padding: var(--homey-su-1) var(--homey-su-3);
+        padding: 6px;
+        flex: 0 0 32px;
       }
       .refresh:disabled {
         cursor: wait;
-        opacity: 0.6;
+        opacity: 0.5;
       }
-      .summary {
-        gap: var(--homey-su-2);
-        margin: var(--homey-su-3) 0;
+      .refresh:focus-visible {
+        outline: 2px solid var(--widget-blue);
+        outline-offset: 1px;
       }
-      .indicator {
-        background: #32b768;
-        border-radius: 50%;
-        flex: 0 0 10px;
-        height: 10px;
+      .status-column {
+        margin-left: auto;
+        text-align: right;
+        min-width: 0;
       }
-      .indicator.alert {
-        background: #e64b4b;
-      }
-      .messages {
-        max-height: 230px;
-        overflow-y: auto;
-      }
-      .central {
-        margin-top: var(--homey-su-3);
-      }
-      .central-title {
-        margin: 0 0 var(--homey-su-1);
-      }
-      .message {
-        border-top: 1px solid var(--homey-color-mono-200);
-        padding: var(--homey-su-2) 0;
-      }
-      .message-main {
-        justify-content: space-between;
-        gap: var(--homey-su-2);
-      }
-      .message-code {
+      .state {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+        font-size: 12px;
+        line-height: 18px;
         font-weight: 600;
       }
-      .message-meta {
-        color: var(--homey-color-mono-600);
-        font-size: 0.85em;
-        gap: var(--homey-su-2);
-        justify-content: space-between;
-        margin-top: var(--homey-su-1);
+      .indicator {
+        background: var(--widget-green);
+        border-radius: 50%;
+        flex: 0 0 6px;
+        width: 6px;
+        height: 6px;
       }
+      .indicator.warning {
+        background: var(--widget-orange);
+      }
+      .indicator.offline,
+      .indicator.alert {
+        background: var(--widget-red);
+      }
+      .updated {
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+      }
+      .empty,
       .error {
-        padding: var(--homey-su-5) 0;
+        padding: 16px 10px;
         text-align: center;
+        color: var(--widget-muted);
+        overflow-wrap: anywhere;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --widget-bg: var(--homey-background-color, #222225);
+          --widget-surface: var(--homey-color-mono-100, #303034);
+          --widget-text: var(--homey-text-color, #fafafa);
+          --widget-muted: var(--homey-text-color-light, #a7a7ad);
+        }
+      }
+      .homey-dark-mode {
+        color-scheme: dark;
+        --widget-bg: var(--homey-background-color, #222225);
+        --widget-surface: var(--homey-color-mono-100, #303034);
+        --widget-text: var(--homey-text-color, #fafafa);
+        --widget-muted: var(--homey-text-color-light, #a7a7ad);
+      }
+
+      body.homey-widget {
+        height: 320px;
+        display: flex;
+        flex-direction: column;
+      }
+      .header {
+        flex-shrink: 0;
+      }
+      .summary {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 10px;
+        margin-bottom: 6px;
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+      .messages {
+        min-height: 0;
+        overflow-y: auto;
+        scrollbar-width: thin;
+      }
+      .central + .central {
+        margin-top: 8px;
+      }
+      .central-title {
+        margin: 0 0 6px;
+        color: var(--widget-muted);
+        font-size: 11px;
+      }
+      .message {
+        display: flex;
+        gap: 8px;
+        padding: 9px 10px;
+      }
+      .message + .message {
+        margin-top: 6px;
+      }
+      .message > .icon {
+        margin-top: 2px;
+      }
+      .message-content {
+        flex: 1;
+        min-width: 0;
+      }
+      .message-main {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        overflow-wrap: anywhere;
+      }
+      .message-code {
+        font-weight: 500;
+        font-size: 13px;
+      }
+      .message-device {
+        color: var(--widget-muted);
+        font-size: 12px;
+      }
+      .message-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px 8px;
+        justify-content: space-between;
+        margin-top: 4px;
+        overflow-wrap: anywhere;
+      }
+      @media (max-width: 300px) {
+        .header {
+          flex-wrap: wrap;
+        }
+        .header .status-column {
+          flex-basis: 100%;
+          display: flex;
+          justify-content: space-between;
+          gap: 6px;
+        }
       }
     </style>
   </head>
   <body class="homey-widget">
-    <div class="header">
-      <h2 class="homey-title" data-i18n="title">Service messages</h2>
-      <button class="refresh" id="refresh" type="button" data-i18n="refresh">
-        Refresh
-      </button>
+    <div class="header" id="header">
+      <div class="heading">
+        <h2>OpenCCU</h2>
+        <div class="subtitle" data-i18n="title"></div>
+      </div>
+      <button class="refresh" id="refresh" type="button"></button>
+      <div class="status-column">
+        <div class="state" id="status" aria-live="polite"></div>
+        <div class="updated" id="updated">—</div>
+      </div>
     </div>
     <div class="summary" id="summary" aria-live="polite"></div>
     <div class="messages" id="messages"></div>
@@ -93,6 +268,11 @@
       const translations = {
         de: {
           title: "Servicemeldungen",
+          active: "Aktiv",
+          clear: "Alles OK",
+          unknown: "Unbekannt",
+          empty: "Keine OpenCCU konfiguriert",
+          updated: "Aktualisiert",
           refresh: "Aktualisieren",
           loading: "Servicemeldungen werden geladen …",
           none: "Keine aktiven Servicemeldungen",
@@ -114,6 +294,11 @@
         },
         en: {
           title: "Service messages",
+          active: "Active",
+          clear: "All clear",
+          unknown: "Unknown",
+          empty: "No OpenCCU configured",
+          updated: "Updated",
           refresh: "Refresh",
           loading: "Loading service messages…",
           none: "No active service messages",
@@ -142,7 +327,53 @@
         : "en";
       const t = translations[language];
 
+      // Original line icons; only the icons carry the Homey accent colours.
+      function icon(name, colour = "") {
+        const paths = {
+          hub: "M4 4h16v16H4z M7 8h10 M7 12h6 M8 16h.01 M12 16h.01 M16 16h.01",
+          refresh:
+            "M20 7v5h-5 M4 17v-5h5 M5.5 8a7 7 0 0 1 11.8-3L20 8 M4 16l2.7 3A7 7 0 0 0 18.5 16",
+          devices: "M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z",
+          messages: "M12 3 2 21h20L12 3z M12 9v5 M12 17h.01",
+          duty: "M4 18a9 9 0 1 1 16 0 M12 14l5-6 M6 14h.01 M12 6h.01 M18 14h.01",
+          radio:
+            "M12 14v7 M10 21h4 M8 7a6 6 0 0 0 0 8 M16 7a6 6 0 0 1 0 8 M5 4a10 10 0 0 0 0 14 M19 4a10 10 0 0 1 0 14 M12 10v2",
+          battery: "M8 3h8v2h2v16H6V5h2z M12 9v5 M12 17h.01",
+          check: "M4 12l5 5L20 6",
+        };
+        const svg = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "svg",
+        );
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("fill", "none");
+        svg.setAttribute("stroke", "currentColor");
+        svg.setAttribute("stroke-width", "1.7");
+        svg.setAttribute("stroke-linecap", "round");
+        svg.setAttribute("stroke-linejoin", "round");
+        svg.setAttribute("aria-hidden", "true");
+        svg.setAttribute("class", `icon ${colour}`.trim());
+        const path = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "path",
+        );
+        path.setAttribute("d", paths[name]);
+        svg.append(path);
+        return svg;
+      }
+
+      function shortDate(value) {
+        const date = new Date(value);
+        if (!value || Number.isNaN(date.getTime())) return "—";
+        return `${date.toLocaleDateString(language, { day: "2-digit", month: "2-digit" })} · ${date.toLocaleTimeString(language, { hour: "2-digit", minute: "2-digit" })}`;
+      }
+
       function translateStaticText() {
+        document.getElementById("header").prepend(icon("hub"));
+        const refreshButton = document.getElementById("refresh");
+        refreshButton.append(icon("refresh"));
+        refreshButton.title = t.refresh;
+        refreshButton.setAttribute("aria-label", t.refresh);
         document.querySelectorAll("[data-i18n]").forEach((element) => {
           element.textContent = t[element.dataset.i18n];
         });
@@ -155,12 +386,29 @@
         indicator.className = `indicator${count > 0 || hasUnavailable ? " alert" : ""}`;
         const text = document.createElement("span");
         text.textContent =
-          count === 0
-            ? t.none
-            : count === 1
-              ? t.one
-              : t.many.replace("{count}", count);
-        summary.append(indicator, text);
+          hasUnavailable && count === 0
+            ? t.unavailable
+            : count === 0
+              ? t.none
+              : count === 1
+                ? t.one
+                : t.many.replace("{count}", count);
+        summary.append(
+          icon(
+            count > 0 || hasUnavailable ? "messages" : "check",
+            count > 0 || hasUnavailable ? "orange" : "green",
+          ),
+          text,
+        );
+        const statusText = document.createElement("span");
+        statusText.textContent = hasUnavailable
+          ? t.unknown
+          : count > 0
+            ? t.active
+            : t.clear;
+        document
+          .getElementById("status")
+          .replaceChildren(indicator, statusText);
       }
 
       function labelFor(code) {
@@ -177,7 +425,12 @@
         const hasUnavailable = overview.centrals.some(
           (central) => central.unavailable,
         );
-        renderSummary(count, hasUnavailable);
+        renderSummary(count, hasUnavailable || overview.centrals.length === 0);
+        if (overview.centrals.length === 0)
+          document.getElementById("summary").textContent = t.empty;
+        const updated = document.getElementById("updated");
+        updated.textContent = shortDate(overview.refreshedAt);
+        updated.title = `${t.updated}: ${new Date(overview.refreshedAt).toLocaleString(language)}`;
 
         overview.centrals.forEach((central) => {
           if (central.messages.length === 0 && !central.unavailable) return;
@@ -185,28 +438,39 @@
           section.className = "central";
           if (overview.centrals.length > 1) {
             const title = document.createElement("h3");
-            title.className = "central-title homey-text-small";
+            title.className = "central-title";
             title.textContent = central.centralId;
             section.append(title);
           }
           if (central.unavailable) {
             const error = document.createElement("p");
-            error.className = "error homey-text-small";
+            error.className = "error";
             error.textContent = t.unavailable;
             section.append(error);
           }
           central.messages.forEach((message) => {
             const row = document.createElement("article");
             row.className = "message";
+            row.append(
+              icon(
+                ["LOWBAT", "LOW_BAT"].includes(message.code)
+                  ? "battery"
+                  : "messages",
+                "orange",
+              ),
+            );
+            const content = document.createElement("div");
+            content.className = "message-content";
             const main = document.createElement("div");
             main.className = "message-main";
             const code = document.createElement("span");
             code.className = "message-code";
             code.textContent = labelFor(message.code);
             const device = document.createElement("span");
+            device.className = "message-device";
             device.textContent = message.deviceName || t.unknownDevice;
             main.append(code, device);
-            row.append(main);
+            content.append(main);
             const timestamp = message.lastOccurredAt || message.occurredAt;
             if (timestamp || message.occurrenceCount > 1) {
               const meta = document.createElement("div");
@@ -219,8 +483,9 @@
                   ? `× ${message.occurrenceCount}`
                   : "";
               meta.append(time, counter);
-              row.append(meta);
+              content.append(meta);
             }
+            row.append(content);
             section.append(row);
           });
           container.append(section);
@@ -235,6 +500,8 @@
           renderOverview(await HomeyApi.api("GET", "/", {}));
         } catch {
           renderSummary(0, true);
+          document.getElementById("updated").textContent = "—";
+          document.getElementById("updated").removeAttribute("title");
           const container = document.getElementById("messages");
           container.replaceChildren();
           const error = document.createElement("p");
