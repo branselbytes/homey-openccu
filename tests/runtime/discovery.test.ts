@@ -114,6 +114,73 @@ describe("discoverHmIpDevices", () => {
     expect(cache.get).toHaveBeenCalled();
   });
 
+  it.each(["get", "set"] as const)(
+    "keeps XML-RPC descriptions when cache %s fails",
+    async (operation) => {
+      const { client, getParamsetDescription } = createClient();
+      getParamsetDescription.mockResolvedValue({
+        STATE: { TYPE: "BOOL", OPERATIONS: 7, FLAGS: 1 },
+      });
+      const cache = {
+        get: vi.fn().mockResolvedValue(undefined),
+        set: vi.fn().mockResolvedValue(undefined),
+        delete: vi.fn().mockResolvedValue(undefined),
+      };
+      cache[operation].mockRejectedValue(new Error("private storage details"));
+
+      const result = await discoverHmIpDevices(client, {
+        centralId: "ccu-1",
+        interfaceId: "HmIP-RF",
+        descriptionCache: cache,
+      });
+
+      expect(getParamsetDescription).toHaveBeenCalledTimes(2);
+      expect(result.paramsets.size).toBe(2);
+      expect(
+        result.devices
+          .get("301")
+          ?.channels.get("301:3")
+          ?.dataPoints.has("STATE"),
+      ).toBe(true);
+      expect(result.issues).toHaveLength(2);
+      expect(result.issues).toEqual(
+        expect.arrayContaining([
+          {
+            channelAddress: "301:3",
+            message:
+              operation === "get"
+                ? "Paramset description cache read failed"
+                : "Paramset description cache write failed",
+          },
+        ]),
+      );
+      expect(JSON.stringify(result.issues)).not.toContain(
+        "private storage details",
+      );
+    },
+  );
+
+  it("keeps transport failures distinguishable after cache read failures", async () => {
+    const { client, getParamsetDescription } = createClient();
+    const result = await discoverHmIpDevices(client, {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+      descriptionCache: {
+        get: vi.fn().mockRejectedValue(new Error("cache unavailable")),
+        set: vi.fn().mockResolvedValue(undefined),
+        delete: vi.fn().mockResolvedValue(undefined),
+      },
+    });
+
+    expect(getParamsetDescription).toHaveBeenCalledTimes(2);
+    expect(result.paramsets.has("301:0")).toBe(false);
+    expect(result.paramsets.has("301:3")).toBe(true);
+    expect(result.issues).toContainEqual({
+      channelAddress: "301:0",
+      message: "unavailable",
+    });
+  });
+
   it("loads and normalizes only requested profile configuration values", async () => {
     const getParamsetDescription = vi.fn(
       (address: string, paramsetKey = "VALUES") => {

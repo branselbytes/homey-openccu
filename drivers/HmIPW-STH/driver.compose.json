@@ -1,0 +1,21 @@
+{
+  "id": "HmIPW-STH",
+  "name": {
+    "en": "HmIPW-STH Wired climate sensors",
+    "de": "HmIPW-STH Wired-Klimasensoren"
+  },
+  "class": "thermostat",
+  "capabilities": [],
+  "images": {
+    "large": "/drivers/HmIPW-STH/assets/images/large.png",
+    "small": "/drivers/HmIPW-STH/assets/images/small.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": { "next": "add_devices" }
+    },
+    { "id": "add_devices", "template": "add_devices" }
+  ]
+}

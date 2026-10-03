@@ -1,8 +1,6 @@
 {
   "id": "HmIPW-DRAP",
-  "name": {
-    "en": "HmIPW-DRAP"
-  },
+  "name": { "en": "HmIPW-DRAP" },
   "class": "other",
   "capabilities": [
     "measure_temperature",
@@ -21,40 +19,26 @@
     "alarm_generic.data_bus_2"
   ],
   "images": {
-    "large": "/drivers/HMIP-PS/assets/images/large.png",
-    "small": "/drivers/HMIP-PS/assets/images/small.png"
+    "large": "/drivers/HmIPW-DRAP/assets/images/large.png",
+    "small": "/drivers/HmIPW-DRAP/assets/images/small.png"
   },
   "pair": [
     {
       "id": "list_devices",
       "template": "list_devices",
-      "navigation": {
-        "next": "add_devices"
-      }
+      "navigation": { "next": "add_devices" }
     },
-    {
-      "id": "add_devices",
-      "template": "add_devices"
-    }
+    { "id": "add_devices", "template": "add_devices" }
   ],
   "capabilitiesOptions": {
     "alarm_generic.unreachable": {
-      "title": {
-        "en": "Unreachable",
-        "de": "Nicht erreichbar"
-      }
+      "title": { "en": "Unreachable", "de": "Nicht erreichbar" }
     },
     "alarm_generic.overheat": {
-      "title": {
-        "en": "Overheating",
-        "de": "Überhitzung"
-      }
+      "title": { "en": "Overheating", "de": "Überhitzung" }
     },
     "alarm_generic.undervoltage": {
-      "title": {
-        "en": "Undervoltage",
-        "de": "Unterspannung"
-      }
+      "title": { "en": "Undervoltage", "de": "Unterspannung" }
     },
     "alarm_generic.bus_config": {
       "title": {
@@ -87,28 +71,16 @@
       }
     },
     "measure_voltage.bus_1": {
-      "title": {
-        "en": "Bus 1 voltage",
-        "de": "Spannung Bus 1"
-      }
+      "title": { "en": "Bus 1 voltage", "de": "Spannung Bus 1" }
     },
     "measure_current.bus_1": {
-      "title": {
-        "en": "Bus 1 current",
-        "de": "Strom Bus 1"
-      }
+      "title": { "en": "Bus 1 current", "de": "Strom Bus 1" }
     },
     "measure_voltage.bus_2": {
-      "title": {
-        "en": "Bus 2 voltage",
-        "de": "Spannung Bus 2"
-      }
+      "title": { "en": "Bus 2 voltage", "de": "Spannung Bus 2" }
     },
     "measure_current.bus_2": {
-      "title": {
-        "en": "Bus 2 current",
-        "de": "Strom Bus 2"
-      }
+      "title": { "en": "Bus 2 current", "de": "Strom Bus 2" }
     }
   }
 }

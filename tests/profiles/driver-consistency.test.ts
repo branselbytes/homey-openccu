@@ -6,41 +6,17 @@ import { HMIP_PROFILES } from "../../src/profiles/hmip";
 import { GENERIC_DRIVER_ID } from "../../src/mapping/device-resolver";
 
 const SYSTEM_DRIVER_ID = "openccu-system";
-const LEGACY_DRIVER_IDS = ["HmIP-SWDO-2", "HmIP-SWDO-I"] as const;
-const DEFAULT_ICON_DRIVER_IDS = [
-  "HmIPW-DRAP",
-  "HmIPW-SPI",
-  "HmIPW-DRS8",
-  "HmIPW-DRI16",
-  "HmIP-BBL",
-  "HmIP-BS2",
-  "HmIP-DLD",
-  "HmIP-DRDI3",
-  "HmIP-DRG-DALI",
-  "HmIP-DRSI4",
-  "HmIP-FS6",
-  "HmIP-FSI",
-  "HmIP-FSI16",
-  "HmIP-FSI6",
-  "HmIP-FSM16",
-  "HmIP-MOD-TM",
-  "HmIP-PCBS2",
-  "HmIP-PDT",
-  "HmIP-RGBW",
-  "HmIP-SCTH230",
+const LEGACY_DRIVER_IDS = [
+  "HMIP-PS",
   "HmIP-SWDO-2",
-  "HmIP-SWO-B",
-  "HmIP-SWO-PL",
-  "HmIP-USBSM",
-  "HmIP-WGC",
-  "HmIP-WHS2",
-  "HmIP-WSM",
+  "HmIP-SWDO-I",
+  "HMIP-eTRV",
+  "HmIP-eTRV-B",
   "HmIP-eTRV-B-2",
+  "HmIP-eTRV-C",
   "HmIP-eTRV-E",
-  "openccu-generic",
-  "openccu-heating-group",
-  "openccu-system",
 ] as const;
+const DEFAULT_ICON_DRIVER_IDS = ["openccu-generic"] as const;
 
 describe("dedicated profile drivers", () => {
   it("reference existing Homey driver directories", async () => {
@@ -70,7 +46,7 @@ describe("dedicated profile drivers", () => {
     expect(actual).toEqual(expected);
   });
 
-  it("hides legacy SWDO drivers from pairing while retaining their device adapters", async () => {
+  it("hides legacy family drivers from pairing while retaining their device adapters", async () => {
     for (const driverId of LEGACY_DRIVER_IDS) {
       const manifest = JSON.parse(
         await readFile(
@@ -86,13 +62,15 @@ describe("dedicated profile drivers", () => {
         access(resolve("drivers", driverId, "driver.ts")),
       ).resolves.toBeUndefined();
     }
-    const manifest = JSON.parse(
-      await readFile(
-        resolve("drivers", "HMIP-SWDO", "driver.compose.json"),
-        "utf8",
-      ),
-    ) as { deprecated?: boolean };
-    expect(manifest.deprecated).not.toBe(true);
+    for (const driverId of ["HMIP-PSM", "HMIP-SWDO", "HmIP-eTRV-2"]) {
+      const manifest = JSON.parse(
+        await readFile(
+          resolve("drivers", driverId, "driver.compose.json"),
+          "utf8",
+        ),
+      ) as { deprecated?: boolean };
+      expect(manifest.deprecated, driverId).not.toBe(true);
+    }
   });
 
   it("ships a local SVG icon for every active driver", async () => {
@@ -107,7 +85,7 @@ describe("dedicated profile drivers", () => {
     }
   });
 
-  it("uses the shared default exactly for drivers without imported artwork", async () => {
+  it("reserves the neutral default icon for unknown generic devices", async () => {
     const defaultIcon = await readFile(
       resolve("assets", "default-device.svg"),
       "utf8",
@@ -129,6 +107,31 @@ describe("dedicated profile drivers", () => {
       .sort();
 
     expect(defaultDrivers).toEqual([...DEFAULT_ICON_DRIVER_IDS].sort());
+  });
+
+  it("uses each driver's own product images with valid Homey sizes", async () => {
+    for (const driverId of await readdir(resolve("drivers"))) {
+      const manifest = JSON.parse(
+        await readFile(
+          resolve("drivers", driverId, "driver.compose.json"),
+          "utf8",
+        ),
+      ) as { images: { small: string; large: string } };
+      for (const [size, pixels] of [
+        ["small", 75],
+        ["large", 500],
+      ] as const) {
+        const path = `/drivers/${driverId}/assets/images/${size}.png`;
+        expect(manifest.images[size], `${driverId} ${size}`).toBe(path);
+        const png = await readFile(resolve(`.${path}`));
+        expect(png.subarray(0, 8).toString("hex")).toBe("89504e470d0a1a0a");
+        expect(png.subarray(12, 16).toString("ascii")).toBe("IHDR");
+        expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([
+          pixels,
+          pixels,
+        ]);
+      }
+    }
   });
 
   it("routes selected devices to the add-devices pairing step", async () => {

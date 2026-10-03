@@ -206,11 +206,11 @@ describe("ProfileRegistry", () => {
   });
 
   it.each([
-    ["HmIP-eTRV-B-2", "HmIP-eTRV-B-2"],
-    ["HmIP-eTRV-B-2 R4M", "HmIP-eTRV-B-2"],
+    ["HmIP-eTRV-B-2", "HmIP-eTRV-2"],
+    ["HmIP-eTRV-B-2 R4M", "HmIP-eTRV-2"],
     ["HmIP-eTRV-2 I9F", "HmIP-eTRV-2"],
-    ["HmIP-eTRV-E-A", "HmIP-eTRV-E"],
-  ])("routes %s to radiator product driver %s", (type, driverId) => {
+    ["HmIP-eTRV-E-A", "HmIP-eTRV-2"],
+  ])("routes %s to shared radiator driver %s", (type, driverId) => {
     const registry = new ProfileRegistry();
     const profile = registry.find(type);
     expect(profile?.driverId).toBe(driverId);

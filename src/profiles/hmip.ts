@@ -10,7 +10,7 @@ function switchBindings(channel: number): DeviceProfile["bindings"] {
 
 export const HMIP_SWITCH_PROFILE: DeviceProfile = {
   id: "hmip-switch",
-  driverId: "HMIP-PS",
+  driverId: "HMIP-PSM",
   deviceTypes: ["HMIP-PS", "HmIP-PS"],
   bindings: SWITCH_BINDINGS,
 };
@@ -433,6 +433,31 @@ export const HMIP_POWER_METER_PROFILE: DeviceProfile = {
       transform: "watt-hour-to-kilowatt-hour",
     },
   ],
+};
+
+const HMIP_POWER_METER_2_PROFILE: DeviceProfile = {
+  id: "hmip-power-meter-switch-2",
+  driverId: "HMIP-PSM",
+  deviceTypes: ["HmIP-PSM-2", "HmIP-PSM-2-A"],
+  bindings: [
+    {
+      capability: "onoff",
+      channel: 2,
+      setChannel: 3,
+      parameter: "STATE",
+      transform: "boolean",
+      requiresWriteTarget: true,
+    },
+    ...HMIP_POWER_METER_PROFILE.bindings.filter(
+      (binding) => binding.capability !== "onoff",
+    ),
+    {
+      capability: "measure_temperature",
+      channel: 0,
+      parameter: "ACTUAL_TEMPERATURE",
+    },
+  ],
+  buttonChannels: [1],
 };
 
 const SENSOR_MAINTENANCE_BINDING = {
@@ -999,6 +1024,18 @@ export const HMIP_CLIMATE_PROFILE: DeviceProfile = {
   bindings: CLIMATE_BINDINGS,
 };
 
+const HMIPW_STH_PROFILE: DeviceProfile = {
+  id: "hmipw-sth",
+  driverId: "HmIPW-STH",
+  deviceTypes: ["HmIPW-STH", "HmIPW-STH-A"],
+  // Wired modes 0–3 and profiles 1–6 exceed the existing Homey enums.
+  bindings: CLIMATE_BINDINGS.filter(
+    ({ capability }) =>
+      capability !== "homematic_thermostat_mode" &&
+      capability !== "homematic_thermostat_weekprofile",
+  ),
+};
+
 export const OPENCCU_HEATING_GROUP_PROFILE: DeviceProfile = {
   id: "openccu-heating-group",
   driverId: "openccu-heating-group",
@@ -1058,42 +1095,16 @@ const THERMOSTAT_BINDINGS: DeviceProfile["bindings"] = [
 export const HMIP_THERMOSTAT_PROFILE: DeviceProfile = {
   id: "hmip-radiator-thermostat",
   driverId: "HmIP-eTRV-2",
-  deviceTypes: ["HmIP-eTRV-2"],
-  bindings: THERMOSTAT_BINDINGS,
-};
-
-const HMIP_ETRV_PROFILE: DeviceProfile = {
-  id: "hmip-etrv",
-  driverId: "HMIP-eTRV",
-  deviceTypes: ["HMIP-eTRV", "HmIP-eTRV"],
-  bindings: THERMOSTAT_BINDINGS,
-};
-
-const HMIP_ETRV_B_PROFILE: DeviceProfile = {
-  id: "hmip-etrv-b",
-  driverId: "HmIP-eTRV-B",
-  deviceTypes: ["HmIP-eTRV-B"],
-  bindings: THERMOSTAT_BINDINGS,
-};
-
-const HMIP_ETRV_B_2_PROFILE: DeviceProfile = {
-  id: "hmip-etrv-b-2",
-  driverId: "HmIP-eTRV-B-2",
-  deviceTypes: ["HmIP-eTRV-B-2"],
-  bindings: THERMOSTAT_BINDINGS,
-};
-
-const HMIP_ETRV_C_PROFILE: DeviceProfile = {
-  id: "hmip-etrv-c",
-  driverId: "HmIP-eTRV-C",
-  deviceTypes: ["HmIP-eTRV-C"],
-  bindings: THERMOSTAT_BINDINGS,
-};
-
-const HMIP_ETRV_E_PROFILE: DeviceProfile = {
-  id: "hmip-etrv-e",
-  driverId: "HmIP-eTRV-E",
-  deviceTypes: ["HmIP-eTRV-E", "HmIP-eTRV-E-A"],
+  deviceTypes: [
+    "HMIP-eTRV",
+    "HmIP-eTRV",
+    "HmIP-eTRV-2",
+    "HmIP-eTRV-B",
+    "HmIP-eTRV-B-2",
+    "HmIP-eTRV-C",
+    "HmIP-eTRV-E",
+    "HmIP-eTRV-E-A",
+  ],
   bindings: THERMOSTAT_BINDINGS,
 };
 
@@ -1224,6 +1235,7 @@ export const HMIP_PROFILES = [
   HMIP_FSM_PROFILE,
   HMIP_FSM16_PROFILE,
   HMIP_POWER_METER_PROFILE,
+  HMIP_POWER_METER_2_PROFILE,
   HMIP_CONTACT_PROFILE,
   HMIP_SWDM_PROFILE,
   HMIP_SCI_PROFILE,
@@ -1252,16 +1264,12 @@ export const HMIP_PROFILES = [
   HMIP_ASIR_PROFILE,
   OPENCCU_HEATING_GROUP_PROFILE,
   HMIP_CLIMATE_PROFILE,
+  HMIPW_STH_PROFILE,
   HMIP_WTH_PROFILE,
   HMIP_BWTH_PROFILE,
   HMIP_STHD_PROFILE,
   HMIP_STHO_PROFILE,
   HMIP_THERMOSTAT_PROFILE,
-  HMIP_ETRV_PROFILE,
-  HMIP_ETRV_B_PROFILE,
-  HMIP_ETRV_B_2_PROFILE,
-  HMIP_ETRV_C_PROFILE,
-  HMIP_ETRV_E_PROFILE,
   HMIP_COVER_PROFILE,
   HMIP_FROLL_PROFILE,
   HMIP_FBL_PROFILE,

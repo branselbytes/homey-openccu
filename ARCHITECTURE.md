@@ -119,7 +119,7 @@ Profiles are declarative TypeScript data where possible and small typed adapters
 
 Homey-specific classes consume the domain model rather than performing RPC directly. Pairing first selects/configures an OpenCCU, then lists logical devices derived from discovered channels. A stable Homey device identifier should combine central identity, interface, device address, and logical subdevice/profile identity.
 
-Homey Compose remains the source of manifests. Explicitly supported products use dedicated Homey drivers, backed by shared profiles and mapping services rather than copied logic. Variants with identical exposed behavior may share a family driver; previously shipped driver IDs remain as deprecated adapters for paired devices (ADR 0018). A separate generic fallback driver handles safe capabilities and diagnostics for unknown products. Manifest generation and consistency tests prevent the dedicated-driver catalog from drifting.
+Homey Compose remains the source of manifests. Explicitly supported products use dedicated Homey drivers, backed by shared profiles and mapping services rather than copied logic. Variants with identical exposed behavior may share a family driver; previously shipped driver IDs remain as deprecated adapters for paired devices (ADRs 0018 and 0019). A separate generic fallback driver handles safe capabilities and diagnostics for unknown products. Manifest generation and consistency tests prevent the dedicated-driver catalog from drifting.
 
 Multi-channel actuators remain one product driver but resolve into one pairable logical Homey device per output. Their stable identity appends a profile-owned logical ID to the central/interface/device address; existing single-device identities remain unchanged. Each logical device stores and re-resolves only its own bindings. OpenCCU channel names take precedence for output names when available, with a deterministic product/output fallback.
 
@@ -206,11 +206,28 @@ Metadata methods run sequentially and each raw response is normalized before the
 
 The protected settings Web API exposes a downloadable support report assembled from aggregate runtime diagnostics. Centrals receive report-local aliases; credentials, network addresses, central IDs, OpenCCU object names, and datapoint values are excluded. A recursive redaction pass remains the final boundary in case diagnostic structures acquire sensitive fields later.
 
+### Catalog and discovery maintenance (unreleased)
+
+The eTRV family follows the SWDO migration model: one new-pairing destination, retained deprecated driver adapters, unchanged capabilities and stable identities. PSM-2 variants share the PSM pairing entry but use their own profile so physical feedback on channel 2 and commands on channel 3 do not change legacy PSM behavior. Wired STH variants reuse the climate temperature, humidity, setpoint and boost bindings in a dedicated Wired driver; their richer mode/week-profile ranges are deferred until complete Homey mappings exist. Promoted generic devices retain existing bindings and are filtered out of the new driver pairing list.
+
+Profile collision checks normalize model names exactly as lookup does; revision/whitespace aliases may belong to one profile but cannot ambiguously select two profiles. New/delete/update callbacks serialize inventory refreshes once registration is complete. Registration callbacks, including reconnects with an existing inventory, do not recursively issue discovery RPCs. Refreshes use the lifecycle abort signal and do not publish results after cancellation. Changes received during registration/discovery are collected and replayed after the connection becomes healthy. Description-cache failures are separately reported while a healthy XML-RPC description remains usable; invalidation errors disable the persistent cache for that runtime instance to prevent stale reads. A failed deferred discovery is diagnosed and retried on the next device callback or explicit refresh.
+
+### Socket families and device artwork (unreleased)
+
+PS, PSM and PSM-2 share the existing HMIP-PSM pairing entry while retaining separate profiles and datapoint targets. The deprecated HMIP-PS driver stays packaged for existing devices. Dimmers, USB switches, boards, flush-mounted and DIN-rail actuators retain their own entries because their functions and form factors differ.
+
+Every driver owns its PNG image pair. Matching original assets are restored from the imported MIT history; missing artwork is supplied by original schematic SVG drawings and generated PNGs. Family pairing selects a model-specific SVG using a fixed normalized-model allowlist and driver-local paths. Artwork never determines device identity or capabilities. It is included locally, without runtime image downloads or new Homey permissions. The documented SDK supports selecting icons when pairing, but has no device icon setter: existing stored icon overrides are not rewritten.
+
+App-level branding is separate from driver artwork: a native transparent branselbytes circuit SVG and three locally packaged navy/copper scene sizes. Source imagery and production prompts stay in excluded documentation; no runtime image generation or network dependency is introduced (ADR 0021).
+
 ## Recorded decisions
 
 - `docs/adr/0001-initial-product-scope.md`: HmIP-RF first; programs and system variables in the first usable release.
 - `docs/adr/0002-homey-driver-strategy.md`: dedicated product drivers plus a generic fallback.
 - `docs/adr/0018-swdo-family-driver.md`: one SWDO pairing entry with retained legacy drivers and stable existing device identities.
+- `docs/adr/0020-socket-family-and-device-artwork.md`: shared PS/PSM pairing, restored product images and model-specific icons.
+- `docs/adr/0021-app-branding.md`: independent app icon and store imagery with retained source provenance.
+- `docs/adr/0019-catalog-maintenance.md`: eTRV family consolidation, recorded PSM/Wired climate additions and safe inventory refresh.
 - `docs/adr/0003-typed-core-boundaries.md`: Homey-independent typed protocol, domain, cache, event, and diagnostic boundaries.
 - `docs/adr/0004-bounded-rpc-and-confirmed-writes.md`: prioritized XML-RPC admission, persistent descriptions, repaired bindings, and verified commands.
 - `docs/adr/0005-profile-driven-device-events.md`: discovery-checked stateless event bindings and shared Homey device triggers.

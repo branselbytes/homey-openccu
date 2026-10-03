@@ -1,18 +1,25 @@
 {
   "id": "HmIP-ASIR",
-  "name": { "en": "HmIP-ASIR" },
+  "name": {
+    "en": "HmIP-ASIR"
+  },
   "class": "siren",
   "capabilities": [],
   "images": {
-    "large": "/drivers/HMIP-SWDO/assets/images/large.png",
-    "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+    "large": "/drivers/HmIP-ASIR/assets/images/large.png",
+    "small": "/drivers/HmIP-ASIR/assets/images/small.png"
   },
   "pair": [
     {
       "id": "list_devices",
       "template": "list_devices",
-      "navigation": { "next": "add_devices" }
+      "navigation": {
+        "next": "add_devices"
+      }
     },
-    { "id": "add_devices", "template": "add_devices" }
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
   ]
 }

@@ -1,13 +1,11 @@
 {
   "id": "openccu-generic",
-  "name": {
-    "en": "Generic OpenCCU device"
-  },
+  "name": { "en": "Generic OpenCCU device" },
   "class": "other",
   "capabilities": [],
   "images": {
-    "large": "/drivers/HMIP-PS/assets/images/large.png",
-    "small": "/drivers/HMIP-PS/assets/images/small.png"
+    "large": "/drivers/openccu-generic/assets/images/large.png",
+    "small": "/drivers/openccu-generic/assets/images/small.png"
   },
   "pair": [
     {
@@ -15,9 +13,6 @@
       "template": "list_devices",
       "navigation": { "next": "add_devices" }
     },
-    {
-      "id": "add_devices",
-      "template": "add_devices"
-    }
+    { "id": "add_devices", "template": "add_devices" }
   ]
 }

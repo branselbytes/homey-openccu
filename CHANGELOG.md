@@ -2,6 +2,33 @@
 
 All notable changes to OpenCCU for Homey will be documented in this file. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are not considered released until explicitly tagged and published by the project owner.
 
+## [Unreleased]
+
+## [0.1.3] — prepared 2026-10-03
+
+### Added
+
+- Model-specific pairing icons for shared plug, SWDO and eTRV families.
+- Original schematic artwork for devices without imported product drawings.
+- PayPal donation metadata for the App Store, using the owner-provided PayPal.Me username.
+- HmIP-PSM-2 and HmIP-PSM-2-A in the existing PSM family, with physical switch feedback, correctly targeted commands, metering, temperature and button events.
+- HmIPW-STH and HmIPW-STH-A climate sensors, with temperature, humidity, setpoint and discovery-checked boost.
+- Redacted recorded CCU device descriptions for PSM-2, Wired STH-A, three eTRV variants and three SWDO variants.
+
+### Changed
+
+- Adopt the owner-selected branselbytes circuit monogram and dark navy/copper smart-home scene as the app icon and App Store images, including a 1000 × 700 export.
+- Combine PS and PSM switch/meter plugs into one pairing entry while retaining the legacy PS driver and unchanged per-model bindings.
+- Combine the supported eTRV radiator thermostats into one pairing entry while retaining all previously shipped drivers and existing device identities.
+- Remove obsolete JavaScript/legacy-directory build settings and exclude generated coverage from Homey packages.
+
+### Fixed
+
+- Replace unrelated socket/contact placeholder images with each driver’s own product artwork, restoring 39 image pairs from the imported project history.
+- Refresh discovered devices after new/delete callbacks, serialize inventory updates and avoid nested discovery during initial registration or reconnect.
+- Continue discovery through XML-RPC when optional description-cache reads, writes or invalidation fail.
+- Detect profile type collisions using the same normalized model names as lookup.
+
 ## [0.1.2] — prepared 2026-10-03
 
 ### Added

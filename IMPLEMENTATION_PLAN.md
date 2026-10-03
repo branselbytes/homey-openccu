@@ -1,8 +1,8 @@
 # Implementation plan
 
-This plan deliberately separates repository modernization from behavior changes. No implementation phase starts without project-owner approval after this analysis phase.
+This plan records delivered work and remaining verification. Repository modernization and behavioral changes are reviewed separately; the current owner-authorized maintenance batch is summarized below. Deployment records refer to the version actually installed, not to subsequent local work.
 
-## Phase 0 — Baseline and decisions (current)
+## Phase 0 — Baseline and decisions
 
 - [x] Import `homey-matic` with Git history and retain its MIT license.
 - [x] Configure local `upstream` and `origin` remotes; do not push.
@@ -40,7 +40,7 @@ The inherited Axios, BIN-RPC, MQTT, CCU-Jack, and discovery paths have been remo
 - [x] Add HmIP-RF endpoint detection for manually configured hosts.
 - [x] Add explicit UDP convenience discovery in settings before pairing while retaining manual-host fallback (ADR 0015).
 - [x] Use fake transports and redacted representative descriptions for unit/contract tests.
-- [ ] Add recorded responses from a real OpenCCU after a test system is available.
+- [x] Add recorded responses from a real OpenCCU: Wired devices/infrastructure plus the 2026-10-03 PSM-2, Wired STH-A, eTRV and SWDO catalog recordings.
 
 The eQ-3 UDP request and response layout are verified read-only against the project OpenCCU. The stored test structure uses a synthetic serial and redacted trailing fields. Broadcast discovery is intentionally same-subnet only; the current routed Homey/OpenCCU topology continues to use manual host configuration.
 
@@ -246,3 +246,52 @@ Validation: `npm run check` passed formatting, lint, type-checks and all 301 tes
 - [ ] Verify physical SWDO-A pairing, opening/closing and battery state on Homey.
 
 The user reports stable operation without observed disconnects on the currently installed app. The owner subsequently authorized installation on Homey Christian, committing/pushing to origin/main and a Homey CLI Developer upload. Validation with Node.js 22.23.3: `npm run check` passed formatting, ESLint, strict type checks and all 317 tests in 51 files, including the synthetic SWDO integration fixture. `npm run build`, `node_modules/.bin/homey app build` and `node_modules/.bin/homey app validate --level publish` passed. Post-install verification on Homey Christian (Homey 13.5.0) confirms app 0.1.2 running/enabled/not crashed, all 13 existing devices available with preserved identities and capabilities, and a healthy CCU runtime discovering 35 devices with zero issues. The new SWDO-A is mapped to HMIP-SWDO with alarm_contact and alarm_battery. Physical SWDO-A pairing and events remain the hardware gate. Homey CLI upload succeeded as [Draft Build 3](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/3), with zero environment keys and no Test/Live activation.
+
+## Project maintenance audit (2026-10-03, unreleased)
+
+- [x] Inventory tracked assets and obsolete build settings. All 98 pre-existing PNG/SVG assets (about 1.67 MB) remain referenced or required by Homey conventions; keep legacy adapters, recorded fixtures, license notices and history.
+- [x] Remove absent legacy-directory/JavaScript build paths and unnecessary production Vitest globals; exclude generated coverage from app packages.
+- [x] Consolidate the eTRV family behind the existing HmIP-eTRV-2 pairing entry, retaining old drivers and binding identities (ADR 0019).
+- [x] Add the observed HmIP-PSM-2 and HmIPW-STH-A using redacted recorded descriptions, plus their manufacturer-documented color variants. Reuse existing shared bindings and preserve previously exposed generic capabilities.
+- [x] Fix new/delete inventory callbacks, initial/reconnect registration handling, optional description-cache failures and normalized profile collision checks.
+- [x] Record real descriptions for three SWDO and three eTRV variants; retain explicit separation between recorded metadata and simulated values/commands.
+- [ ] Add complete Wired STH mode (0–3) and week-profile (1–6) mappings before exposing these controls. Existing radiator enums stay unchanged.
+- [ ] Verify physical PSM-2 switching and Wired STH commands on hardware after installing the maintenance batch.
+- [ ] Verify an actual CCU add/remove event and the eTRV family upgrade after installation.
+- [ ] In a separate formatting-only change, include src in the formatter scripts and normalize the remaining existing source formatting. Avoid mixing that broad mechanical change into device support.
+
+Further functional backlog remains: the second STE2-PCB probe, metadata-normalized color temperature, enhanced cover/garage/lock actions and the already listed physical button/presence/reconnect checks. Similar names alone do not justify combining profiles: SWO pro has an additional compass mapping, FCI1 includes button events, and actuators can have different feedback/command channels. HAP, RFUSB and RCV-50 currently expose no mapped application capability and remain generic infrastructure entries rather than receiving empty dedicated drivers.
+
+The installed 0.1.2 baseline was inspected read-only and remains running. No new deployment, remote push, device creation or physical control command was performed for this maintenance batch. Read-only integration resolved eight recorded model types and successfully read 25 mapped values across six reachable types. The sampled HmIP-PSM-2 and HMIP-SWDO reported UNREACH, so their current values could not be checked. Physical commands and callbacks remain unverified for this batch. Validation with Node.js 22.23.3: `npm run check` passed formatting, ESLint, production/test type checks and all 370 tests in 55 files. The four changed source files also passed an explicit Prettier check. `npm run build`, `node_modules/.bin/homey app build`, and `node_modules/.bin/homey app validate --level publish` passed. `npm audit --omit=dev --json` reported zero production vulnerabilities. The Homey package excludes tests, recorded fixtures, documentation, coverage and test configuration; license notices remain included.
+
+PayPal metadata follow-up: added the owner-provided PayPal.Me username `branselbytes` to `contributing.donate.paypal` in the compose manifest and regenerated app.json. Homey publish-level validation (including TypeScript compilation), manifest consistency and formatting checks passed. This metadata-only change does not affect runtime behavior; unit/lint and live CCU tests were not repeated. The donation entry is prepared locally for the next publication.
+
+## Socket family and artwork follow-up (unreleased)
+
+- [x] Combine PS and PSM new pairing while keeping PS/PSM/PSM-2 channel mappings, legacy PS devices and existing identities unchanged.
+- [x] Identify incorrect image sharing: 78 drivers reused six product PNG pairs. Restore 39 exact-model pairs from the imported MIT history.
+- [x] Accept owner-approved original schematic drawings for known devices without imported artwork (ADR 0020).
+- [x] Complete local artwork, family-icon and quality-gate verification.
+- [ ] Verify the Homey catalog, new family pairing icons and existing-device rendering after an authorized update.
+
+The donation entry and preceding maintenance work remain included. No installation, remote push or publication is part of this follow-up. No physical commands are required for the artwork change.
+
+Verification: `npm run check` passed formatting, lint, strict type checks and 409 tests in 58 files, including socket binding/event/command regression tests, recorded PSM-2 metadata, pairing icon selection and per-driver PNG path/dimension checks. `npm run build`, `node_modules/.bin/homey app build` and `node_modules/.bin/homey app validate --level publish` passed. Changed TypeScript sources passed an explicit Prettier check. The artwork generator passed `node --check` and standalone ESLint (`--no-config-lookup`, no-undef/no-unused-vars with Node Buffer/URL globals); regeneration was checked for reproducibility. Original artwork was compared with the imported ancestor, and overview images plus final family drawings were inspected visually.
+
+Final artwork inventory: 45 imported product image pairs, 32 original schematic pairs, one neutral generic pair and 13 model SVGs for family pairing. Homey's package file selection includes all 156 driver PNGs, all 13 family SVGs and the MIT license, and excludes the generator, tests, docs, coverage and env.json. Actual Homey rendering and cached/stored icon behavior remain the post-update check; no new live hardware test was performed in this follow-up.
+
+## App branding (2026-10-03, unreleased)
+
+- [x] Adopt the owner-selected second concept with a branselbytes bb circuit icon and navy/copper smart-home scene (ADR 0021).
+- [x] Prepare native SVG artwork and three App Store image sizes; retain source imagery and prompts outside the app package.
+- [x] Complete local visual review, quality checks and Homey publish-level validation.
+
+This is an app-presentation change. Installation, remote push and publication have not been performed for this branding update.
+
+Validation: the transparent SVG was reviewed at 24/32/64 px; the smallest 250 × 175 scene remains recognizable. All three PNGs decode with the required dimensions and are fully opaque. `npm run check` passed formatting, ESLint, both TypeScript checks and 409 tests in 58 files, including the recorded CCU fixtures. `homey app build` and `homey app validate --level publish` passed; the generated manifest was then normalized with Prettier. The four packaged branding assets match their build copies, and design sources/prompts are excluded from the Homey package. No new hardware integration test was run for this presentation-only change.
+
+## Version 0.1.3 preparation (2026-10-03)
+
+The owner authorized the next update and its GitHub/Homey Developer upload. Compose/generated manifests, package/lockfile versions and German/English Homey changelogs are aligned at 0.1.3. This version collects the maintenance, socket/artwork, donation and selected app-branding changes above; the changelog distinguishes the prepared version from publication.
+
+The release check passed formatting, ESLint, strict production/test type checks and all 409 tests in 58 files, including the recorded CCU fixtures. TypeScript build, Homey build and publish-level validation passed; the production audit has zero reported vulnerabilities. The package contains the intended device/brand assets and license notices, excludes development/design/test data and env.json, and has no local private configuration values. Independent review found no blocking code or fixture issue. Outstanding physical-device and upgrade checks remain listed above.

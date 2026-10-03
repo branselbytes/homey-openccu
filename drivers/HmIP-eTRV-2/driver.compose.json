@@ -1,6 +1,9 @@
 {
   "id": "HmIP-eTRV-2",
-  "name": { "en": "HmIP-eTRV-2" },
+  "name": {
+    "en": "HmIP-eTRV radiator thermostats",
+    "de": "HmIP-eTRV Heizkörperthermostate"
+  },
   "class": "thermostat",
   "capabilities": [],
   "images": {

@@ -10,5 +10,9 @@
   "0.1.2": {
     "en": "Add HmIP-SWDO-A and combine SWDO window/door contacts into one pairing entry while preserving existing devices and Flows. Add detection controls for supported motion/presence sensors and improve widget typography.",
     "de": "HmIP-SWDO-A ergänzt und SWDO-Fenster-/Türkontakte in einem Geräteeintrag zusammengeführt; bestehende Geräte und Flows bleiben erhalten. Erkennungsschalter für unterstützte Bewegungs-/Präsenzmelder und verbesserte Widget-Schriftgestaltung."
+  },
+  "0.1.3": {
+    "en": "Combine switch/meter plugs and radiator thermostats into shared pairing entries while preserving existing devices and Flows. Add HmIP-PSM-2/-2-A and HmIPW-STH/-A, improve discovery and cache recovery, correct device images and family icons, and introduce the new branselbytes app design and donation link.",
+    "de": "Schalt-/Messsteckdosen und Heizkörperthermostate in gemeinsamen Geräteeinträgen zusammengeführt; bestehende Geräte und Flows bleiben erhalten. HmIP-PSM-2/-2-A und HmIPW-STH/-A ergänzt, Geräteerkennung und Cache-Fehlerbehandlung verbessert, Gerätebilder und Familien-Icons korrigiert sowie neues branselbytes-App-Design und Spendenlink hinzugefügt."
   }
 }

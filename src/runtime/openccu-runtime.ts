@@ -108,6 +108,12 @@ export class OpenCcuRuntime {
   #systemInformation?: OpenCcuSystemInformation;
   #systemInformationIssues: readonly MetadataIssue[] = [];
   #connectionState: ConnectionState = "stopped";
+  #discoverySignal?: AbortSignal;
+  #deviceChangeQueue: Promise<void> = Promise.resolve();
+  readonly #pendingDeviceChanges = new Set<string>();
+  #descriptionCacheIssue?: HmIpDiscoveryResult["issues"][number];
+  #deferredRefreshIssue?: HmIpDiscoveryResult["issues"][number];
+  #stopped = false;
 
   constructor(client: XmlRpcClient, options: OpenCcuRuntimeOptions) {
     this.#client = client;
@@ -119,7 +125,15 @@ export class OpenCcuRuntime {
   }
 
   get discoveryIssues(): HmIpDiscoveryResult["issues"] {
-    return this.#discovery?.issues ?? [];
+    return [
+      ...(this.#discovery?.issues ?? []),
+      ...(this.#descriptionCacheIssue === undefined
+        ? []
+        : [this.#descriptionCacheIssue]),
+      ...(this.#deferredRefreshIssue === undefined
+        ? []
+        : [this.#deferredRefreshIssue]),
+    ];
   }
 
   get connectionState(): ConnectionState {
@@ -250,19 +264,28 @@ export class OpenCcuRuntime {
   }
 
   async refresh(signal?: AbortSignal): Promise<HmIpDiscoveryResult> {
+    this.#discoverySignal = signal;
+    signal?.throwIfAborted();
+    await this.#invalidateDescriptions(this.#takePendingDeviceChanges());
+    signal?.throwIfAborted();
     const discovery = await discoverHmIpDevices(
       this.#client,
       {
         centralId: this.#options.centralId,
         interfaceId: this.#options.interfaceId,
         concurrency: this.#options.discoveryConcurrency,
-        descriptionCache: this.#options.descriptionCache,
+        descriptionCache:
+          this.#descriptionCacheIssue === undefined
+            ? this.#options.descriptionCache
+            : undefined,
         configurationParameters: (deviceType) =>
           this.#profiles.configurationParameters(deviceType),
       },
       signal,
     );
+    signal?.throwIfAborted();
     this.#discovery = discovery;
+    this.#deferredRefreshIssue = undefined;
     this.#events.publish("discovery", undefined);
     return discovery;
   }
@@ -359,26 +382,20 @@ export class OpenCcuRuntime {
     return new XmlRpcCallbackDispatcher({
       onEvent: (event) => this.#events.publish("datapoint", event),
       onNewDevices: async (interfaceId, devices) => {
-        if (this.#discovery !== undefined) {
-          await this.#invalidateDescriptions(
-            devices.map(({ ADDRESS }) => ADDRESS),
-          );
-        }
+        await this.#refreshChangedDevices(
+          devices.map(({ ADDRESS }) => ADDRESS),
+        );
         this.#events.publish("devicesChanged", { interfaceId, reason: "new" });
       },
       onDeleteDevices: async (interfaceId, addresses) => {
-        if (this.#discovery !== undefined)
-          await this.#invalidateDescriptions(addresses);
+        await this.#refreshChangedDevices(addresses);
         this.#events.publish("devicesChanged", {
           interfaceId,
           reason: "delete",
         });
       },
       onUpdateDevice: async (update) => {
-        if (this.#discovery !== undefined) {
-          await this.#invalidateDescriptions([update.address]);
-          await this.refresh();
-        }
+        await this.#refreshChangedDevices([update.address]);
         this.#events.publish("deviceUpdated", update);
         this.#events.publish("devicesChanged", {
           interfaceId: update.interfaceId,
@@ -390,11 +407,24 @@ export class OpenCcuRuntime {
 
   publishConnectionState(state: ConnectionState, error?: unknown): void {
     this.#connectionState = state;
+    this.#stopped = state === "stopped";
+    if (this.#stopped) this.#pendingDeviceChanges.clear();
     this.#events.publish("connection", {
       interfaceId: this.#options.interfaceId,
       state,
       ...(error === undefined ? {} : { error }),
     });
+    if (state === "healthy" && this.#pendingDeviceChanges.size > 0) {
+      const addresses = this.#takePendingDeviceChanges();
+      void this.#refreshChangedDevices(addresses).catch(() => {
+        if (this.#stopped || this.#discoverySignal?.aborted) return;
+        this.#deferDeviceChanges(addresses);
+        this.#deferredRefreshIssue = {
+          channelAddress: addresses[0] ?? "",
+          message: "Deferred device discovery failed",
+        };
+      });
+    }
   }
 
   clearSubscriptions(): void {
@@ -408,9 +438,47 @@ export class OpenCcuRuntime {
     return this.#options.jsonRpcSession;
   }
 
+  async #refreshChangedDevices(addresses: readonly string[]): Promise<void> {
+    // Registration can wait for newDevices to return, including on reconnect.
+    // Let the supervisor discover after init has completed in that case.
+    if (this.#stopped || this.#discoverySignal?.aborted) return;
+    const signal = this.#discoverySignal;
+    const registrationInProgress = (): boolean =>
+      this.#connectionState === "connecting" ||
+      this.#connectionState === "disconnected";
+    if (this.#discovery === undefined || registrationInProgress()) {
+      this.#deferDeviceChanges(addresses);
+      return;
+    }
+    const refresh = this.#deviceChangeQueue.then(async () => {
+      if (this.#stopped || signal?.aborted) return;
+      await this.#invalidateDescriptions(addresses);
+      if (this.#stopped || signal?.aborted) return;
+      if (registrationInProgress()) {
+        this.#deferDeviceChanges(addresses);
+        return;
+      }
+      await this.refresh(signal);
+    });
+    // One failed callback must not prevent later device changes from retrying.
+    this.#deviceChangeQueue = refresh.catch(() => undefined);
+    await refresh;
+  }
+
+  #deferDeviceChanges(addresses: readonly string[]): void {
+    for (const address of addresses) this.#pendingDeviceChanges.add(address);
+  }
+
+  #takePendingDeviceChanges(): readonly string[] {
+    const addresses = [...this.#pendingDeviceChanges];
+    this.#pendingDeviceChanges.clear();
+    return addresses;
+  }
+
   async #invalidateDescriptions(addresses: readonly string[]): Promise<void> {
     const cache = this.#options.descriptionCache;
-    if (cache === undefined) return;
+    if (cache === undefined || this.#descriptionCacheIssue !== undefined)
+      return;
     const expanded = new Set(addresses);
     for (const description of this.#discovery?.descriptions ?? []) {
       if (description.PARENT && addresses.includes(description.PARENT)) {
@@ -420,15 +488,25 @@ export class OpenCcuRuntime {
     await Promise.all(
       [...expanded]
         .filter((address) => address.includes(":"))
-        .map((address) =>
-          cache.delete(
-            descriptionCacheKey(
-              this.#options.centralId,
-              this.#options.interfaceId,
-              address,
-            ),
-          ),
-        ),
+        .map(async (address) => {
+          try {
+            await cache.delete(
+              descriptionCacheKey(
+                this.#options.centralId,
+                this.#options.interfaceId,
+                address,
+              ),
+            );
+          } catch {
+            // Failed invalidation makes persisted descriptions untrustworthy.
+            // Keep discovery working with fresh RPC data for this runtime.
+            this.#descriptionCacheIssue ??= {
+              channelAddress: address,
+              message:
+                "Paramset description cache invalidation failed; cache disabled",
+            };
+          }
+        }),
     );
   }
 }

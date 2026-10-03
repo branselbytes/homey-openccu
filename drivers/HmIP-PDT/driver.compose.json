@@ -4,8 +4,8 @@
   "class": "light",
   "capabilities": [],
   "images": {
-    "large": "/drivers/HMIP-PS/assets/images/large.png",
-    "small": "/drivers/HMIP-PS/assets/images/small.png"
+    "large": "/drivers/HmIP-PDT/assets/images/large.png",
+    "small": "/drivers/HmIP-PDT/assets/images/small.png"
   },
   "pair": [
     {

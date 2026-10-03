@@ -19,7 +19,7 @@ function emptyDevice(type: string): OpenCcuDevice {
 describe("device mapping resolver", () => {
   it("selects a dedicated driver for known products", () => {
     expect(resolveDeviceMapping(emptyDevice("HMIP-PS"))).toMatchObject({
-      driverId: "HMIP-PS",
+      driverId: "HMIP-PSM",
       profileId: "hmip-switch",
       generic: false,
     });

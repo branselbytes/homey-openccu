@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+Accepted; extended by ADR 0020 to allow original schematic device drawings and restored PNGs.
 
 ## Context
 

@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 
 import SwdoDriver from "../../drivers/HMIP-SWDO/driver";
+import PsmDriver from "../../drivers/HMIP-PSM/driver";
+import WiredClimateDriver from "../../drivers/HmIPW-STH/driver";
 import { RuntimeBackedDriver } from "../../src/homey/runtime-backed-driver";
 import type { PairingCandidate } from "../../src/pairing/candidates";
 
@@ -49,7 +51,25 @@ function attachHomey(
   return { pairingCandidates, getDriver };
 }
 
-describe("SWDO family pairing", () => {
+describe("family pairing", () => {
+  it.each([
+    ["HMIP-PSM", PsmDriver],
+    ["HmIPW-STH", WiredClimateDriver],
+  ] as const)(
+    "does not duplicate generic devices when adding support in %s",
+    async (driverId, Driver) => {
+      const driver = new Driver();
+      const existing = { ...candidate("existing"), driverId };
+      const fresh = { ...candidate("fresh"), driverId };
+      const { pairingCandidates } = attachHomey(driver, [existing, fresh], {
+        "openccu-generic": [existing.data],
+      });
+      await expect(driver.onPairListDevices()).resolves.toMatchObject([
+        { data: fresh.data },
+      ]);
+      expect(pairingCandidates).toHaveBeenCalledWith(driverId);
+    },
+  );
   it("omits contacts already paired through retired drivers or generic discovery", async () => {
     const driver = new SwdoDriver();
     const oldSecondGeneration = candidate("old-2");
@@ -68,6 +88,7 @@ describe("SWDO family pairing", () => {
 
     await expect(driver.onPairListDevices()).resolves.toEqual([
       {
+        icon: "/models/swdo-a.svg",
         name: fresh.name,
         data: fresh.data,
         capabilities: fresh.capabilities,
@@ -114,8 +135,13 @@ describe("SWDO family pairing", () => {
       "HmIP-SWDO-2": [fresh.data],
     });
 
-    await expect(driver.onPairListDevices()).resolves.toMatchObject([
-      { data: fresh.data },
+    await expect(driver.onPairListDevices()).resolves.toEqual([
+      {
+        name: fresh.name,
+        data: fresh.data,
+        capabilities: fresh.capabilities,
+        store: fresh.store,
+      },
     ]);
     expect(getDriver).not.toHaveBeenCalled();
   });

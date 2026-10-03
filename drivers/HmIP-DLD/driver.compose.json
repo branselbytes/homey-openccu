@@ -4,8 +4,8 @@
   "class": "lock",
   "capabilities": [],
   "images": {
-    "large": "/drivers/HMIP-SWDO/assets/images/large.png",
-    "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+    "large": "/drivers/HmIP-DLD/assets/images/large.png",
+    "small": "/drivers/HmIP-DLD/assets/images/small.png"
   },
   "pair": [
     {

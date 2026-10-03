@@ -49,14 +49,12 @@ export async function discoverHmIpDevices(
   const descriptions = await client.listDevices(signal);
   const channels = descriptions.filter(
     (description) =>
-      description.PARENT !== undefined && description.PARAMSETS?.includes("VALUES") === true,
+      description.PARENT !== undefined &&
+      description.PARAMSETS?.includes("VALUES") === true,
   );
   const paramsets = new Map<string, ParamsetDescription>();
   const issues: ParamsetDiscoveryIssue[] = [];
-  const configuration = new Map<
-    string,
-    Readonly<Record<string, RpcValue>>
-  >();
+  const configuration = new Map<string, Readonly<Record<string, RpcValue>>>();
 
   await mapConcurrent(channels, concurrency, async (channel) => {
     const cacheKey = createDescriptionCacheKey(
@@ -65,13 +63,36 @@ export async function discoverHmIpDevices(
       channel.ADDRESS,
       "VALUES",
     );
+    let cached: ParamsetDescription | undefined;
     try {
-      const cached = await options.descriptionCache?.get(cacheKey);
+      cached = await options.descriptionCache?.get(cacheKey);
+    } catch {
+      if (signal?.aborted) signal.throwIfAborted();
+      issues.push({
+        channelAddress: channel.ADDRESS,
+        message: "Paramset description cache read failed",
+      });
+    }
+    try {
       const description =
         cached ??
-        (await client.getParamsetDescription(channel.ADDRESS, "VALUES", signal));
+        (await client.getParamsetDescription(
+          channel.ADDRESS,
+          "VALUES",
+          signal,
+        ));
       paramsets.set(channel.ADDRESS, description);
-      if (cached === undefined) await options.descriptionCache?.set(cacheKey, description);
+      if (cached === undefined) {
+        try {
+          await options.descriptionCache?.set(cacheKey, description);
+        } catch {
+          if (signal?.aborted) signal.throwIfAborted();
+          issues.push({
+            channelAddress: channel.ADDRESS,
+            message: "Paramset description cache write failed",
+          });
+        }
+      }
     } catch (error) {
       if (signal?.aborted) throw error;
       issues.push({
@@ -103,7 +124,10 @@ export async function discoverHmIpDevices(
             return [
               [
                 parameter,
-                normalizeConfigurationValue(values[parameter], metadata[parameter]),
+                normalizeConfigurationValue(
+                  values[parameter],
+                  metadata[parameter],
+                ),
               ],
             ];
           }),
@@ -134,8 +158,14 @@ export async function discoverHmIpDevices(
 
 function groupConfigurationParameters(
   deviceAddress: string,
-  parameters: readonly { readonly channel: number; readonly parameter: string }[],
-): readonly { readonly channelAddress: string; readonly parameters: readonly string[] }[] {
+  parameters: readonly {
+    readonly channel: number;
+    readonly parameter: string;
+  }[],
+): readonly {
+  readonly channelAddress: string;
+  readonly parameters: readonly string[];
+}[] {
   const grouped = new Map<number, string[]>();
   for (const entry of parameters) {
     const values = grouped.get(entry.channel) ?? [];
@@ -167,7 +197,12 @@ export function descriptionCacheKey(
   interfaceId: string,
   channelAddress: string,
 ): string {
-  return createDescriptionCacheKey(centralId, interfaceId, channelAddress, "VALUES");
+  return createDescriptionCacheKey(
+    centralId,
+    interfaceId,
+    channelAddress,
+    "VALUES",
+  );
 }
 
 async function mapConcurrent<T>(
@@ -184,10 +219,14 @@ async function mapConcurrent<T>(
     }
   };
   await Promise.all(
-    Array.from({ length: Math.min(concurrency, values.length) }, () => worker()),
+    Array.from({ length: Math.min(concurrency, values.length) }, () =>
+      worker(),
+    ),
   );
 }
 
 function safeErrorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : "Unknown paramset discovery error";
+  return error instanceof Error
+    ? error.message
+    : "Unknown paramset discovery error";
 }

@@ -1,5 +1,4 @@
 .git
-README.template
 AGENTS.md
 ARCHITECTURE.md
 BETA_TESTING.md
@@ -15,5 +14,6 @@ docs
 eslint.config.mjs
 package-lock.json
 tsconfig.test.json
-
 tests
+coverage
+scripts

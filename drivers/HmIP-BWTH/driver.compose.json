@@ -1,18 +1,25 @@
 {
   "id": "HmIP-BWTH",
-  "name": { "en": "HmIP-BWTH" },
+  "name": {
+    "en": "HmIP-BWTH"
+  },
   "class": "thermostat",
   "capabilities": [],
   "images": {
-    "large": "/drivers/HmIP-STH/assets/images/large.png",
-    "small": "/drivers/HmIP-STH/assets/images/small.png"
+    "large": "/drivers/HmIP-BWTH/assets/images/large.png",
+    "small": "/drivers/HmIP-BWTH/assets/images/small.png"
   },
   "pair": [
     {
       "id": "list_devices",
       "template": "list_devices",
-      "navigation": { "next": "add_devices" }
+      "navigation": {
+        "next": "add_devices"
+      }
     },
-    { "id": "add_devices", "template": "add_devices" }
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
   ]
 }

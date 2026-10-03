@@ -29,7 +29,7 @@ describe("createPairingCandidates", () => {
     });
 
     expect(candidate).toMatchObject({
-      driverId: "HMIP-PS",
+      driverId: "HMIP-PSM",
       name: "Flurlicht",
       data: { id: "ccu-1/HmIP-RF/301", address: "301" },
       capabilities: ["onoff"],

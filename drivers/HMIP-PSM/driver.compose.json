@@ -1,6 +1,9 @@
 {
   "id": "HMIP-PSM",
-  "name": { "en": "HMIP-PSM" },
+  "name": {
+    "en": "HmIP switch and meter plugs",
+    "de": "HmIP Schalt- und Messsteckdosen"
+  },
   "class": "socket",
   "capabilities": [],
   "images": {

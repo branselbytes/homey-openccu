@@ -1,18 +1,26 @@
 {
   "id": "HmIP-eTRV-C",
-  "name": { "en": "HmIP-eTRV-C" },
+  "name": {
+    "en": "HmIP-eTRV-C"
+  },
   "class": "thermostat",
+  "deprecated": true,
   "capabilities": [],
   "images": {
-    "large": "/drivers/HmIP-eTRV-2/assets/images/large.png",
-    "small": "/drivers/HmIP-eTRV-2/assets/images/small.png"
+    "large": "/drivers/HmIP-eTRV-C/assets/images/large.png",
+    "small": "/drivers/HmIP-eTRV-C/assets/images/small.png"
   },
   "pair": [
     {
       "id": "list_devices",
       "template": "list_devices",
-      "navigation": { "next": "add_devices" }
+      "navigation": {
+        "next": "add_devices"
+      }
     },
-    { "id": "add_devices", "template": "add_devices" }
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
   ]
 }

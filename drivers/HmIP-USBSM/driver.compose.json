@@ -4,8 +4,8 @@
   "class": "socket",
   "capabilities": [],
   "images": {
-    "large": "/drivers/HMIP-PS/assets/images/large.png",
-    "small": "/drivers/HMIP-PS/assets/images/small.png"
+    "large": "/drivers/HmIP-USBSM/assets/images/large.png",
+    "small": "/drivers/HmIP-USBSM/assets/images/small.png"
   },
   "pair": [
     {

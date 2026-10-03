@@ -4,8 +4,8 @@
   "class": "blinds",
   "capabilities": [],
   "images": {
-    "large": "/drivers/HmIP-BROLL/assets/images/large.png",
-    "small": "/drivers/HmIP-BROLL/assets/images/small.png"
+    "large": "/drivers/HmIP-BBL/assets/images/large.png",
+    "small": "/drivers/HmIP-BBL/assets/images/small.png"
   },
   "pair": [
     {

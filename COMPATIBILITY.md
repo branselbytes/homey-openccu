@@ -41,6 +41,14 @@ The user reported on **2026-10-03** that the currently installed app works well 
 
 App version **0.1.2** groups SWDO, SWDO-2, SWDO-I, and the new SWDO-A under one pairing entry. Installation on **Homey Christian, software 13.5.0**, was verified on 2026-10-03: the app is running, all 13 existing devices remain available with unchanged identities and retained capabilities, and the CCU runtime is healthy with zero discovery issues. Live discovery recognizes SWDO-A through the shared profile with contact and battery capabilities. Physical SWDO-A pairing and opening/closing events remain unverified. See [device coverage and upgrade behavior](DEVICE_SUPPORT.md#swdo-family).
 
+## Maintenance verification for 0.1.3 (2026-10-03)
+
+The local maintenance build resolves eight recorded device types through the shared PSM, eTRV, SWDO and new Wired STH profiles. Read-only checks against the configured CCU successfully read 25 mapped values across six reachable models, including the Wired STH-A and SWDO-A. The CCU reported the sampled HmIP-PSM-2 and HMIP-SWDO as unreachable (`UNREACH = true`), so their current-value checks were skipped. Their device descriptions were available and are covered by recorded-fixture tests.
+
+This verifies discovery and reads, not physical commands, new pairing or a production upgrade. PSM-2 switching, Wired STH commands and real add/remove callbacks remain hardware checks. Wired STH modes 0–3 and week profiles 1–6 remain deferred until complete Homey controls exist. The installed Homey app remains version 0.1.2; see the [maintenance delivery record](IMPLEMENTATION_PLAN.md#project-maintenance-audit-2026-10-03-unreleased).
+
+Socket/artwork follow-up: the local build also consolidates PS/PSM pairing and corrects catalog images and model-specific family pairing icons. The full suite now passes 409 tests, with Homey publish-level validation successful. Actual Homey rendering after installation remains unverified; existing saved per-device icon overrides are preserved.
+
 ## Release evidence still required
 
 - Record the exact Homey model and software version for the existing Homey Test system.

@@ -4,8 +4,8 @@
   "class": "other",
   "capabilities": [],
   "images": {
-    "large": "/drivers/HMIP-PS/assets/images/large.png",
-    "small": "/drivers/HMIP-PS/assets/images/small.png"
+    "large": "/drivers/HmIP-WSM/assets/images/large.png",
+    "small": "/drivers/HmIP-WSM/assets/images/small.png"
   },
   "pair": [
     {

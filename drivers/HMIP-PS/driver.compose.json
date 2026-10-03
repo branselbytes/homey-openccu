@@ -3,6 +3,7 @@
   "name": {
     "en": "HMIP-PS"
   },
+  "deprecated": true,
   "class": "socket",
   "capabilities": [],
   "images": {

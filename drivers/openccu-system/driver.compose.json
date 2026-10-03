@@ -11,8 +11,8 @@
     "openccu_measure_carrier_sense"
   ],
   "images": {
-    "large": "/drivers/HMIP-SWDO/assets/images/large.png",
-    "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+    "large": "/drivers/openccu-system/assets/images/large.png",
+    "small": "/drivers/openccu-system/assets/images/small.png"
   },
   "pair": [
     {

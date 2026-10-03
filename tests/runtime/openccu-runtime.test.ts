@@ -7,9 +7,9 @@ import type {
   XmlRpcClient,
 } from "../../src/protocol/xmlrpc/types";
 
-function createClient(): XmlRpcClient {
+function createClient() {
   return {
-    listDevices: vi.fn().mockResolvedValue([
+    listDevices: vi.fn<XmlRpcClient["listDevices"]>().mockResolvedValue([
       { ADDRESS: "301", TYPE: "HmIP-PS", CHILDREN: ["301:3"] },
       {
         ADDRESS: "301:3",
@@ -26,7 +26,7 @@ function createClient(): XmlRpcClient {
     setValue: vi.fn(),
     putParamset: vi.fn(),
     init: vi.fn(),
-  };
+  } satisfies XmlRpcClient;
 }
 
 describe("OpenCcuRuntime", () => {
@@ -121,7 +121,7 @@ describe("OpenCcuRuntime", () => {
         ],
         mappings: [
           {
-            driverId: "HMIP-PS",
+            driverId: "HMIP-PSM",
             profileId: "hmip-switch",
             generic: false,
             capabilities: ["onoff"],
@@ -161,7 +161,7 @@ describe("OpenCcuRuntime", () => {
     expect(
       runtime.pairingCandidates(new Map([["301", "Licht"]])),
     ).toMatchObject([
-      { driverId: "HMIP-PS", name: "Licht", capabilities: ["onoff"] },
+      { driverId: "HMIP-PSM", name: "Licht", capabilities: ["onoff"] },
     ]);
   });
 
@@ -232,6 +232,331 @@ describe("OpenCcuRuntime", () => {
         logicalId: `output-${channel}`,
       })),
     );
+  });
+
+  it.each(["initial", "reconnect"] as const)(
+    "acknowledges %s registration callbacks without nested discovery RPCs",
+    async (phase) => {
+      const client = createClient();
+      const runtime = new OpenCcuRuntime(client, {
+        centralId: "ccu-1",
+        interfaceId: "HmIP-RF",
+      });
+      if (phase === "reconnect") await runtime.refresh();
+      vi.mocked(client.listDevices).mockClear();
+      runtime.publishConnectionState("connecting");
+      const dispatcher = runtime.createCallbackDispatcher();
+
+      await dispatcher.dispatch("newDevices", [
+        "HmIP-RF",
+        [{ ADDRESS: "301", TYPE: "HmIP-PS", CHILDREN: ["301:3"] }],
+      ]);
+
+      expect(client.listDevices).not.toHaveBeenCalled();
+      await runtime.refresh();
+      runtime.publishConnectionState("healthy");
+      expect(runtime.pairingCandidates()).toHaveLength(1);
+    },
+  );
+
+  it("leaves queued rediscovery to the supervisor when reconnect starts", async () => {
+    const client = createClient();
+    let finishInvalidation!: () => void;
+    const cache = {
+      get: vi.fn().mockResolvedValue(undefined),
+      set: vi.fn().mockResolvedValue(undefined),
+      delete: vi.fn().mockImplementation(
+        () =>
+          new Promise<void>((resolve) => {
+            finishInvalidation = resolve;
+          }),
+      ),
+    };
+    const runtime = new OpenCcuRuntime(client, {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+      descriptionCache: cache,
+    });
+    await runtime.refresh();
+    const changed = runtime
+      .createCallbackDispatcher()
+      .dispatch("newDevices", [
+        "HmIP-RF",
+        [{ ADDRESS: "301", TYPE: "HmIP-PS" }],
+      ]);
+    await vi.waitFor(() => expect(cache.delete).toHaveBeenCalledOnce());
+    runtime.publishConnectionState("connecting");
+    finishInvalidation();
+    await changed;
+
+    expect(client.listDevices).toHaveBeenCalledOnce();
+  });
+
+  it.each(["during", "after"] as const)(
+    "catches up once for callbacks %s initial discovery before healthy",
+    async (phase) => {
+      const client = createClient();
+      let finishInitial!: () => void;
+      client.listDevices.mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            finishInitial = () => resolve([]);
+          }),
+      );
+      const runtime = new OpenCcuRuntime(client, {
+        centralId: "ccu-1",
+        interfaceId: "HmIP-RF",
+      });
+      runtime.publishConnectionState("connecting");
+      const initial = runtime.refresh();
+      await vi.waitFor(() => expect(client.listDevices).toHaveBeenCalledOnce());
+      if (phase === "after") {
+        finishInitial();
+        await initial;
+      }
+      const dispatcher = runtime.createCallbackDispatcher();
+      await dispatcher.dispatch("newDevices", [
+        "HmIP-RF",
+        [{ ADDRESS: "301", TYPE: "HmIP-PS" }],
+      ]);
+      await dispatcher.dispatch("updateDevice", ["HmIP-RF", "301", 0]);
+      if (phase === "during") {
+        finishInitial();
+        await initial;
+      }
+      expect(client.listDevices).toHaveBeenCalledOnce();
+      expect(runtime.pairingCandidates()).toEqual([]);
+
+      runtime.publishConnectionState("healthy");
+      await vi.waitFor(() =>
+        expect(runtime.pairingCandidates()).toHaveLength(1),
+      );
+      expect(client.listDevices).toHaveBeenCalledTimes(2);
+      runtime.publishConnectionState("healthy");
+      await Promise.resolve();
+      expect(client.listDevices).toHaveBeenCalledTimes(2);
+    },
+  );
+
+  it("catches up on deleted devices after initial discovery during metadata loading", async () => {
+    const client = createClient();
+    const runtime = new OpenCcuRuntime(client, {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+    });
+    runtime.publishConnectionState("connecting");
+    await runtime.refresh();
+    client.listDevices.mockResolvedValue([]);
+    await runtime
+      .createCallbackDispatcher()
+      .dispatch("deleteDevices", ["HmIP-RF", ["301"]]);
+    expect(runtime.pairingCandidates()).toHaveLength(1);
+
+    runtime.publishConnectionState("healthy");
+    await vi.waitFor(() => expect(runtime.pairingCandidates()).toEqual([]));
+    expect(client.listDevices).toHaveBeenCalledTimes(2);
+  });
+
+  it("drops deferred device discovery when the lifecycle stops", async () => {
+    const client = createClient();
+    const controller = new AbortController();
+    const runtime = new OpenCcuRuntime(client, {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+    });
+    runtime.publishConnectionState("connecting");
+    await runtime.refresh(controller.signal);
+    await runtime
+      .createCallbackDispatcher()
+      .dispatch("deleteDevices", ["HmIP-RF", ["301"]]);
+    runtime.publishConnectionState("healthy");
+    controller.abort();
+    runtime.publishConnectionState("stopped");
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(client.listDevices).toHaveBeenCalledOnce();
+    expect(runtime.pairingCandidates()).toHaveLength(1);
+  });
+
+  it("reports deferred discovery failure and recovers on a later callback", async () => {
+    const client = createClient();
+    const runtime = new OpenCcuRuntime(client, {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+    });
+    runtime.publishConnectionState("connecting");
+    await runtime.refresh();
+    client.listDevices.mockRejectedValueOnce(
+      new Error("private transport details"),
+    );
+    const dispatcher = runtime.createCallbackDispatcher();
+    await dispatcher.dispatch("deleteDevices", ["HmIP-RF", ["301"]]);
+    runtime.publishConnectionState("healthy");
+    await vi.waitFor(() =>
+      expect(runtime.discoveryIssues).toContainEqual({
+        channelAddress: "301",
+        message: "Deferred device discovery failed",
+      }),
+    );
+    client.listDevices.mockResolvedValue([]);
+    await dispatcher.dispatch("deleteDevices", ["HmIP-RF", ["301"]]);
+
+    expect(runtime.pairingCandidates()).toEqual([]);
+    expect(runtime.discoveryIssues).toEqual([]);
+  });
+
+  it("bypasses persisted descriptions after failed invalidation and keeps device changes working", async () => {
+    const client = createClient();
+    const cache = {
+      get: vi.fn().mockResolvedValue({
+        STATE: { TYPE: "BOOL", OPERATIONS: 7, FLAGS: 1 },
+      }),
+      set: vi.fn().mockResolvedValue(undefined),
+      delete: vi.fn().mockRejectedValue(new Error("private storage details")),
+    };
+    const runtime = new OpenCcuRuntime(client, {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+      descriptionCache: cache,
+    });
+    await runtime.refresh();
+    expect(client.getParamsetDescription).not.toHaveBeenCalled();
+    client.getParamsetDescription.mockResolvedValue({});
+    const dispatcher = runtime.createCallbackDispatcher();
+    await dispatcher.dispatch("updateDevice", ["HmIP-RF", "301", 0]);
+
+    expect(cache.get).toHaveBeenCalledOnce();
+    expect(client.getParamsetDescription).toHaveBeenCalledOnce();
+    expect(
+      runtime.devices.get("301")?.channels.get("301:3")?.dataPoints.size,
+    ).toBe(0);
+    expect(runtime.discoveryIssues).toContainEqual({
+      channelAddress: "301:3",
+      message: "Paramset description cache invalidation failed; cache disabled",
+    });
+    client.listDevices.mockResolvedValue([]);
+    await dispatcher.dispatch("deleteDevices", ["HmIP-RF", ["301"]]);
+    expect(runtime.devices.size).toBe(0);
+    expect(runtime.pairingCandidates()).toEqual([]);
+    expect(cache.delete).toHaveBeenCalledOnce();
+    expect(JSON.stringify(runtime.discoveryIssues)).not.toContain(
+      "private storage details",
+    );
+  });
+
+  it("refreshes pairing candidates when new OpenCCU devices arrive", async () => {
+    const client = createClient();
+    const descriptions = await client.listDevices();
+    vi.mocked(client.listDevices).mockResolvedValueOnce([]);
+    const runtime = new OpenCcuRuntime(client, {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+    });
+    await runtime.refresh();
+    expect(runtime.pairingCandidates()).toEqual([]);
+    const discovery = vi.fn();
+    runtime.subscribe("discovery", discovery);
+
+    await runtime
+      .createCallbackDispatcher()
+      .dispatch("newDevices", ["HmIP-RF", descriptions]);
+
+    expect(runtime.pairingCandidates()).toMatchObject([
+      { data: { address: "301" }, capabilities: ["onoff"] },
+    ]);
+    expect(discovery).toHaveBeenCalledOnce();
+  });
+
+  it("removes deleted OpenCCU devices and invalidates child description caches", async () => {
+    const client = createClient();
+    const cache = {
+      get: vi.fn().mockResolvedValue(undefined),
+      set: vi.fn().mockResolvedValue(undefined),
+      delete: vi.fn().mockResolvedValue(undefined),
+    };
+    const runtime = new OpenCcuRuntime(client, {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+      descriptionCache: cache,
+    });
+    await runtime.refresh();
+    vi.mocked(client.listDevices).mockResolvedValue([]);
+
+    await runtime
+      .createCallbackDispatcher()
+      .dispatch("deleteDevices", ["HmIP-RF", ["301"]]);
+
+    expect(runtime.pairingCandidates()).toEqual([]);
+    expect(runtime.devices.size).toBe(0);
+    expect(cache.delete).toHaveBeenCalledWith("ccu-1/HmIP-RF/301%3A3/VALUES");
+  });
+
+  it("serializes overlapping device changes and retries after a failed refresh", async () => {
+    const client = createClient();
+    const runtime = new OpenCcuRuntime(client, {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+    });
+    await runtime.refresh();
+    let rejectDiscovery!: (error: Error) => void;
+    vi.mocked(client.listDevices)
+      .mockImplementationOnce(
+        () =>
+          new Promise((_, reject) => {
+            rejectDiscovery = reject;
+          }),
+      )
+      .mockResolvedValueOnce([]);
+    const dispatcher = runtime.createCallbackDispatcher();
+    const first = dispatcher.dispatch("newDevices", [
+      "HmIP-RF",
+      [{ ADDRESS: "301", TYPE: "HmIP-PS" }],
+    ]);
+    const failed = expect(first).rejects.toThrow("offline");
+    await vi.waitFor(() => expect(client.listDevices).toHaveBeenCalledTimes(2));
+    const second = dispatcher.dispatch("deleteDevices", ["HmIP-RF", ["301"]]);
+    await Promise.resolve();
+    expect(client.listDevices).toHaveBeenCalledTimes(2);
+    rejectDiscovery(new Error("offline"));
+    await failed;
+    await second;
+
+    expect(client.listDevices).toHaveBeenCalledTimes(3);
+    expect(runtime.pairingCandidates()).toEqual([]);
+  });
+
+  it("does not publish callback discovery or start queued RPCs after shutdown", async () => {
+    const client = createClient();
+    const controller = new AbortController();
+    const runtime = new OpenCcuRuntime(client, {
+      centralId: "ccu-1",
+      interfaceId: "HmIP-RF",
+    });
+    await runtime.refresh(controller.signal);
+    let finishDiscovery!: () => void;
+    vi.mocked(client.listDevices).mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          finishDiscovery = () => resolve([]);
+        }),
+    );
+    const discovery = vi.fn();
+    runtime.subscribe("discovery", discovery);
+    const dispatcher = runtime.createCallbackDispatcher();
+    const first = dispatcher.dispatch("deleteDevices", ["HmIP-RF", ["301"]]);
+    const aborted = expect(first).rejects.toThrow();
+    await vi.waitFor(() => expect(client.listDevices).toHaveBeenCalledTimes(2));
+    const queued = dispatcher.dispatch("deleteDevices", ["HmIP-RF", ["301"]]);
+    controller.abort();
+    finishDiscovery();
+    await aborted;
+    await queued;
+    await dispatcher.dispatch("newDevices", ["HmIP-RF", []]);
+
+    expect(client.listDevices).toHaveBeenCalledTimes(2);
+    expect(discovery).not.toHaveBeenCalled();
+    expect(runtime.pairingCandidates()).toHaveLength(1);
   });
 
   it("routes callback events through listener-specific subscriptions", async () => {

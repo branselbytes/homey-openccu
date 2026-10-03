@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "checkJs": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "module": "CommonJS",
@@ -17,15 +15,14 @@
     "sourceMap": false,
     "strict": true,
     "target": "ES2023",
-    "types": ["node", "vitest/globals"]
+    "types": ["node"]
   },
   "include": [
     "api.ts",
     "app.ts",
     "src/**/*.ts",
     "widgets/**/*.ts",
-    "drivers/**/*.js",
     "drivers/**/*.ts"
   ],
-  "exclude": [".homeybuild", "cli", "node_modules", "node-red", "tools"]
+  "exclude": [".homeybuild", "node_modules"]
 }

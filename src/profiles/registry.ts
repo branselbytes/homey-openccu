@@ -13,15 +13,17 @@ export class ProfileRegistry {
 
   constructor(profiles: readonly DeviceProfile[] = HMIP_PROFILES) {
     this.#profiles = profiles;
-    const claimedTypes = new Set<string>();
+    const claimedTypes = new Map<string, DeviceProfile>();
     for (const profile of profiles) {
       assertLogicalDeviceIdsAreUnique(profile);
       for (const type of profile.deviceTypes) {
-        if (claimedTypes.has(type))
+        const normalized = normalizeDeviceType(type);
+        const owner = claimedTypes.get(normalized);
+        if (owner !== undefined && owner !== profile)
           throw new Error(
-            `Device type ${type} is claimed by multiple profiles`,
+            `Device type ${normalized} is claimed by multiple profiles`,
           );
-        claimedTypes.add(type);
+        claimedTypes.set(normalized, profile);
       }
     }
   }

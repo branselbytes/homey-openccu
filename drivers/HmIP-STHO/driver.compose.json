@@ -1,18 +1,25 @@
 {
   "id": "HmIP-STHO",
-  "name": { "en": "HmIP-STHO" },
+  "name": {
+    "en": "HmIP-STHO"
+  },
   "class": "sensor",
   "capabilities": [],
   "images": {
-    "large": "/drivers/HmIP-STH/assets/images/large.png",
-    "small": "/drivers/HmIP-STH/assets/images/small.png"
+    "large": "/drivers/HmIP-STHO/assets/images/large.png",
+    "small": "/drivers/HmIP-STHO/assets/images/small.png"
   },
   "pair": [
     {
       "id": "list_devices",
       "template": "list_devices",
-      "navigation": { "next": "add_devices" }
+      "navigation": {
+        "next": "add_devices"
+      }
     },
-    { "id": "add_devices", "template": "add_devices" }
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
   ]
 }

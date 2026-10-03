@@ -1,18 +1,25 @@
 {
   "id": "HmIP-FDT",
-  "name": { "en": "HmIP-FDT" },
+  "name": {
+    "en": "HmIP-FDT"
+  },
   "class": "light",
   "capabilities": [],
   "images": {
-    "large": "/drivers/HMIP-PS/assets/images/large.png",
-    "small": "/drivers/HMIP-PS/assets/images/small.png"
+    "large": "/drivers/HmIP-FDT/assets/images/large.png",
+    "small": "/drivers/HmIP-FDT/assets/images/small.png"
   },
   "pair": [
     {
       "id": "list_devices",
       "template": "list_devices",
-      "navigation": { "next": "add_devices" }
+      "navigation": {
+        "next": "add_devices"
+      }
     },
-    { "id": "add_devices", "template": "add_devices" }
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
   ]
 }

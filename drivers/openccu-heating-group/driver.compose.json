@@ -1,14 +1,11 @@
 {
   "id": "openccu-heating-group",
-  "name": {
-    "en": "OpenCCU groups",
-    "de": "OpenCCU Gruppen"
-  },
+  "name": { "en": "OpenCCU groups", "de": "OpenCCU Gruppen" },
   "class": "other",
   "capabilities": [],
   "images": {
-    "large": "/drivers/HmIP-eTRV-2/assets/images/large.png",
-    "small": "/drivers/HmIP-eTRV-2/assets/images/small.png"
+    "large": "/drivers/openccu-heating-group/assets/images/large.png",
+    "small": "/drivers/openccu-heating-group/assets/images/small.png"
   },
   "pair": [
     {

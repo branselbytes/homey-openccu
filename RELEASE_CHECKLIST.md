@@ -61,3 +61,11 @@ The owner authorized installation on Homey Christian, a Git commit and origin/ma
 The CLI installed 0.1.2 on Homey Christian without clearing app data. Verification on Homey 13.5.0 confirms running/enabled/not crashed, all 13 existing devices available with their original identities and retained capabilities, and healthy CCU discovery (35 devices, zero issues). SWDO-A is recognized by the shared contact profile; its physical pairing and event test remain pending.
 
 [Homey Developer Build 3](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/3) uploaded successfully and was confirmed as version 0.1.2 in draft state. The build environment contains zero keys; local CCU credentials and env.json were excluded. No Test/Live activation or Git tag was created.
+
+## 0.1.3 update preparation (2026-10-03)
+
+The owner authorized preparing the next update, committing/pushing to origin/main and uploading to Homey Developer. Version 0.1.3 includes shared PS/PSM and eTRV pairing, PSM-2/-2-A and Wired STH/-A profiles, inventory/cache fixes, corrected device imagery, family pairing icons, the selected branselbytes branding and donation metadata. Existing device identities, bindings and legacy adapters remain in place.
+
+All 409 tests in 58 files, formatting, ESLint, production/test TypeScript checks, TypeScript build, Homey build and publish-level validation passed. The production dependency audit reports zero vulnerabilities. The package includes 156 driver PNGs, 13 family SVGs and four app branding assets; source designs, recorded fixtures, scripts, coverage and env.json are excluded. Package/working-tree inspection found no local private configuration values. MIT notices and imported history remain intact.
+
+The Developer upload must use an explicitly empty build environment. Physical PSM-2/STH commands, the family upgrade, new pairing and actual add/remove notifications remain the documented hardware checks. This upload does not install the app on a Homey or activate Test/Live, create a tag or create a GitHub release.

@@ -1,18 +1,25 @@
 {
   "id": "HmIP-SAM",
-  "name": { "en": "HmIP-SAM" },
+  "name": {
+    "en": "HmIP-SAM"
+  },
   "class": "sensor",
   "capabilities": [],
   "images": {
-    "large": "/drivers/HMIP-SWDO/assets/images/large.png",
-    "small": "/drivers/HMIP-SWDO/assets/images/small.png"
+    "large": "/drivers/HmIP-SAM/assets/images/large.png",
+    "small": "/drivers/HmIP-SAM/assets/images/small.png"
   },
   "pair": [
     {
       "id": "list_devices",
       "template": "list_devices",
-      "navigation": { "next": "add_devices" }
+      "navigation": {
+        "next": "add_devices"
+      }
     },
-    { "id": "add_devices", "template": "add_devices" }
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
   ]
 }

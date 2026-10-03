@@ -1,0 +1,2505 @@
+[
+  {
+    "description": {
+      "ADDRESS": "CATALOG1",
+      "TYPE": "HmIP-PSM-2",
+      "PARENT": "",
+      "CHILDREN": [
+        "CATALOG1:0",
+        "CATALOG1:1",
+        "CATALOG1:2",
+        "CATALOG1:3",
+        "CATALOG1:4",
+        "CATALOG1:5",
+        "CATALOG1:6",
+        "CATALOG1:7",
+        "CATALOG1:8"
+      ],
+      "FIRMWARE": "2.22.8"
+    },
+    "channels": [
+      {
+        "description": {
+          "ADDRESS": "CATALOG1:0",
+          "TYPE": "MAINTENANCE",
+          "PARENT": "CATALOG1",
+          "INDEX": 0,
+          "PARAMSETS": ["MASTER", "VALUES", "SERVICE"]
+        },
+        "parameters": {
+          "CONFIG_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "DUTY_CYCLE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "INSTALL_TEST": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 3,
+            "FLAGS": 2,
+            "MIN": false,
+            "MAX": true
+          },
+          "ERROR_OVERHEAT": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "OPERATING_VOLTAGE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "EXTERNAL",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "EXTERNAL"]
+          },
+          "ACTUAL_TEMPERATURE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "UNDERFLOW",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "UNDERFLOW"]
+          },
+          "ERROR_POWER_FAILURE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "RSSI_PEER": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -128,
+            "MAX": 127
+          },
+          "ERROR_OVERLOAD": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "BOOTED": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "ERROR_CODE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": 0,
+            "MAX": 255
+          },
+          "UPDATE_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "UNREACH": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 25,
+            "MIN": false,
+            "MAX": true
+          },
+          "RSSI_DEVICE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -128,
+            "MAX": 127
+          },
+          "ACTUAL_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -3276.8,
+            "MAX": 3276.7,
+            "UNIT": "�C"
+          },
+          "OPERATING_VOLTAGE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 25.2,
+            "UNIT": "V"
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG1:1",
+          "TYPE": "KEY_TRANSCEIVER",
+          "PARENT": "CATALOG1",
+          "INDEX": 1,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {
+          "PRESS_LONG_RELEASE": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "PRESS_SHORT": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "PRESS_LONG_START": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "PRESS_LONG": {
+            "TYPE": "ACTION",
+            "OPERATIONS": 4,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG1:2",
+          "TYPE": "SWITCH_TRANSMITTER",
+          "PARENT": "CATALOG1",
+          "INDEX": 2,
+          "PARAMSETS": ["MASTER", "VALUES", "SERVICE"]
+        },
+        "parameters": {
+          "SECTION_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "UNKNOWN",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN"]
+          },
+          "PROCESS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "STABLE",
+            "MAX": "NOT_STABLE",
+            "VALUE_LIST": ["STABLE", "NOT_STABLE"]
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "SECTION": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 15
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG1:3",
+          "TYPE": "SWITCH_VIRTUAL_RECEIVER",
+          "PARENT": "CATALOG1",
+          "INDEX": 3,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {
+          "SECTION_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "UNKNOWN",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN"]
+          },
+          "COMBINED_PARAMETER": {
+            "TYPE": "STRING",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": "",
+            "MAX": ""
+          },
+          "ON_TIME": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 8580000,
+            "UNIT": "s"
+          },
+          "PROCESS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "STABLE",
+            "MAX": "NOT_STABLE",
+            "VALUE_LIST": ["STABLE", "NOT_STABLE"]
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "SECTION": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 15
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG1:4",
+          "TYPE": "SWITCH_VIRTUAL_RECEIVER",
+          "PARENT": "CATALOG1",
+          "INDEX": 4,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {
+          "SECTION_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "UNKNOWN",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN"]
+          },
+          "COMBINED_PARAMETER": {
+            "TYPE": "STRING",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": "",
+            "MAX": ""
+          },
+          "ON_TIME": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 8580000,
+            "UNIT": "s"
+          },
+          "PROCESS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "STABLE",
+            "MAX": "NOT_STABLE",
+            "VALUE_LIST": ["STABLE", "NOT_STABLE"]
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "SECTION": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 15
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG1:5",
+          "TYPE": "SWITCH_VIRTUAL_RECEIVER",
+          "PARENT": "CATALOG1",
+          "INDEX": 5,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {
+          "SECTION_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "UNKNOWN",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN"]
+          },
+          "COMBINED_PARAMETER": {
+            "TYPE": "STRING",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": "",
+            "MAX": ""
+          },
+          "ON_TIME": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 8580000,
+            "UNIT": "s"
+          },
+          "PROCESS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "STABLE",
+            "MAX": "NOT_STABLE",
+            "VALUE_LIST": ["STABLE", "NOT_STABLE"]
+          },
+          "STATE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "SECTION": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 15
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG1:6",
+          "TYPE": "ENERGIE_METER_TRANSMITTER",
+          "PARENT": "CATALOG1",
+          "INDEX": 6,
+          "PARAMSETS": ["MASTER", "VALUES", "SERVICE"]
+        },
+        "parameters": {
+          "VOLTAGE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 409.5,
+            "UNIT": "V"
+          },
+          "POWER_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "OVERFLOW",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW"]
+          },
+          "ENERGY_COUNTER": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 838859.1,
+            "UNIT": "Wh"
+          },
+          "CURRENT_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "OVERFLOW",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW"]
+          },
+          "FREQUENCY": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 29.52,
+            "MAX": 70.47,
+            "UNIT": "Hz"
+          },
+          "ENERGY_COUNTER_OVERFLOW": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "POWER": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 163830,
+            "UNIT": "W"
+          },
+          "VOLTAGE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "OVERFLOW",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW"]
+          },
+          "CURRENT": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 65535,
+            "UNIT": "mA"
+          },
+          "FREQUENCY_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "ERROR",
+            "VALUE_LIST": [
+              "NORMAL",
+              "UNKNOWN",
+              "OVERFLOW",
+              "UNDERFLOW",
+              "ERROR"
+            ]
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG1:7",
+          "TYPE": "COND_SWITCH_TRANSMITTER",
+          "PARENT": "CATALOG1",
+          "INDEX": 7,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG1:8",
+          "TYPE": "SWITCH_WEEK_PROFILE",
+          "PARENT": "CATALOG1",
+          "INDEX": 8,
+          "PARAMSETS": ["MASTER", "VALUES", "SERVICE"]
+        },
+        "parameters": {
+          "COMBINED_PARAMETER": {
+            "TYPE": "STRING",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": "",
+            "MAX": ""
+          },
+          "WEEK_PROGRAM_TARGET_CHANNEL_LOCK": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": "MANU_MODE",
+            "MAX": "AUTO_MODE_WITHOUT_RESET",
+            "VALUE_LIST": [
+              "MANU_MODE",
+              "AUTO_MODE_WITH_RESET",
+              "AUTO_MODE_WITHOUT_RESET"
+            ]
+          },
+          "WEEK_PROGRAM_TARGET_CHANNEL_LOCKS": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 16777215
+          },
+          "WEEK_PROGRAM_CHANNEL_LOCKS": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 16777215
+          }
+        }
+      }
+    ]
+  },
+  {
+    "description": {
+      "ADDRESS": "CATALOG2",
+      "TYPE": "HmIPW-STH-A",
+      "PARENT": "",
+      "CHILDREN": [
+        "CATALOG2:0",
+        "CATALOG2:1",
+        "CATALOG2:2",
+        "CATALOG2:3",
+        "CATALOG2:4",
+        "CATALOG2:5",
+        "CATALOG2:6",
+        "CATALOG2:7"
+      ],
+      "FIRMWARE": "3.0.2"
+    },
+    "channels": [
+      {
+        "description": {
+          "ADDRESS": "CATALOG2:0",
+          "TYPE": "MAINTENANCE",
+          "PARENT": "CATALOG2",
+          "INDEX": 0,
+          "PARAMSETS": ["MASTER", "VALUES", "SERVICE"]
+        },
+        "parameters": {
+          "CONFIG_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "COMBINED_PARAMETER": {
+            "TYPE": "STRING",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": "",
+            "MAX": ""
+          },
+          "INSTALL_TEST": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 3,
+            "FLAGS": 2,
+            "MIN": false,
+            "MAX": true
+          },
+          "UNREACH": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 25,
+            "MIN": false,
+            "MAX": true
+          },
+          "IDENTIFICATION_MODE_KEY_VISUAL": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "IDENTIFY_TARGET_LEVEL": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 1,
+            "UNIT": "100%"
+          },
+          "OPERATING_VOLTAGE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "EXTERNAL",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "EXTERNAL"]
+          },
+          "IDENTIFY_DURATION": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 8580000,
+            "UNIT": "s"
+          },
+          "OPERATING_VOLTAGE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 25.2,
+            "UNIT": "V"
+          },
+          "BOOTED": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "UPDATE_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG2:1",
+          "TYPE": "HEATING_CLIMATECONTROL_TRANSCEIVER",
+          "PARENT": "CATALOG2",
+          "INDEX": 1,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {
+          "BOOST_TIME": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 2048
+          },
+          "PARTY_MODE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "SET_POINT_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": 4.5,
+            "MAX": 30.5,
+            "UNIT": "�C"
+          },
+          "HUMIDITY": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 100,
+            "UNIT": "% rF"
+          },
+          "PARTY_TIME_START": {
+            "TYPE": "STRING",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": "2000_01_01 00:00",
+            "MAX": "2255_12_31 23:55"
+          },
+          "CONTROL_MODE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 3
+          },
+          "QUICK_VETO_TIME": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 2048
+          },
+          "FROST_PROTECTION": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "PARTY_SET_POINT_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 4.5,
+            "MAX": 30.5
+          },
+          "SET_POINT_MODE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 3
+          },
+          "ACTUAL_TEMPERATURE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "UNDERFLOW",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "UNDERFLOW"]
+          },
+          "DURATION_UNIT": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": "S",
+            "MAX": "H",
+            "VALUE_LIST": ["S", "M", "H"]
+          },
+          "SWITCH_POINT_OCCURED": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "CONTROL_DIFFERENTIAL_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": -10,
+            "MAX": 10,
+            "UNIT": "�C"
+          },
+          "ACTIVE_PROFILE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": 1,
+            "MAX": 6
+          },
+          "WINDOW_STATE": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": "CLOSED",
+            "MAX": "OPEN",
+            "VALUE_LIST": ["CLOSED", "OPEN"]
+          },
+          "HEATING_COOLING": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": "HEATING",
+            "MAX": "COOLING",
+            "VALUE_LIST": ["HEATING", "COOLING"]
+          },
+          "HUMIDITY_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "UNDERFLOW",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "UNDERFLOW"]
+          },
+          "PARTY_TIME_END": {
+            "TYPE": "STRING",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": "2000_01_01 00:00",
+            "MAX": "2255_12_31 23:55"
+          },
+          "ACTUAL_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -3276.8,
+            "MAX": 3276.7,
+            "UNIT": "�C"
+          },
+          "BOOST_MODE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 6,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "DURATION_VALUE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 16343
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG2:2",
+          "TYPE": "HEATING_CLIMATECONTROL_RECEIVER",
+          "PARENT": "CATALOG2",
+          "INDEX": 2,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG2:3",
+          "TYPE": "HEATING_CLIMATECONTROL_CL_TRANSMITTER",
+          "PARENT": "CATALOG2",
+          "INDEX": 3,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG2:4",
+          "TYPE": "HEATING_SHUTTER_CONTACT_RECEIVER",
+          "PARENT": "CATALOG2",
+          "INDEX": 4,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG2:5",
+          "TYPE": "HEATING_CLIMATECONTROL_SWITCH_TRANSMITTER",
+          "PARENT": "CATALOG2",
+          "INDEX": 5,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG2:6",
+          "TYPE": "HEATING_KEY_RECEIVER",
+          "PARENT": "CATALOG2",
+          "INDEX": 6,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG2:7",
+          "TYPE": "CLIMATECONTROL_FLOOR_TRANSMITTER",
+          "PARENT": "CATALOG2",
+          "INDEX": 7,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      }
+    ]
+  },
+  {
+    "description": {
+      "ADDRESS": "CATALOG3",
+      "TYPE": "HmIP-eTRV-2 I9F",
+      "PARENT": "",
+      "CHILDREN": [
+        "CATALOG3:0",
+        "CATALOG3:1",
+        "CATALOG3:2",
+        "CATALOG3:3",
+        "CATALOG3:4",
+        "CATALOG3:5",
+        "CATALOG3:6",
+        "CATALOG3:7"
+      ],
+      "FIRMWARE": "2.2.22"
+    },
+    "channels": [
+      {
+        "description": {
+          "ADDRESS": "CATALOG3:0",
+          "TYPE": "MAINTENANCE",
+          "PARENT": "CATALOG3",
+          "INDEX": 0,
+          "PARAMSETS": ["MASTER", "VALUES", "SERVICE"]
+        },
+        "parameters": {
+          "CONFIG_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "DUTY_CYCLE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "LOW_BAT": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "INSTALL_TEST": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 3,
+            "FLAGS": 2,
+            "MIN": false,
+            "MAX": true
+          },
+          "UNREACH": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 25,
+            "MIN": false,
+            "MAX": true
+          },
+          "OPERATING_VOLTAGE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "EXTERNAL",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "EXTERNAL"]
+          },
+          "RSSI_DEVICE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -128,
+            "MAX": 127
+          },
+          "OPERATING_VOLTAGE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 25.2
+          },
+          "RSSI_PEER": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -128,
+            "MAX": 127
+          },
+          "BOOTED": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "UPDATE_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG3:1",
+          "TYPE": "HEATING_CLIMATECONTROL_TRANSCEIVER",
+          "PARENT": "CATALOG3",
+          "INDEX": 1,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {
+          "VALVE_ADAPTION": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "PARTY_MODE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "LEVEL_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "ERROR",
+            "VALUE_LIST": [
+              "NORMAL",
+              "UNKNOWN",
+              "OVERFLOW",
+              "UNDERFLOW",
+              "ERROR"
+            ]
+          },
+          "VALVE_STATE_ADJUSTMENT_TOO_BIG": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 4,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "PARTY_TIME_START": {
+            "TYPE": "STRING",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": "2000_01_01 00:00",
+            "MAX": "2255_12_31 23:55"
+          },
+          "CONTROL_MODE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 3
+          },
+          "QUICK_VETO_TIME": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 2048
+          },
+          "PARTY_SET_POINT_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 4.5,
+            "MAX": 30.5
+          },
+          "ACTUAL_TEMPERATURE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "UNDERFLOW",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "UNDERFLOW"]
+          },
+          "VALVE_STATE_ADJUSTMENT_TOO_SMALL": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 4,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "WINDOW_STATE": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": "CLOSED",
+            "MAX": "OPEN",
+            "VALUE_LIST": ["CLOSED", "OPEN"]
+          },
+          "BOOST_TIME": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 2048
+          },
+          "SET_POINT_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": 4.5,
+            "MAX": 30.5,
+            "UNIT": "�C"
+          },
+          "VALVE_STATE_TOO_TIGHT": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 4,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "FROST_PROTECTION": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "SET_POINT_MODE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 3
+          },
+          "LEVEL": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 1.01
+          },
+          "VALVE_STATE_ERROR_POSITION": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 4,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "DURATION_UNIT": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": "S",
+            "MAX": "H",
+            "VALUE_LIST": ["S", "M", "H"]
+          },
+          "SWITCH_POINT_OCCURED": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "CONTROL_DIFFERENTIAL_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": -10,
+            "MAX": 10,
+            "UNIT": "�C"
+          },
+          "VALVE_STATE": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "STATE_NOT_AVAILABLE",
+            "MAX": "ERROR_POSITION",
+            "VALUE_LIST": [
+              "STATE_NOT_AVAILABLE",
+              "RUN_TO_START",
+              "WAIT_FOR_ADAPTION",
+              "ADAPTION_IN_PROGRESS",
+              "ADAPTION_DONE",
+              "TOO_TIGHT",
+              "ADJUSTMENT_TOO_BIG",
+              "ADJUSTMENT_TOO_SMALL",
+              "ERROR_POSITION"
+            ]
+          },
+          "ACTIVE_PROFILE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": 1,
+            "MAX": 3
+          },
+          "PARTY_TIME_END": {
+            "TYPE": "STRING",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": "2000_01_01 00:00",
+            "MAX": "2255_12_31 23:55"
+          },
+          "ACTUAL_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -3276.8,
+            "MAX": 3276.7,
+            "UNIT": "�C"
+          },
+          "BOOST_MODE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 6,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "DURATION_VALUE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 16343
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG3:2",
+          "TYPE": "HEATING_CLIMATECONTROL_RECEIVER",
+          "PARENT": "CATALOG3",
+          "INDEX": 2,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG3:3",
+          "TYPE": "HEATING_CLIMATECONTROL_CL_RECEIVER",
+          "PARENT": "CATALOG3",
+          "INDEX": 3,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG3:4",
+          "TYPE": "HEATING_SHUTTER_CONTACT_RECEIVER",
+          "PARENT": "CATALOG3",
+          "INDEX": 4,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG3:5",
+          "TYPE": "HEATING_ROOM_TH_TRANSCEIVER",
+          "PARENT": "CATALOG3",
+          "INDEX": 5,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG3:6",
+          "TYPE": "HEATING_ROOM_TH_RECEIVER",
+          "PARENT": "CATALOG3",
+          "INDEX": 6,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG3:7",
+          "TYPE": "HEATING_KEY_RECEIVER",
+          "PARENT": "CATALOG3",
+          "INDEX": 7,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      }
+    ]
+  },
+  {
+    "description": {
+      "ADDRESS": "CATALOG4",
+      "TYPE": "HmIP-eTRV-B-2 R4M",
+      "PARENT": "",
+      "CHILDREN": [
+        "CATALOG4:0",
+        "CATALOG4:1",
+        "CATALOG4:2",
+        "CATALOG4:3",
+        "CATALOG4:4",
+        "CATALOG4:5",
+        "CATALOG4:6",
+        "CATALOG4:7"
+      ],
+      "FIRMWARE": "1.4.0"
+    },
+    "channels": [
+      {
+        "description": {
+          "ADDRESS": "CATALOG4:0",
+          "TYPE": "MAINTENANCE",
+          "PARENT": "CATALOG4",
+          "INDEX": 0,
+          "PARAMSETS": ["MASTER", "VALUES", "SERVICE"]
+        },
+        "parameters": {
+          "CONFIG_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "DUTY_CYCLE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "LOW_BAT": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "INSTALL_TEST": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 3,
+            "FLAGS": 2,
+            "MIN": false,
+            "MAX": true
+          },
+          "UNREACH": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 25,
+            "MIN": false,
+            "MAX": true
+          },
+          "OPERATING_VOLTAGE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "EXTERNAL",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "EXTERNAL"]
+          },
+          "RSSI_DEVICE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -128,
+            "MAX": 127
+          },
+          "OPERATING_VOLTAGE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 25.2
+          },
+          "RSSI_PEER": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -128,
+            "MAX": 127
+          },
+          "BOOTED": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "UPDATE_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG4:1",
+          "TYPE": "HEATING_CLIMATECONTROL_TRANSCEIVER",
+          "PARENT": "CATALOG4",
+          "INDEX": 1,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {
+          "VALVE_ADAPTION": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "PARTY_MODE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "LEVEL_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "ERROR",
+            "VALUE_LIST": [
+              "NORMAL",
+              "UNKNOWN",
+              "OVERFLOW",
+              "UNDERFLOW",
+              "ERROR"
+            ]
+          },
+          "VALVE_STATE_ADJUSTMENT_TOO_BIG": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 4,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "PARTY_TIME_START": {
+            "TYPE": "STRING",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": "2000_01_01 00:00",
+            "MAX": "2255_12_31 23:55"
+          },
+          "CONTROL_MODE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 3
+          },
+          "QUICK_VETO_TIME": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 2048
+          },
+          "PARTY_SET_POINT_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 4.5,
+            "MAX": 30.5
+          },
+          "ACTUAL_TEMPERATURE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "UNDERFLOW",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "UNDERFLOW"]
+          },
+          "VALVE_STATE_ADJUSTMENT_TOO_SMALL": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 4,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "WINDOW_STATE": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": "CLOSED",
+            "MAX": "OPEN",
+            "VALUE_LIST": ["CLOSED", "OPEN"]
+          },
+          "BOOST_TIME": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 2048
+          },
+          "SET_POINT_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": 4.5,
+            "MAX": 30.5,
+            "UNIT": "�C"
+          },
+          "VALVE_STATE_TOO_TIGHT": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 4,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "FROST_PROTECTION": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "SET_POINT_MODE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 3
+          },
+          "LEVEL": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 1.01
+          },
+          "VALVE_STATE_ERROR_POSITION": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 4,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "DURATION_UNIT": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": "S",
+            "MAX": "H",
+            "VALUE_LIST": ["S", "M", "H"]
+          },
+          "SWITCH_POINT_OCCURED": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "CONTROL_DIFFERENTIAL_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": -10,
+            "MAX": 10,
+            "UNIT": "�C"
+          },
+          "VALVE_STATE": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "STATE_NOT_AVAILABLE",
+            "MAX": "ERROR_POSITION",
+            "VALUE_LIST": [
+              "STATE_NOT_AVAILABLE",
+              "RUN_TO_START",
+              "WAIT_FOR_ADAPTION",
+              "ADAPTION_IN_PROGRESS",
+              "ADAPTION_DONE",
+              "TOO_TIGHT",
+              "ADJUSTMENT_TOO_BIG",
+              "ADJUSTMENT_TOO_SMALL",
+              "ERROR_POSITION"
+            ]
+          },
+          "ACTIVE_PROFILE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": 1,
+            "MAX": 3
+          },
+          "PARTY_TIME_END": {
+            "TYPE": "STRING",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": "2000_01_01 00:00",
+            "MAX": "2255_12_31 23:55"
+          },
+          "ACTUAL_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -3276.8,
+            "MAX": 3276.7,
+            "UNIT": "�C"
+          },
+          "BOOST_MODE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 6,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "DURATION_VALUE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 16343
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG4:2",
+          "TYPE": "HEATING_CLIMATECONTROL_RECEIVER",
+          "PARENT": "CATALOG4",
+          "INDEX": 2,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG4:3",
+          "TYPE": "HEATING_CLIMATECONTROL_CL_RECEIVER",
+          "PARENT": "CATALOG4",
+          "INDEX": 3,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG4:4",
+          "TYPE": "HEATING_SHUTTER_CONTACT_RECEIVER",
+          "PARENT": "CATALOG4",
+          "INDEX": 4,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG4:5",
+          "TYPE": "HEATING_ROOM_TH_TRANSCEIVER",
+          "PARENT": "CATALOG4",
+          "INDEX": 5,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG4:6",
+          "TYPE": "HEATING_ROOM_TH_RECEIVER",
+          "PARENT": "CATALOG4",
+          "INDEX": 6,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG4:7",
+          "TYPE": "HEATING_KEY_RECEIVER",
+          "PARENT": "CATALOG4",
+          "INDEX": 7,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      }
+    ]
+  },
+  {
+    "description": {
+      "ADDRESS": "CATALOG5",
+      "TYPE": "HmIP-eTRV-E-A",
+      "PARENT": "",
+      "CHILDREN": [
+        "CATALOG5:0",
+        "CATALOG5:1",
+        "CATALOG5:2",
+        "CATALOG5:3",
+        "CATALOG5:4",
+        "CATALOG5:5",
+        "CATALOG5:6",
+        "CATALOG5:7"
+      ],
+      "FIRMWARE": "1.4.8"
+    },
+    "channels": [
+      {
+        "description": {
+          "ADDRESS": "CATALOG5:0",
+          "TYPE": "MAINTENANCE",
+          "PARENT": "CATALOG5",
+          "INDEX": 0,
+          "PARAMSETS": ["MASTER", "VALUES", "SERVICE"]
+        },
+        "parameters": {
+          "CONFIG_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "DUTY_CYCLE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "LOW_BAT": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "INSTALL_TEST": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 3,
+            "FLAGS": 2,
+            "MIN": false,
+            "MAX": true
+          },
+          "UNREACH": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 25,
+            "MIN": false,
+            "MAX": true
+          },
+          "OPERATING_VOLTAGE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "EXTERNAL",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "EXTERNAL"]
+          },
+          "RSSI_DEVICE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -128,
+            "MAX": 127
+          },
+          "OPERATING_VOLTAGE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 25.2
+          },
+          "RSSI_PEER": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -128,
+            "MAX": 127
+          },
+          "BOOTED": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "UPDATE_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG5:1",
+          "TYPE": "HEATING_CLIMATECONTROL_TRANSCEIVER",
+          "PARENT": "CATALOG5",
+          "INDEX": 1,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {
+          "VALVE_ADAPTION": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "PARTY_MODE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "LEVEL_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "ERROR",
+            "VALUE_LIST": [
+              "NORMAL",
+              "UNKNOWN",
+              "OVERFLOW",
+              "UNDERFLOW",
+              "ERROR"
+            ]
+          },
+          "VALVE_STATE_ADJUSTMENT_TOO_BIG": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 4,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "PARTY_TIME_START": {
+            "TYPE": "STRING",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": "2000_01_01 00:00",
+            "MAX": "2255_12_31 23:55"
+          },
+          "CONTROL_MODE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 3
+          },
+          "QUICK_VETO_TIME": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 2048
+          },
+          "PARTY_SET_POINT_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 4.5,
+            "MAX": 30.5
+          },
+          "ACTUAL_TEMPERATURE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "UNDERFLOW",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "UNDERFLOW"]
+          },
+          "VALVE_STATE_ADJUSTMENT_TOO_SMALL": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 4,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "WINDOW_STATE": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": "CLOSED",
+            "MAX": "OPEN",
+            "VALUE_LIST": ["CLOSED", "OPEN"]
+          },
+          "BOOST_TIME": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 2048
+          },
+          "SET_POINT_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": 4.5,
+            "MAX": 30.5,
+            "UNIT": "�C"
+          },
+          "VALVE_STATE_TOO_TIGHT": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 4,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "FROST_PROTECTION": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "SET_POINT_MODE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 3
+          },
+          "LEVEL": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 1.01
+          },
+          "VALVE_STATE_ERROR_POSITION": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 4,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "DURATION_UNIT": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": "S",
+            "MAX": "H",
+            "VALUE_LIST": ["S", "M", "H"]
+          },
+          "SWITCH_POINT_OCCURED": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "CONTROL_DIFFERENTIAL_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": -10,
+            "MAX": 10,
+            "UNIT": "�C"
+          },
+          "VALVE_STATE": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "STATE_NOT_AVAILABLE",
+            "MAX": "ERROR_POSITION",
+            "VALUE_LIST": [
+              "STATE_NOT_AVAILABLE",
+              "RUN_TO_START",
+              "WAIT_FOR_ADAPTION",
+              "ADAPTION_IN_PROGRESS",
+              "ADAPTION_DONE",
+              "TOO_TIGHT",
+              "ADJUSTMENT_TOO_BIG",
+              "ADJUSTMENT_TOO_SMALL",
+              "ERROR_POSITION"
+            ]
+          },
+          "ACTIVE_PROFILE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": 1,
+            "MAX": 3
+          },
+          "PARTY_TIME_END": {
+            "TYPE": "STRING",
+            "OPERATIONS": 7,
+            "FLAGS": 1,
+            "MIN": "2000_01_01 00:00",
+            "MAX": "2255_12_31 23:55"
+          },
+          "ACTUAL_TEMPERATURE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -3276.8,
+            "MAX": 3276.7,
+            "UNIT": "�C"
+          },
+          "BOOST_MODE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 6,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "DURATION_VALUE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 2,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 16343
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG5:2",
+          "TYPE": "HEATING_CLIMATECONTROL_RECEIVER",
+          "PARENT": "CATALOG5",
+          "INDEX": 2,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG5:3",
+          "TYPE": "HEATING_CLIMATECONTROL_CL_RECEIVER",
+          "PARENT": "CATALOG5",
+          "INDEX": 3,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG5:4",
+          "TYPE": "HEATING_SHUTTER_CONTACT_RECEIVER",
+          "PARENT": "CATALOG5",
+          "INDEX": 4,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG5:5",
+          "TYPE": "HEATING_ROOM_TH_TRANSCEIVER",
+          "PARENT": "CATALOG5",
+          "INDEX": 5,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG5:6",
+          "TYPE": "HEATING_ROOM_TH_RECEIVER",
+          "PARENT": "CATALOG5",
+          "INDEX": 6,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG5:7",
+          "TYPE": "HEATING_KEY_RECEIVER",
+          "PARENT": "CATALOG5",
+          "INDEX": 7,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {}
+      }
+    ]
+  },
+  {
+    "description": {
+      "ADDRESS": "CATALOG6",
+      "TYPE": "HmIP-SWDO-A",
+      "PARENT": "",
+      "CHILDREN": ["CATALOG6:0", "CATALOG6:1", "CATALOG6:2"],
+      "FIRMWARE": "1.18.6"
+    },
+    "channels": [
+      {
+        "description": {
+          "ADDRESS": "CATALOG6:0",
+          "TYPE": "MAINTENANCE",
+          "PARENT": "CATALOG6",
+          "INDEX": 0,
+          "PARAMSETS": ["MASTER", "VALUES", "SERVICE"]
+        },
+        "parameters": {
+          "CONFIG_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "DUTY_CYCLE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "INSTALL_TEST": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 3,
+            "FLAGS": 2,
+            "MIN": false,
+            "MAX": true
+          },
+          "OPERATING_VOLTAGE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "EXTERNAL",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "EXTERNAL"]
+          },
+          "RSSI_PEER": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -128,
+            "MAX": 127
+          },
+          "BOOTED": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "ERROR_CODE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": 0,
+            "MAX": 255
+          },
+          "UPDATE_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "SABOTAGE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "LOW_BAT": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "UNREACH": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 25,
+            "MIN": false,
+            "MAX": true
+          },
+          "RSSI_DEVICE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -128,
+            "MAX": 127
+          },
+          "OPERATING_VOLTAGE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 25.2
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG6:1",
+          "TYPE": "SHUTTER_CONTACT",
+          "PARENT": "CATALOG6",
+          "INDEX": 1,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {
+          "STATE": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "CLOSED",
+            "MAX": "OPEN",
+            "UNIT": "\"\"",
+            "VALUE_LIST": ["CLOSED", "OPEN"]
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG6:2",
+          "TYPE": "ALARM_COND_SWITCH_TRANSMITTER",
+          "PARENT": "CATALOG6",
+          "INDEX": 2,
+          "PARAMSETS": ["MASTER", "VALUES", "SERVICE"]
+        },
+        "parameters": {}
+      }
+    ]
+  },
+  {
+    "description": {
+      "ADDRESS": "CATALOG7",
+      "TYPE": "HmIP-SWDO-2",
+      "PARENT": "",
+      "CHILDREN": ["CATALOG7:0", "CATALOG7:1", "CATALOG7:2"],
+      "FIRMWARE": "1.18.6"
+    },
+    "channels": [
+      {
+        "description": {
+          "ADDRESS": "CATALOG7:0",
+          "TYPE": "MAINTENANCE",
+          "PARENT": "CATALOG7",
+          "INDEX": 0,
+          "PARAMSETS": ["MASTER", "VALUES", "SERVICE"]
+        },
+        "parameters": {
+          "CONFIG_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "DUTY_CYCLE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "INSTALL_TEST": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 3,
+            "FLAGS": 2,
+            "MIN": false,
+            "MAX": true
+          },
+          "OPERATING_VOLTAGE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "EXTERNAL",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "EXTERNAL"]
+          },
+          "RSSI_PEER": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -128,
+            "MAX": 127
+          },
+          "BOOTED": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "ERROR_CODE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": 0,
+            "MAX": 255
+          },
+          "UPDATE_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "SABOTAGE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "LOW_BAT": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "UNREACH": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 25,
+            "MIN": false,
+            "MAX": true
+          },
+          "RSSI_DEVICE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -128,
+            "MAX": 127
+          },
+          "OPERATING_VOLTAGE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 25.2
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG7:1",
+          "TYPE": "SHUTTER_CONTACT",
+          "PARENT": "CATALOG7",
+          "INDEX": 1,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {
+          "STATE": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "CLOSED",
+            "MAX": "OPEN",
+            "UNIT": "\"\"",
+            "VALUE_LIST": ["CLOSED", "OPEN"]
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG7:2",
+          "TYPE": "ALARM_COND_SWITCH_TRANSMITTER",
+          "PARENT": "CATALOG7",
+          "INDEX": 2,
+          "PARAMSETS": ["MASTER", "VALUES", "SERVICE"]
+        },
+        "parameters": {}
+      }
+    ]
+  },
+  {
+    "description": {
+      "ADDRESS": "CATALOG8",
+      "TYPE": "HMIP-SWDO",
+      "PARENT": "",
+      "CHILDREN": ["CATALOG8:0", "CATALOG8:1", "CATALOG8:2"],
+      "FIRMWARE": "1.18.10"
+    },
+    "channels": [
+      {
+        "description": {
+          "ADDRESS": "CATALOG8:0",
+          "TYPE": "MAINTENANCE",
+          "PARENT": "CATALOG8",
+          "INDEX": 0,
+          "PARAMSETS": ["MASTER", "VALUES", "SERVICE"]
+        },
+        "parameters": {
+          "CONFIG_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "DUTY_CYCLE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "INSTALL_TEST": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 3,
+            "FLAGS": 2,
+            "MIN": false,
+            "MAX": true
+          },
+          "OPERATING_VOLTAGE_STATUS": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "NORMAL",
+            "MAX": "EXTERNAL",
+            "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "EXTERNAL"]
+          },
+          "RSSI_PEER": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -128,
+            "MAX": 127
+          },
+          "BOOTED": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": false,
+            "MAX": true
+          },
+          "ERROR_CODE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": 0,
+            "MAX": 255
+          },
+          "UPDATE_PENDING": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "SABOTAGE": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "LOW_BAT": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 9,
+            "MIN": false,
+            "MAX": true
+          },
+          "UNREACH": {
+            "TYPE": "BOOL",
+            "OPERATIONS": 5,
+            "FLAGS": 25,
+            "MIN": false,
+            "MAX": true
+          },
+          "RSSI_DEVICE": {
+            "TYPE": "INTEGER",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": -128,
+            "MAX": 127
+          },
+          "OPERATING_VOLTAGE": {
+            "TYPE": "FLOAT",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": 0,
+            "MAX": 25.2
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG8:1",
+          "TYPE": "SHUTTER_CONTACT",
+          "PARENT": "CATALOG8",
+          "INDEX": 1,
+          "PARAMSETS": ["MASTER", "VALUES", "LINK", "SERVICE"]
+        },
+        "parameters": {
+          "STATE": {
+            "TYPE": "ENUM",
+            "OPERATIONS": 5,
+            "FLAGS": 1,
+            "MIN": "CLOSED",
+            "MAX": "OPEN",
+            "UNIT": "\"\"",
+            "VALUE_LIST": ["CLOSED", "OPEN"]
+          }
+        }
+      },
+      {
+        "description": {
+          "ADDRESS": "CATALOG8:2",
+          "TYPE": "ALARM_COND_SWITCH_TRANSMITTER",
+          "PARENT": "CATALOG8",
+          "INDEX": 2,
+          "PARAMSETS": ["MASTER", "VALUES", "SERVICE"]
+        },
+        "parameters": {}
+      }
+    ]
+  }
+]

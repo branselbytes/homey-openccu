@@ -1,0 +1,32 @@
+{
+  "mode": "built-in image_gen",
+  "selectedConcept": "02-local-technology",
+  "selectedByOwner": "2026-10-03",
+  "description": "Dark navy workbench, warm copper lighting, local computer and illustrative wireless/Wired smart-home devices. This is generated project branding, not manufacturer product photography.",
+  "sourceFiles": {
+    "approvedPreview": "selected-concept.png",
+    "hero": "hero-source.png"
+  },
+  "productionPrompts": [
+    "Use case: precise-object-edit. Asset type: Homey app store hero image, landscape aspect ratio exactly 10:7, opaque photograph. Input image 1 is the user-approved design board; its lower section is the edit target and its top logo/title strip must be removed. Primary request: extract ONLY the lower photographic panel, filling the entire new landscape 10:7 canvas edge to edge. Keep that photograph unchanged in composition, object positions, perspective, dark navy tabletop, copper warm lighting, textures and device designs: DIN-rail actuator and green terminals at centre-left, Schuko smart plug at left, radiator thermostat at centre-right, window contact bottom centre, wall switch lower right, small unbranded metal computer and Ethernet upper right. No header, no typography, no logo, no new objects. Preserve the chosen photo as closely as possible; this is a production crop of an approved concept, not a redesign. Opaque everywhere.",
+    "Use case: precise-object-edit. Asset type: approved app branding design board preview. Input image 1 is the edit target. Change ONLY the transparent background of the upper title/logo strip to solid opaque white. Preserve the exact black interlocking lower-case bb circuit monogram and black text 'OpenCCU Local' and 'by branselbytes', with crisp high contrast. Preserve the lower photograph absolutely unchanged, including all device shapes, composition and colors. Keep the same square board and division between header and photograph. No new elements, no rewording. The entire output is opaque, the title strip is pure white."
+  ],
+  "vectorIcon": "../../../assets/icon.svg",
+  "exports": [
+    {
+      "path": "../../../assets/images/small.png",
+      "width": 250,
+      "height": 175
+    },
+    {
+      "path": "../../../assets/images/large.png",
+      "width": 500,
+      "height": 350
+    },
+    {
+      "path": "../../../assets/images/xlarge.png",
+      "width": 1000,
+      "height": 700
+    }
+  ]
+}
