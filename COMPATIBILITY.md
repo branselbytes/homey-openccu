@@ -49,6 +49,8 @@ This verifies discovery and reads, not physical commands, new pairing or a produ
 
 Socket/artwork follow-up: the local build also consolidates PS/PSM pairing and corrects catalog images and model-specific family pairing icons. The full suite now passes 409 tests, with Homey publish-level validation successful. Actual Homey rendering after installation remains unverified; existing saved per-device icon overrides are preserved.
 
+Version 0.1.3 was subsequently pushed to GitHub and uploaded as [Homey Developer Draft Build 4](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/4). This confirms upload preparation and automated validation, not hardware installation or Test/Live activation.
+
 ## Release evidence still required
 
 - Record the exact Homey model and software version for the existing Homey Test system.
