@@ -45,11 +45,17 @@ App version **0.1.2** groups SWDO, SWDO-2, SWDO-I, and the new SWDO-A under one 
 
 The local maintenance build resolves eight recorded device types through the shared PSM, eTRV, SWDO and new Wired STH profiles. Read-only checks against the configured CCU successfully read 25 mapped values across six reachable models, including the Wired STH-A and SWDO-A. The CCU reported the sampled HmIP-PSM-2 and HMIP-SWDO as unreachable (`UNREACH = true`), so their current-value checks were skipped. Their device descriptions were available and are covered by recorded-fixture tests.
 
-This verifies discovery and reads, not physical commands, new pairing or a production upgrade. PSM-2 switching, Wired STH commands and real add/remove callbacks remain hardware checks. Wired STH modes 0–3 and week profiles 1–6 remain deferred until complete Homey controls exist. The installed Homey app remains version 0.1.2; see the [maintenance delivery record](IMPLEMENTATION_PLAN.md#project-maintenance-audit-2026-10-03-unreleased).
+This verifies discovery and reads, not physical commands, new pairing or a production upgrade. PSM-2 switching, Wired STH commands and real add/remove callbacks remain hardware checks. Wired STH modes 0–3 and week profiles 1–6 remain deferred until complete Homey controls exist. At this stage the installed Homey app was version 0.1.2; see the [maintenance delivery record](IMPLEMENTATION_PLAN.md#project-maintenance-audit-2026-10-03-unreleased).
 
 Socket/artwork follow-up: the local build also consolidates PS/PSM pairing and corrects catalog images and model-specific family pairing icons. The full suite now passes 409 tests, with Homey publish-level validation successful. Actual Homey rendering after installation remains unverified; existing saved per-device icon overrides are preserved.
 
 Version 0.1.3 was subsequently pushed to GitHub and uploaded as [Homey Developer Draft Build 4](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/4). This confirms upload preparation and automated validation, not hardware installation or Test/Live activation.
+
+## Version 0.1.3 installation (2026-10-03)
+
+After the owner reported Test publication and authorized installation on both named Homeys, the exact 0.1.3 version was installed through the App Store Test channel. Both run Homey software 13.5.0. Homey Christian upgraded from 0.1.2 with all 17 paired app devices available; Homey Eltern upgraded from 0.1.1 with all six paired app devices available. Existing device IDs, driver assignments and capabilities are preserved. Both apps are running/enabled/not crashed, with healthy CCU connections and zero discovery issues (35 discovered devices on Christian, 20 on Eltern). Automatic app updates remain enabled on both; Christian now uses the App Store Test channel instead of a CLI installation.
+
+No devices were deleted or re-paired, and no physical control commands were sent. The paired inventory contains no PSM/eTRV-family devices, so their existing-device upgrade gates remain pending. Visual inspection of the Homey interface and physical input/output tests remain separate checks. The separately named older “Eltern Homey Pro” was not changed.
 
 ## Release evidence still required
 
