@@ -1,6 +1,9 @@
 {
   "id": "HMIP-SWDO",
-  "name": { "en": "HMIP-SWDO" },
+  "name": {
+    "en": "HmIP-SWDO window / door contacts",
+    "de": "HmIP-SWDO Fenster-/Türkontakte"
+  },
   "class": "sensor",
   "capabilities": [],
   "images": {

@@ -2,6 +2,22 @@
 
 All notable changes to OpenCCU for Homey will be documented in this file. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions are not considered released until explicitly tagged and published by the project owner.
 
+## [0.1.2] — prepared 2026-10-03
+
+### Added
+
+- HmIP-SWDO-A support through the shared optical window/door contact profile.
+- Discovery-checked detection enable controls for supported motion and presence sensors, including capability updates for existing paired devices.
+
+### Changed
+
+- Combine SWDO, SWDO-2, SWDO-I and SWDO-A into one localized pairing entry. Retain the old SWDO-2/SWDO-I drivers for existing devices and exclude already paired legacy/generic contacts from the shared pairing list.
+- Align both OpenCCU widgets with the shared Homey typography.
+
+### Fixed
+
+- Use channel 3 for HmIP-SMI55 detection and illuminance.
+
 ## [0.1.1] — prepared 2026-09-08
 
 ### Added

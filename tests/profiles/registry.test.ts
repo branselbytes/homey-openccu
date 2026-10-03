@@ -229,7 +229,7 @@ describe("ProfileRegistry", () => {
   it.each([
     [
       "HmIP-SWDO-2",
-      "HmIP-SWDO-2",
+      "HMIP-SWDO",
       [
         [1, "STATE", "BOOL"],
         [0, "LOW_BAT", "BOOL"],
@@ -323,7 +323,7 @@ describe("ProfileRegistry", () => {
     ["HmIP-FDT", "HmIP-FDT"],
     ["HmIP-PDT", "HmIP-PDT"],
     ["HmIP-DRDI3", "HmIP-DRDI3"],
-    ["HmIP-SWDO-I", "HmIP-SWDO-I"],
+    ["HmIP-SWDO-I", "HMIP-SWDO"],
     ["HmIP-SWDM", "HmIP-SWDM"],
     ["HMIP-WTH", "HMIP-WTH"],
     ["HmIP-WTH", "HMIP-WTH"],

@@ -6,5 +6,9 @@
   "0.1.1": {
     "en": "Add Wired DRS8 outputs, configurable DRI16 inputs, DRAP diagnostics and Wired presence sensors. Add named compass directions for SWO-PR and fix configuration discovery and input mode updates.",
     "de": "Wired-DRS8-Ausgänge, konfigurierbare DRI16-Eingänge, DRAP-Diagnosen und Wired-Präsenzmelder ergänzt. Ausgeschriebene Windrichtungen für SWO-PR sowie Korrekturen bei Geräteerkennung und Eingangsbetriebsarten."
+  },
+  "0.1.2": {
+    "en": "Add HmIP-SWDO-A and combine SWDO window/door contacts into one pairing entry while preserving existing devices and Flows. Add detection controls for supported motion/presence sensors and improve widget typography.",
+    "de": "HmIP-SWDO-A ergänzt und SWDO-Fenster-/Türkontakte in einem Geräteeintrag zusammengeführt; bestehende Geräte und Flows bleiben erhalten. Erkennungsschalter für unterstützte Bewegungs-/Präsenzmelder und verbesserte Widget-Schriftgestaltung."
   }
 }

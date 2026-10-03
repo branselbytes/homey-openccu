@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "io.github.branselbytes.openccu",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "compatibility": ">=12.9.0",
   "sdk": 3,
   "name": {
@@ -331,7 +331,8 @@
     {
       "id": "HMIP-SWDO",
       "name": {
-        "en": "HMIP-SWDO"
+        "en": "HmIP-SWDO window / door contacts",
+        "de": "HmIP-SWDO Fenster-/Türkontakte"
       },
       "class": "sensor",
       "capabilities": [],
@@ -1633,6 +1634,7 @@
       "name": {
         "en": "HmIP-SWDO-2"
       },
+      "deprecated": true,
       "class": "sensor",
       "capabilities": [],
       "images": {
@@ -1658,6 +1660,7 @@
       "name": {
         "en": "HmIP-SWDO-I"
       },
+      "deprecated": true,
       "class": "sensor",
       "capabilities": [],
       "images": {

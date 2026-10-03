@@ -1,6 +1,6 @@
 # Device support
 
-OpenCCU discovery is always the source of truth. Known products are routed to a dedicated Homey driver backed by shared typed profiles; unknown products remain pairable through `openccu-generic`.
+OpenCCU discovery is always the source of truth. Known products are routed to a dedicated product or family Homey driver backed by shared typed profiles; unknown products remain pairable through `openccu-generic`.
 
 ## Verification levels
 
@@ -13,8 +13,8 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 | Family                 | Product types                                                                                              | Verification                                                                                   |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | OpenCCU system         | One device per configured central                                                                          | fixture; live pairing and metric verification pending                                          |
-| Contact                | HMIP-SWDO/HmIP-SWDO, HmIP-SWDO-I, HmIP-SWDM, HmIP-SCI, HmIP-FCI1                                           | fixture; FCI1 follows discovered contact/button datapoints                                     |
-| Contact                | HmIP-SWDO-2                                                                                                | fixture; hardware available for later re-pairing                                               |
+| Optical contact        | HMIP-SWDO/HmIP-SWDO, HmIP-SWDO-2, HmIP-SWDO-I, HmIP-SWDO-A                                                 | synthetic fixture; shared driver; live SWDO-A discovery verified; physical events pending      |
+| Contact                | HmIP-SWDM, HmIP-SCI, HmIP-FCI1                                                                             | fixture; FCI1 follows discovered contact/button datapoints                                     |
 | Rotary handle          | HmIP-SRH                                                                                                   | fixture; three-state handle position                                                           |
 | Climate                | HMIP-WTH/HmIP-WTH, HmIP-STH, HmIP-STHD, HmIP-BWTH                                                          | fixture; individual product drivers                                                            |
 | Heating group          | HmIP-HEATING on OpenCCU VirtualDevices                                                                     | fixture; temperature, humidity, setpoint, mode, boost, week profile; live verification pending |
@@ -43,6 +43,14 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 | Siren                  | HmIP-ASIR                                                                                                  | fixture; atomic acoustic/optical 30-second default alarm                                       |
 | Irrigation valve       | HmIP-WSM                                                                                                   | fixture; on/off, L/min flow, and cumulative m³; neutral Homey class                            |
 | Buttons/remotes        | HmIP-BRA, HmIP-BRC2, HMIP-WRC2/HmIP-WRC2, HmIP-WRC6, HmIP-RC8                                              | fixture; short/long press device Flow trigger                                                  |
+
+## SWDO family
+
+New contacts are added through **HmIP-SWDO window / door contacts** (German: **HmIP-SWDO Fenster-/Türkontakte**). The explicit model list covers SWDO, SWDO-2, SWDO-I, and SWDO-A, including the original uppercase HMIP-SWDO and HMIP-SWDO-A spellings. OpenCCU model suffixes separated by whitespace are normalized as before. Other SWDO variants remain on the generic discovery path until explicitly verified.
+
+The shared profile exposes the discovered channel 1 `STATE` as `alarm_contact` and channel 0 `LOW_BAT` as `alarm_battery`. The manufacturer lists SWDO-2 and SWDO-A together in the [operating manual](https://homematic-ip.com/sites/default/files/downloads/157857a0_160027a0_hmip-swdo-2_um.pdf). Discovery still gates each capability. A dedicated synthetic XML-RPC fixture covers initial reads and callbacks. Following installation of 0.1.2 on Homey Christian (Homey 13.5.0, 2026-10-03), live discovery additionally confirmed HMIP-SWDO, HmIP-SWDO-2 and HmIP-SWDO-A on the shared profile with both capabilities and zero discovery issues.
+
+Existing SWDO-2 and SWDO-I devices retain their original Homey driver, identity, capabilities, and Flows. Their driver entries are deprecated and hidden from new pairing, but still shipped. Contacts already paired through those drivers or the generic driver are omitted from the shared SWDO pairing list. There is no automatic deletion or re-pairing. The 0.1.2 upgrade preserved all 13 existing Homey device identities and capabilities, with every device available after installation. Live SWDO-A pairing, opening/closing and battery-state verification remain pending.
 
 ## Reference baseline
 

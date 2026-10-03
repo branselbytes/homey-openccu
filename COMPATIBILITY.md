@@ -35,6 +35,12 @@ Required default endpoints:
 
 Ports are configurable where the OpenCCU installation differs. Firewalls and VLAN routing must permit Homey-to-OpenCCU requests and OpenCCU-to-Homey callback connections. Discovery broadcasts do not replace manual host configuration on routed networks.
 
+## SWDO family and current field report
+
+The user reported on **2026-10-03** that the currently installed app works well on their Homey, with no observed disconnects. The exact software versions, observation period and exercised devices were not specified in this follow-up; it is a user report rather than a controlled reconnect test.
+
+App version **0.1.2** groups SWDO, SWDO-2, SWDO-I, and the new SWDO-A under one pairing entry. Installation on **Homey Christian, software 13.5.0**, was verified on 2026-10-03: the app is running, all 13 existing devices remain available with unchanged identities and retained capabilities, and the CCU runtime is healthy with zero discovery issues. Live discovery recognizes SWDO-A through the shared profile with contact and battery capabilities. Physical SWDO-A pairing and opening/closing events remain unverified. See [device coverage and upgrade behavior](DEVICE_SUPPORT.md#swdo-family).
+
 ## Release evidence still required
 
 - Record the exact Homey model and software version for the existing Homey Test system.

@@ -119,7 +119,7 @@ Profiles are declarative TypeScript data where possible and small typed adapters
 
 Homey-specific classes consume the domain model rather than performing RPC directly. Pairing first selects/configures an OpenCCU, then lists logical devices derived from discovered channels. A stable Homey device identifier should combine central identity, interface, device address, and logical subdevice/profile identity.
 
-Homey Compose remains the source of manifests. Each explicitly supported product keeps a dedicated Homey driver, backed by shared profiles and mapping services rather than copied logic. A separate generic fallback driver handles safe capabilities and diagnostics for unknown products. Manifest generation and consistency tests prevent the dedicated-driver catalog from drifting.
+Homey Compose remains the source of manifests. Explicitly supported products use dedicated Homey drivers, backed by shared profiles and mapping services rather than copied logic. Variants with identical exposed behavior may share a family driver; previously shipped driver IDs remain as deprecated adapters for paired devices (ADR 0018). A separate generic fallback driver handles safe capabilities and diagnostics for unknown products. Manifest generation and consistency tests prevent the dedicated-driver catalog from drifting.
 
 Multi-channel actuators remain one product driver but resolve into one pairable logical Homey device per output. Their stable identity appends a profile-owned logical ID to the central/interface/device address; existing single-device identities remain unchanged. Each logical device stores and re-resolves only its own bindings. OpenCCU channel names take precedence for output names when available, with a deterministic product/output fallback.
 
@@ -210,6 +210,7 @@ The protected settings Web API exposes a downloadable support report assembled f
 
 - `docs/adr/0001-initial-product-scope.md`: HmIP-RF first; programs and system variables in the first usable release.
 - `docs/adr/0002-homey-driver-strategy.md`: dedicated product drivers plus a generic fallback.
+- `docs/adr/0018-swdo-family-driver.md`: one SWDO pairing entry with retained legacy drivers and stable existing device identities.
 - `docs/adr/0003-typed-core-boundaries.md`: Homey-independent typed protocol, domain, cache, event, and diagnostic boundaries.
 - `docs/adr/0004-bounded-rpc-and-confirmed-writes.md`: prioritized XML-RPC admission, persistent descriptions, repaired bindings, and verified commands.
 - `docs/adr/0005-profile-driven-device-events.md`: discovery-checked stateless event bindings and shared Homey device triggers.

@@ -483,14 +483,14 @@ const CONTACT_BINDINGS: DeviceProfile["bindings"] = [
 export const HMIP_CONTACT_PROFILE: DeviceProfile = {
   id: "hmip-contact",
   driverId: "HMIP-SWDO",
-  deviceTypes: ["HMIP-SWDO", "HmIP-SWDO"],
-  bindings: CONTACT_BINDINGS,
-};
-
-const HMIP_SWDO_I_PROFILE: DeviceProfile = {
-  id: "hmip-swdo-i",
-  driverId: "HmIP-SWDO-I",
-  deviceTypes: ["HmIP-SWDO-I"],
+  deviceTypes: [
+    "HMIP-SWDO",
+    "HmIP-SWDO",
+    "HmIP-SWDO-2",
+    "HmIP-SWDO-I",
+    "HmIP-SWDO-A",
+    "HMIP-SWDO-A",
+  ],
   bindings: CONTACT_BINDINGS,
 };
 
@@ -534,21 +534,6 @@ const HMIP_SRH_PROFILE: DeviceProfile = {
       channel: 1,
       parameter: "STATE",
       transform: "enum-number-to-string",
-    },
-    SENSOR_MAINTENANCE_BINDING,
-  ],
-};
-
-export const HMIP_CONTACT_2_PROFILE: DeviceProfile = {
-  id: "hmip-contact-2",
-  driverId: "HmIP-SWDO-2",
-  deviceTypes: ["HmIP-SWDO-2"],
-  bindings: [
-    {
-      capability: "alarm_contact",
-      channel: 1,
-      parameter: "STATE",
-      transform: "boolean",
     },
     SENSOR_MAINTENANCE_BINDING,
   ],
@@ -1240,13 +1225,11 @@ export const HMIP_PROFILES = [
   HMIP_FSM16_PROFILE,
   HMIP_POWER_METER_PROFILE,
   HMIP_CONTACT_PROFILE,
-  HMIP_SWDO_I_PROFILE,
   HMIP_SWDM_PROFILE,
   HMIP_SCI_PROFILE,
   HMIP_FCI1_PROFILE,
   HMIP_BRA_PROFILE,
   HMIP_SRH_PROFILE,
-  HMIP_CONTACT_2_PROFILE,
   HMIP_WEATHER_PROFILE,
   HMIP_WEATHER_BASIC_PROFILE,
   HMIP_WEATHER_PLUS_PROFILE,

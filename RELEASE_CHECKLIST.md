@@ -53,3 +53,11 @@ Package inspection found no credentials, captures, caches, generated diagnostics
 The owner authorized committing and pushing the current work to GitHub and uploading it to Athom. Version 0.1.1 includes Wired DRS8/DRI16/DRAP/SPI support and the SWO-PR compass display. All 286 tests, formatting, lint, type checks, and Homey publish validation passed. Local credentials are excluded from Git and explicitly omitted from Athom build environment variables. Recorded test fixtures are excluded from the app package. The 0.1.0 build remains under certification review; this upload prepares a separate Draft without Test/Live activation.
 
 Athom upload completed: [version 0.1.1, Build 2](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/2). No Test/Live activation was performed.
+
+## 0.1.2 installation and Developer upload (2026-10-03)
+
+The owner authorized installation on Homey Christian, a Git commit and origin/main push, and the Homey CLI Developer upload. Version 0.1.2 combines the SWDO family and adds SWDO-A support; its changelog also includes the detection controls and widget typography changes since the previous Developer build. `npm run check` passed formatting, lint, strict types and all 317 tests; Homey build and publish-level validation passed.
+
+The CLI installed 0.1.2 on Homey Christian without clearing app data. Verification on Homey 13.5.0 confirms running/enabled/not crashed, all 13 existing devices available with their original identities and retained capabilities, and healthy CCU discovery (35 devices, zero issues). SWDO-A is recognized by the shared contact profile; its physical pairing and event test remain pending.
+
+[Homey Developer Build 3](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/3) uploaded successfully and was confirmed as version 0.1.2 in draft state. The build environment contains zero keys; local CCU credentials and env.json were excluded. No Test/Live activation or Git tag was created.

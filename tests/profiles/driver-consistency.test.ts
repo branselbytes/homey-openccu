@@ -6,6 +6,7 @@ import { HMIP_PROFILES } from "../../src/profiles/hmip";
 import { GENERIC_DRIVER_ID } from "../../src/mapping/device-resolver";
 
 const SYSTEM_DRIVER_ID = "openccu-system";
+const LEGACY_DRIVER_IDS = ["HmIP-SWDO-2", "HmIP-SWDO-I"] as const;
 const DEFAULT_ICON_DRIVER_IDS = [
   "HmIPW-DRAP",
   "HmIPW-SPI",
@@ -58,14 +59,40 @@ describe("dedicated profile drivers", () => {
     ).resolves.toBeUndefined();
   });
 
-  it("exposes only profiled, generic, and central-level drivers", async () => {
+  it("ships only profiled, generic, central-level, and retained legacy drivers", async () => {
     const expected = [
       ...new Set(HMIP_PROFILES.map((profile) => profile.driverId)),
       GENERIC_DRIVER_ID,
       SYSTEM_DRIVER_ID,
+      ...LEGACY_DRIVER_IDS,
     ].sort();
     const actual = (await readdir(resolve("drivers"))).sort();
     expect(actual).toEqual(expected);
+  });
+
+  it("hides legacy SWDO drivers from pairing while retaining their device adapters", async () => {
+    for (const driverId of LEGACY_DRIVER_IDS) {
+      const manifest = JSON.parse(
+        await readFile(
+          resolve("drivers", driverId, "driver.compose.json"),
+          "utf8",
+        ),
+      ) as { deprecated?: boolean };
+      expect(manifest.deprecated, driverId).toBe(true);
+      await expect(
+        access(resolve("drivers", driverId, "device.ts")),
+      ).resolves.toBeUndefined();
+      await expect(
+        access(resolve("drivers", driverId, "driver.ts")),
+      ).resolves.toBeUndefined();
+    }
+    const manifest = JSON.parse(
+      await readFile(
+        resolve("drivers", "HMIP-SWDO", "driver.compose.json"),
+        "utf8",
+      ),
+    ) as { deprecated?: boolean };
+    expect(manifest.deprecated).not.toBe(true);
   });
 
   it("ships a local SVG icon for every active driver", async () => {

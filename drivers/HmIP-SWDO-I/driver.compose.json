@@ -1,6 +1,7 @@
 {
   "id": "HmIP-SWDO-I",
   "name": { "en": "HmIP-SWDO-I" },
+  "deprecated": true,
   "class": "sensor",
   "capabilities": [],
   "images": {

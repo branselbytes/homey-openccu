@@ -233,3 +233,16 @@ Release upload (2026-09-08): version 0.1.1 passed all 286 tests and Homey publis
 The switch uses existing runtime write confirmation and capability reconciliation. Disabling detection leaves the last CCU motion alarm intact until the CCU reports a new alarm state. No actual detectors were toggled during automated testing.
 
 Validation: `npm run check` passed formatting, lint, type-checks and all 301 tests, including 15 detection-control cases and the recorded Wired fixture. Production preprocessing/TypeScript build and `homey app validate --level publish` passed before installation on the previously approved Homey Christian. A read-only post-install check confirmed that the existing HmIP-SMI and HmIPW-SPI are available and expose `homematic_detection_active = true`. No real detection setting was changed; live command execution remains a hardware test. Homey Eltern remains pending because its remote upload failed in the preceding deployment.
+
+## SWDO family consolidation (2026-10-03)
+
+- [x] Merge the SWDO, SWDO-2 and SWDO-I contact profiles and add HmIP-SWDO-A, including its uppercase model alias.
+- [x] Show one localized SWDO pairing entry; retain deprecated SWDO-2/SWDO-I adapters and unchanged existing device identities/bindings (ADR 0018).
+- [x] Prevent contacts already paired through legacy or generic drivers from appearing again in the shared pairing list.
+- [x] Add dedicated synthetic XML-RPC fixture coverage for discovery, initial contact/battery values, callbacks and existing-device binding compatibility.
+- [x] Install version 0.1.2 on Homey Christian without clearing app data and verify the existing-device upgrade.
+- [x] Verify live discovery routes SWDO, SWDO-2 and SWDO-A through the shared profile.
+- [x] Upload version 0.1.2 as Homey Developer Draft Build 3 with an empty build environment.
+- [ ] Verify physical SWDO-A pairing, opening/closing and battery state on Homey.
+
+The user reports stable operation without observed disconnects on the currently installed app. The owner subsequently authorized installation on Homey Christian, committing/pushing to origin/main and a Homey CLI Developer upload. Validation with Node.js 22.23.3: `npm run check` passed formatting, ESLint, strict type checks and all 317 tests in 51 files, including the synthetic SWDO integration fixture. `npm run build`, `node_modules/.bin/homey app build` and `node_modules/.bin/homey app validate --level publish` passed. Post-install verification on Homey Christian (Homey 13.5.0) confirms app 0.1.2 running/enabled/not crashed, all 13 existing devices available with preserved identities and capabilities, and a healthy CCU runtime discovering 35 devices with zero issues. The new SWDO-A is mapped to HMIP-SWDO with alarm_contact and alarm_battery. Physical SWDO-A pairing and events remain the hardware gate. Homey CLI upload succeeded as [Draft Build 3](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/3), with zero environment keys and no Test/Live activation.
