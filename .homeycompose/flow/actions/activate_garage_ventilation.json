@@ -4,15 +4,18 @@
     "de": "Garagentor in Lüftungsposition fahren"
   },
   "titleFormatted": {
-    "en": "Move to ventilation position",
-    "de": "In Lüftungsposition fahren"
+    "en": "Move garage door to ventilation position",
+    "de": "Garagentor in Lüftungsposition fahren"
   },
   "args": [
     {
       "name": "device",
       "type": "device",
       "filter": "driver_id=HmIP-MOD-HO|openccu-generic&capabilities=homematic_garage_ventilation",
-      "title": { "en": "Device", "de": "Gerät" }
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
     }
   ]
 }

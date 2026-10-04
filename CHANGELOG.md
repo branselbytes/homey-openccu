@@ -4,6 +4,20 @@ All notable changes to OpenCCU for Homey will be documented in this file. The pr
 
 ## [Unreleased]
 
+## [0.1.6] — 2026-10-04 (beta)
+
+### Added
+
+- Stateful light button beside ventilation in the existing HmIP-MOD-HO device, retaining its identity, native capabilities and standard Flow cards.
+- Explicitly named garage-light Flow actions, state condition and on/off triggers, plus a garage-door position-change trigger. Existing generic Flow cards and their names remain available.
+- Isolated development demo app for inspecting the garage controls and simulated light/door states in Homey without a physical CCU device.
+
+### Fixed
+
+- Show Hörmann light only as its stateful button by hiding the native light toggle UI, including existing devices. Confirmed on Homey 13.5.1; older supported firmware remains unverified.
+- Name the Hörmann capabilities "Garagentor" / "Licht" in German and "Garage door" / "Light" in English, including existing devices, and make garage-door position and ventilation labels explicit.
+- Keep the visible light button and native light capability synchronized after missed callbacks and prevent superseded command read-backs from restoring stale state.
+
 ## [0.1.5] — prepared 2026-10-04
 
 ### Added

@@ -1,0 +1,10 @@
+{
+  "type": "boolean",
+  "title": { "en": "Light", "de": "Licht" },
+  "uiComponent": "button",
+  "uiQuickAction": true,
+  "getable": true,
+  "setable": true,
+  "insights": false,
+  "icon": "/assets/garage-light.svg"
+}

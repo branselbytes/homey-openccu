@@ -1,0 +1,32 @@
+{
+  "title": {
+    "en": "Garage door position changed",
+    "de": "Garagentorposition hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "Garage door position changed",
+    "de": "Garagentorposition hat sich geändert"
+  },
+  "tokens": [
+    {
+      "name": "homematic_garage_state",
+      "type": "string",
+      "title": {
+        "en": "Garage door position",
+        "de": "Garagentorposition"
+      },
+      "example": "closed"
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-MOD-HO|openccu-generic&capabilities=homematic_garage_state",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

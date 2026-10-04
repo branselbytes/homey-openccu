@@ -303,8 +303,20 @@ export class DeviceBindingController {
     binding: CapabilityBinding,
     expected: RpcValue,
   ): PendingWrite {
-    const previous = this.#pendingWrites.get(binding.capability);
-    if (previous?.timer !== undefined) clearTimeout(previous.timer);
+    // Two controls may address the same actuator (for example the native
+    // light Flow capability and its visible button). Only the newest write
+    // should be verified, whichever control sent it.
+    for (const previous of this.#pendingWrites.values()) {
+      if (
+        previous.binding.capability === binding.capability ||
+        (previous.binding.writeChannelAddress !== undefined &&
+          previous.binding.writeChannelAddress ===
+            binding.writeChannelAddress &&
+          previous.binding.writeParameter === binding.writeParameter)
+      ) {
+        this.#clearPendingWrite(previous);
+      }
+    }
     const pending = { binding, expected };
     this.#pendingWrites.set(binding.capability, pending);
     return pending;
@@ -327,10 +339,13 @@ export class DeviceBindingController {
     if (this.#pendingWrites.get(pending.binding.capability) !== pending) return;
     try {
       const actual = await this.#runtime.read(pending.binding);
+      // A newer write or callback may have superseded this in-flight read.
+      if (this.#pendingWrites.get(pending.binding.capability) !== pending)
+        return;
       if (rpcValuesEqual(actual, pending.expected)) {
         this.#device.log(`Verified ${pending.binding.capability} from OpenCCU`);
         this.#clearPendingWrite(pending);
-        await this.#setValue(pending.binding, actual);
+        await this.#setReadBackValues(pending.binding, actual);
         return;
       }
       if (attempt + 1 < WRITE_VERIFICATION_DELAYS_MS.length) {
@@ -342,8 +357,10 @@ export class DeviceBindingController {
         new Error("Written value was not observed"),
       );
       this.#clearPendingWrite(pending);
-      await this.#setValue(pending.binding, actual);
+      await this.#setReadBackValues(pending.binding, actual);
     } catch (error) {
+      if (this.#pendingWrites.get(pending.binding.capability) !== pending)
+        return;
       if (attempt + 1 < WRITE_VERIFICATION_DELAYS_MS.length) {
         this.#scheduleWriteVerification(pending, attempt + 1);
         return;
@@ -356,6 +373,24 @@ export class DeviceBindingController {
       await this.#device.setUnavailable(
         "OpenCCU command delivery could not be verified",
       );
+    }
+  }
+
+  async #setReadBackValues(
+    source: CapabilityBinding,
+    value: RpcValue,
+  ): Promise<void> {
+    // runtime.read has already transformed the value. Mirror only exact
+    // aliases; other representations of this datapoint keep their own path.
+    for (const binding of this.#bindings) {
+      if (
+        binding.readable &&
+        binding.channelAddress === source.channelAddress &&
+        binding.parameter === source.parameter &&
+        binding.transform === source.transform
+      ) {
+        await this.#setValue(binding, value);
+      }
     }
   }
 

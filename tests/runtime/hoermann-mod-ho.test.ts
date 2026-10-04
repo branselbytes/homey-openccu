@@ -76,8 +76,8 @@ async function fixture() {
   return { address, client, values, runtime, candidate, bindings, binding };
 }
 
-function homeyPort() {
-  const capabilities = new Set(["garagedoor_closed", "onoff"]);
+function homeyPort(initialCapabilities = ["garagedoor_closed", "onoff"]) {
+  const capabilities = new Set(initialCapabilities);
   const listeners = new Map<string, (value: RpcValue) => Promise<void>>();
   const device = {
     getCapabilities: () => [...capabilities],
@@ -126,6 +126,7 @@ describe("recorded HmIP-MOD-HO discovery, controls and upgrade", () => {
       "homematic_garage_state",
       "homematic_garage_command",
       "homematic_garage_ventilation",
+      "homematic_garage_light",
     ]);
     expect(binding("garagedoor_closed")).toMatchObject({
       channelAddress: `${address}:1`,
@@ -142,6 +143,10 @@ describe("recorded HmIP-MOD-HO discovery, controls and upgrade", () => {
       writeParameter: "STATE",
       readable: true,
       writable: true,
+    });
+    expect(binding("homematic_garage_light")).toEqual({
+      ...binding("onoff"),
+      capability: "homematic_garage_light",
     });
     expect(binding("homematic_garage_state").writable).toBe(false);
     for (const capability of [
@@ -168,6 +173,8 @@ describe("recorded HmIP-MOD-HO discovery, controls and upgrade", () => {
     ["homematic_garage_ventilation", true, 1, "DOOR_COMMAND", "PARTIAL_OPEN"],
     ["onoff", true, 2, "STATE", true],
     ["onoff", false, 2, "STATE", false],
+    ["homematic_garage_light", true, 2, "STATE", true],
+    ["homematic_garage_light", false, 2, "STATE", false],
   ] as const)(
     "writes %s=%s with the documented channel, parameter and value",
     async (capability, value, channel, parameter, expected) => {
@@ -238,12 +245,16 @@ describe("recorded HmIP-MOD-HO discovery, controls and upgrade", () => {
       await controller.start();
       expect(persistBindings).toHaveBeenCalledWith(bindings);
       expect(device.removeCapability).not.toHaveBeenCalled();
-      expect(device.addCapability).toHaveBeenCalledTimes(3);
+      expect(device.addCapability).toHaveBeenCalledTimes(4);
       expect(device.setCapabilityValue).toHaveBeenCalledWith(
         "garagedoor_closed",
         true,
       );
       expect(device.setCapabilityValue).toHaveBeenCalledWith("onoff", false);
+      expect(device.setCapabilityValue).toHaveBeenCalledWith(
+        "homematic_garage_light",
+        false,
+      );
       await expect(
         runtime.createCallbackDispatcher().dispatch("system.multicall", [
           [
@@ -271,12 +282,205 @@ describe("recorded HmIP-MOD-HO discovery, controls and upgrade", () => {
         "homematic_garage_state",
         "unknown",
       );
-      expect(device.setCapabilityValue).toHaveBeenLastCalledWith("onoff", true);
+      expect(device.setCapabilityValue).toHaveBeenCalledWith("onoff", true);
+      expect(device.setCapabilityValue).toHaveBeenLastCalledWith(
+        "homematic_garage_light",
+        true,
+      );
       expect(device.error).not.toHaveBeenCalled();
     } finally {
       controller.stop();
     }
   });
+
+  it("adds the light button to a current paired garage without replacing its existing capabilities", async () => {
+    const { runtime, bindings } = await fixture();
+    const previousBindings = bindings.filter(
+      ({ capability }) => capability !== "homematic_garage_light",
+    );
+    const { device } = homeyPort(
+      previousBindings.map(({ capability }) => capability),
+    );
+    const persistBindings = vi.fn().mockResolvedValue(undefined);
+    runtime.publishConnectionState("healthy");
+    const controller = new DeviceBindingController(
+      runtime,
+      device,
+      previousBindings,
+      { resolveBindings: () => bindings, persistBindings },
+    );
+    try {
+      await controller.start();
+      expect(device.addCapability).toHaveBeenCalledExactlyOnceWith(
+        "homematic_garage_light",
+      );
+      expect(device.removeCapability).not.toHaveBeenCalled();
+      expect(device.getCapabilities()).toEqual(
+        bindings.map(({ capability }) => capability),
+      );
+      expect(persistBindings).toHaveBeenCalledExactlyOnceWith(bindings);
+    } finally {
+      controller.stop();
+    }
+  });
+
+  it.each(["onoff", "homematic_garage_light"])(
+    "synchronizes both light controls from callbacks after %s writes without duplicate commands",
+    async (capability) => {
+      vi.useFakeTimers();
+      const { address, runtime, client, bindings } = await fixture();
+      const { device, write } = homeyPort();
+      runtime.publishConnectionState("healthy");
+      const controller = new DeviceBindingController(runtime, device, bindings);
+      try {
+        await controller.start();
+        client.getParamset.mockClear();
+        for (const state of [true, false]) {
+          client.setValue.mockClear();
+          device.setCapabilityValue.mockClear();
+          await write(capability, state);
+          expect(client.setValue).toHaveBeenCalledExactlyOnceWith(
+            `${address}:2`,
+            "STATE",
+            state,
+            undefined,
+          );
+          await runtime
+            .createCallbackDispatcher()
+            .dispatch("event", ["HmIP-RF", `${address}:2`, "STATE", state]);
+          expect(device.setCapabilityValue).toHaveBeenCalledWith(
+            "onoff",
+            state,
+          );
+          expect(device.setCapabilityValue).toHaveBeenCalledWith(
+            "homematic_garage_light",
+            state,
+          );
+        }
+        await vi.advanceTimersByTimeAsync(40_000);
+        expect(client.getParamset).not.toHaveBeenCalled();
+        expect(device.error).not.toHaveBeenCalled();
+      } finally {
+        controller.stop();
+        vi.useRealTimers();
+      }
+    },
+  );
+
+  it.each([
+    ["onoff", true],
+    ["homematic_garage_light", true],
+    ["onoff", false],
+    ["homematic_garage_light", false],
+  ] as const)(
+    "synchronizes both light controls when %s is read back as %s without a callback",
+    async (capability, actual) => {
+      vi.useFakeTimers();
+      const { address, runtime, client, values, bindings } = await fixture();
+      const { device, write } = homeyPort();
+      runtime.publishConnectionState("healthy");
+      const controller = new DeviceBindingController(runtime, device, bindings);
+      try {
+        await controller.start();
+        device.setCapabilityValue.mockClear();
+        client.getParamset.mockClear();
+        await write(capability, true);
+        values.set(`${address}:2`, { STATE: actual });
+        await vi.advanceTimersByTimeAsync(actual ? 3_000 : 33_000);
+        expect(device.setCapabilityValue).toHaveBeenCalledWith("onoff", actual);
+        expect(device.setCapabilityValue).toHaveBeenCalledWith(
+          "homematic_garage_light",
+          actual,
+        );
+        expect(client.getParamset).toHaveBeenCalledTimes(actual ? 1 : 3);
+        expect(client.setValue).toHaveBeenCalledOnce();
+        expect(device.error).toHaveBeenCalledTimes(actual ? 0 : 1);
+        expect(device.setUnavailable).not.toHaveBeenCalled();
+      } finally {
+        controller.stop();
+        vi.useRealTimers();
+      }
+    },
+  );
+
+  it.each(["onoff", "homematic_garage_light"])(
+    "replaces pending %s verification when the other light control issues a newer command",
+    async (capability) => {
+      vi.useFakeTimers();
+      const { runtime, client, bindings } = await fixture();
+      const { device, write } = homeyPort();
+      runtime.publishConnectionState("healthy");
+      const controller = new DeviceBindingController(runtime, device, bindings);
+      try {
+        await controller.start();
+        client.getParamset.mockClear();
+        device.setCapabilityValue.mockClear();
+        await write(capability, true);
+        await write(
+          capability === "onoff" ? "homematic_garage_light" : "onoff",
+          false,
+        );
+        await vi.advanceTimersByTimeAsync(40_000);
+        expect(client.setValue).toHaveBeenCalledTimes(2);
+        expect(client.getParamset).toHaveBeenCalledOnce();
+        expect(device.setCapabilityValue).toHaveBeenCalledWith("onoff", false);
+        expect(device.setCapabilityValue).toHaveBeenCalledWith(
+          "homematic_garage_light",
+          false,
+        );
+        expect(device.error).not.toHaveBeenCalled();
+        expect(device.setUnavailable).not.toHaveBeenCalled();
+      } finally {
+        controller.stop();
+        vi.useRealTimers();
+      }
+    },
+  );
+
+  it.each(["success", "failure"] as const)(
+    "ignores an in-flight light readback %s superseded by the other control",
+    async (reply) => {
+      vi.useFakeTimers();
+      const { runtime, client, bindings } = await fixture();
+      const { device, write } = homeyPort();
+      runtime.publishConnectionState("healthy");
+      const controller = new DeviceBindingController(runtime, device, bindings);
+      let resolveRead: ((values: Record<string, RpcValue>) => void) | undefined;
+      let rejectRead: ((error: Error) => void) | undefined;
+      try {
+        await controller.start();
+        client.getParamset.mockClear();
+        client.getParamset.mockImplementationOnce(
+          () =>
+            new Promise<Record<string, RpcValue>>((resolve, reject) => {
+              resolveRead = resolve;
+              rejectRead = reject;
+            }),
+        );
+        device.setCapabilityValue.mockClear();
+        await write("onoff", true);
+        await vi.advanceTimersByTimeAsync(3_000);
+        expect(client.getParamset).toHaveBeenCalledOnce();
+        await write("homematic_garage_light", false);
+        if (reply === "success") resolveRead?.({ STATE: true });
+        else rejectRead?.(new Error("Superseded readback failed"));
+        await vi.advanceTimersByTimeAsync(0);
+        expect(device.setCapabilityValue).not.toHaveBeenCalled();
+        await vi.advanceTimersByTimeAsync(40_000);
+        expect(client.getParamset).toHaveBeenCalledTimes(2);
+        expect(device.setCapabilityValue).toHaveBeenCalledWith("onoff", false);
+        expect(device.setCapabilityValue).toHaveBeenCalledWith(
+          "homematic_garage_light",
+          false,
+        );
+        expect(device.error).not.toHaveBeenCalled();
+        expect(device.setUnavailable).not.toHaveBeenCalled();
+      } finally {
+        controller.stop();
+        vi.useRealTimers();
+      }
+    },
+  );
 
   it("does not read back write-only commands or falsely mark the device unavailable", async () => {
     vi.useFakeTimers();
@@ -360,8 +564,11 @@ describe("recorded HmIP-MOD-HO discovery, controls and upgrade", () => {
       await expect(write("onoff", true)).rejects.toThrow(
         "XML-RPC setValue failed",
       );
-      expect(client.setValue).toHaveBeenCalledTimes(2);
-      expect(device.error).toHaveBeenCalledTimes(2);
+      await expect(write("homematic_garage_light", true)).rejects.toThrow(
+        "XML-RPC setValue failed",
+      );
+      expect(client.setValue).toHaveBeenCalledTimes(3);
+      expect(device.error).toHaveBeenCalledTimes(3);
     } finally {
       controller.stop();
     }

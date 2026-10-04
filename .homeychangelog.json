@@ -22,5 +22,9 @@
   "0.1.5": {
     "en": "Add an English/German heating schedule editor in app settings and device repair, with compact weekday controls, copying and confirmed saves. Reduce memory use and fix startup memory warnings with bounded caches and coordinated profile reads.",
     "de": "Heizprofile direkt in Homey bearbeiten: kompakter Wocheneditor in App-Einstellungen und Geräte-Reparatur, mit Kopierfunktion und bestätigtem Speichern. Speicherverbrauch reduziert und Speicherwarnungen beim Start durch begrenzte Zwischenspeicher und koordinierte Profilabfragen behoben."
+  },
+  "0.1.6": {
+    "en": "HmIP-MOD-HO: show the light as a dedicated button inside the existing garage device, with clear door/light labels and explicitly named Flow cards. Keep existing devices and Flows, synchronize light states after missing callbacks, and ignore stale read-backs from superseded commands.",
+    "de": "HmIP-MOD-HO: Licht als eigene Taste im vorhandenen Garagentor-Gerät, klare Tor-/Lichtbezeichnungen und eindeutig benannte Flow-Karten. Bestehende Geräte und Flows bleiben erhalten. Lichtzustände nach fehlenden Rückmeldungen synchronisiert und veraltete Rücklesewerte bei überholten Befehlen verworfen."
   }
 }

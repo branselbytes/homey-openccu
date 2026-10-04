@@ -1,0 +1,21 @@
+{
+  "title": {
+    "en": "Turn garage light off",
+    "de": "Garagenlicht ausschalten"
+  },
+  "titleFormatted": {
+    "en": "Turn garage light off",
+    "de": "Garagenlicht ausschalten"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-MOD-HO|openccu-generic&capabilities=homematic_garage_light",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
 
 import { registerGarageFlowCards } from "../../src/homey/garage-flow-controller";
@@ -30,9 +31,12 @@ function fixture() {
     if (!listener) throw new Error(`Missing action ${id}`);
     return listener(args);
   }
-  async function runCondition(args: Record<string, unknown>) {
-    const listener = conditions.get("garage_door_state_is");
-    if (!listener) throw new Error("Missing garage state condition");
+  async function runCondition(
+    args: Record<string, unknown>,
+    id = "garage_door_state_is",
+  ) {
+    const listener = conditions.get(id);
+    if (!listener) throw new Error(`Missing condition ${id}`);
     return listener(args);
   }
   return { actions, conditions, device, runAction, runCondition };
@@ -74,17 +78,20 @@ describe("garage Flow cards", () => {
     },
   );
 
-  it.each(["set_garage_door_command", "activate_garage_ventilation"])(
-    "rejects unavailable capabilities for %s",
-    async (id) => {
-      const { device, runAction } = fixture();
-      device.hasCapability.mockReturnValue(false);
-      await expect(runAction(id, { device, command: "up" })).rejects.toThrow(
-        "Selected device does not support",
-      );
-      expect(device.triggerCapabilityListener).not.toHaveBeenCalled();
-    },
-  );
+  it.each([
+    "set_garage_door_command",
+    "activate_garage_ventilation",
+    "turn_garage_light_on",
+    "turn_garage_light_off",
+    "toggle_garage_light",
+  ])("rejects unavailable capabilities for %s", async (id) => {
+    const { device, runAction } = fixture();
+    device.hasCapability.mockReturnValue(false);
+    await expect(runAction(id, { device, command: "up" })).rejects.toThrow(
+      "Selected device does not support",
+    );
+    expect(device.triggerCapabilityListener).not.toHaveBeenCalled();
+  });
 
   it.each([
     undefined,
@@ -100,16 +107,144 @@ describe("garage Flow cards", () => {
     ).rejects.toThrow("Selected device does not support");
   });
 
-  it.each(["set_garage_door_command", "activate_garage_ventilation"])(
-    "propagates write failures from %s without retries",
-    async (id) => {
+  it.each([
+    "set_garage_door_command",
+    "activate_garage_ventilation",
+    "turn_garage_light_on",
+    "turn_garage_light_off",
+    "toggle_garage_light",
+  ])("propagates write failures from %s without retries", async (id) => {
+    const { device, runAction } = fixture();
+    const failure = new Error("Device is unavailable");
+    device.getCapabilityValue.mockReturnValue(false);
+    device.triggerCapabilityListener.mockRejectedValue(failure);
+    await expect(runAction(id, { device, command: "up" })).rejects.toBe(
+      failure,
+    );
+    expect(device.triggerCapabilityListener).toHaveBeenCalledOnce();
+  });
+
+  it.each([
+    ["turn_garage_light_on", true],
+    ["turn_garage_light_off", false],
+  ] as const)(
+    "%s writes only the native light capability with its explicit value",
+    async (id, expected) => {
       const { device, runAction } = fixture();
-      const failure = new Error("Device is unavailable");
-      device.triggerCapabilityListener.mockRejectedValue(failure);
-      await expect(runAction(id, { device, command: "up" })).rejects.toBe(
-        failure,
+      device.getCapabilityValue.mockReturnValue(null);
+      await runAction(id, { device, value: !expected });
+      expect(device.triggerCapabilityListener).toHaveBeenCalledExactlyOnceWith(
+        "onoff",
+        expected,
       );
-      expect(device.triggerCapabilityListener).toHaveBeenCalledOnce();
+      expect(device.getCapabilityValue).not.toHaveBeenCalled();
+    },
+  );
+
+  it.each([true, false])(
+    "toggles a reported light state of %s without sending a door command",
+    async (state) => {
+      const { device, runAction } = fixture();
+      device.getCapabilityValue.mockReturnValue(state);
+      await runAction("toggle_garage_light", { device });
+      expect(device.getCapabilityValue).toHaveBeenCalledExactlyOnceWith(
+        "onoff",
+      );
+      expect(device.triggerCapabilityListener).toHaveBeenCalledExactlyOnceWith(
+        "onoff",
+        !state,
+      );
+    },
+  );
+
+  it.each([true, false])(
+    "reports light condition %s without querying the garage position",
+    async (state) => {
+      const { device, runCondition } = fixture();
+      device.getCapabilityValue.mockReturnValue(state);
+      await expect(
+        runCondition({ device }, "garage_light_is_on"),
+      ).resolves.toBe(state);
+      expect(device.getCapabilityValue).toHaveBeenCalledExactlyOnceWith(
+        "onoff",
+      );
+      expect(device.triggerCapabilityListener).not.toHaveBeenCalled();
+    },
+  );
+
+  it.each([null, undefined, "false", "closed", 0, 1])(
+    "rejects unknown light state %s for toggle and condition without assuming the light is off",
+    async (state) => {
+      const { device, runAction, runCondition } = fixture();
+      device.getCapabilityValue.mockReturnValue(state);
+      await expect(
+        runAction("toggle_garage_light", { device }),
+      ).rejects.toThrow("Garage light state is unknown");
+      await expect(
+        runCondition({ device }, "garage_light_is_on"),
+      ).rejects.toThrow("Garage light state is unknown");
+      expect(device.triggerCapabilityListener).not.toHaveBeenCalled();
+    },
+  );
+
+  it("requires the native light state capability for the light condition", async () => {
+    const { device, runCondition } = fixture();
+    device.hasCapability.mockImplementation(
+      (capability: string) => capability !== "onoff",
+    );
+    await expect(
+      runCondition({ device }, "garage_light_is_on"),
+    ).rejects.toThrow("Selected device does not support onoff");
+    expect(device.getCapabilityValue).not.toHaveBeenCalled();
+  });
+
+  it("requires readable light state for a toggle even when command handling exists", async () => {
+    const { runAction, device } = fixture();
+    await expect(
+      runAction("toggle_garage_light", {
+        device: {
+          hasCapability: device.hasCapability,
+          triggerCapabilityListener: device.triggerCapabilityListener,
+        },
+      }),
+    ).rejects.toThrow("Selected device does not support onoff");
+    expect(device.triggerCapabilityListener).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["homematic_garage_light", "boolean", "true"],
+    ["homematic_garage_light", "boolean", "false"],
+    ["homematic_garage_state", "enum", "changed"],
+  ] as const)(
+    "declares the %s %s capability's automatic %s trigger",
+    (capability, type, suffix) => {
+      // Homey, not the app controller, dispatches these reserved trigger IDs
+      // on setCapabilityValue. This check does not simulate SDK dispatch.
+      const definition = JSON.parse(
+        readFileSync(`.homeycompose/capabilities/${capability}.json`, "utf8"),
+      ) as { type: string; getable: boolean };
+      const card = JSON.parse(
+        readFileSync(
+          `.homeycompose/flow/triggers/${capability}_${suffix}.json`,
+          "utf8",
+        ),
+      ) as {
+        args: { name: string; type: string; filter: string }[];
+        tokens?: { name: string; type: string }[];
+      };
+      expect(definition).toMatchObject({ type, getable: true });
+      expect(card.args).toEqual([
+        expect.objectContaining({
+          name: "device",
+          type: "device",
+          filter: `driver_id=HmIP-MOD-HO|openccu-generic&capabilities=${capability}`,
+        }),
+      ]);
+      if (type === "enum") {
+        expect(card.tokens).toEqual([
+          expect.objectContaining({ name: capability, type: "string" }),
+        ]);
+      }
     },
   );
 

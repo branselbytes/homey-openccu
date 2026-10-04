@@ -1226,6 +1226,12 @@ const HMIP_MOD_HO_PROFILE: DeviceProfile = {
       requiresWriteTarget: true,
       writeStrategy: "garage-ventilation",
     },
+    {
+      capability: "homematic_garage_light",
+      channel: 2,
+      parameter: "STATE",
+      requiresWriteTarget: true,
+    },
   ],
 };
 

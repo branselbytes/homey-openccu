@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "io.github.branselbytes.openccu",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "compatibility": ">=12.9.0",
   "sdk": 3,
   "name": {
@@ -119,17 +119,94 @@
           }
         ],
         "id": "hmip_button_pressed"
+      },
+      {
+        "title": {
+          "en": "Garage light turned off",
+          "de": "Garagenlicht wurde ausgeschaltet"
+        },
+        "titleFormatted": {
+          "en": "Garage light turned off",
+          "de": "Garagenlicht wurde ausgeschaltet"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-MOD-HO|openccu-generic&capabilities=homematic_garage_light",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "homematic_garage_light_false"
+      },
+      {
+        "title": {
+          "en": "Garage light turned on",
+          "de": "Garagenlicht wurde eingeschaltet"
+        },
+        "titleFormatted": {
+          "en": "Garage light turned on",
+          "de": "Garagenlicht wurde eingeschaltet"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-MOD-HO|openccu-generic&capabilities=homematic_garage_light",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "homematic_garage_light_true"
+      },
+      {
+        "title": {
+          "en": "Garage door position changed",
+          "de": "Garagentorposition hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Garage door position changed",
+          "de": "Garagentorposition hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "homematic_garage_state",
+            "type": "string",
+            "title": {
+              "en": "Garage door position",
+              "de": "Garagentorposition"
+            },
+            "example": "closed"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-MOD-HO|openccu-generic&capabilities=homematic_garage_state",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "homematic_garage_state_changed"
       }
     ],
     "conditions": [
       {
         "title": {
           "en": "Garage door position is",
-          "de": "Torposition ist"
+          "de": "Garagentorposition ist"
         },
         "titleFormatted": {
           "en": "Garage door position !{{is|is not}} [[state]]",
-          "de": "Torposition !{{ist|ist nicht}} [[state]]"
+          "de": "Garagentorposition !{{ist|ist nicht}} [[state]]"
         },
         "args": [
           {
@@ -184,6 +261,28 @@
       },
       {
         "title": {
+          "en": "Garage light is !{{on|off}}",
+          "de": "Garagenlicht ist !{{eingeschaltet|ausgeschaltet}}"
+        },
+        "titleFormatted": {
+          "en": "Garage light is !{{on|off}}",
+          "de": "Garagenlicht ist !{{eingeschaltet|ausgeschaltet}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-MOD-HO|openccu-generic&capabilities=homematic_garage_light",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "garage_light_is_on"
+      },
+      {
+        "title": {
           "en": "OpenCCU variable [[variable]] equals [[value]]",
           "de": "OpenCCU-Systemvariable [[variable]] entspricht [[value]]"
         },
@@ -219,8 +318,8 @@
           "de": "Garagentor in Lüftungsposition fahren"
         },
         "titleFormatted": {
-          "en": "Move to ventilation position",
-          "de": "In Lüftungsposition fahren"
+          "en": "Move garage door to ventilation position",
+          "de": "Garagentor in Lüftungsposition fahren"
         },
         "args": [
           {
@@ -458,6 +557,72 @@
           }
         ],
         "id": "set_thermostat_weekprofile"
+      },
+      {
+        "title": {
+          "en": "Toggle garage light",
+          "de": "Garagenlicht umschalten"
+        },
+        "titleFormatted": {
+          "en": "Toggle garage light",
+          "de": "Garagenlicht umschalten"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-MOD-HO|openccu-generic&capabilities=homematic_garage_light",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "toggle_garage_light"
+      },
+      {
+        "title": {
+          "en": "Turn garage light off",
+          "de": "Garagenlicht ausschalten"
+        },
+        "titleFormatted": {
+          "en": "Turn garage light off",
+          "de": "Garagenlicht ausschalten"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-MOD-HO|openccu-generic&capabilities=homematic_garage_light",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "turn_garage_light_off"
+      },
+      {
+        "title": {
+          "en": "Turn garage light on",
+          "de": "Garagenlicht einschalten"
+        },
+        "titleFormatted": {
+          "en": "Turn garage light on",
+          "de": "Garagenlicht einschalten"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-MOD-HO|openccu-generic&capabilities=homematic_garage_light",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "turn_garage_light_on"
       }
     ]
   },
@@ -1282,8 +1447,24 @@
         "onoff",
         "homematic_garage_state",
         "homematic_garage_command",
-        "homematic_garage_ventilation"
+        "homematic_garage_ventilation",
+        "homematic_garage_light"
       ],
+      "capabilitiesOptions": {
+        "garagedoor_closed": {
+          "title": {
+            "en": "Garage door",
+            "de": "Garagentor"
+          }
+        },
+        "onoff": {
+          "title": {
+            "en": "Light",
+            "de": "Licht"
+          },
+          "uiComponent": null
+        }
+      },
       "images": {
         "large": "/drivers/HmIP-MOD-HO/assets/images/large.png",
         "small": "/drivers/HmIP-MOD-HO/assets/images/small.png"
@@ -2756,6 +2937,19 @@
       "setable": true,
       "insights": false,
       "icon": "/assets/garage-door.svg"
+    },
+    "homematic_garage_light": {
+      "type": "boolean",
+      "title": {
+        "en": "Light",
+        "de": "Licht"
+      },
+      "uiComponent": "button",
+      "uiQuickAction": true,
+      "getable": true,
+      "setable": true,
+      "insights": false,
+      "icon": "/assets/garage-light.svg"
     },
     "homematic_garage_state": {
       "type": "enum",

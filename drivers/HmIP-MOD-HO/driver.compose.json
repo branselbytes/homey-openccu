@@ -9,8 +9,24 @@
     "onoff",
     "homematic_garage_state",
     "homematic_garage_command",
-    "homematic_garage_ventilation"
+    "homematic_garage_ventilation",
+    "homematic_garage_light"
   ],
+  "capabilitiesOptions": {
+    "garagedoor_closed": {
+      "title": {
+        "en": "Garage door",
+        "de": "Garagentor"
+      }
+    },
+    "onoff": {
+      "title": {
+        "en": "Light",
+        "de": "Licht"
+      },
+      "uiComponent": null
+    }
+  },
   "images": {
     "large": "/drivers/HmIP-MOD-HO/assets/images/large.png",
     "small": "/drivers/HmIP-MOD-HO/assets/images/small.png"

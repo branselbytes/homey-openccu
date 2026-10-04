@@ -1,0 +1,32 @@
+import Homey from "homey";
+import type { OpenCcuRuntimeProvider } from "./src/homey/runtime-provider";
+import { registerGarageFlowCards } from "./src/homey/garage-flow-controller";
+import {
+  createGarageSimulation,
+  type GarageFixture,
+} from "./scripts/garage-demo/simulation";
+
+const fixture: GarageFixture = require("./fixtures/hoermann-mod-ho.json");
+
+export = class OpenCcuGarageDemoApp extends Homey.App {
+  runtimeProvider?: OpenCcuRuntimeProvider;
+  #close?: () => Promise<void>;
+
+  async onInit(): Promise<void> {
+    const name =
+      this.homey.i18n.getLanguage() === "de"
+        ? "Garagentor (Simulation)"
+        : "Garage door (Simulation)";
+    const simulation = await createGarageSimulation(fixture, name);
+    this.runtimeProvider = simulation.runtimeProvider;
+    this.#close = simulation.close;
+    registerGarageFlowCards(this.homey.flow);
+    this.log(
+      "Garage simulation ready. No CCU connection or physical device control.",
+    );
+  }
+
+  onUninit(): Promise<void> {
+    return this.#close?.() ?? Promise.resolve();
+  }
+};

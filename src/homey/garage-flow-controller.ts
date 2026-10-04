@@ -46,6 +46,30 @@ export function registerGarageFlowCards(flow: GarageFlowManager): void {
       return device.triggerCapabilityListener(capability, true);
     });
 
+  for (const [id, value] of [
+    ["turn_garage_light_on", true],
+    ["turn_garage_light_off", false],
+  ] as const) {
+    flow.getActionCard(id).registerRunListener(async (args) => {
+      const device = requireCommandDevice(args.device, "onoff");
+      return device.triggerCapabilityListener("onoff", value);
+    });
+  }
+
+  flow
+    .getActionCard("toggle_garage_light")
+    .registerRunListener(async (args) => {
+      const device = requireCommandDevice(args.device, "onoff");
+      const current = readGarageLightState(device);
+      return device.triggerCapabilityListener("onoff", !current);
+    });
+
+  flow
+    .getConditionCard("garage_light_is_on")
+    .registerRunListener((args) =>
+      Promise.resolve(readGarageLightState(args.device)),
+    );
+
   flow.getConditionCard("garage_door_state_is").registerRunListener((args) => {
     const capability = "homematic_garage_state";
     const device = args.device;
@@ -65,6 +89,17 @@ export function registerGarageFlowCards(flow: GarageFlowManager): void {
       device.getCapabilityValue(capability) === args.state,
     );
   });
+}
+
+function readGarageLightState(device: unknown): boolean {
+  if (!isGarageStateDevice(device) || !device.hasCapability("onoff")) {
+    throw new Error("Selected device does not support onoff");
+  }
+  const state = device.getCapabilityValue("onoff");
+  if (typeof state !== "boolean") {
+    throw new Error("Garage light state is unknown");
+  }
+  return state;
 }
 
 function requireCommandDevice(

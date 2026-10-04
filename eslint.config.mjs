@@ -15,12 +15,20 @@ export default tseslint.config(
       "widgets/**/*.ts",
       "drivers/**/*.ts",
       "tests/**/*.ts",
+      "scripts/garage-demo/**/*.ts",
     ],
     languageOptions: {
       parserOptions: {
         project: ["./tsconfig.json", "./tsconfig.test.json"],
         tsconfigRootDir: import.meta.dirname,
       },
+    },
+  },
+  {
+    ...tseslint.configs.disableTypeChecked,
+    files: ["scripts/create-garage-demo.mjs"],
+    languageOptions: {
+      globals: { process: "readonly", console: "readonly", URL: "readonly" },
     },
   },
   {
