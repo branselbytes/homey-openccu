@@ -5,7 +5,12 @@
     "de": "HmIPW-STH Wired-Klimasensoren"
   },
   "class": "thermostat",
-  "capabilities": [],
+  "capabilities": [
+    "measure_temperature",
+    "measure_humidity",
+    "target_temperature",
+    "homematic_thermostat_boost"
+  ],
   "images": {
     "large": "/drivers/HmIPW-STH/assets/images/large.png",
     "small": "/drivers/HmIPW-STH/assets/images/small.png"

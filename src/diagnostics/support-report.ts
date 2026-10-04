@@ -1,4 +1,5 @@
 import type { OpenCcuRuntimeDiagnostics } from "../runtime/openccu-runtime";
+import { sanitizeXmlRpcErrorDiagnostics } from "../protocol/xmlrpc/diagnostics";
 import { redactDiagnosticValue } from "./redact";
 
 export const SUPPORT_REPORT_SCHEMA_VERSION = 2;
@@ -42,11 +43,26 @@ export function createSupportReport(
     app: input.app,
     centrals: input.runtimes.map(({ runtime }, index) => ({
       alias: `central-${index + 1}`,
-      runtime,
+      runtime: projectRuntimeDiagnostics(runtime),
     })),
   };
 
   // Keep redaction as a final defence if future runtime diagnostics gain a
   // sensitive field. Addresses and values remain excluded by default.
   return redactDiagnosticValue(report) as SupportReport;
+}
+
+function projectRuntimeDiagnostics(
+  runtime: OpenCcuRuntimeDiagnostics,
+): OpenCcuRuntimeDiagnostics {
+  if (runtime.transport === undefined) return runtime;
+  const { lastError, ...transport } = runtime.transport;
+  const safeLastError = sanitizeXmlRpcErrorDiagnostics(lastError);
+  return {
+    ...runtime,
+    transport: {
+      ...transport,
+      ...(safeLastError === undefined ? {} : { lastError: safeLastError }),
+    },
+  };
 }

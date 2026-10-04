@@ -4,7 +4,7 @@
     "en": "HmIP-PCBS-BAT"
   },
   "class": "socket",
-  "capabilities": [],
+  "capabilities": ["onoff"],
   "images": {
     "large": "/drivers/HmIP-PCBS-BAT/assets/images/large.png",
     "small": "/drivers/HmIP-PCBS-BAT/assets/images/small.png"

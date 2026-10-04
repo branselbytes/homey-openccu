@@ -1,3 +1,5 @@
+import type { ProtocolErrorCode } from "../errors";
+
 export type RpcScalar = boolean | number | string | Date | Buffer | null;
 export type RpcValue = RpcScalar | RpcValue[] | { [key: string]: RpcValue };
 
@@ -14,21 +16,24 @@ export interface DeviceDescription {
   readonly [key: string]: RpcValue | readonly string[] | undefined;
 }
 
-export type ParameterType = "ACTION" | "BOOL" | "ENUM" | "FLOAT" | "INTEGER" | "STRING";
+export type ParameterType =
+  "ACTION" | "BOOL" | "ENUM" | "FLOAT" | "INTEGER" | "STRING";
 
 export interface ParameterDescription {
   readonly TYPE: ParameterType;
   readonly OPERATIONS: number;
   readonly FLAGS: number;
   readonly DEFAULT?: RpcValue;
-  readonly MIN?: number;
-  readonly MAX?: number;
+  readonly MIN?: number | string | boolean;
+  readonly MAX?: number | string | boolean;
   readonly UNIT?: string;
   readonly VALUE_LIST?: readonly string[];
   readonly [key: string]: RpcValue | readonly string[] | undefined;
 }
 
-export type ParamsetDescription = Readonly<Record<string, ParameterDescription>>;
+export type ParamsetDescription = Readonly<
+  Record<string, ParameterDescription>
+>;
 
 export interface XmlRpcEvent {
   readonly interfaceId: string;
@@ -50,6 +55,23 @@ export interface XmlRpcClientDiagnostics {
   readonly completedRequests: number;
   readonly failedRequests: number;
   readonly timedOutRequests: number;
+  /** Most recent failed request, retained until the client is recreated. */
+  readonly lastError?: XmlRpcErrorDiagnostics;
+}
+
+export type XmlRpcMethod =
+  | "listDevices"
+  | "getParamsetDescription"
+  | "getValue"
+  | "getParamset"
+  | "setValue"
+  | "putParamset"
+  | "init";
+
+export interface XmlRpcErrorDiagnostics {
+  readonly method: XmlRpcMethod;
+  readonly code: ProtocolErrorCode;
+  readonly faultCode?: number;
 }
 
 export interface XmlRpcClient {
@@ -60,18 +82,31 @@ export interface XmlRpcClient {
     paramsetKey?: string,
     signal?: AbortSignal,
   ): Promise<ParamsetDescription>;
-  getValue(address: string, parameter: string, signal?: AbortSignal): Promise<RpcValue>;
+  getValue(
+    address: string,
+    parameter: string,
+    signal?: AbortSignal,
+  ): Promise<RpcValue>;
   getParamset(
     address: string,
     paramsetKey?: string,
     signal?: AbortSignal,
   ): Promise<Readonly<Record<string, RpcValue>>>;
-  setValue(address: string, parameter: string, value: RpcValue, signal?: AbortSignal): Promise<void>;
+  setValue(
+    address: string,
+    parameter: string,
+    value: RpcValue,
+    signal?: AbortSignal,
+  ): Promise<void>;
   putParamset(
     address: string,
     paramsetKey: string,
     values: Readonly<Record<string, RpcValue>>,
     signal?: AbortSignal,
   ): Promise<void>;
-  init(callbackUrl: string, interfaceId: string, signal?: AbortSignal): Promise<void>;
+  init(
+    callbackUrl: string,
+    interfaceId: string,
+    signal?: AbortSignal,
+  ): Promise<void>;
 }

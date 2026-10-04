@@ -176,17 +176,22 @@ export class DeviceBindingController {
         this.#unsubscribers.push(
           this.#device.onCapabilityWrite(binding.capability, async (value) => {
             this.#device.log(`Writing ${binding.capability} to OpenCCU`);
-            const pending = this.#beginWriteVerification(binding, value);
+            // Commands such as STOP have no readable target state. Their
+            // delivery is acknowledged by XML-RPC; state arrives separately.
+            const pending = binding.readable
+              ? this.#beginWriteVerification(binding, value)
+              : undefined;
             const writeOutcome: Promise<WriteOutcome> = this.#runtime
               .write(binding, value)
               .then(
                 (): WriteOutcome => ({ status: "confirmed" }),
                 (error: unknown): WriteOutcome => ({ status: "failed", error }),
               );
-            const outcome = await Promise.race([
-              writeOutcome,
-              waitForPendingWrite(),
-            ]);
+            // A write-only command cannot be verified later from its own
+            // datapoint. Await its RPC reply so a late failure reaches Homey.
+            const outcome = binding.readable
+              ? await Promise.race([writeOutcome, waitForPendingWrite()])
+              : await writeOutcome;
             if (outcome.status === "pending") {
               this.#device.log(
                 `Accepted ${binding.capability} write; awaiting OpenCCU confirmation`,
@@ -305,7 +310,11 @@ export class DeviceBindingController {
     return pending;
   }
 
-  #scheduleWriteVerification(pending: PendingWrite, attempt: number): void {
+  #scheduleWriteVerification(
+    pending: PendingWrite | undefined,
+    attempt: number,
+  ): void {
+    if (pending === undefined) return;
     if (this.#pendingWrites.get(pending.binding.capability) !== pending) return;
     const delay = WRITE_VERIFICATION_DELAYS_MS[attempt];
     if (delay === undefined) return;
@@ -362,7 +371,8 @@ export class DeviceBindingController {
     this.#clearPendingWrite(pending);
   }
 
-  #clearPendingWrite(pending: PendingWrite): void {
+  #clearPendingWrite(pending: PendingWrite | undefined): void {
+    if (pending === undefined) return;
     if (this.#pendingWrites.get(pending.binding.capability) !== pending) return;
     if (pending.timer !== undefined) clearTimeout(pending.timer);
     this.#pendingWrites.delete(pending.binding.capability);

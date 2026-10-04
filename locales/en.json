@@ -25,15 +25,19 @@
       "title": "Diagnostics",
       "hint": "Create a sanitized support report with connection states, device types, firmware versions and datapoint definitions. Credentials, addresses, OpenCCU names and current values are not included. Please still review the report before sharing it.",
       "download": "Create diagnostics report",
-      "content": "Diagnostics report contents",
-      "ready": "The report is ready. You can save or share it as a file, or copy it to the clipboard.",
-      "save": "Save or share file",
+      "content": "Short support summary",
+      "ready": "The short summary is ready to copy into a forum post or GitHub issue. Select a device model to include its datapoint definitions. The JSON file always contains the complete report.",
+      "save": "Save or share full JSON file",
       "shared": "The diagnostics report was shared.",
-      "saved": "The diagnostics report download was started.",
+      "saved": "The download was requested. If no file appears, copy the short summary or open the Homey Web App in a browser to save the JSON file.",
       "save_failed": "The file could not be saved from this view. Please copy the report to the clipboard instead.",
-      "copy": "Copy report",
-      "copied": "The diagnostics report was copied to the clipboard.",
-      "copy_failed": "The report could not be copied automatically. Please select the displayed text and copy it manually."
+      "copy": "Copy short summary",
+      "copied": "The short summary was copied to the clipboard.",
+      "copy_failed": "The report could not be copied automatically. Please select the displayed text and copy it manually.",
+      "model": "Summary for device model",
+      "all_models": "All device models (overview)",
+      "attach_hint": "The Homey Community forum does not accept JSON attachments, and a full report can exceed post limits. Paste the short summary there. For full details, save the JSON file and attach it to a GitHub issue using the file upload button; do not paste the full JSON into the text field.",
+      "open_issue": "Open a GitHub issue"
     },
     "validation": {
       "central_id_required": "Central ID is required",
@@ -45,6 +49,59 @@
       "virtual_devices_callback_port_invalid": "VirtualDevices callback port must be an integer between 1 and 65535",
       "callback_ports_distinct": "Callback ports must be different",
       "credentials_together": "Username and password must both be set or both be empty"
+    }
+  },
+  "widgets": {
+    "locale": "en",
+    "system_status": {
+      "title": "System status",
+      "central": "Central",
+      "refresh": "Refresh",
+      "loading": "Loading system information…",
+      "empty": "No OpenCCU configured",
+      "error": "Could not load system status",
+      "devices": "Devices",
+      "messages": "Service messages",
+      "dutyCycle": "Duty cycle",
+      "carrierSense": "Carrier sense",
+      "interfaces": "Radio interfaces",
+      "interface": "Radio interface",
+      "updated": "Updated",
+      "states": {
+        "healthy": "Connected",
+        "connecting": "Connecting",
+        "disconnected": "Disconnected",
+        "stopped": "Stopped"
+      },
+      "unavailable": "Status unavailable",
+      "partial": "Partial data",
+      "unknown": "Unknown"
+    },
+    "service_messages": {
+      "title": "Service messages",
+      "active": "Active",
+      "clear": "All clear",
+      "unknown": "Unknown",
+      "empty": "No OpenCCU configured",
+      "updated": "Updated",
+      "refresh": "Refresh",
+      "loading": "Loading service messages…",
+      "none": "No active service messages",
+      "one": "1 active service message",
+      "many": "{count} active service messages",
+      "unavailable": "Details currently unavailable",
+      "unknownDevice": "Unnamed device",
+      "error": "Could not load service messages",
+      "messages": {
+        "UNREACH": "Not reachable",
+        "STICKY_UNREACH": "Communication problem",
+        "LOWBAT": "Low battery",
+        "LOW_BAT": "Low battery",
+        "CONFIG_PENDING": "Configuration pending",
+        "UPDATE_PENDING": "Update pending",
+        "SABOTAGE": "Sabotage detected",
+        "DUTY_CYCLE": "Duty cycle exceeded"
+      }
     }
   }
 }

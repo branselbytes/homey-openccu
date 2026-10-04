@@ -1196,7 +1196,37 @@ const HMIP_MOD_HO_PROFILE: DeviceProfile = {
   id: "hmip-mod-ho",
   driverId: "HmIP-MOD-HO",
   deviceTypes: ["HmIP-MOD-HO"],
-  bindings: [...GARAGE_BINDINGS, ...switchBindings(2)],
+  bindings: [
+    {
+      capability: "garagedoor_closed",
+      channel: 1,
+      parameter: "DOOR_STATE",
+      setParameter: "DOOR_COMMAND",
+      transform: "hoermann-door-state-to-closed",
+      writeStrategy: "garage-closed",
+    },
+    ...switchBindings(2),
+    {
+      capability: "homematic_garage_state",
+      channel: 1,
+      parameter: "DOOR_STATE",
+      transform: "garage-door-state-to-enum",
+    },
+    {
+      capability: "homematic_garage_command",
+      channel: 1,
+      parameter: "DOOR_COMMAND",
+      requiresWriteTarget: true,
+      writeStrategy: "garage-command",
+    },
+    {
+      capability: "homematic_garage_ventilation",
+      channel: 1,
+      parameter: "DOOR_COMMAND",
+      requiresWriteTarget: true,
+      writeStrategy: "garage-ventilation",
+    },
+  ],
 };
 
 const HMIP_MOD_TM_PROFILE: DeviceProfile = {

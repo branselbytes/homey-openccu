@@ -1,8 +1,10 @@
 {
   "id": "HmIP-DLD",
-  "name": { "en": "HmIP-DLD" },
+  "name": {
+    "en": "HmIP-DLD"
+  },
   "class": "lock",
-  "capabilities": [],
+  "capabilities": ["locked"],
   "images": {
     "large": "/drivers/HmIP-DLD/assets/images/large.png",
     "small": "/drivers/HmIP-DLD/assets/images/small.png"
@@ -11,8 +13,13 @@
     {
       "id": "list_devices",
       "template": "list_devices",
-      "navigation": { "next": "add_devices" }
+      "navigation": {
+        "next": "add_devices"
+      }
     },
-    { "id": "add_devices", "template": "add_devices" }
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
   ]
 }

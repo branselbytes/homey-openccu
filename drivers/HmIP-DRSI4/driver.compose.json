@@ -2,7 +2,7 @@
   "id": "HmIP-DRSI4",
   "name": { "en": "HmIP-DRSI4" },
   "class": "socket",
-  "capabilities": [],
+  "capabilities": ["onoff"],
   "images": {
     "large": "/drivers/HmIP-DRSI4/assets/images/large.png",
     "small": "/drivers/HmIP-DRSI4/assets/images/small.png"

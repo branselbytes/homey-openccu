@@ -2,7 +2,7 @@
   "id": "HmIP-MOD-TM",
   "name": { "en": "HmIP-MOD-TM" },
   "class": "garagedoor",
-  "capabilities": [],
+  "capabilities": ["garagedoor_closed"],
   "images": {
     "large": "/drivers/HmIP-MOD-TM/assets/images/large.png",
     "small": "/drivers/HmIP-MOD-TM/assets/images/small.png"

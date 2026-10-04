@@ -2,7 +2,12 @@
   "id": "HmIP-SCTH230",
   "name": { "en": "HmIP-SCTH230" },
   "class": "sensor",
-  "capabilities": [],
+  "capabilities": [
+    "measure_co2",
+    "measure_temperature",
+    "measure_humidity",
+    "onoff"
+  ],
   "images": {
     "large": "/drivers/HmIP-SCTH230/assets/images/large.png",
     "small": "/drivers/HmIP-SCTH230/assets/images/small.png"

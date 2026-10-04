@@ -4,7 +4,7 @@
     "en": "HmIP-SRH"
   },
   "class": "sensor",
-  "capabilities": [],
+  "capabilities": ["homematic_rhs_state"],
   "images": {
     "large": "/drivers/HmIP-SRH/assets/images/large.png",
     "small": "/drivers/HmIP-SRH/assets/images/small.png"

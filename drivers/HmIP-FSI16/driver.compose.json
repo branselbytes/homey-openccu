@@ -2,7 +2,7 @@
   "id": "HmIP-FSI16",
   "name": { "en": "HmIP-FSI16" },
   "class": "socket",
-  "capabilities": [],
+  "capabilities": ["onoff"],
   "images": {
     "large": "/drivers/HmIP-FSI16/assets/images/large.png",
     "small": "/drivers/HmIP-FSI16/assets/images/small.png"

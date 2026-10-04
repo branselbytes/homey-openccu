@@ -9,6 +9,7 @@ import { loadOpenCcuConnections } from "./src/homey/settings-adapter";
 import { HomeySettingsCacheStorage } from "./src/homey/cache-storage";
 import { registerHubFlowCards } from "./src/homey/hub-flow-controller";
 import { registerThermostatFlowCards } from "./src/homey/thermostat-flow-controller";
+import { registerGarageFlowCards } from "./src/homey/garage-flow-controller";
 import { callbackHostFromLocalAddress } from "./src/homey/callback-host";
 import { OpenCcuRuntimeProvider } from "./src/homey/runtime-provider";
 import type { ParamsetDescription } from "./src/protocol/xmlrpc/types";
@@ -65,6 +66,7 @@ export = class OpenCcuApp extends Homey.App {
     );
     await this.#controller.start();
     registerThermostatFlowCards(this.homey.flow);
+    registerGarageFlowCards(this.homey.flow);
     registerHubFlowCards(this.homey.flow, this.runtimeProvider);
     this.log("OpenCCU Local initialized");
   }

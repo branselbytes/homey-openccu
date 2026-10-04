@@ -1,26 +1,52 @@
 {
   "title": {
-    "en": "Set [[device]] week profile to [[profile]]",
-    "de": "Setze das Wochenprofil von [[device]] auf [[profile]]"
+    "en": "Set week profile",
+    "de": "Wochenprofil setzen"
   },
   "titleFormatted": {
-    "en": "Set [[device]] week profile to [[profile]]",
-    "de": "Setze das Wochenprofil von [[device]] auf [[profile]]"
+    "en": "Set week profile to [[profile]]",
+    "de": "Wochenprofil auf [[profile]] setzen"
   },
   "args": [
     {
       "name": "device",
       "type": "device",
-      "filter": "capabilities=homematic_thermostat_weekprofile"
+      "filter": "driver_id=HMIP-WTH|HMIP-eTRV|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-eTRV-2|HmIP-eTRV-B|HmIP-eTRV-B-2|HmIP-eTRV-C|HmIP-eTRV-E|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_weekprofile",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
     },
     {
       "name": "profile",
       "type": "dropdown",
       "values": [
-        { "id": "1", "label": { "en": "Profile 1", "de": "Profil 1" } },
-        { "id": "2", "label": { "en": "Profile 2", "de": "Profil 2" } },
-        { "id": "3", "label": { "en": "Profile 3", "de": "Profil 3" } }
-      ]
+        {
+          "id": "1",
+          "label": {
+            "en": "Profile 1",
+            "de": "Profil 1"
+          }
+        },
+        {
+          "id": "2",
+          "label": {
+            "en": "Profile 2",
+            "de": "Profil 2"
+          }
+        },
+        {
+          "id": "3",
+          "label": {
+            "en": "Profile 3",
+            "de": "Profil 3"
+          }
+        }
+      ],
+      "title": {
+        "en": "Profile",
+        "de": "Profil"
+      }
     }
   ]
 }

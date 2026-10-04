@@ -4,7 +4,11 @@
     "en": "HmIP-FBL"
   },
   "class": "blinds",
-  "capabilities": [],
+  "capabilities": [
+    "windowcoverings_set",
+    "windowcoverings_state",
+    "windowcoverings_tilt_set"
+  ],
   "images": {
     "large": "/drivers/HmIP-FBL/assets/images/large.png",
     "small": "/drivers/HmIP-FBL/assets/images/small.png"

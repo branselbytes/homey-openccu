@@ -2,7 +2,13 @@
   "id": "HmIP-FSM16",
   "name": { "en": "HmIP-FSM16" },
   "class": "socket",
-  "capabilities": [],
+  "capabilities": [
+    "onoff",
+    "measure_power",
+    "measure_voltage",
+    "measure_current",
+    "meter_power"
+  ],
   "images": {
     "large": "/drivers/HmIP-FSM16/assets/images/large.png",
     "small": "/drivers/HmIP-FSM16/assets/images/small.png"

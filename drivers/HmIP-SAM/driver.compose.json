@@ -4,7 +4,7 @@
     "en": "HmIP-SAM"
   },
   "class": "sensor",
-  "capabilities": [],
+  "capabilities": ["alarm_motion"],
   "images": {
     "large": "/drivers/HmIP-SAM/assets/images/large.png",
     "small": "/drivers/HmIP-SAM/assets/images/small.png"

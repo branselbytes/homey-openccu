@@ -4,7 +4,7 @@
     "en": "HmIP-SWSD"
   },
   "class": "smokealarm",
-  "capabilities": [],
+  "capabilities": ["alarm_smoke"],
   "images": {
     "large": "/drivers/HmIP-SWSD/assets/images/large.png",
     "small": "/drivers/HmIP-SWSD/assets/images/small.png"

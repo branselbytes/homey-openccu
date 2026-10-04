@@ -4,7 +4,7 @@
     "en": "HmIP-STHO"
   },
   "class": "sensor",
-  "capabilities": [],
+  "capabilities": ["measure_temperature", "measure_humidity"],
   "images": {
     "large": "/drivers/HmIP-STHO/assets/images/large.png",
     "small": "/drivers/HmIP-STHO/assets/images/small.png"

@@ -2,7 +2,11 @@
   "id": "HmIP-BBL",
   "name": { "en": "HmIP-BBL" },
   "class": "blinds",
-  "capabilities": [],
+  "capabilities": [
+    "windowcoverings_set",
+    "windowcoverings_state",
+    "windowcoverings_tilt_set"
+  ],
   "images": {
     "large": "/drivers/HmIP-BBL/assets/images/large.png",
     "small": "/drivers/HmIP-BBL/assets/images/small.png"

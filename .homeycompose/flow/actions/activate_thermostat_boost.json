@@ -1,17 +1,21 @@
 {
   "title": {
-    "en": "Activate boost on [[device]]",
-    "de": "Aktiviere Boost bei [[device]]"
+    "en": "Activate boost",
+    "de": "Boost aktivieren"
   },
   "titleFormatted": {
-    "en": "Activate boost on [[device]]",
-    "de": "Aktiviere Boost bei [[device]]"
+    "en": "Activate boost",
+    "de": "Boost aktivieren"
   },
   "args": [
     {
       "name": "device",
       "type": "device",
-      "filter": "capabilities=homematic_thermostat_boost"
+      "filter": "driver_id=HMIP-WTH|HMIP-eTRV|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-eTRV-2|HmIP-eTRV-B|HmIP-eTRV-B-2|HmIP-eTRV-C|HmIP-eTRV-E|HmIPW-STH|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_boost",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
     }
   ]
 }

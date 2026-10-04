@@ -2,7 +2,7 @@
   "id": "HmIP-STH",
   "name": { "en": "HmIP-STH" },
   "class": "thermostat",
-  "capabilities": [],
+  "capabilities": ["measure_temperature", "measure_humidity"],
   "images": {
     "large": "/drivers/HmIP-STH/assets/images/large.png",
     "small": "/drivers/HmIP-STH/assets/images/small.png"

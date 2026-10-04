@@ -4,7 +4,7 @@
     "en": "HmIP-MOD-OC8"
   },
   "class": "socket",
-  "capabilities": [],
+  "capabilities": ["onoff"],
   "images": {
     "large": "/drivers/HmIP-MOD-OC8/assets/images/large.png",
     "small": "/drivers/HmIP-MOD-OC8/assets/images/small.png"

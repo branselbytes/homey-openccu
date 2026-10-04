@@ -4,7 +4,7 @@
     "en": "HmIP-SMO-A"
   },
   "class": "sensor",
-  "capabilities": [],
+  "capabilities": ["alarm_motion", "measure_luminance"],
   "images": {
     "large": "/drivers/HmIP-SMO-A/assets/images/large.png",
     "small": "/drivers/HmIP-SMO-A/assets/images/small.png"

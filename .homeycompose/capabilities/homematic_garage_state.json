@@ -1,0 +1,20 @@
+{
+  "type": "enum",
+  "title": { "en": "Garage door position", "de": "Torposition" },
+  "values": [
+    { "id": "closed", "title": { "en": "Closed", "de": "Geschlossen" } },
+    { "id": "open", "title": { "en": "Open", "de": "Offen" } },
+    {
+      "id": "ventilation",
+      "title": { "en": "Ventilation position", "de": "Lüftungsposition" }
+    },
+    {
+      "id": "unknown",
+      "title": { "en": "Position unknown", "de": "Position unbekannt" }
+    }
+  ],
+  "uiComponent": "sensor",
+  "getable": true,
+  "setable": false,
+  "icon": "/assets/garage-door.svg"
+}

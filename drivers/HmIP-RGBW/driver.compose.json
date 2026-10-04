@@ -2,7 +2,7 @@
   "id": "HmIP-RGBW",
   "name": { "en": "HmIP-RGBW" },
   "class": "light",
-  "capabilities": [],
+  "capabilities": ["onoff", "dim"],
   "images": {
     "large": "/drivers/HmIP-RGBW/assets/images/large.png",
     "small": "/drivers/HmIP-RGBW/assets/images/small.png"

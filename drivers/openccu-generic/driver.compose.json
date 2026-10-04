@@ -1,6 +1,9 @@
 {
   "id": "openccu-generic",
-  "name": { "en": "Generic OpenCCU device" },
+  "name": {
+    "en": "Generic OpenCCU device",
+    "de": "Generisches OpenCCU-Gerät"
+  },
   "class": "other",
   "capabilities": [],
   "images": {

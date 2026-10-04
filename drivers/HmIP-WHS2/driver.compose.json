@@ -2,7 +2,7 @@
   "id": "HmIP-WHS2",
   "name": { "en": "HmIP-WHS2" },
   "class": "socket",
-  "capabilities": [],
+  "capabilities": ["onoff"],
   "images": {
     "large": "/drivers/HmIP-WHS2/assets/images/large.png",
     "small": "/drivers/HmIP-WHS2/assets/images/small.png"

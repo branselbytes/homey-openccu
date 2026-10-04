@@ -1,0 +1,9 @@
+{
+  "type": "boolean",
+  "title": { "en": "Ventilation position", "de": "Lüftungsposition" },
+  "uiComponent": "button",
+  "getable": false,
+  "setable": true,
+  "insights": false,
+  "icon": "/assets/garage-ventilation.svg"
+}

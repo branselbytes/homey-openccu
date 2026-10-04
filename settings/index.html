@@ -102,6 +102,13 @@
       ></button>
       <div id="diagnostics-export" hidden>
         <p id="diagnostics-status" aria-live="polite"></p>
+        <div class="field row">
+          <label
+            for="diagnostics-model"
+            data-i18n="settings.diagnostics.model"
+          ></label>
+          <select id="diagnostics-model"></select>
+        </div>
         <label
           id="diagnostics-content-label"
           for="diagnostics-content"
@@ -125,6 +132,13 @@
           type="button"
           data-i18n="settings.diagnostics.copy"
         ></button>
+        <p data-i18n="settings.diagnostics.attach_hint"></p>
+        <a
+          href="https://github.com/branselbytes/homey-openccu/issues/new/choose"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-i18n="settings.diagnostics.open_issue"
+        ></a>
       </div>
     </fieldset>
 
@@ -132,6 +146,8 @@
       "use strict";
 
       const SETTINGS_KEY = "openccu_connections";
+      const DIAGNOSTICS_SUMMARY_LIMIT = 12000;
+      let diagnosticsReport;
       const fields = {
         centralId: document.getElementById("central-id"),
         host: document.getElementById("host"),
@@ -201,12 +217,16 @@
             Homey.api("GET", "/diagnostics", (error, report) => {
               button.disabled = false;
               if (error) return Homey.alert(error);
-              const content = JSON.stringify(report, null, 2);
-              document.getElementById("diagnostics-content").value = content;
+              diagnosticsReport = report;
+              populateDiagnosticModels(report);
+              renderDiagnosticsSummary();
               document.getElementById("diagnostics-export").hidden = false;
-              setDiagnosticsStatus("settings.diagnostics.ready");
             });
           });
+
+        document
+          .getElementById("diagnostics-model")
+          .addEventListener("change", renderDiagnosticsSummary);
 
         document
           .getElementById("save-diagnostics")
@@ -214,7 +234,7 @@
             try {
               const result = await saveDiagnosticsFile(
                 "openccu-for-homey-diagnostics.json",
-                document.getElementById("diagnostics-content").value,
+                JSON.stringify(diagnosticsReport, null, 2),
               );
               setDiagnosticsStatus(
                 result === "shared"
@@ -271,6 +291,162 @@
           fields.centralId.value = result.serial;
       }
 
+      function populateDiagnosticModels(report) {
+        const select = document.getElementById("diagnostics-model");
+        select.replaceChildren();
+        const all = document.createElement("option");
+        all.value = "";
+        all.textContent = Homey.__("settings.diagnostics.all_models");
+        select.appendChild(all);
+        const models = new Set(
+          report.centrals.flatMap(({ runtime }) =>
+            runtime.devices.map(({ type }) => type),
+          ),
+        );
+        for (const model of [...models].sort()) {
+          const option = document.createElement("option");
+          option.value = model;
+          option.textContent = model;
+          select.appendChild(option);
+        }
+        select.value = "";
+      }
+
+      function renderDiagnosticsSummary() {
+        if (!diagnosticsReport) return;
+        document.getElementById("diagnostics-content").value =
+          summarizeDiagnostics(
+            diagnosticsReport,
+            document.getElementById("diagnostics-model").value,
+          );
+        setDiagnosticsStatus("settings.diagnostics.ready");
+      }
+
+      function summarizeDiagnostics(report, model = "") {
+        const truncatedNotice =
+          "Summary shortened. Attach the full JSON file to a GitHub issue for complete details.";
+        const lines = [];
+        let length = 0;
+        let truncated = false;
+        const add = (line) => {
+          if (truncated) return;
+          if (
+            length + line.length + 1 >
+            DIAGNOSTICS_SUMMARY_LIMIT - truncatedNotice.length - 1
+          ) {
+            truncated = true;
+            return;
+          }
+          lines.push(line);
+          length += line.length + 1;
+        };
+        add("OpenCCU Local support summary (no current datapoint values)");
+        add(
+          `App: ${report.app.id} ${report.app.version}; Node: ${report.app.node}`,
+        );
+        add(
+          `Generated: ${report.generatedAt}; schema: ${report.schemaVersion}`,
+        );
+        add(
+          `Model: ${model || "all (select a model for datapoint definitions)"}`,
+        );
+        report.centrals.forEach(({ runtime }, index) => {
+          add("");
+          add(
+            `Central ${index + 1}: ${runtime.connectionState}; devices=${runtime.deviceCount}; ` +
+              `issues discovery=${runtime.discoveryIssueCount}, metadata=${runtime.metadataIssueCount}, system=${runtime.systemInformationIssueCount}`,
+          );
+          if (runtime.transport) {
+            const t = runtime.transport;
+            add(
+              `XML-RPC: total=${t.totalRequests}, failed=${t.failedRequests}, timedOut=${t.timedOutRequests}, active=${t.activeRequests}, queued=${t.queuedRequests}`,
+            );
+            const error = t.lastError;
+            if (
+              error &&
+              [
+                "listDevices",
+                "getParamsetDescription",
+                "getValue",
+                "getParamset",
+                "setValue",
+                "putParamset",
+                "init",
+              ].includes(error.method) &&
+              [
+                "aborted",
+                "authentication",
+                "invalid-response",
+                "not-connected",
+                "remote-fault",
+                "timeout",
+                "transport",
+              ].includes(error.code)
+            ) {
+              add(
+                `Last XML-RPC error: method=${error.method}; code=${error.code}` +
+                  (Number.isInteger(error.faultCode) &&
+                  error.faultCode >= -2147483648 &&
+                  error.faultCode <= 2147483647
+                    ? `; faultCode=${error.faultCode}`
+                    : ""),
+              );
+            }
+          }
+          const groups = new Map();
+          for (const device of runtime.devices) {
+            if (model && device.type !== model) continue;
+            const group = groups.get(device.type) || [];
+            group.push(device);
+            groups.set(device.type, group);
+          }
+          for (const [type, devices] of groups) {
+            const firmware = [
+              ...new Set(devices.map((d) => d.firmware || "unknown")),
+            ];
+            const mappings = [
+              ...new Set(
+                devices.flatMap((d) =>
+                  d.mappings.map(
+                    (m) =>
+                      `${m.driverId}${m.generic ? " (generic)" : ""}: ${m.capabilities.join(", ") || "no capabilities"}`,
+                  ),
+                ),
+              ),
+            ];
+            add(
+              `${type}: ${devices.length} device(s); firmware=${firmware.join(", ")}`,
+            );
+            add(`  Mappings: ${mappings.join("; ") || "none"}`);
+            if (!model) continue;
+            // Preserve different firmware/channel schemas without repeating
+            // identical definitions for every physical device of one model.
+            const schemas = new Set();
+            for (const device of devices) {
+              for (const channel of device.channels) {
+                const schema = JSON.stringify(channel);
+                if (schemas.has(schema)) continue;
+                schemas.add(schema);
+                add(`  Channel ${channel.index ?? "?"}: ${channel.type}`);
+                for (const point of channel.dataPoints) {
+                  add(
+                    `    ${point.parameter}: ${point.type}; operations=${point.operations}` +
+                      (point.valueList
+                        ? `; enum=${point.valueList.join(",")}`
+                        : "") +
+                      (point.min === undefined ? "" : `; min=${point.min}`) +
+                      (point.max === undefined ? "" : `; max=${point.max}`) +
+                      (point.unit ? `; unit=${point.unit}` : ""),
+                  );
+                }
+              }
+            }
+          }
+        });
+        if (truncated) lines.push(truncatedNotice);
+        return lines.join("\n");
+      }
+
       async function saveDiagnosticsFile(filename, content) {
         const blob = new Blob([content], {
           type: "application/json",
@@ -279,14 +455,19 @@
           typeof File === "function" &&
           typeof navigator.share === "function"
         ) {
-          const file = new File([blob], filename, { type: blob.type });
-          const shareData = { files: [file], title: filename };
-          if (
-            typeof navigator.canShare !== "function" ||
-            navigator.canShare(shareData)
-          ) {
-            await navigator.share(shareData);
-            return "shared";
+          try {
+            const file = new File([blob], filename, { type: blob.type });
+            const shareData = { files: [file], title: filename };
+            if (
+              typeof navigator.canShare !== "function" ||
+              navigator.canShare(shareData)
+            ) {
+              await navigator.share(shareData);
+              return "shared";
+            }
+          } catch (error) {
+            if (error && error.name === "AbortError") throw error;
+            // Some Homey webviews expose sharing but do not permit files.
           }
         }
         const url = URL.createObjectURL(blob);
@@ -302,11 +483,16 @@
 
       async function copyText(textarea) {
         if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(textarea.value);
-          return;
+          try {
+            await navigator.clipboard.writeText(textarea.value);
+            return;
+          } catch {
+            // Clipboard permission can be denied in embedded settings views.
+          }
         }
         textarea.focus();
         textarea.select();
+        textarea.setSelectionRange(0, textarea.value.length);
         if (!document.execCommand("copy")) throw new Error("Copy failed");
       }
 

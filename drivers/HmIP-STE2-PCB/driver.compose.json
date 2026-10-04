@@ -4,7 +4,7 @@
     "en": "HmIP-STE2-PCB"
   },
   "class": "sensor",
-  "capabilities": [],
+  "capabilities": ["measure_temperature"],
   "images": {
     "large": "/drivers/HmIP-STE2-PCB/assets/images/large.png",
     "small": "/drivers/HmIP-STE2-PCB/assets/images/small.png"

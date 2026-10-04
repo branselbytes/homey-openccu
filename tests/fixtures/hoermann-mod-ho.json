@@ -1,0 +1,193 @@
+{
+  "description": {
+    "ADDRESS": "HOERMANN1",
+    "TYPE": "HmIP-MOD-HO",
+    "FIRMWARE": "1.0.16",
+    "CHILDREN": ["HOERMANN1:0", "HOERMANN1:1", "HOERMANN1:2"]
+  },
+  "channels": [
+    {
+      "description": {
+        "ADDRESS": "HOERMANN1:0",
+        "TYPE": "MAINTENANCE",
+        "PARENT": "HOERMANN1",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "BOOTED": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1,
+          "MIN": false,
+          "MAX": true
+        },
+        "CONFIG_PENDING": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 9,
+          "MIN": false,
+          "MAX": true
+        },
+        "DUTY_CYCLE": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1,
+          "MIN": false,
+          "MAX": true
+        },
+        "INSTALL_TEST": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 3,
+          "FLAGS": 2,
+          "MIN": false,
+          "MAX": true
+        },
+        "OPERATING_VOLTAGE": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 5,
+          "FLAGS": 1,
+          "UNIT": "V",
+          "MIN": 0,
+          "MAX": 25.2
+        },
+        "OPERATING_VOLTAGE_STATUS": {
+          "TYPE": "ENUM",
+          "OPERATIONS": 5,
+          "FLAGS": 1,
+          "MIN": "NORMAL",
+          "MAX": "EXTERNAL",
+          "VALUE_LIST": ["NORMAL", "UNKNOWN", "OVERFLOW", "EXTERNAL"]
+        },
+        "RSSI_DEVICE": {
+          "TYPE": "INTEGER",
+          "OPERATIONS": 5,
+          "FLAGS": 1,
+          "MIN": -128,
+          "MAX": 127
+        },
+        "RSSI_PEER": {
+          "TYPE": "INTEGER",
+          "OPERATIONS": 5,
+          "FLAGS": 1,
+          "MIN": -128,
+          "MAX": 127
+        },
+        "UNREACH": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 25,
+          "MIN": false,
+          "MAX": true
+        },
+        "UPDATE_PENDING": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 9,
+          "MIN": false,
+          "MAX": true
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "HOERMANN1:1",
+        "TYPE": "DOOR_RECEIVER",
+        "PARENT": "HOERMANN1",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "DOOR_COMMAND": {
+          "TYPE": "ENUM",
+          "OPERATIONS": 2,
+          "FLAGS": 1,
+          "MIN": "NOP",
+          "MAX": "PARTIAL_OPEN",
+          "VALUE_LIST": ["NOP", "OPEN", "STOP", "CLOSE", "PARTIAL_OPEN"]
+        },
+        "DOOR_STATE": {
+          "TYPE": "ENUM",
+          "OPERATIONS": 5,
+          "FLAGS": 1,
+          "MIN": "CLOSED",
+          "MAX": "POSITION_UNKNOWN",
+          "VALUE_LIST": [
+            "CLOSED",
+            "OPEN",
+            "VENTILATION_POSITION",
+            "POSITION_UNKNOWN"
+          ]
+        },
+        "ERROR_CODE": {
+          "TYPE": "INTEGER",
+          "OPERATIONS": 5,
+          "FLAGS": 9,
+          "MIN": 0,
+          "MAX": 255
+        },
+        "PROCESS": {
+          "TYPE": "ENUM",
+          "OPERATIONS": 5,
+          "FLAGS": 1,
+          "MIN": "STABLE",
+          "MAX": "NOT_STABLE",
+          "VALUE_LIST": ["STABLE", "NOT_STABLE"]
+        },
+        "SECTION": {
+          "TYPE": "INTEGER",
+          "OPERATIONS": 5,
+          "FLAGS": 1,
+          "MIN": 0,
+          "MAX": 15
+        },
+        "SECTION_STATUS": {
+          "TYPE": "ENUM",
+          "OPERATIONS": 5,
+          "FLAGS": 1,
+          "MIN": "NORMAL",
+          "MAX": "UNKNOWN",
+          "VALUE_LIST": ["NORMAL", "UNKNOWN"]
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "HOERMANN1:2",
+        "TYPE": "SIMPLE_SWITCH_RECEIVER",
+        "PARENT": "HOERMANN1",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "PROCESS": {
+          "TYPE": "ENUM",
+          "OPERATIONS": 5,
+          "FLAGS": 1,
+          "MIN": "STABLE",
+          "MAX": "NOT_STABLE",
+          "VALUE_LIST": ["STABLE", "NOT_STABLE"]
+        },
+        "SECTION": {
+          "TYPE": "INTEGER",
+          "OPERATIONS": 5,
+          "FLAGS": 1,
+          "MIN": 0,
+          "MAX": 15
+        },
+        "SECTION_STATUS": {
+          "TYPE": "ENUM",
+          "OPERATIONS": 5,
+          "FLAGS": 1,
+          "MIN": "NORMAL",
+          "MAX": "UNKNOWN",
+          "VALUE_LIST": ["NORMAL", "UNKNOWN"]
+        },
+        "STATE": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 7,
+          "FLAGS": 1,
+          "MIN": false,
+          "MAX": true
+        }
+      }
+    }
+  ]
+}

@@ -35,6 +35,14 @@ describe("support report", () => {
                 completedRequests: 29,
                 failedRequests: 1,
                 timedOutRequests: 0,
+                lastError: {
+                  method: "setValue",
+                  code: "remote-fault",
+                  faultCode: 0,
+                  message: "private-server-detail",
+                  faultString: "private-server-detail",
+                  cause: { detail: "private-server-detail" },
+                } as never,
               },
               devices: [],
             },
@@ -50,11 +58,27 @@ describe("support report", () => {
       centrals: [
         {
           alias: "central-1",
-          runtime: { connectionState: "healthy", deviceCount: 12 },
+          runtime: {
+            connectionState: "healthy",
+            deviceCount: 12,
+            transport: {
+              lastError: {
+                method: "setValue",
+                code: "remote-fault",
+                faultCode: 0,
+              },
+            },
+          },
         },
       ],
     });
     expect(JSON.stringify(report)).not.toContain("private-central-name");
+    expect(report.centrals[0]?.runtime.transport?.lastError).toEqual({
+      method: "setValue",
+      code: "remote-fault",
+      faultCode: 0,
+    });
+    expect(JSON.stringify(report)).not.toContain("private-server-detail");
   });
 
   it("redacts sensitive fields if runtime diagnostics are extended later", () => {

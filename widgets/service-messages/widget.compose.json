@@ -3,7 +3,7 @@
     "en": "OpenCCU service messages",
     "de": "OpenCCU Servicemeldungen"
   },
-  "height": 320,
+  "height": 380,
   "settings": [],
   "api": {
     "getServiceMessages": {

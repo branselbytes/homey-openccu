@@ -1,0 +1,14 @@
+{
+  "type": "enum",
+  "title": { "en": "Garage door control", "de": "Torsteuerung" },
+  "values": [
+    { "id": "up", "title": { "en": "Open", "de": "Öffnen" } },
+    { "id": "idle", "title": { "en": "Stop", "de": "Stopp" } },
+    { "id": "down", "title": { "en": "Close", "de": "Schließen" } }
+  ],
+  "uiComponent": "ternary",
+  "getable": false,
+  "setable": true,
+  "insights": false,
+  "icon": "/assets/garage-door.svg"
+}

@@ -1,0 +1,25 @@
+{
+  "title": { "en": "Control garage door", "de": "Garagentor steuern" },
+  "titleFormatted": {
+    "en": "Garage door: [[command]]",
+    "de": "Garagentor: [[command]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-MOD-HO|openccu-generic&capabilities=homematic_garage_command",
+      "title": { "en": "Device", "de": "Gerät" }
+    },
+    {
+      "name": "command",
+      "type": "dropdown",
+      "title": { "en": "Command", "de": "Befehl" },
+      "values": [
+        { "id": "up", "label": { "en": "Open", "de": "Öffnen" } },
+        { "id": "idle", "label": { "en": "Stop", "de": "Stopp" } },
+        { "id": "down", "label": { "en": "Close", "de": "Schließen" } }
+      ]
+    }
+  ]
+}

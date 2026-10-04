@@ -35,6 +35,10 @@ There is no migration from the predecessor app. Devices must be paired again, an
 
 ## Support report
 
-In the app settings, select **Create diagnostics report**, then save/share the JSON file or copy its contents. The sanitized report includes connection states, counters, device types, firmware versions, channel/datapoint definitions, and the selected driver/capabilities. It omits credentials, network addresses, central IDs, OpenCCU names, device addresses, and current datapoint values. Review the report before attaching it to a public issue.
+In the app settings, select **Create diagnostics report**. Copy the short summary for a forum post; select the affected model to include its relevant datapoint definitions. Save/share the complete JSON file and attach it to a GitHub issue. The forum may reject JSON/TXT attachments, and a complete report can exceed a text field's length limit; renaming or pasting the full file is unnecessary. If sharing is unavailable, the app offers a download; if clipboard access is blocked, the selected summary can be copied manually.
+
+The sanitized report includes connection states, counters, device types, firmware versions, channel/datapoint definitions, selected drivers/capabilities and the most recent XML-RPC error category and optional CCU fault code. It omits credentials, network addresses, central IDs, OpenCCU names, device addresses, current datapoint values and remote error messages. Review the report before attaching it to a public issue.
 
 When reporting a problem, include the app/Homey/OpenCCU versions, product type and firmware, the operation performed, observed behavior, and the diagnostic report. Never post credentials or an unredacted OpenCCU backup.
+
+For HmIP-MOD-HO motor or light errors, create the report after the failed operation and before restarting the app. Include whether opening, stopping, closing, ventilation or light switching failed and the displayed fault code, if available. A successful background read does not erase the latest failed request; a later failure replaces it and restarting resets it. The detailed **Position unknown** reading is a valid device state and does not itself identify why a command was rejected.

@@ -4,7 +4,7 @@
     "en": "HmIP-SLO"
   },
   "class": "sensor",
-  "capabilities": [],
+  "capabilities": ["measure_luminance"],
   "images": {
     "large": "/drivers/HmIP-SLO/assets/images/large.png",
     "small": "/drivers/HmIP-SLO/assets/images/small.png"

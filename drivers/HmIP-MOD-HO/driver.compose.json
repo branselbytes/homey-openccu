@@ -4,7 +4,13 @@
     "en": "HmIP-MOD-HO"
   },
   "class": "garagedoor",
-  "capabilities": [],
+  "capabilities": [
+    "garagedoor_closed",
+    "onoff",
+    "homematic_garage_state",
+    "homematic_garage_command",
+    "homematic_garage_ventilation"
+  ],
   "images": {
     "large": "/drivers/HmIP-MOD-HO/assets/images/large.png",
     "small": "/drivers/HmIP-MOD-HO/assets/images/small.png"

@@ -1,25 +1,45 @@
 {
   "title": {
-    "en": "Set [[device]] mode to [[mode]]",
-    "de": "Setze den Modus von [[device]] auf [[mode]]"
+    "en": "Set thermostat mode",
+    "de": "Thermostatmodus setzen"
   },
   "titleFormatted": {
-    "en": "Set [[device]] mode to [[mode]]",
-    "de": "Setze den Modus von [[device]] auf [[mode]]"
+    "en": "Set mode to [[mode]]",
+    "de": "Modus auf [[mode]] setzen"
   },
   "args": [
     {
       "name": "device",
       "type": "device",
-      "filter": "capabilities=homematic_thermostat_mode"
+      "filter": "driver_id=HMIP-WTH|HMIP-eTRV|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-eTRV-2|HmIP-eTRV-B|HmIP-eTRV-B-2|HmIP-eTRV-C|HmIP-eTRV-E|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_mode",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
     },
     {
       "name": "mode",
       "type": "dropdown",
       "values": [
-        { "id": "0", "label": { "en": "Auto", "de": "Automatik" } },
-        { "id": "1", "label": { "en": "Manual", "de": "Manuell" } }
-      ]
+        {
+          "id": "0",
+          "label": {
+            "en": "Auto",
+            "de": "Automatik"
+          }
+        },
+        {
+          "id": "1",
+          "label": {
+            "en": "Manual",
+            "de": "Manuell"
+          }
+        }
+      ],
+      "title": {
+        "en": "Mode",
+        "de": "Modus"
+      }
     }
   ]
 }

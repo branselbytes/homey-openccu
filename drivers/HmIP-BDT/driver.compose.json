@@ -4,7 +4,7 @@
     "en": "HmIP-BDT"
   },
   "class": "light",
-  "capabilities": [],
+  "capabilities": ["onoff", "dim"],
   "images": {
     "large": "/drivers/HmIP-BDT/assets/images/large.png",
     "small": "/drivers/HmIP-BDT/assets/images/small.png"

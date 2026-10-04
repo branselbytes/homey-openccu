@@ -5,7 +5,7 @@
     "de": "HmIP Schalt- und Messsteckdosen"
   },
   "class": "socket",
-  "capabilities": [],
+  "capabilities": ["onoff"],
   "images": {
     "large": "/drivers/HMIP-PSM/assets/images/large.png",
     "small": "/drivers/HMIP-PSM/assets/images/small.png"

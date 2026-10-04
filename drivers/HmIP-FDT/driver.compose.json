@@ -4,7 +4,7 @@
     "en": "HmIP-FDT"
   },
   "class": "light",
-  "capabilities": [],
+  "capabilities": ["onoff", "dim"],
   "images": {
     "large": "/drivers/HmIP-FDT/assets/images/large.png",
     "small": "/drivers/HmIP-FDT/assets/images/small.png"

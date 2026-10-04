@@ -4,7 +4,14 @@
     "en": "HmIP-BWTH"
   },
   "class": "thermostat",
-  "capabilities": [],
+  "capabilities": [
+    "measure_temperature",
+    "measure_humidity",
+    "target_temperature",
+    "homematic_thermostat_mode",
+    "homematic_thermostat_boost",
+    "homematic_thermostat_weekprofile"
+  ],
   "images": {
     "large": "/drivers/HmIP-BWTH/assets/images/large.png",
     "small": "/drivers/HmIP-BWTH/assets/images/small.png"

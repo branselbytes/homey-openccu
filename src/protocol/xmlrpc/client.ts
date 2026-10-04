@@ -1,10 +1,13 @@
 import { ProtocolError, toProtocolError } from "../errors";
+import { sanitizeXmlRpcErrorDiagnostics } from "./diagnostics";
 import type {
   DeviceDescription,
   ParamsetDescription,
   RpcValue,
   XmlRpcClientDiagnostics,
   XmlRpcClient,
+  XmlRpcErrorDiagnostics,
+  XmlRpcMethod,
 } from "./types";
 
 export interface RawXmlRpcClient {
@@ -42,14 +45,23 @@ export class HmIpXmlRpcClient implements XmlRpcClient {
   #completedRequests = 0;
   #failedRequests = 0;
   #timedOutRequests = 0;
+  #lastError?: XmlRpcErrorDiagnostics;
 
-  constructor(rawClient: RawXmlRpcClient, options: HmIpXmlRpcClientOptions = {}) {
+  constructor(
+    rawClient: RawXmlRpcClient,
+    options: HmIpXmlRpcClientOptions = {},
+  ) {
     this.#rawClient = rawClient;
     this.#timeoutMs = options.timeoutMs ?? 10_000;
     this.#writeTimeoutMs = options.writeTimeoutMs ?? 20_000;
     this.#maxConcurrentRequests = options.maxConcurrentRequests ?? 2;
-    if (!Number.isInteger(this.#maxConcurrentRequests) || this.#maxConcurrentRequests < 1) {
-      throw new RangeError("XML-RPC maxConcurrentRequests must be a positive integer");
+    if (
+      !Number.isInteger(this.#maxConcurrentRequests) ||
+      this.#maxConcurrentRequests < 1
+    ) {
+      throw new RangeError(
+        "XML-RPC maxConcurrentRequests must be a positive integer",
+      );
     }
   }
 
@@ -61,13 +73,21 @@ export class HmIpXmlRpcClient implements XmlRpcClient {
       completedRequests: this.#completedRequests,
       failedRequests: this.#failedRequests,
       timedOutRequests: this.#timedOutRequests,
+      ...(this.#lastError === undefined
+        ? {}
+        : { lastError: { ...this.#lastError } }),
     };
   }
 
-  async listDevices(signal?: AbortSignal): Promise<readonly DeviceDescription[]> {
+  async listDevices(
+    signal?: AbortSignal,
+  ): Promise<readonly DeviceDescription[]> {
     const result = await this.#call("listDevices", [], signal);
     if (!Array.isArray(result)) {
-      throw new ProtocolError("invalid-response", "XML-RPC listDevices did not return an array");
+      throw new ProtocolError(
+        "invalid-response",
+        "XML-RPC listDevices did not return an array",
+      );
     }
     return result as DeviceDescription[];
   }
@@ -77,7 +97,11 @@ export class HmIpXmlRpcClient implements XmlRpcClient {
     paramsetKey = "VALUES",
     signal?: AbortSignal,
   ): Promise<ParamsetDescription> {
-    const result = await this.#call("getParamsetDescription", [address, paramsetKey], signal);
+    const result = await this.#call(
+      "getParamsetDescription",
+      [address, paramsetKey],
+      signal,
+    );
     if (!isRecord(result)) {
       throw new ProtocolError(
         "invalid-response",
@@ -87,8 +111,16 @@ export class HmIpXmlRpcClient implements XmlRpcClient {
     return result as ParamsetDescription;
   }
 
-  async getValue(address: string, parameter: string, signal?: AbortSignal): Promise<RpcValue> {
-    return (await this.#call("getValue", [address, parameter], signal)) as RpcValue;
+  async getValue(
+    address: string,
+    parameter: string,
+    signal?: AbortSignal,
+  ): Promise<RpcValue> {
+    return (await this.#call(
+      "getValue",
+      [address, parameter],
+      signal,
+    )) as RpcValue;
   }
 
   async getParamset(
@@ -96,9 +128,16 @@ export class HmIpXmlRpcClient implements XmlRpcClient {
     paramsetKey = "VALUES",
     signal?: AbortSignal,
   ): Promise<Readonly<Record<string, RpcValue>>> {
-    const result = await this.#call("getParamset", [address, paramsetKey], signal);
+    const result = await this.#call(
+      "getParamset",
+      [address, paramsetKey],
+      signal,
+    );
     if (!isRecord(result)) {
-      throw new ProtocolError("invalid-response", "XML-RPC getParamset did not return an object");
+      throw new ProtocolError(
+        "invalid-response",
+        "XML-RPC getParamset did not return an object",
+      );
     }
     return result as Readonly<Record<string, RpcValue>>;
   }
@@ -124,21 +163,38 @@ export class HmIpXmlRpcClient implements XmlRpcClient {
     values: Readonly<Record<string, RpcValue>>,
     signal?: AbortSignal,
   ): Promise<void> {
-    await this.#call("putParamset", [address, paramsetKey, values], signal, this.#writeTimeoutMs, "high");
+    await this.#call(
+      "putParamset",
+      [address, paramsetKey, values],
+      signal,
+      this.#writeTimeoutMs,
+      "high",
+    );
   }
 
-  async init(callbackUrl: string, interfaceId: string, signal?: AbortSignal): Promise<void> {
-    await this.#call("init", [callbackUrl, interfaceId], signal, this.#timeoutMs, "high");
+  async init(
+    callbackUrl: string,
+    interfaceId: string,
+    signal?: AbortSignal,
+  ): Promise<void> {
+    await this.#call(
+      "init",
+      [callbackUrl, interfaceId],
+      signal,
+      this.#timeoutMs,
+      "high",
+    );
   }
 
   async #call(
-    method: string,
+    method: XmlRpcMethod,
     params: readonly RpcValue[],
     signal?: AbortSignal,
     timeoutMs = this.#timeoutMs,
     priority: RequestPriority = "normal",
   ): Promise<unknown> {
-    if (signal?.aborted) throw new ProtocolError("aborted", `XML-RPC ${method} was aborted`);
+    if (signal?.aborted)
+      throw new ProtocolError("aborted", `XML-RPC ${method} was aborted`);
 
     const release = await this.#acquire(priority, signal, method);
     this.#totalRequests += 1;
@@ -148,22 +204,29 @@ export class HmIpXmlRpcClient implements XmlRpcClient {
       return result;
     } catch (error) {
       this.#failedRequests += 1;
-      if (error instanceof ProtocolError && error.code === "timeout") {
+      const protocolError = toProtocolError(error, `XML-RPC ${method}`);
+      if (protocolError.code === "timeout") {
         this.#timedOutRequests += 1;
       }
-      throw error;
+      // Keep the last failure through successful background polling. A new
+      // client resets it; only the next failed request replaces it.
+      this.#lastError = sanitizeXmlRpcErrorDiagnostics({
+        method,
+        code: protocolError.code,
+        faultCode: protocolError.faultCode,
+      }) ?? { method, code: "transport" };
+      throw protocolError;
     } finally {
       release();
     }
   }
 
   async #invoke(
-    method: string,
+    method: XmlRpcMethod,
     params: readonly RpcValue[],
     signal: AbortSignal | undefined,
     timeoutMs: number,
   ): Promise<unknown> {
-
     return new Promise((resolve, reject) => {
       let settled = false;
       const finish = (callback: () => void): void => {
@@ -174,9 +237,13 @@ export class HmIpXmlRpcClient implements XmlRpcClient {
         callback();
       };
       const onAbort = (): void =>
-        finish(() => reject(new ProtocolError("aborted", `XML-RPC ${method} was aborted`)));
+        finish(() =>
+          reject(new ProtocolError("aborted", `XML-RPC ${method} was aborted`)),
+        );
       const timer = setTimeout(() => {
-        finish(() => reject(new ProtocolError("timeout", `XML-RPC ${method} timed out`)));
+        finish(() =>
+          reject(new ProtocolError("timeout", `XML-RPC ${method} timed out`)),
+        );
       }, timeoutMs);
 
       signal?.addEventListener("abort", onAbort, { once: true });
@@ -196,7 +263,7 @@ export class HmIpXmlRpcClient implements XmlRpcClient {
   async #acquire(
     priority: RequestPriority,
     signal: AbortSignal | undefined,
-    method: string,
+    method: XmlRpcMethod,
   ): Promise<() => void> {
     if (this.#activeRequests < this.#maxConcurrentRequests) {
       this.#activeRequests += 1;
@@ -208,10 +275,19 @@ export class HmIpXmlRpcClient implements XmlRpcClient {
         if (index !== -1) this.#queue.splice(index, 1);
         reject(new ProtocolError("aborted", `XML-RPC ${method} was aborted`));
       };
-      const request: QueuedRequest = { priority, resolve, reject, signal, onAbort };
+      const request: QueuedRequest = {
+        priority,
+        resolve,
+        reject,
+        signal,
+        onAbort,
+      };
       signal?.addEventListener("abort", onAbort, { once: true });
-      const firstNormal = this.#queue.findIndex((queued) => queued.priority === "normal");
-      if (priority === "high" && firstNormal !== -1) this.#queue.splice(firstNormal, 0, request);
+      const firstNormal = this.#queue.findIndex(
+        (queued) => queued.priority === "normal",
+      );
+      if (priority === "high" && firstNormal !== -1)
+        this.#queue.splice(firstNormal, 0, request);
       else this.#queue.push(request);
     });
   }

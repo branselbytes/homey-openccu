@@ -4,7 +4,7 @@
     "en": "HmIP-SWD"
   },
   "class": "sensor",
-  "capabilities": [],
+  "capabilities": ["alarm_water"],
   "images": {
     "large": "/drivers/HmIP-SWD/assets/images/large.png",
     "small": "/drivers/HmIP-SWD/assets/images/small.png"

@@ -4,7 +4,7 @@
     "en": "HmIP-SCI"
   },
   "class": "sensor",
-  "capabilities": [],
+  "capabilities": ["alarm_contact"],
   "images": {
     "large": "/drivers/HmIP-SCI/assets/images/large.png",
     "small": "/drivers/HmIP-SCI/assets/images/small.png"

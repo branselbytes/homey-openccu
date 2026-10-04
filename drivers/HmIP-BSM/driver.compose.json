@@ -4,7 +4,13 @@
     "en": "HmIP-BSM"
   },
   "class": "socket",
-  "capabilities": [],
+  "capabilities": [
+    "onoff",
+    "measure_power",
+    "measure_voltage",
+    "measure_current",
+    "meter_power"
+  ],
   "images": {
     "large": "/drivers/HmIP-BSM/assets/images/large.png",
     "small": "/drivers/HmIP-BSM/assets/images/small.png"

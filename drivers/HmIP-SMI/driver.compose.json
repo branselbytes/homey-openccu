@@ -4,7 +4,7 @@
     "en": "HmIP-SMI"
   },
   "class": "sensor",
-  "capabilities": [],
+  "capabilities": ["alarm_motion", "measure_luminance"],
   "images": {
     "large": "/drivers/HmIP-SMI/assets/images/large.png",
     "small": "/drivers/HmIP-SMI/assets/images/small.png"

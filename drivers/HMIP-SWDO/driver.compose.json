@@ -5,7 +5,7 @@
     "de": "HmIP-SWDO Fenster-/Türkontakte"
   },
   "class": "sensor",
-  "capabilities": [],
+  "capabilities": ["alarm_contact"],
   "images": {
     "large": "/drivers/HMIP-SWDO/assets/images/large.png",
     "small": "/drivers/HMIP-SWDO/assets/images/small.png"
@@ -14,8 +14,13 @@
     {
       "id": "list_devices",
       "template": "list_devices",
-      "navigation": { "next": "add_devices" }
+      "navigation": {
+        "next": "add_devices"
+      }
     },
-    { "id": "add_devices", "template": "add_devices" }
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
   ]
 }

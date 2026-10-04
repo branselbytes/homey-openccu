@@ -4,6 +4,32 @@ All notable changes to OpenCCU for Homey will be documented in this file. The pr
 
 ## [Unreleased]
 
+## [0.1.4] — prepared 2026-10-03
+
+### Added
+
+- HmIP-MOD-HO opening/stopping/closing controls, ventilation button and four-state position display, with English/German Flow actions and a position condition. Existing device IDs and native garage/light capabilities remain intact.
+- Bounded support summaries with optional model-specific datapoint definitions for forum posts, alongside the complete JSON attachment.
+- Safe XML-RPC fault codes in errors and the latest failed request in sanitized diagnostics, without remote messages or request arguments.
+
+### Changed
+
+- Redraw all 32 project-authored device icons and generated family variants with finer perspective outlines and corrected product forms; regenerate matching catalog images while retaining imported artwork and pairing paths.
+- Refresh the English App Store description and add the matching German text, covering the fork's origin, current device scope, setup requirements and generic fallback limitations in Homey's plain-text format.
+- Localize the generic pairing entry as "Generisches OpenCCU-Gerät" in German.
+- Declare conservative capabilities for dedicated drivers so Homey can display their automatic Flow cards in the App Store, while retaining discovery-based device capabilities.
+- Associate custom device Flow cards with their applicable drivers, including compatible legacy and generic devices.
+- Align both widgets with Homey's typography, spacing and semantic colors; replace screenshot previews with transparent, text-free 1024px light/dark artwork.
+
+### Fixed
+
+- Accept the Hörmann module's numeric/symbolic unknown position without interrupting subsequent callback events or leaving a misleading closed state.
+- Await actual RPC acknowledgements, including delayed errors, for write-only commands such as stop and ventilation; skip their impossible state read-back verification.
+- Fall back when browser share/clipboard APIs reject access, and explain forum summaries versus GitHub JSON attachments in both languages.
+- Use Homey's selected language for widget text instead of the browser language.
+- Prevent overlapping widget refreshes and avoid clearing visible content during normal polling.
+- Label unavailable/partial system status accurately and hide stale readings when system data is unavailable.
+
 ## [0.1.3] — prepared 2026-10-03
 
 ### Added

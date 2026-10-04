@@ -22,6 +22,12 @@ export function transformFromOpenCcu(
     }
     case "identity":
       return value;
+    case "garage-door-state-to-enum":
+      return garageDoorState(value, transform);
+    case "hoermann-door-state-to-closed": {
+      const state = garageDoorState(value, transform);
+      return state === "unknown" ? null : state === "closed";
+    }
     case "garage-door-state-to-closed":
       if (value === "CLOSED" || value === 0) return true;
       if (
@@ -81,6 +87,8 @@ export function transformToOpenCcu(
     case "boolean":
       return value;
     case "garage-door-state-to-closed":
+    case "garage-door-state-to-enum":
+    case "hoermann-door-state-to-closed":
       throw invalidTransform(transform, value);
     case "hue-degrees-to-ratio": {
       const ratio = numeric(value, transform);
@@ -109,6 +117,17 @@ export function transformToOpenCcu(
     case "watt-hour-to-kilowatt-hour":
       return numeric(value, transform) * 1_000;
   }
+}
+
+function garageDoorState(
+  value: RpcValue,
+  transform: ValueTransform,
+): "closed" | "open" | "ventilation" | "unknown" {
+  if (value === "CLOSED" || value === 0) return "closed";
+  if (value === "OPEN" || value === 1) return "open";
+  if (value === "VENTILATION_POSITION" || value === 2) return "ventilation";
+  if (value === "POSITION_UNKNOWN" || value === 3) return "unknown";
+  throw invalidTransform(transform, value);
 }
 
 function numeric(value: RpcValue, transform: ValueTransform): number {

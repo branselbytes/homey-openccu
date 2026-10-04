@@ -2,7 +2,14 @@
   "id": "openccu-heating-group",
   "name": { "en": "OpenCCU groups", "de": "OpenCCU Gruppen" },
   "class": "other",
-  "capabilities": [],
+  "capabilities": [
+    "measure_temperature",
+    "measure_humidity",
+    "target_temperature",
+    "homematic_thermostat_mode",
+    "homematic_thermostat_boost",
+    "homematic_thermostat_weekprofile"
+  ],
   "images": {
     "large": "/drivers/openccu-heating-group/assets/images/large.png",
     "small": "/drivers/openccu-heating-group/assets/images/small.png"

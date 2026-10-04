@@ -1,6 +1,6 @@
 {
   "name": "homey-openccu",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Local OpenCCU integration for Homey Pro",
   "main": "app.js",
   "dependencies": {

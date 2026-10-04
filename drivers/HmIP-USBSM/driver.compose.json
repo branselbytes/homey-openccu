@@ -2,7 +2,7 @@
   "id": "HmIP-USBSM",
   "name": { "en": "HmIP-USBSM" },
   "class": "socket",
-  "capabilities": [],
+  "capabilities": ["onoff"],
   "images": {
     "large": "/drivers/HmIP-USBSM/assets/images/large.png",
     "small": "/drivers/HmIP-USBSM/assets/images/small.png"

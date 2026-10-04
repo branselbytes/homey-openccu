@@ -21,6 +21,51 @@ class FakeRawClient implements RawXmlRpcClient {
 }
 
 describe("HmIpXmlRpcClient", () => {
+  it("retains only the latest safe failure across successful polling and resets with a new client", async () => {
+    const raw = new FakeRawClient();
+    const client = new HmIpXmlRpcClient(raw);
+    expect(client.getDiagnostics().lastError).toBeUndefined();
+    raw.error = Object.assign(new Error("private host password=secret"), {
+      faultCode: 0,
+      faultString: "private name and address",
+    });
+    await expect(
+      client.setValue("private:1", "DOOR_COMMAND", "OPEN"),
+    ).rejects.toMatchObject({
+      code: "remote-fault",
+      faultCode: 0,
+      message: "XML-RPC setValue failed (CCU fault code 0)",
+    });
+    expect(client.getDiagnostics().lastError).toEqual({
+      method: "setValue",
+      code: "remote-fault",
+      faultCode: 0,
+    });
+    expect(JSON.stringify(client.getDiagnostics())).not.toMatch(
+      /private|password|secret|OPEN/u,
+    );
+
+    raw.error = undefined;
+    raw.response = false;
+    await client.getValue("private:2", "STATE");
+    expect(client.getDiagnostics().lastError).toEqual({
+      method: "setValue",
+      code: "remote-fault",
+      faultCode: 0,
+    });
+    raw.error = new Error("connect refused private host");
+    await expect(client.getValue("private:2", "STATE")).rejects.toMatchObject({
+      code: "transport",
+    });
+    expect(client.getDiagnostics().lastError).toEqual({
+      method: "getValue",
+      code: "transport",
+    });
+    expect(
+      new HmIpXmlRpcClient(raw).getDiagnostics().lastError,
+    ).toBeUndefined();
+  });
+
   it("uses HmIP XML-RPC methods for discovery, reads, writes and registration", async () => {
     const raw = new FakeRawClient();
     const client = new HmIpXmlRpcClient(raw);
@@ -76,6 +121,7 @@ describe("HmIpXmlRpcClient", () => {
         totalRequests: 1,
         failedRequests: 1,
         timedOutRequests: 1,
+        lastError: { method: "getValue", code: "timeout" },
       });
 
       const write = client.setValue("001:1", "STATE", true);

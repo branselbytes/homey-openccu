@@ -2,7 +2,7 @@
   "id": "HmIP-PDT",
   "name": { "en": "HmIP-PDT" },
   "class": "light",
-  "capabilities": [],
+  "capabilities": ["onoff", "dim"],
   "images": {
     "large": "/drivers/HmIP-PDT/assets/images/large.png",
     "small": "/drivers/HmIP-PDT/assets/images/small.png"

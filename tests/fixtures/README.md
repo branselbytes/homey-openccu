@@ -7,3 +7,5 @@ Addresses and parent/child references are replaced consistently with CATALOG1–
 Tests supply synthetic initial values, callback events and command responses. Changing a recorded device's type to test a documented model/color alias does not make that alias hardware verified. The existing wired-devices and wired-infrastructure recordings retain their original provenance in DEVICE_SUPPORT.md and IMPLEMENTATION_PLAN.md.
 
 All fixtures are excluded from the Homey application package by .homeyignore.
+
+`hoermann-mod-ho.json` contains selected channel/datapoint metadata from the diagnostic attachment to [issue #1](https://github.com/branselbytes/homey-openccu/issues/1), reviewed on 2026-10-03 (HmIP-MOD-HO firmware 1.0.16). Device/channel identities are synthesized as `HOERMANN1`; no original identities, names, network addresses or live values are retained. String enum and boolean bounds are preserved as reported. Runtime tests simulate all states, callbacks, write acknowledgements and errors; physical motor/light operation remains unverified.

@@ -10,10 +10,10 @@
         --widget-surface: var(--homey-color-mono-050, #f5f5f6);
         --widget-text: var(--homey-text-color, #222);
         --widget-muted: var(--homey-text-color-light, #6b6c70);
-        --widget-blue: var(--homey-color-blue, #0082fa);
-        --widget-green: var(--homey-color-green, #22a65a);
-        --widget-orange: var(--homey-color-orange, #ff9800);
-        --widget-red: var(--homey-color-red, #d94a47);
+        --widget-blue: var(--homey-icon-color-blue, #0082fa);
+        --widget-green: var(--homey-icon-color-green, #22a65a);
+        --widget-orange: var(--homey-icon-color-orange, #ff9800);
+        --widget-red: var(--homey-icon-color-red, #d94a47);
       }
       *,
       *::before,
@@ -29,33 +29,16 @@
         color: var(--widget-text);
       }
       body.homey-widget {
-        padding: 12px;
-        font-family: var(
-          --homey-font-family,
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          sans-serif
-        );
-        font-size: 13px;
-        line-height: 18px;
-      }
-      .header,
-      .central-header,
-      .metric,
-      .message,
-      .summary,
-      .interface {
-        background: var(--widget-surface);
-        border-radius: var(--homey-border-radius-small, 12px);
+        padding: var(--homey-su-4, 16px);
+        font-size: var(--homey-font-size-default, 17px);
+        line-height: var(--homey-line-height-default, 24px);
+        font-weight: var(--homey-font-weight-regular, 400);
       }
       .header {
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 10px;
-        margin-bottom: 8px;
-        min-height: 56px;
+        gap: var(--homey-su-2, 8px);
+        margin-bottom: var(--homey-su-4, 16px);
       }
       .heading {
         flex: 1;
@@ -64,9 +47,9 @@
       .heading h2,
       .central-title {
         margin: 0;
-        font-size: 13px;
-        line-height: 18px;
-        font-weight: 500;
+        font-size: var(--homey-font-size-default, 17px);
+        line-height: var(--homey-line-height-default, 24px);
+        font-weight: var(--homey-font-weight-medium, 500);
         overflow-wrap: anywhere;
       }
       .subtitle,
@@ -75,20 +58,15 @@
       .interface-type,
       .message-meta {
         color: var(--widget-muted);
-        font-size: 11px;
-        line-height: 16px;
+        font-size: var(--homey-font-size-small, 14px);
+        line-height: var(--homey-line-height-small, 20px);
       }
       .icon {
         display: block;
-        width: 20px;
-        height: 20px;
-        flex: 0 0 20px;
+        width: var(--homey-icon-size-medium, 20px);
+        height: var(--homey-icon-size-medium, 20px);
+        flex: 0 0 var(--homey-icon-size-medium, 20px);
         color: var(--widget-blue);
-      }
-      .header > .icon {
-        width: 26px;
-        height: 26px;
-        flex-basis: 26px;
       }
       .icon.orange {
         color: var(--widget-orange);
@@ -99,12 +77,15 @@
       .refresh {
         appearance: none;
         border: 0;
-        border-radius: 8px;
+        border-radius: var(--homey-border-radius-small, 8px);
         background: transparent;
-        color: var(--widget-blue);
         cursor: pointer;
-        padding: 6px;
-        flex: 0 0 32px;
+        padding: var(--homey-su-2, 8px);
+        min-width: 44px;
+        min-height: 44px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
       }
       .refresh:disabled {
         cursor: wait;
@@ -115,18 +96,18 @@
         outline-offset: 1px;
       }
       .status-column {
-        margin-left: auto;
-        text-align: right;
+        margin-inline-start: auto;
+        text-align: end;
         min-width: 0;
       }
       .state {
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        gap: 6px;
-        font-size: 12px;
-        line-height: 18px;
-        font-weight: 600;
+        gap: var(--homey-su-2, 8px);
+        font-size: var(--homey-font-size-small, 14px);
+        line-height: var(--homey-line-height-small, 20px);
+        overflow-wrap: anywhere;
       }
       .indicator {
         background: var(--widget-green);
@@ -143,12 +124,12 @@
         background: var(--widget-red);
       }
       .updated {
-        white-space: nowrap;
         font-variant-numeric: tabular-nums;
       }
       .empty,
       .error {
-        padding: 16px 10px;
+        margin: 0;
+        padding: var(--homey-su-4, 16px) 0;
         text-align: center;
         color: var(--widget-muted);
         overflow-wrap: anywhere;
@@ -174,61 +155,68 @@
         min-width: 0;
       }
       .central + .central {
-        margin-top: 8px;
+        margin-top: var(--homey-su-4, 16px);
       }
       .central-header {
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 9px 10px;
+        flex-wrap: wrap;
+        gap: var(--homey-su-2, 8px);
+        padding-bottom: var(--homey-su-3, 12px);
       }
       .central-header .heading {
         flex-basis: 40%;
       }
+      .central-header .status-column {
+        flex: 1 1 120px;
+      }
       .metrics {
         display: grid;
-        gap: 6px;
+        gap: var(--homey-su-2, 8px);
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        margin-top: 6px;
       }
       .metric {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: var(--homey-su-2, 8px);
         min-width: 0;
-        padding: 9px 10px;
+        padding: var(--homey-su-3, 12px);
+        background: var(--widget-surface);
+        border-radius: var(--homey-border-radius-default, 12px);
       }
       .metric > div {
         min-width: 0;
       }
       .metric-label {
         overflow-wrap: anywhere;
+        hyphens: auto;
       }
       .metric-value {
-        font-size: 17px;
-        line-height: 23px;
-        font-weight: 500;
+        font-size: var(--homey-font-size-large, 20px);
+        line-height: var(--homey-line-height-large, 28px);
+        font-weight: var(--homey-font-weight-medium, 500);
         font-variant-numeric: tabular-nums;
       }
       .interfaces {
-        margin-top: 8px;
+        margin-top: var(--homey-su-4, 16px);
       }
       .interfaces-title {
-        margin: 0 0 6px;
-        font-size: 11px;
-        line-height: 16px;
+        margin: 0;
+        font-size: var(--homey-font-size-small, 14px);
+        line-height: var(--homey-line-height-small, 20px);
         color: var(--widget-muted);
-        font-weight: 500;
+        font-weight: var(--homey-font-weight-regular, 400);
       }
       .interface {
-        padding: 9px 10px;
-        margin-top: 6px;
+        padding: var(--homey-su-2, 8px) 0;
+        margin-top: var(--homey-su-2, 8px);
+        border-top: var(--homey-line-light, 1px solid var(--widget-surface));
       }
       .interface-header {
         display: flex;
         align-items: baseline;
         flex-wrap: wrap;
-        gap: 4px 8px;
+        gap: var(--homey-su-1, 4px) var(--homey-su-2, 8px);
         justify-content: space-between;
       }
       .interface-header > span {
@@ -236,8 +224,15 @@
         min-width: 0;
       }
       .interface-values {
-        font-size: 12px;
+        font-size: var(--homey-font-size-small, 14px);
+        line-height: var(--homey-line-height-small, 20px);
         font-variant-numeric: tabular-nums;
+      }
+      @media (max-width: 300px) {
+        .metric {
+          flex-direction: column;
+          align-items: flex-start;
+        }
       }
     </style>
   </head>
@@ -252,57 +247,54 @@
     <div class="centrals" id="centrals" aria-live="polite"></div>
 
     <script>
-      const translations = {
-        de: {
-          title: "Systemstatus",
-          central: "Zentrale",
-          refresh: "Aktualisieren",
-          loading: "Systeminformationen werden geladen …",
-          empty: "Keine OpenCCU konfiguriert",
-          error: "Systemstatus konnte nicht geladen werden",
-          devices: "Geräte",
-          messages: "Servicemeldungen",
-          dutyCycle: "Duty Cycle",
-          carrierSense: "Carrier Sense",
-          interfaces: "Funkinterfaces",
-          interface: "Funkinterface",
-          updated: "Aktualisiert",
-          states: {
-            healthy: "Verbunden",
-            connecting: "Verbindungsaufbau",
-            disconnected: "Getrennt",
-            stopped: "Gestoppt",
-          },
+      const fallbackTranslations = {
+        title: "System status",
+        central: "Central",
+        refresh: "Refresh",
+        loading: "Loading system information…",
+        empty: "No OpenCCU configured",
+        error: "Could not load system status",
+        devices: "Devices",
+        messages: "Service messages",
+        dutyCycle: "Duty cycle",
+        carrierSense: "Carrier sense",
+        interfaces: "Radio interfaces",
+        interface: "Radio interface",
+        updated: "Updated",
+        states: {
+          healthy: "Connected",
+          connecting: "Connecting",
+          disconnected: "Disconnected",
+          stopped: "Stopped",
         },
-        en: {
-          title: "System status",
-          central: "Central",
-          refresh: "Refresh",
-          loading: "Loading system information…",
-          empty: "No OpenCCU configured",
-          error: "Could not load system status",
-          devices: "Devices",
-          messages: "Service messages",
-          dutyCycle: "Duty cycle",
-          carrierSense: "Carrier sense",
-          interfaces: "Radio interfaces",
-          interface: "Radio interface",
-          updated: "Updated",
-          states: {
-            healthy: "Connected",
-            connecting: "Connecting",
-            disconnected: "Disconnected",
-            stopped: "Stopped",
-          },
-        },
+        unavailable: "Status unavailable",
+        partial: "Partial data",
+        unknown: "Unknown",
       };
 
       let HomeyApi;
       let refreshTimer;
-      const language = navigator.language.toLowerCase().startsWith("de")
-        ? "de"
-        : "en";
-      const t = translations[language];
+      let language = "en";
+      let t = fallbackTranslations;
+      let refreshing = false;
+      let hasLoaded = false;
+
+      function translatedValues(fallback, prefix) {
+        return Object.fromEntries(
+          Object.entries(fallback).map(([key, value]) => {
+            const path = `${prefix}.${key}`;
+            if (typeof value === "object")
+              return [key, translatedValues(value, path)];
+            const translated = HomeyApi.__(path);
+            return [
+              key,
+              typeof translated === "string" && translated !== path
+                ? translated
+                : value,
+            ];
+          }),
+        );
+      }
 
       // Original line icons; only the icons carry the Homey accent colours.
       function icon(name, colour = "") {
@@ -393,7 +385,11 @@
         indicator.className = `indicator ${stateClass(central)}`.trim();
         const stateText = document.createElement("span");
         stateText.textContent =
-          t.states[central.connectionState] || central.connectionState;
+          central.connectionState === "healthy" && central.unavailable
+            ? t.unavailable
+            : central.connectionState === "healthy" && central.partial
+              ? t.partial
+              : t.states[central.connectionState] || t.unknown;
         state.append(indicator, stateText);
         const heading = document.createElement("div");
         heading.className = "heading";
@@ -405,28 +401,46 @@
         statusColumn.className = "status-column";
         const updated = document.createElement("div");
         updated.className = "updated";
-        updated.textContent = shortDate(refreshedAt);
-        updated.title = `${t.updated}: ${new Date(refreshedAt).toLocaleString(language)}`;
+        updated.textContent = central.unavailable
+          ? "—"
+          : shortDate(refreshedAt);
+        if (!central.unavailable)
+          updated.title = `${t.updated}: ${new Date(refreshedAt).toLocaleString(language)}`;
         statusColumn.append(state, updated);
         header.append(heading, statusColumn);
 
         const metrics = document.createElement("div");
         metrics.className = "metrics";
         metrics.append(
-          metric(t.devices, central.deviceCount),
+          metric(
+            t.devices,
+            central.unavailable ? undefined : central.deviceCount,
+          ),
           metric(
             t.messages,
-            central.serviceMessageCount,
+            central.unavailable ? undefined : central.serviceMessageCount,
             "",
             "messages",
             "orange",
           ),
-          metric(t.dutyCycle, central.dutyCycle, "%", "duty", "green"),
-          metric(t.carrierSense, central.carrierSense, "%", "radio", "orange"),
+          metric(
+            t.dutyCycle,
+            central.unavailable ? undefined : central.dutyCycle,
+            "%",
+            "duty",
+            "green",
+          ),
+          metric(
+            t.carrierSense,
+            central.unavailable ? undefined : central.carrierSense,
+            "%",
+            "radio",
+            "orange",
+          ),
         );
         section.append(header, metrics);
 
-        if (central.radioInterfaces.length > 1) {
+        if (!central.unavailable && central.radioInterfaces.length > 1) {
           const interfaces = document.createElement("div");
           interfaces.className = "interfaces";
           const heading = document.createElement("h4");
@@ -497,11 +511,16 @@
       }
 
       async function refresh() {
+        if (refreshing) return;
+        refreshing = true;
         const button = document.getElementById("refresh");
         button.disabled = true;
-        document.getElementById("centrals").textContent = t.loading;
+        const container = document.getElementById("centrals");
+        container.setAttribute("aria-busy", "true");
+        if (!hasLoaded) container.textContent = t.loading;
         try {
           renderOverview(await HomeyApi.api("GET", "/", {}));
+          hasLoaded = true;
         } catch {
           const container = document.getElementById("centrals");
           container.replaceChildren();
@@ -511,12 +530,17 @@
           container.append(error);
           resizeWidget();
         } finally {
+          refreshing = false;
+          container.setAttribute("aria-busy", "false");
           button.disabled = false;
         }
       }
 
       function onHomeyReady(Homey) {
         HomeyApi = Homey;
+        t = translatedValues(fallbackTranslations, "widgets.system_status");
+        language = Homey.__("widgets.locale") === "de" ? "de" : "en";
+        document.documentElement.lang = language;
         translateStaticText();
         window.addEventListener("resize", resizeWidget);
         document.getElementById("refresh").addEventListener("click", refresh);

@@ -11,6 +11,8 @@ export const VALUE_TRANSFORMS = [
   "enum-number-to-string",
   "identity",
   "garage-door-state-to-closed",
+  "garage-door-state-to-enum",
+  "hoermann-door-state-to-closed",
   "hue-degrees-to-ratio",
   "lock-state-to-boolean",
   "liter-to-cubic-meter",
@@ -27,6 +29,8 @@ export const WRITE_STRATEGIES = [
   "direct",
   "cover-state",
   "garage-closed",
+  "garage-command",
+  "garage-ventilation",
   "siren-default",
   "smoke-siren",
 ] as const;

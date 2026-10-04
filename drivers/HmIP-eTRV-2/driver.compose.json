@@ -5,7 +5,14 @@
     "de": "HmIP-eTRV Heizkörperthermostate"
   },
   "class": "thermostat",
-  "capabilities": [],
+  "capabilities": [
+    "measure_temperature",
+    "target_temperature",
+    "homematic_thermostat_mode",
+    "homematic_thermostat_boost",
+    "homematic_thermostat_weekprofile",
+    "homematic_measure_valve"
+  ],
   "images": {
     "large": "/drivers/HmIP-eTRV-2/assets/images/large.png",
     "small": "/drivers/HmIP-eTRV-2/assets/images/small.png"
@@ -14,8 +21,13 @@
     {
       "id": "list_devices",
       "template": "list_devices",
-      "navigation": { "next": "add_devices" }
+      "navigation": {
+        "next": "add_devices"
+      }
     },
-    { "id": "add_devices", "template": "add_devices" }
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
   ]
 }

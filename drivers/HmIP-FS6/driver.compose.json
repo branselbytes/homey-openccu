@@ -2,7 +2,7 @@
   "id": "HmIP-FS6",
   "name": { "en": "HmIP-FS6" },
   "class": "socket",
-  "capabilities": [],
+  "capabilities": ["onoff"],
   "images": {
     "large": "/drivers/HmIP-FS6/assets/images/large.png",
     "small": "/drivers/HmIP-FS6/assets/images/small.png"

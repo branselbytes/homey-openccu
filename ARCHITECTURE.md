@@ -192,6 +192,8 @@ Callback TCP connections are admitted only when their normalized remote address 
 
 The shared device-binding controller reconciles dynamic capabilities, reads initial values, routes commands and push events through the typed runtime, mirrors connection availability, and owns listener-specific cleanup. Resolved bindings retain separate read and write channel/parameter targets. Thin product-specific Homey adapters use shared HmIP profiles alongside `openccu-generic`; all other imported drivers and transports were removed from the active tree after their history was preserved.
 
+Dedicated visible driver manifests also declare conservative baseline capabilities for Homey's App Store and automatic Flow-card catalog (ADR 0022). Shared families advertise their common baseline; optional or configuration-dependent functions remain discoverable without being promised for every model. Pairing always sends the candidate's explicit capability array, including an empty array where appropriate, and runtime reconciliation remains authoritative. Custom device Flow filters retain relevant legacy/generic drivers and thermostat capability checks; hub Flow cards remain app-wide.
+
 Observed OpenCCU product suffixes such as `R4M` and `I9F` are normalized for profile selection. HmIP-eTRV-B-2 and eTRV-E variants use the shared radiator-thermostat profile. Custom Flow actions cover thermostat mode, boost, and week profile; standard Homey capabilities continue to supply temperature cards.
 
 Authenticated JSON-RPC metadata loading now follows XML-RPC discovery without becoming part of XML-RPC connection health. The live-tested response adapters normalize `Device.listAllDetail`, `Room.getAll`, `Subsection.getAll`, `Program.getAll`, and `SysVar.getAll`; failures remain isolated per method. New pairing candidates prefer channel names, then device names, while already paired Homey names are never changed automatically. OpenCCU channel IDs are normalized to XML-RPC channel addresses so rooms and functions can be exposed as read-only device Flow tags. Multiple assignments are sorted and combined; Homey zones are never created or changed implicitly.
@@ -202,9 +204,15 @@ Central health is represented by one dedicated `openccu-system` Homey device per
 
 The system-status widget reads the same typed runtime state and refresh methods through a privacy-reduced provider view. It exposes connection state, device and service-message counts, aggregate duty cycle and carrier sense, plus radio-interface names, types, and loads without returning interface addresses. Requests are deduplicated and cached for 30 seconds so multiple dashboards do not multiply JSON-RPC load.
 
+Both widgets use Homey's semantic color and typography variables, 16px outer spacing, and the selected Homey language through `Homey.__`. The system widget sizes to content; service messages use a 380px frame with a scrollable list. Each view permits one refresh at a time and retains content during normal polling. Unavailable system data is labeled explicitly and cached readings/timestamps are hidden until available again. Original symbolic Store previews are generated as transparent 1024px light/dark PNGs by `scripts/generate-widget-previews.mjs`, without runtime rendering dependencies.
+
 Metadata methods run sequentially and each raw response is normalized before the next is requested, limiting peak allocations on Homey. The current regular test process remains below the memory warning threshold, while remote inspector mode can exceed it; production memory headroom must therefore be re-measured as device and Flow coverage grows.
 
 The protected settings Web API exposes a downloadable support report assembled from aggregate runtime diagnostics. Centrals receive report-local aliases; credentials, network addresses, central IDs, OpenCCU object names, and datapoint values are excluded. A recursive redaction pass remains the final boundary in case diagnostic structures acquire sensitive fields later.
+
+Support exports also retain the latest XML-RPC failure as an allowlisted method, typed error category and optional signed 32-bit fault code. Remote messages and request arguments are excluded; successful background polling does not erase the failure. Settings provide a bounded copyable summary with optional model-specific schema, while preserving the full JSON attachment. This separates forum text from complete technical evidence without changing the report API (ADR 0023).
+
+HmIP-MOD-HO keeps its native closed-state and light capabilities and gains write-only opening/stopping/closing and ventilation controls plus a read-only four-state position. Channel 1 accepts explicit string commands; channel 2 retains boolean light commands. Valid unknown positions clear the native state to `null` and expose `unknown` without interrupting callback batches. Command-only bindings await the actual XML-RPC result, including delayed rejections, and skip read-back verification because their physical result arrives on a separate state datapoint; readable bindings retain their existing confirmation logic. No automatic motor command retry is introduced. Capability-filtered Flow actions and a position condition use the same Homey device boundary (ADR 0023).
 
 ### Catalog and discovery maintenance (unreleased)
 
@@ -220,8 +228,13 @@ Every driver owns its PNG image pair. Matching original assets are restored from
 
 App-level branding is separate from driver artwork: a native transparent branselbytes circuit SVG and three locally packaged navy/copper scene sizes. Source imagery and production prompts stay in excluded documentation; no runtime image generation or network dependency is introduced (ADR 0021).
 
+ADR 0024 refines the 32 project-authored driver drawings and generated family variants using finer perspective contours and corrected product proportions. Electrical, household and sensor geometry modules feed the same development-only generator, producing consistently centered transparent 960px SVG icons and 75/500px catalog images. Imported assets and pairing paths remain intact. The revised source review separates conditionally reusable HMSL manufacturer images from OpenCCU's own artwork restrictions; this implementation continues to use independent project drawings and adds no image fetching or runtime dependencies.
+
 ## Recorded decisions
 
+- `docs/adr/0024-refined-device-illustrations.md`: original product illustrations with corrected forms, stable pairing paths and a renewed image-license review.
+- `docs/adr/0023-hoermann-controls-and-support-diagnostics.md`: complete Hörmann controls, valid unknown states, command-only acknowledgements and bounded support diagnostics.
+- `docs/adr/0022-store-capabilities-and-widget-presentation.md`: conservative Store capability metadata, discovery-authoritative devices and native widget presentation.
 - `docs/adr/0001-initial-product-scope.md`: HmIP-RF first; programs and system variables in the first usable release.
 - `docs/adr/0002-homey-driver-strategy.md`: dedicated product drivers plus a generic fallback.
 - `docs/adr/0018-swdo-family-driver.md`: one SWDO pairing entry with retained legacy drivers and stable existing device identities.

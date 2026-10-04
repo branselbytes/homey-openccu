@@ -1,25 +1,41 @@
 {
   "title": {
-    "en": "A button was pressed on [[device]]",
-    "de": "Eine Taste an [[device]] wurde gedrückt"
+    "en": "A button was pressed",
+    "de": "Eine Taste wurde gedrückt"
   },
   "titleFormatted": {
-    "en": "A button was pressed on [[device]]",
-    "de": "Eine Taste an [[device]] wurde gedrückt"
+    "en": "A button was pressed",
+    "de": "Eine Taste wurde gedrückt"
   },
   "tokens": [
     {
       "name": "button",
       "type": "number",
-      "title": { "en": "Button", "de": "Taste" },
+      "title": {
+        "en": "Button",
+        "de": "Taste"
+      },
       "example": 1
     },
     {
       "name": "press_type",
       "type": "string",
-      "title": { "en": "Press type", "de": "Tastendruck" },
+      "title": {
+        "en": "Press type",
+        "de": "Tastendruck"
+      },
       "example": "short"
     }
   ],
-  "args": [{ "name": "device", "type": "device" }]
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      },
+      "filter": "driver_id=HMIP-PSM|HMIP-WRC2|HmIP-BBL|HmIP-BDT|HmIP-BRA|HmIP-BRC2|HmIP-BSM|HmIP-FCI1|HmIP-RC8|HmIP-SMI55|HmIP-WRC6|HmIPW-DRI16|openccu-generic"
+    }
+  ]
 }

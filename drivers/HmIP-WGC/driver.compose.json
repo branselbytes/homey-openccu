@@ -2,7 +2,7 @@
   "id": "HmIP-WGC",
   "name": { "en": "HmIP-WGC" },
   "class": "socket",
-  "capabilities": [],
+  "capabilities": ["onoff"],
   "images": {
     "large": "/drivers/HmIP-WGC/assets/images/large.png",
     "small": "/drivers/HmIP-WGC/assets/images/small.png"

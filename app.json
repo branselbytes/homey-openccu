@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "io.github.branselbytes.openccu",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "compatibility": ">=12.9.0",
   "sdk": 3,
   "name": {
@@ -64,12 +64,12 @@
     "triggers": [
       {
         "title": {
-          "en": "A button was pressed on [[device]]",
-          "de": "Eine Taste an [[device]] wurde gedrückt"
+          "en": "A button was pressed",
+          "de": "Eine Taste wurde gedrückt"
         },
         "titleFormatted": {
-          "en": "A button was pressed on [[device]]",
-          "de": "Eine Taste an [[device]] wurde gedrückt"
+          "en": "A button was pressed",
+          "de": "Eine Taste wurde gedrückt"
         },
         "tokens": [
           {
@@ -94,13 +94,78 @@
         "args": [
           {
             "name": "device",
-            "type": "device"
+            "type": "device",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            },
+            "filter": "driver_id=HMIP-PSM|HMIP-WRC2|HmIP-BBL|HmIP-BDT|HmIP-BRA|HmIP-BRC2|HmIP-BSM|HmIP-FCI1|HmIP-RC8|HmIP-SMI55|HmIP-WRC6|HmIPW-DRI16|openccu-generic"
           }
         ],
         "id": "hmip_button_pressed"
       }
     ],
     "conditions": [
+      {
+        "title": {
+          "en": "Garage door position is",
+          "de": "Torposition ist"
+        },
+        "titleFormatted": {
+          "en": "Garage door position !{{is|is not}} [[state]]",
+          "de": "Torposition !{{ist|ist nicht}} [[state]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-MOD-HO|openccu-generic&capabilities=homematic_garage_state",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "state",
+            "type": "dropdown",
+            "title": {
+              "en": "Position",
+              "de": "Position"
+            },
+            "values": [
+              {
+                "id": "closed",
+                "label": {
+                  "en": "Closed",
+                  "de": "Geschlossen"
+                }
+              },
+              {
+                "id": "open",
+                "label": {
+                  "en": "Open",
+                  "de": "Offen"
+                }
+              },
+              {
+                "id": "ventilation",
+                "label": {
+                  "en": "Ventilation position",
+                  "de": "Lüftungsposition"
+                }
+              },
+              {
+                "id": "unknown",
+                "label": {
+                  "en": "Position unknown",
+                  "de": "Position unbekannt"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "garage_door_state_is"
+      },
       {
         "title": {
           "en": "OpenCCU variable [[variable]] equals [[value]]",
@@ -134,18 +199,44 @@
     "actions": [
       {
         "title": {
-          "en": "Activate boost on [[device]]",
-          "de": "Aktiviere Boost bei [[device]]"
+          "en": "Move garage door to ventilation position",
+          "de": "Garagentor in Lüftungsposition fahren"
         },
         "titleFormatted": {
-          "en": "Activate boost on [[device]]",
-          "de": "Aktiviere Boost bei [[device]]"
+          "en": "Move to ventilation position",
+          "de": "In Lüftungsposition fahren"
         },
         "args": [
           {
             "name": "device",
             "type": "device",
-            "filter": "capabilities=homematic_thermostat_boost"
+            "filter": "driver_id=HmIP-MOD-HO|openccu-generic&capabilities=homematic_garage_ventilation",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "activate_garage_ventilation"
+      },
+      {
+        "title": {
+          "en": "Activate boost",
+          "de": "Boost aktivieren"
+        },
+        "titleFormatted": {
+          "en": "Activate boost",
+          "de": "Boost aktivieren"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HMIP-WTH|HMIP-eTRV|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-eTRV-2|HmIP-eTRV-B|HmIP-eTRV-B-2|HmIP-eTRV-C|HmIP-eTRV-E|HmIPW-STH|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_boost",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
           }
         ],
         "id": "activate_thermostat_boost"
@@ -170,6 +261,59 @@
           }
         ],
         "id": "execute_openccu_program"
+      },
+      {
+        "title": {
+          "en": "Control garage door",
+          "de": "Garagentor steuern"
+        },
+        "titleFormatted": {
+          "en": "Garage door: [[command]]",
+          "de": "Garagentor: [[command]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-MOD-HO|openccu-generic&capabilities=homematic_garage_command",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "command",
+            "type": "dropdown",
+            "title": {
+              "en": "Command",
+              "de": "Befehl"
+            },
+            "values": [
+              {
+                "id": "up",
+                "label": {
+                  "en": "Open",
+                  "de": "Öffnen"
+                }
+              },
+              {
+                "id": "idle",
+                "label": {
+                  "en": "Stop",
+                  "de": "Stopp"
+                }
+              },
+              {
+                "id": "down",
+                "label": {
+                  "en": "Close",
+                  "de": "Schließen"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_garage_door_command"
       },
       {
         "title": {
@@ -202,18 +346,22 @@
       },
       {
         "title": {
-          "en": "Set [[device]] mode to [[mode]]",
-          "de": "Setze den Modus von [[device]] auf [[mode]]"
+          "en": "Set thermostat mode",
+          "de": "Thermostatmodus setzen"
         },
         "titleFormatted": {
-          "en": "Set [[device]] mode to [[mode]]",
-          "de": "Setze den Modus von [[device]] auf [[mode]]"
+          "en": "Set mode to [[mode]]",
+          "de": "Modus auf [[mode]] setzen"
         },
         "args": [
           {
             "name": "device",
             "type": "device",
-            "filter": "capabilities=homematic_thermostat_mode"
+            "filter": "driver_id=HMIP-WTH|HMIP-eTRV|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-eTRV-2|HmIP-eTRV-B|HmIP-eTRV-B-2|HmIP-eTRV-C|HmIP-eTRV-E|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_mode",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
           },
           {
             "name": "mode",
@@ -233,25 +381,33 @@
                   "de": "Manuell"
                 }
               }
-            ]
+            ],
+            "title": {
+              "en": "Mode",
+              "de": "Modus"
+            }
           }
         ],
         "id": "set_thermostat_mode"
       },
       {
         "title": {
-          "en": "Set [[device]] week profile to [[profile]]",
-          "de": "Setze das Wochenprofil von [[device]] auf [[profile]]"
+          "en": "Set week profile",
+          "de": "Wochenprofil setzen"
         },
         "titleFormatted": {
-          "en": "Set [[device]] week profile to [[profile]]",
-          "de": "Setze das Wochenprofil von [[device]] auf [[profile]]"
+          "en": "Set week profile to [[profile]]",
+          "de": "Wochenprofil auf [[profile]] setzen"
         },
         "args": [
           {
             "name": "device",
             "type": "device",
-            "filter": "capabilities=homematic_thermostat_weekprofile"
+            "filter": "driver_id=HMIP-WTH|HMIP-eTRV|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-eTRV-2|HmIP-eTRV-B|HmIP-eTRV-B-2|HmIP-eTRV-C|HmIP-eTRV-E|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_weekprofile",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
           },
           {
             "name": "profile",
@@ -278,7 +434,11 @@
                   "de": "Profil 3"
                 }
               }
-            ]
+            ],
+            "title": {
+              "en": "Profile",
+              "de": "Profil"
+            }
           }
         ],
         "id": "set_thermostat_weekprofile"
@@ -319,7 +479,7 @@
         "de": "HmIP Schalt- und Messsteckdosen"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HMIP-PSM/assets/images/large.png",
         "small": "/drivers/HMIP-PSM/assets/images/small.png"
@@ -345,7 +505,7 @@
         "de": "HmIP-SWDO Fenster-/Türkontakte"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": ["alarm_contact"],
       "images": {
         "large": "/drivers/HMIP-SWDO/assets/images/large.png",
         "small": "/drivers/HMIP-SWDO/assets/images/small.png"
@@ -395,7 +555,14 @@
         "en": "HMIP-WTH"
       },
       "class": "thermostat",
-      "capabilities": [],
+      "capabilities": [
+        "measure_temperature",
+        "measure_humidity",
+        "target_temperature",
+        "homematic_thermostat_mode",
+        "homematic_thermostat_boost",
+        "homematic_thermostat_weekprofile"
+      ],
       "images": {
         "large": "/drivers/HMIP-WTH/assets/images/large.png",
         "small": "/drivers/HMIP-WTH/assets/images/small.png"
@@ -471,7 +638,11 @@
         "en": "HmIP-BBL"
       },
       "class": "blinds",
-      "capabilities": [],
+      "capabilities": [
+        "windowcoverings_set",
+        "windowcoverings_state",
+        "windowcoverings_tilt_set"
+      ],
       "images": {
         "large": "/drivers/HmIP-BBL/assets/images/large.png",
         "small": "/drivers/HmIP-BBL/assets/images/small.png"
@@ -496,7 +667,7 @@
         "en": "HmIP-BDT"
       },
       "class": "light",
-      "capabilities": [],
+      "capabilities": ["onoff", "dim"],
       "images": {
         "large": "/drivers/HmIP-BDT/assets/images/large.png",
         "small": "/drivers/HmIP-BDT/assets/images/small.png"
@@ -571,7 +742,7 @@
         "en": "HmIP-BROLL"
       },
       "class": "blinds",
-      "capabilities": [],
+      "capabilities": ["windowcoverings_set", "windowcoverings_state"],
       "images": {
         "large": "/drivers/HmIP-BROLL/assets/images/large.png",
         "small": "/drivers/HmIP-BROLL/assets/images/small.png"
@@ -596,7 +767,7 @@
         "en": "HmIP-BS2"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HmIP-BS2/assets/images/large.png",
         "small": "/drivers/HmIP-BS2/assets/images/small.png"
@@ -621,7 +792,13 @@
         "en": "HmIP-BSM"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": [
+        "onoff",
+        "measure_power",
+        "measure_voltage",
+        "measure_current",
+        "meter_power"
+      ],
       "images": {
         "large": "/drivers/HmIP-BSM/assets/images/large.png",
         "small": "/drivers/HmIP-BSM/assets/images/small.png"
@@ -646,7 +823,14 @@
         "en": "HmIP-BWTH"
       },
       "class": "thermostat",
-      "capabilities": [],
+      "capabilities": [
+        "measure_temperature",
+        "measure_humidity",
+        "target_temperature",
+        "homematic_thermostat_mode",
+        "homematic_thermostat_boost",
+        "homematic_thermostat_weekprofile"
+      ],
       "images": {
         "large": "/drivers/HmIP-BWTH/assets/images/large.png",
         "small": "/drivers/HmIP-BWTH/assets/images/small.png"
@@ -671,7 +855,7 @@
         "en": "HmIP-DLD"
       },
       "class": "lock",
-      "capabilities": [],
+      "capabilities": ["locked"],
       "images": {
         "large": "/drivers/HmIP-DLD/assets/images/large.png",
         "small": "/drivers/HmIP-DLD/assets/images/small.png"
@@ -696,7 +880,7 @@
         "en": "HmIP-DRDI3"
       },
       "class": "light",
-      "capabilities": [],
+      "capabilities": ["onoff", "dim"],
       "images": {
         "large": "/drivers/HmIP-DRDI3/assets/images/large.png",
         "small": "/drivers/HmIP-DRDI3/assets/images/small.png"
@@ -721,7 +905,7 @@
         "en": "HmIP-DRG-DALI"
       },
       "class": "light",
-      "capabilities": [],
+      "capabilities": ["onoff", "dim", "light_hue", "light_saturation"],
       "images": {
         "large": "/drivers/HmIP-DRG-DALI/assets/images/large.png",
         "small": "/drivers/HmIP-DRG-DALI/assets/images/small.png"
@@ -746,7 +930,7 @@
         "en": "HmIP-DRSI1"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HmIP-DRSI1/assets/images/large.png",
         "small": "/drivers/HmIP-DRSI1/assets/images/small.png"
@@ -771,7 +955,7 @@
         "en": "HmIP-DRSI4"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HmIP-DRSI4/assets/images/large.png",
         "small": "/drivers/HmIP-DRSI4/assets/images/small.png"
@@ -796,7 +980,11 @@
         "en": "HmIP-FBL"
       },
       "class": "blinds",
-      "capabilities": [],
+      "capabilities": [
+        "windowcoverings_set",
+        "windowcoverings_state",
+        "windowcoverings_tilt_set"
+      ],
       "images": {
         "large": "/drivers/HmIP-FBL/assets/images/large.png",
         "small": "/drivers/HmIP-FBL/assets/images/small.png"
@@ -821,7 +1009,7 @@
         "en": "HmIP-FCI1"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": ["alarm_contact"],
       "images": {
         "large": "/drivers/HmIP-FCI1/assets/images/large.png",
         "small": "/drivers/HmIP-FCI1/assets/images/small.png"
@@ -846,7 +1034,7 @@
         "en": "HmIP-FDT"
       },
       "class": "light",
-      "capabilities": [],
+      "capabilities": ["onoff", "dim"],
       "images": {
         "large": "/drivers/HmIP-FDT/assets/images/large.png",
         "small": "/drivers/HmIP-FDT/assets/images/small.png"
@@ -871,7 +1059,7 @@
         "en": "HmIP-FROLL"
       },
       "class": "blinds",
-      "capabilities": [],
+      "capabilities": ["windowcoverings_set", "windowcoverings_state"],
       "images": {
         "large": "/drivers/HmIP-FROLL/assets/images/large.png",
         "small": "/drivers/HmIP-FROLL/assets/images/small.png"
@@ -896,7 +1084,7 @@
         "en": "HmIP-FS6"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HmIP-FS6/assets/images/large.png",
         "small": "/drivers/HmIP-FS6/assets/images/small.png"
@@ -921,7 +1109,7 @@
         "en": "HmIP-FSI"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HmIP-FSI/assets/images/large.png",
         "small": "/drivers/HmIP-FSI/assets/images/small.png"
@@ -946,7 +1134,7 @@
         "en": "HmIP-FSI16"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HmIP-FSI16/assets/images/large.png",
         "small": "/drivers/HmIP-FSI16/assets/images/small.png"
@@ -971,7 +1159,7 @@
         "en": "HmIP-FSI6"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HmIP-FSI6/assets/images/large.png",
         "small": "/drivers/HmIP-FSI6/assets/images/small.png"
@@ -996,7 +1184,13 @@
         "en": "HmIP-FSM"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": [
+        "onoff",
+        "measure_power",
+        "measure_voltage",
+        "measure_current",
+        "meter_power"
+      ],
       "images": {
         "large": "/drivers/HmIP-FSM/assets/images/large.png",
         "small": "/drivers/HmIP-FSM/assets/images/small.png"
@@ -1021,7 +1215,13 @@
         "en": "HmIP-FSM16"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": [
+        "onoff",
+        "measure_power",
+        "measure_voltage",
+        "measure_current",
+        "meter_power"
+      ],
       "images": {
         "large": "/drivers/HmIP-FSM16/assets/images/large.png",
         "small": "/drivers/HmIP-FSM16/assets/images/small.png"
@@ -1046,7 +1246,13 @@
         "en": "HmIP-MOD-HO"
       },
       "class": "garagedoor",
-      "capabilities": [],
+      "capabilities": [
+        "garagedoor_closed",
+        "onoff",
+        "homematic_garage_state",
+        "homematic_garage_command",
+        "homematic_garage_ventilation"
+      ],
       "images": {
         "large": "/drivers/HmIP-MOD-HO/assets/images/large.png",
         "small": "/drivers/HmIP-MOD-HO/assets/images/small.png"
@@ -1071,7 +1277,7 @@
         "en": "HmIP-MOD-OC8"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HmIP-MOD-OC8/assets/images/large.png",
         "small": "/drivers/HmIP-MOD-OC8/assets/images/small.png"
@@ -1096,7 +1302,7 @@
         "en": "HmIP-MOD-TM"
       },
       "class": "garagedoor",
-      "capabilities": [],
+      "capabilities": ["garagedoor_closed"],
       "images": {
         "large": "/drivers/HmIP-MOD-TM/assets/images/large.png",
         "small": "/drivers/HmIP-MOD-TM/assets/images/small.png"
@@ -1121,7 +1327,7 @@
         "en": "HmIP-PCBS"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HmIP-PCBS/assets/images/large.png",
         "small": "/drivers/HmIP-PCBS/assets/images/small.png"
@@ -1146,7 +1352,7 @@
         "en": "HmIP-PCBS-BAT"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HmIP-PCBS-BAT/assets/images/large.png",
         "small": "/drivers/HmIP-PCBS-BAT/assets/images/small.png"
@@ -1171,7 +1377,7 @@
         "en": "HmIP-PCBS2"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HmIP-PCBS2/assets/images/large.png",
         "small": "/drivers/HmIP-PCBS2/assets/images/small.png"
@@ -1196,7 +1402,7 @@
         "en": "HmIP-PDT"
       },
       "class": "light",
-      "capabilities": [],
+      "capabilities": ["onoff", "dim"],
       "images": {
         "large": "/drivers/HmIP-PDT/assets/images/large.png",
         "small": "/drivers/HmIP-PDT/assets/images/small.png"
@@ -1246,7 +1452,7 @@
         "en": "HmIP-RGBW"
       },
       "class": "light",
-      "capabilities": [],
+      "capabilities": ["onoff", "dim"],
       "images": {
         "large": "/drivers/HmIP-RGBW/assets/images/large.png",
         "small": "/drivers/HmIP-RGBW/assets/images/small.png"
@@ -1271,7 +1477,7 @@
         "en": "HmIP-SAM"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": ["alarm_motion"],
       "images": {
         "large": "/drivers/HmIP-SAM/assets/images/large.png",
         "small": "/drivers/HmIP-SAM/assets/images/small.png"
@@ -1296,7 +1502,7 @@
         "en": "HmIP-SCI"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": ["alarm_contact"],
       "images": {
         "large": "/drivers/HmIP-SCI/assets/images/large.png",
         "small": "/drivers/HmIP-SCI/assets/images/small.png"
@@ -1321,7 +1527,12 @@
         "en": "HmIP-SCTH230"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": [
+        "measure_co2",
+        "measure_temperature",
+        "measure_humidity",
+        "onoff"
+      ],
       "images": {
         "large": "/drivers/HmIP-SCTH230/assets/images/large.png",
         "small": "/drivers/HmIP-SCTH230/assets/images/small.png"
@@ -1346,7 +1557,7 @@
         "en": "HmIP-SLO"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": ["measure_luminance"],
       "images": {
         "large": "/drivers/HmIP-SLO/assets/images/large.png",
         "small": "/drivers/HmIP-SLO/assets/images/small.png"
@@ -1371,7 +1582,7 @@
         "en": "HmIP-SMI"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": ["alarm_motion", "measure_luminance"],
       "images": {
         "large": "/drivers/HmIP-SMI/assets/images/large.png",
         "small": "/drivers/HmIP-SMI/assets/images/small.png"
@@ -1396,7 +1607,7 @@
         "en": "HmIP-SMI55"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": ["alarm_motion", "measure_luminance"],
       "images": {
         "large": "/drivers/HmIP-SMI55/assets/images/large.png",
         "small": "/drivers/HmIP-SMI55/assets/images/small.png"
@@ -1421,7 +1632,7 @@
         "en": "HmIP-SMO-A"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": ["alarm_motion", "measure_luminance"],
       "images": {
         "large": "/drivers/HmIP-SMO-A/assets/images/large.png",
         "small": "/drivers/HmIP-SMO-A/assets/images/small.png"
@@ -1446,7 +1657,7 @@
         "en": "HmIP-SPI"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": ["alarm_motion", "measure_luminance"],
       "images": {
         "large": "/drivers/HmIP-SPI/assets/images/large.png",
         "small": "/drivers/HmIP-SPI/assets/images/small.png"
@@ -1471,7 +1682,7 @@
         "en": "HmIP-SRH"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": ["homematic_rhs_state"],
       "images": {
         "large": "/drivers/HmIP-SRH/assets/images/large.png",
         "small": "/drivers/HmIP-SRH/assets/images/small.png"
@@ -1496,7 +1707,7 @@
         "en": "HmIP-STE2-PCB"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": ["measure_temperature"],
       "images": {
         "large": "/drivers/HmIP-STE2-PCB/assets/images/large.png",
         "small": "/drivers/HmIP-STE2-PCB/assets/images/small.png"
@@ -1521,7 +1732,7 @@
         "en": "HmIP-STH"
       },
       "class": "thermostat",
-      "capabilities": [],
+      "capabilities": ["measure_temperature", "measure_humidity"],
       "images": {
         "large": "/drivers/HmIP-STH/assets/images/large.png",
         "small": "/drivers/HmIP-STH/assets/images/small.png"
@@ -1546,7 +1757,7 @@
         "en": "HmIP-STHD"
       },
       "class": "thermostat",
-      "capabilities": [],
+      "capabilities": ["measure_temperature", "measure_humidity"],
       "images": {
         "large": "/drivers/HmIP-STHD/assets/images/large.png",
         "small": "/drivers/HmIP-STHD/assets/images/small.png"
@@ -1571,7 +1782,7 @@
         "en": "HmIP-STHO"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": ["measure_temperature", "measure_humidity"],
       "images": {
         "large": "/drivers/HmIP-STHO/assets/images/large.png",
         "small": "/drivers/HmIP-STHO/assets/images/small.png"
@@ -1596,7 +1807,7 @@
         "en": "HmIP-SWD"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": ["alarm_water"],
       "images": {
         "large": "/drivers/HmIP-SWD/assets/images/large.png",
         "small": "/drivers/HmIP-SWD/assets/images/small.png"
@@ -1621,7 +1832,7 @@
         "en": "HmIP-SWDM"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": ["alarm_contact"],
       "images": {
         "large": "/drivers/HmIP-SWDM/assets/images/large.png",
         "small": "/drivers/HmIP-SWDM/assets/images/small.png"
@@ -1698,7 +1909,12 @@
         "en": "HmIP-SWO-B"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": [
+        "measure_temperature",
+        "measure_humidity",
+        "measure_luminance",
+        "measure_wind_strength"
+      ],
       "images": {
         "large": "/drivers/HmIP-SWO-B/assets/images/large.png",
         "small": "/drivers/HmIP-SWO-B/assets/images/small.png"
@@ -1723,7 +1939,12 @@
         "en": "HmIP-SWO-PL"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": [
+        "measure_temperature",
+        "measure_humidity",
+        "measure_luminance",
+        "measure_wind_strength"
+      ],
       "images": {
         "large": "/drivers/HmIP-SWO-PL/assets/images/large.png",
         "small": "/drivers/HmIP-SWO-PL/assets/images/small.png"
@@ -1748,7 +1969,16 @@
         "en": "HmIP-SWO-PR"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": [
+        "measure_temperature",
+        "measure_humidity",
+        "measure_luminance",
+        "measure_wind_strength",
+        "measure_wind_angle",
+        "measure_rain",
+        "homematic_sunshine_duration",
+        "homematic_wind_direction"
+      ],
       "images": {
         "large": "/drivers/HmIP-SWO-PR/assets/images/large.png",
         "small": "/drivers/HmIP-SWO-PR/assets/images/small.png"
@@ -1773,7 +2003,7 @@
         "en": "HmIP-SWSD"
       },
       "class": "smokealarm",
-      "capabilities": [],
+      "capabilities": ["alarm_smoke"],
       "images": {
         "large": "/drivers/HmIP-SWSD/assets/images/large.png",
         "small": "/drivers/HmIP-SWSD/assets/images/small.png"
@@ -1798,7 +2028,7 @@
         "en": "HmIP-USBSM"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HmIP-USBSM/assets/images/large.png",
         "small": "/drivers/HmIP-USBSM/assets/images/small.png"
@@ -1823,7 +2053,7 @@
         "en": "HmIP-WGC"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HmIP-WGC/assets/images/large.png",
         "small": "/drivers/HmIP-WGC/assets/images/small.png"
@@ -1848,7 +2078,7 @@
         "en": "HmIP-WHS2"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HmIP-WHS2/assets/images/large.png",
         "small": "/drivers/HmIP-WHS2/assets/images/small.png"
@@ -1898,7 +2128,7 @@
         "en": "HmIP-WSM"
       },
       "class": "other",
-      "capabilities": [],
+      "capabilities": ["onoff", "measure_water", "meter_water"],
       "images": {
         "large": "/drivers/HmIP-WSM/assets/images/large.png",
         "small": "/drivers/HmIP-WSM/assets/images/small.png"
@@ -1924,7 +2154,14 @@
         "de": "HmIP-eTRV Heizkörperthermostate"
       },
       "class": "thermostat",
-      "capabilities": [],
+      "capabilities": [
+        "measure_temperature",
+        "target_temperature",
+        "homematic_thermostat_mode",
+        "homematic_thermostat_boost",
+        "homematic_thermostat_weekprofile",
+        "homematic_measure_valve"
+      ],
       "images": {
         "large": "/drivers/HmIP-eTRV-2/assets/images/large.png",
         "small": "/drivers/HmIP-eTRV-2/assets/images/small.png"
@@ -2192,7 +2429,7 @@
         "en": "HmIPW-DRS8"
       },
       "class": "socket",
-      "capabilities": [],
+      "capabilities": ["onoff"],
       "images": {
         "large": "/drivers/HmIPW-DRS8/assets/images/large.png",
         "small": "/drivers/HmIPW-DRS8/assets/images/small.png"
@@ -2217,7 +2454,7 @@
         "en": "HmIPW-SPI"
       },
       "class": "sensor",
-      "capabilities": [],
+      "capabilities": ["alarm_motion", "measure_luminance"],
       "images": {
         "large": "/drivers/HmIPW-SPI/assets/images/large.png",
         "small": "/drivers/HmIPW-SPI/assets/images/small.png"
@@ -2243,7 +2480,12 @@
         "de": "HmIPW-STH Wired-Klimasensoren"
       },
       "class": "thermostat",
-      "capabilities": [],
+      "capabilities": [
+        "measure_temperature",
+        "measure_humidity",
+        "target_temperature",
+        "homematic_thermostat_boost"
+      ],
       "images": {
         "large": "/drivers/HmIPW-STH/assets/images/large.png",
         "small": "/drivers/HmIPW-STH/assets/images/small.png"
@@ -2265,7 +2507,8 @@
     {
       "id": "openccu-generic",
       "name": {
-        "en": "Generic OpenCCU device"
+        "en": "Generic OpenCCU device",
+        "de": "Generisches OpenCCU-Gerät"
       },
       "class": "other",
       "capabilities": [],
@@ -2294,7 +2537,14 @@
         "de": "OpenCCU Gruppen"
       },
       "class": "other",
-      "capabilities": [],
+      "capabilities": [
+        "measure_temperature",
+        "measure_humidity",
+        "target_temperature",
+        "homematic_thermostat_mode",
+        "homematic_thermostat_boost",
+        "homematic_thermostat_weekprofile"
+      ],
       "images": {
         "large": "/drivers/openccu-heating-group/assets/images/large.png",
         "small": "/drivers/openccu-heating-group/assets/images/small.png"
@@ -2353,7 +2603,7 @@
         "en": "OpenCCU service messages",
         "de": "OpenCCU Servicemeldungen"
       },
-      "height": 320,
+      "height": 380,
       "settings": [],
       "api": {
         "getServiceMessages": {
@@ -2390,6 +2640,94 @@
       "setable": true,
       "insights": false,
       "icon": "/assets/detection-active.svg"
+    },
+    "homematic_garage_command": {
+      "type": "enum",
+      "title": {
+        "en": "Garage door control",
+        "de": "Torsteuerung"
+      },
+      "values": [
+        {
+          "id": "up",
+          "title": {
+            "en": "Open",
+            "de": "Öffnen"
+          }
+        },
+        {
+          "id": "idle",
+          "title": {
+            "en": "Stop",
+            "de": "Stopp"
+          }
+        },
+        {
+          "id": "down",
+          "title": {
+            "en": "Close",
+            "de": "Schließen"
+          }
+        }
+      ],
+      "uiComponent": "ternary",
+      "getable": false,
+      "setable": true,
+      "insights": false,
+      "icon": "/assets/garage-door.svg"
+    },
+    "homematic_garage_state": {
+      "type": "enum",
+      "title": {
+        "en": "Garage door position",
+        "de": "Torposition"
+      },
+      "values": [
+        {
+          "id": "closed",
+          "title": {
+            "en": "Closed",
+            "de": "Geschlossen"
+          }
+        },
+        {
+          "id": "open",
+          "title": {
+            "en": "Open",
+            "de": "Offen"
+          }
+        },
+        {
+          "id": "ventilation",
+          "title": {
+            "en": "Ventilation position",
+            "de": "Lüftungsposition"
+          }
+        },
+        {
+          "id": "unknown",
+          "title": {
+            "en": "Position unknown",
+            "de": "Position unbekannt"
+          }
+        }
+      ],
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "icon": "/assets/garage-door.svg"
+    },
+    "homematic_garage_ventilation": {
+      "type": "boolean",
+      "title": {
+        "en": "Ventilation position",
+        "de": "Lüftungsposition"
+      },
+      "uiComponent": "button",
+      "getable": false,
+      "setable": true,
+      "insights": false,
+      "icon": "/assets/garage-ventilation.svg"
     },
     "homematic_measure_valve": {
       "type": "number",

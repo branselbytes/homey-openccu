@@ -4,7 +4,7 @@
     "en": "HmIP-FROLL"
   },
   "class": "blinds",
-  "capabilities": [],
+  "capabilities": ["windowcoverings_set", "windowcoverings_state"],
   "images": {
     "large": "/drivers/HmIP-FROLL/assets/images/large.png",
     "small": "/drivers/HmIP-FROLL/assets/images/small.png"

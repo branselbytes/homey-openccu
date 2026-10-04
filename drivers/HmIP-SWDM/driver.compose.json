@@ -4,7 +4,7 @@
     "en": "HmIP-SWDM"
   },
   "class": "sensor",
-  "capabilities": [],
+  "capabilities": ["alarm_contact"],
   "images": {
     "large": "/drivers/HmIP-SWDM/assets/images/large.png",
     "small": "/drivers/HmIP-SWDM/assets/images/small.png"

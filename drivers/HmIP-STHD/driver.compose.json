@@ -4,7 +4,7 @@
     "en": "HmIP-STHD"
   },
   "class": "thermostat",
-  "capabilities": [],
+  "capabilities": ["measure_temperature", "measure_humidity"],
   "images": {
     "large": "/drivers/HmIP-STHD/assets/images/large.png",
     "small": "/drivers/HmIP-STHD/assets/images/small.png"

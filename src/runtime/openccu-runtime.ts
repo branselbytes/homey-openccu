@@ -83,8 +83,8 @@ export interface OpenCcuDeviceDiagnostics {
       readonly operations: number;
       readonly flags: number;
       readonly unit?: string;
-      readonly min?: number;
-      readonly max?: number;
+      readonly min?: number | string | boolean;
+      readonly max?: number | string | boolean;
       readonly valueList?: readonly string[];
     }[];
   }[];
@@ -607,6 +607,17 @@ function resolveWriteOperation(
       parameter: "DOOR_COMMAND",
       value: value ? "CLOSE" : "OPEN",
     };
+  }
+  if (binding.writeStrategy === "garage-command") {
+    if (value === "up") return { parameter: "DOOR_COMMAND", value: "OPEN" };
+    if (value === "idle") return { parameter: "DOOR_COMMAND", value: "STOP" };
+    if (value === "down") return { parameter: "DOOR_COMMAND", value: "CLOSE" };
+    throw new TypeError("Unsupported Homey garage command");
+  }
+  if (binding.writeStrategy === "garage-ventilation") {
+    if (value !== true)
+      throw new TypeError("Unsupported Homey garage ventilation command");
+    return { parameter: "DOOR_COMMAND", value: "PARTIAL_OPEN" };
   }
   if (binding.writeStrategy === "smoke-siren") {
     if (typeof value !== "boolean")

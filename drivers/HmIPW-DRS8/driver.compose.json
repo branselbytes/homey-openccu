@@ -2,7 +2,7 @@
   "id": "HmIPW-DRS8",
   "name": { "en": "HmIPW-DRS8" },
   "class": "socket",
-  "capabilities": [],
+  "capabilities": ["onoff"],
   "images": {
     "large": "/drivers/HmIPW-DRS8/assets/images/large.png",
     "small": "/drivers/HmIPW-DRS8/assets/images/small.png"

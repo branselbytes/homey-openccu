@@ -2,7 +2,7 @@
   "id": "HmIP-DRDI3",
   "name": { "en": "HmIP-DRDI3" },
   "class": "light",
-  "capabilities": [],
+  "capabilities": ["onoff", "dim"],
   "images": {
     "large": "/drivers/HmIP-DRDI3/assets/images/large.png",
     "small": "/drivers/HmIP-DRDI3/assets/images/small.png"

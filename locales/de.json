@@ -36,15 +36,72 @@
       "title": "Diagnose",
       "hint": "Erstelle einen bereinigten Supportbericht mit Verbindungszuständen, Gerätetypen, Firmwareständen und Datenpunktdefinitionen. Zugangsdaten, Adressen, OpenCCU-Namen und aktuelle Werte sind nicht enthalten. Prüfe den Bericht trotzdem vor dem Versenden.",
       "download": "Diagnosebericht erstellen",
-      "content": "Inhalt des Diagnoseberichts",
-      "ready": "Der Bericht ist bereit. Du kannst ihn als Datei speichern beziehungsweise teilen oder in die Zwischenablage kopieren.",
-      "save": "Datei speichern oder teilen",
+      "content": "Kurzer Supportbericht",
+      "ready": "Der Kurzbericht kann in einen Forumsbeitrag oder ein GitHub-Issue kopiert werden. Wähle ein Gerätemodell aus, um dessen Datenpunktdefinitionen einzufügen. Die JSON-Datei enthält immer den vollständigen Bericht.",
+      "save": "Vollständige JSON-Datei speichern oder teilen",
       "shared": "Der Diagnosebericht wurde geteilt.",
-      "saved": "Der Download des Diagnoseberichts wurde gestartet.",
+      "saved": "Der Download wurde angefordert. Falls keine Datei erscheint, kopiere den Kurzbericht oder öffne die Homey Web-App im Browser, um die JSON-Datei zu speichern.",
       "save_failed": "Die Datei konnte in dieser Ansicht nicht gespeichert werden. Bitte kopiere den Bericht stattdessen in die Zwischenablage.",
-      "copy": "Bericht kopieren",
-      "copied": "Der Diagnosebericht wurde in die Zwischenablage kopiert.",
-      "copy_failed": "Der Bericht konnte nicht automatisch kopiert werden. Bitte markiere den angezeigten Text und kopiere ihn manuell."
+      "copy": "Kurzbericht kopieren",
+      "copied": "Der Kurzbericht wurde in die Zwischenablage kopiert.",
+      "copy_failed": "Der Bericht konnte nicht automatisch kopiert werden. Bitte markiere den angezeigten Text und kopiere ihn manuell.",
+      "model": "Kurzbericht für Gerätemodell",
+      "all_models": "Alle Gerätemodelle (Übersicht)",
+      "attach_hint": "Das Homey Community-Forum erlaubt keine JSON-Anhänge. Ein vollständiger Bericht kann außerdem die Beitragsgrenze überschreiten. Füge dort den Kurzbericht ein. Für vollständige Details speichere die JSON-Datei und hänge sie über den Datei-Upload an ein GitHub-Issue an; füge nicht den gesamten JSON-Text in das Textfeld ein.",
+      "open_issue": "GitHub-Issue öffnen"
+    }
+  },
+  "widgets": {
+    "locale": "de",
+    "system_status": {
+      "title": "Systemstatus",
+      "central": "Zentrale",
+      "refresh": "Aktualisieren",
+      "loading": "Systeminformationen werden geladen …",
+      "empty": "Keine OpenCCU konfiguriert",
+      "error": "Systemstatus konnte nicht geladen werden",
+      "devices": "Geräte",
+      "messages": "Meldungen",
+      "dutyCycle": "Duty Cycle",
+      "carrierSense": "Carrier Sense",
+      "interfaces": "Funkinterfaces",
+      "interface": "Funkinterface",
+      "updated": "Aktualisiert",
+      "states": {
+        "healthy": "Verbunden",
+        "connecting": "Verbindungsaufbau",
+        "disconnected": "Getrennt",
+        "stopped": "Gestoppt"
+      },
+      "unavailable": "Status nicht verfügbar",
+      "partial": "Daten unvollständig",
+      "unknown": "Unbekannt"
+    },
+    "service_messages": {
+      "title": "Servicemeldungen",
+      "active": "Aktiv",
+      "clear": "Alles OK",
+      "unknown": "Unbekannt",
+      "empty": "Keine OpenCCU konfiguriert",
+      "updated": "Aktualisiert",
+      "refresh": "Aktualisieren",
+      "loading": "Servicemeldungen werden geladen …",
+      "none": "Keine aktiven Servicemeldungen",
+      "one": "1 aktive Servicemeldung",
+      "many": "{count} aktive Servicemeldungen",
+      "unavailable": "Details derzeit nicht verfügbar",
+      "unknownDevice": "Unbenanntes Gerät",
+      "error": "Servicemeldungen konnten nicht geladen werden",
+      "messages": {
+        "UNREACH": "Nicht erreichbar",
+        "STICKY_UNREACH": "Kommunikationsstörung",
+        "LOWBAT": "Batterie schwach",
+        "LOW_BAT": "Batterie schwach",
+        "CONFIG_PENDING": "Konfiguration ausstehend",
+        "UPDATE_PENDING": "Update ausstehend",
+        "SABOTAGE": "Sabotage erkannt",
+        "DUTY_CYCLE": "Duty Cycle überschritten"
+      }
     }
   }
 }
