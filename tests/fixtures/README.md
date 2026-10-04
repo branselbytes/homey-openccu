@@ -8,4 +8,6 @@ Tests supply synthetic initial values, callback events and command responses. Ch
 
 All fixtures are excluded from the Homey application package by .homeyignore.
 
+`heating-master.json` was captured read-only on 2026-10-04 using `listDevices` and `getParamsetDescription`. It contains weekly MASTER parameter descriptions and ACTIVE_PROFILE metadata for HmIP-eTRV-B-2 R4M (1.4.0), HmIP-STH (3.0.2) and HmIP-HEATING (2.0.0). Only model/firmware, numeric channel indices and relevant parameter metadata remain; there are no device addresses, names, credentials or live schedule values. Tests supply synthetic schedules and write acknowledgements. Six stored group profiles with ACTIVE_PROFILE limited to 1–3 are intentionally retained.
+
 `hoermann-mod-ho.json` contains selected channel/datapoint metadata from the diagnostic attachment to [issue #1](https://github.com/branselbytes/homey-openccu/issues/1), reviewed on 2026-10-03 (HmIP-MOD-HO firmware 1.0.16). Device/channel identities are synthesized as `HOERMANN1`; no original identities, names, network addresses or live values are retained. String enum and boolean bounds are preserved as reported. Runtime tests simulate all states, callbacks, write acknowledgements and errors; physical motor/light operation remains unverified.

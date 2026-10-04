@@ -3,6 +3,7 @@ import { sanitizeXmlRpcErrorDiagnostics } from "./diagnostics";
 import type {
   DeviceDescription,
   ParamsetDescription,
+  ParameterType,
   RpcValue,
   XmlRpcClientDiagnostics,
   XmlRpcClient,
@@ -162,10 +163,22 @@ export class HmIpXmlRpcClient implements XmlRpcClient {
     paramsetKey: string,
     values: Readonly<Record<string, RpcValue>>,
     signal?: AbortSignal,
+    parameterTypes?: Readonly<Record<string, ParameterType>>,
   ): Promise<void> {
+    const wireValues =
+      parameterTypes === undefined
+        ? values
+        : Object.fromEntries(
+            Object.entries(values).map(([key, value]) => [
+              key,
+              parameterTypes[key] === "FLOAT" && typeof value === "number"
+                ? { explicitDouble: value }
+                : value,
+            ]),
+          );
     await this.#call(
       "putParamset",
-      [address, paramsetKey, values],
+      [address, paramsetKey, wireValues],
       signal,
       this.#writeTimeoutMs,
       "high",

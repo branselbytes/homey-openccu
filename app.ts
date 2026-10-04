@@ -2,14 +2,16 @@ import Homey from "homey";
 import { isIP } from "node:net";
 
 import { VersionedCache } from "./src/cache/versioned-cache";
+import { MemoryCacheStorage } from "./src/cache/memory-storage";
 import { createSupportReport } from "./src/diagnostics/support-report";
 import { safeErrorKind } from "./src/diagnostics/safe-error";
+import { ProcessMemoryDiagnostics } from "./src/diagnostics/process-memory";
 import { OpenCcuAppController } from "./src/homey/app-controller";
 import { loadOpenCcuConnections } from "./src/homey/settings-adapter";
-import { HomeySettingsCacheStorage } from "./src/homey/cache-storage";
 import { registerHubFlowCards } from "./src/homey/hub-flow-controller";
 import { registerThermostatFlowCards } from "./src/homey/thermostat-flow-controller";
 import { registerGarageFlowCards } from "./src/homey/garage-flow-controller";
+import { HeatingController } from "./src/homey/heating-controller";
 import { callbackHostFromLocalAddress } from "./src/homey/callback-host";
 import { OpenCcuRuntimeProvider } from "./src/homey/runtime-provider";
 import type { ParamsetDescription } from "./src/protocol/xmlrpc/types";
@@ -25,12 +27,24 @@ import {
 
 export = class OpenCcuApp extends Homey.App {
   runtimeProvider?: OpenCcuRuntimeProvider;
+  readonly heatingController = new HeatingController(
+    () =>
+      Object.values(this.homey.drivers.getDrivers()).flatMap((driver) =>
+        driver.getDevices(),
+      ),
+    () => this.runtimeProvider,
+  );
   #controller?: OpenCcuAppController;
+  readonly #memory = new ProcessMemoryDiagnostics();
+  readonly #onMemoryWarning = (warning: unknown): void => {
+    this.#memory.onWarning(warning);
+  };
 
   async onInit(): Promise<void> {
+    this.homey.on("memwarn", this.#onMemoryWarning);
     const localAddress = await this.homey.cloud.getLocalAddress();
     const descriptionCache = new VersionedCache<ParamsetDescription>(
-      new HomeySettingsCacheStorage(this.homey.settings),
+      new MemoryCacheStorage(),
       "openccu_paramsets",
       1,
     );
@@ -72,7 +86,12 @@ export = class OpenCcuApp extends Homey.App {
   }
 
   onUninit(): Promise<void> {
+    this.homey.removeListener("memwarn", this.#onMemoryWarning);
     return this.#controller?.stop() ?? Promise.resolve();
+  }
+
+  getMemoryDiagnostics(): unknown {
+    return this.#memory.snapshot();
   }
 
   generateSupportReport(): unknown {
@@ -82,6 +101,7 @@ export = class OpenCcuApp extends Homey.App {
         version: manifestVersion(this.manifest as unknown),
         node: process.version,
       },
+      memory: this.#memory.snapshot(),
       runtimes: this.runtimeProvider?.diagnostics() ?? [],
     });
   }

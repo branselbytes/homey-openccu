@@ -35,6 +35,13 @@ import {
   transformToOpenCcu,
 } from "../mapping/transforms";
 import type { CapabilityBinding } from "../mapping/types";
+import { HeatingScheduleService } from "../heating/service";
+import { findHeatingChannel } from "../heating/discovery";
+import {
+  HeatingError,
+  type HeatingSchedule,
+  type HeatingSaveResult,
+} from "../heating/types";
 import { ProfileRegistry } from "../profiles/registry";
 import {
   descriptionCacheKey,
@@ -99,6 +106,7 @@ export interface OpenCcuDeviceDiagnostics {
 
 export class OpenCcuRuntime {
   readonly #client: XmlRpcClient;
+  readonly #heatingSchedules: HeatingScheduleService;
   readonly #options: OpenCcuRuntimeOptions;
   readonly #events = new TypedEventBus<OpenCcuEvents>();
   readonly #profiles = new ProfileRegistry();
@@ -117,6 +125,7 @@ export class OpenCcuRuntime {
 
   constructor(client: XmlRpcClient, options: OpenCcuRuntimeOptions) {
     this.#client = client;
+    this.#heatingSchedules = new HeatingScheduleService(client);
     this.#options = options;
   }
 
@@ -300,6 +309,30 @@ export class OpenCcuRuntime {
       metadata: this.#metadata,
       profiles: this.#profiles,
     });
+  }
+
+  async readHeatingSchedule(address: string): Promise<HeatingSchedule> {
+    return this.#heatingSchedules.read(this.#requireHeatingChannel(address));
+  }
+
+  async saveHeatingSchedule(
+    address: string,
+    request: unknown,
+  ): Promise<HeatingSaveResult> {
+    return this.#heatingSchedules.save(
+      this.#requireHeatingChannel(address),
+      request,
+    );
+  }
+
+  #requireHeatingChannel(address: string): string {
+    if (this.#connectionState !== "healthy")
+      throw new HeatingError("HEATING_UNAVAILABLE");
+    const device = this.devices.get(address);
+    if (!device) throw new HeatingError("HEATING_UNAVAILABLE");
+    const channel = findHeatingChannel(device);
+    if (!channel) throw new HeatingError("HEATING_UNSUPPORTED");
+    return channel;
   }
 
   async read(

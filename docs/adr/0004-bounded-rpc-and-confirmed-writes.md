@@ -3,6 +3,8 @@
 - Status: accepted
 - Date: 2026-09-03
 
+The persistent description-cache storage decision is superseded by [ADR 0026](0026-bounded-heating-profile-reads.md). RPC priority, invalidation and confirmed-write decisions remain in effect.
+
 ## Context
 
 Repeated app starts and parallel initial reads overloaded a test OpenCCU. Battery-powered thermostat commands could be applied after Homey's capability-listener timeout, while XML-RPC returned late, timed out, or reported a generic fault. Pair-time bindings could also become stale.

@@ -103,6 +103,7 @@ export interface XmlRpcClient {
     paramsetKey: string,
     values: Readonly<Record<string, RpcValue>>,
     signal?: AbortSignal,
+    parameterTypes?: Readonly<Record<string, ParameterType>>,
   ): Promise<void>;
   init(
     callbackUrl: string,

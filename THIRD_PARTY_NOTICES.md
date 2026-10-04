@@ -16,6 +16,8 @@ Its complete license text is installed and packaged as `node_modules/homematic-x
 
 The HmIP-MOD-HO review uses `aiohomematic` at `3ced0fd3c9e9f741978dc5e079a1fc145396c481` and `homematicip_local` at `2a49f5484b6f9da6673a8d136fc87449b29980cc` (MIT, copyright 2021–2026 SukramJ and Daniel Perna), plus `pydevccu` device metadata at `6fe7695f049219c77cbda2b60131fdf61d836000` (MIT, copyright 2019–2026 Daniel Perna, SukramJ and contributors). These sources were studied for command/state semantics; no implementation or fixture was copied from them. The new fixture derives from the anonymized issue report, and the TypeScript implementation and capability SVGs are project-authored. See [ADR 0023](docs/adr/0023-hoermann-controls-and-support-diagnostics.md).
 
+The weekly profile implementation independently adapts schedule concepts studied in `aiohomematic/model/week_profile.py` at the same pinned `3ced0fd3c9e9f741978dc5e079a1fc145396c481` revision (MIT). No source was copied. Its regression metadata was captured read-only from OpenCCU, with synthetic schedules in tests; see [ADR 0025](docs/adr/0025-ccu-heating-profile-editor.md).
+
 ## Device artwork
 
 Product-specific SVGs and PNGs retained or restored from the imported `homey-matic` history remain covered by that repository's MIT license and attribution. The 39 restored PNG pairs are byte-for-byte copies from imported ancestor `e7a16bb12dca80bad04e0527870f5a64ed03ef28`, completing the 45 exact-model image pairs available there. No downloaded OCCU/HMSL files are used.

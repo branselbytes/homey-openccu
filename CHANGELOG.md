@@ -4,6 +4,23 @@ All notable changes to OpenCCU for Homey will be documented in this file. The pr
 
 ## [Unreleased]
 
+## [0.1.5] — prepared 2026-10-04
+
+### Added
+
+- English/German weekly schedule editor in app settings and thermostat/heating-group repair views. Edit existing device profile slots, copy days or profiles, and review changes before saving to OpenCCU.
+- Metadata-based schedule limits, fresh-read conflict detection, per-target write protection and explicit pending/confirmed read-back status. Stored schedules and selectable active profiles remain separate.
+
+### Changed
+
+- Compact heating editor with direct weekday buttons, unsaved-day indicators and single-row time/temperature inputs on mobile. Schedule help and day/profile copying are expandable; touch targets and explicit save confirmation remain intact.
+
+### Fixed
+
+- Replace disposable discovery descriptions in Homey settings with a bounded in-memory cache, avoiding hundreds of settings mutations during registration and startup.
+- Reduce repeated heating-profile parsing with bounded metadata reuse, coalesced reads and sequential large responses. Saves and read-back still fetch fresh metadata.
+- Add bounded memory-warning diagnostics and on-demand process measurements where supported, without a debugger or app-side polling.
+
 ## [0.1.4] — prepared 2026-10-03
 
 ### Added

@@ -1,0 +1,48 @@
+<meta charset="utf-8" />
+<link rel="stylesheet" href="heating_profiles.assets/heating-editor.css" />
+<!-- prettier-ignore -->
+<script charset="utf-8" src="heating_profiles.assets/heating-editor.js"></script>
+<section id="heating-profiles"></section>
+<script>
+  "use strict";
+  let heatingStarted = false;
+  async function startHeatingEditor(Homey) {
+    if (heatingStarted) return;
+    heatingStarted = true;
+    const root = document.getElementById("heating-profiles");
+    try {
+      const target = await Homey.emit("heating:target");
+      window.openCcuHeatingEditor = window.OpenCcuHeatingEditor.mount(root, {
+        homey: Homey,
+        target,
+        read: () => Homey.emit("heating:read"),
+        save: (_targetId, request) => Homey.emit("heating:save", request),
+      });
+      await window.openCcuHeatingEditor.ready;
+    } catch (error) {
+      const allowed = new Set([
+        "HEATING_UNAVAILABLE",
+        "HEATING_UNSUPPORTED",
+        "HEATING_INVALID",
+        "HEATING_READ_ONLY",
+        "HEATING_CONFLICT",
+        "HEATING_BUSY",
+        "HEATING_READ_FAILED",
+        "HEATING_WRITE_FAILED",
+      ]);
+      const value =
+        typeof error === "string" ? error : error?.code || error?.message;
+      const code =
+        typeof value === "string"
+          ? value.match(/\bHEATING_[A-Z_]+\b/)?.[0]
+          : undefined;
+      root.textContent = Homey.__(
+        `heating.errors.${allowed.has(code) ? code : "HEATING_UNAVAILABLE"}`,
+      );
+    }
+  }
+  function onHomeyReady(Homey) {
+    void startHeatingEditor(Homey);
+  }
+  if (typeof Homey !== "undefined") void startHeatingEditor(Homey);
+</script>

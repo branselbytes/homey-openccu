@@ -16,6 +16,16 @@ The typed local runtime and broad HmIP driver foundation are implemented. Pairin
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for the design, [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md) for staged delivery, [DEVICE_SUPPORT.md](DEVICE_SUPPORT.md) for device coverage, [COMPATIBILITY.md](COMPATIBILITY.md) for platform status, [BETA_TESTING.md](BETA_TESTING.md) for community testing, and [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for setup and support guidance.
 
+## Heating schedules (0.1.5)
+
+Open the app settings and select a paired thermostat or heating group under **Heating profiles**. The same editor is available through **Repair** in the device's Homey settings. Choose a stored profile and weekday, adjust the end times and temperatures, or copy an existing day/profile into the draft. **Review and save** shows a review and requires confirmation before writing to OpenCCU.
+
+Weekday buttons switch directly between days; a dot marks unsaved changes. End times and temperatures use compact rows, including on mobile. Expand **Copy days or profiles** for copying tools and **About this schedule** for device-specific limits and profile guidance.
+
+The device defines the available profile slots and limits; the editor cannot create additional slots beyond them. Prefer the heating group when OpenCCU manages the room as a group. Editing a stored profile does not activate it, and some devices store more profiles than their active-profile control can select. The CCU/devices continue to execute the schedules independently of Homey.
+
+Concurrent CCU changes require a reload before saving. A pending result means the CCU acknowledged the write but read-back has not confirmed it; refresh manually before making another change. Confirmation refers to CCU read-back, not physical-device delivery. Hardware writes and native Homey rendering remain a rollout test.
+
 ## Development
 
 Prerequisites:

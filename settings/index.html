@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <script src="/homey.js" data-origin="settings"></script>
+    <link rel="stylesheet" href="../assets/heating-editor.css" />
+    <script src="../assets/heating-editor.js"></script>
   </head>
   <body>
     <h1 data-i18n="settings.title"></h1>
@@ -142,6 +144,8 @@
       </div>
     </fieldset>
 
+    <section id="heating-profiles"></section>
+
     <script>
       "use strict";
 
@@ -162,6 +166,27 @@
       };
 
       function onHomeyReady(Homey) {
+        if (window.OpenCcuHeatingEditor) {
+          const heatingApi = (method, path, body) =>
+            new Promise((resolve, reject) => {
+              const callback = (error, value) =>
+                error ? reject(error) : resolve(value);
+              if (body === undefined) Homey.api(method, path, callback);
+              else Homey.api(method, path, body, callback);
+            });
+          window.openCcuHeatingEditor = window.OpenCcuHeatingEditor.mount(
+            document.getElementById("heating-profiles"),
+            {
+              homey: Homey,
+              listTargets: () => heatingApi("GET", "/heating/targets"),
+              read: (targetId) =>
+                heatingApi("POST", "/heating/read", { targetId }),
+              save: (targetId, request) =>
+                heatingApi("POST", "/heating/save", { targetId, ...request }),
+            },
+          );
+        }
+
         Homey.get(SETTINGS_KEY, (error, connections) => {
           if (error) return Homey.alert(error);
           const connection = Array.isArray(connections)

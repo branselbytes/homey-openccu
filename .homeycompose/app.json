@@ -1,6 +1,6 @@
 {
   "id": "io.github.branselbytes.openccu",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "compatibility": ">=12.9.0",
   "sdk": 3,
   "name": {
@@ -25,6 +25,22 @@
     "getDiagnostics": {
       "method": "get",
       "path": "/diagnostics"
+    },
+    "getMemoryDiagnostics": {
+      "method": "get",
+      "path": "/diagnostics/memory"
+    },
+    "getHeatingTargets": {
+      "method": "get",
+      "path": "/heating/targets"
+    },
+    "readHeatingSchedule": {
+      "method": "post",
+      "path": "/heating/read"
+    },
+    "saveHeatingSchedule": {
+      "method": "post",
+      "path": "/heating/save"
     }
   },
   "images": {

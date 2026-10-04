@@ -23,4 +23,11 @@ export default tseslint.config(
       },
     },
   },
+  {
+    ...tseslint.configs.disableTypeChecked,
+    files: ["assets/heating-editor.js"],
+    languageOptions: {
+      globals: { window: "readonly" },
+    },
+  },
 );

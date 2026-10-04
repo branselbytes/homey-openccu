@@ -1,6 +1,7 @@
 import type { OpenCcuRuntimeDiagnostics } from "../runtime/openccu-runtime";
 import { sanitizeXmlRpcErrorDiagnostics } from "../protocol/xmlrpc/diagnostics";
 import { redactDiagnosticValue } from "./redact";
+import type { ProcessMemorySnapshot } from "./process-memory";
 
 export const SUPPORT_REPORT_SCHEMA_VERSION = 2;
 
@@ -16,12 +17,14 @@ export interface SupportReportInput {
     readonly node: string;
   };
   readonly runtimes: readonly SupportReportRuntime[];
+  readonly memory?: ProcessMemorySnapshot;
 }
 
 export interface SupportReport {
   readonly schemaVersion: typeof SUPPORT_REPORT_SCHEMA_VERSION;
   readonly generatedAt: string;
   readonly app: SupportReportInput["app"];
+  readonly memory?: ProcessMemorySnapshot;
   readonly centrals: readonly {
     readonly alias: string;
     readonly runtime: OpenCcuRuntimeDiagnostics;
@@ -41,6 +44,7 @@ export function createSupportReport(
     schemaVersion: SUPPORT_REPORT_SCHEMA_VERSION,
     generatedAt: generatedAt.toISOString(),
     app: input.app,
+    ...(input.memory === undefined ? {} : { memory: input.memory }),
     centrals: input.runtimes.map(({ runtime }, index) => ({
       alias: `central-${index + 1}`,
       runtime: projectRuntimeDiagnostics(runtime),

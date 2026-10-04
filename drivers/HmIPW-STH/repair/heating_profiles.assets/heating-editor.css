@@ -1,0 +1,249 @@
+.openccu-heating {
+  --heating-border: var(--homey-form-input-border-color, #d5d9e0);
+  --heating-surface: var(--homey-form-input-background-color, #fff);
+  --heating-muted: var(--homey-text-color-secondary, #58616f);
+  --heating-accent: var(--homey-color-blue, #0078ff);
+  color: var(--homey-text-color, #202124);
+  font-family: inherit;
+  max-width: 640px;
+  margin: 16px 0;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.openccu-heating * {
+  box-sizing: border-box;
+}
+.openccu-heating [hidden] {
+  display: none !important;
+}
+.openccu-heating h2.homey-title {
+  font-size: 1.35em;
+  line-height: 1.3;
+  margin: 0 0 4px;
+}
+.openccu-heating p {
+  margin: 0;
+}
+.openccu-heating p.homey-subtitle {
+  color: var(--heating-muted);
+  font-size: 0.9em;
+  margin: 0 0 14px;
+}
+.openccu-heating fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.openccu-heating label {
+  display: block;
+  font-weight: 500;
+  margin: 0 0 4px;
+  padding: 0;
+}
+.openccu-heating input,
+.openccu-heating select,
+.openccu-heating button {
+  font: inherit;
+  line-height: 1.3;
+  min-height: 42px;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--heating-border);
+  background: var(--heating-surface);
+  color: inherit;
+  border-radius: 8px;
+}
+.openccu-heating input,
+.openccu-heating select {
+  width: 100%;
+}
+.openccu-heating button {
+  width: auto;
+  max-width: 100%;
+  cursor: pointer;
+}
+.openccu-heating button.homey-button-primary,
+.openccu-heating .heating-days button[aria-pressed="true"] {
+  background: var(--heating-accent);
+  color: #fff;
+  border-color: transparent;
+}
+.openccu-heating button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.openccu-heating fieldset:disabled {
+  opacity: 0.65;
+}
+.openccu-heating :focus-visible {
+  outline: 2px solid var(--heating-accent);
+  outline-offset: 2px;
+}
+.openccu-heating .homey-form-group {
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.openccu-heating .heating-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: end;
+}
+.openccu-heating .heating-toolbar .homey-form-group {
+  flex: 1 1 260px;
+}
+.openccu-heating .heating-target-info {
+  margin-top: 8px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.openccu-heating .heating-hint,
+.openccu-heating .heating-status {
+  font-size: 0.85em;
+  color: var(--heating-muted);
+}
+.openccu-heating .heating-status {
+  margin: 8px 0 12px;
+  overflow-wrap: anywhere;
+}
+.openccu-heating .heating-profile-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+}
+.openccu-heating .heating-profile-picker .homey-form-group {
+  flex: 1 1 150px;
+  max-width: 240px;
+}
+.openccu-heating .heating-profile-picker > p {
+  padding-bottom: 12px;
+}
+.openccu-heating details > summary {
+  min-height: 42px;
+  padding: 11px 0;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+.openccu-heating .heating-info {
+  margin: 2px 0 6px;
+}
+.openccu-heating .heating-info > p {
+  margin: 0 0 8px;
+}
+.openccu-heating .heating-days {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(2em, 1fr));
+  gap: 4px;
+  max-width: 420px;
+}
+.openccu-heating .heating-days button {
+  position: relative;
+  padding: 8px 2px;
+  font-weight: 500;
+}
+.openccu-heating .heating-days button[data-changed="true"]::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  bottom: 3px;
+  left: calc(50% - 2px);
+}
+.openccu-heating .heating-day-heading {
+  font-size: 1em;
+  font-weight: 600;
+  margin: 12px 0 6px;
+}
+.openccu-heating .heating-slot,
+.openccu-heating .heating-row-header {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) minmax(0, 1fr) 42px;
+  gap: 6px;
+  align-items: center;
+}
+.openccu-heating .heating-row-header {
+  margin-bottom: 4px;
+  font-size: 0.8em;
+  color: var(--heating-muted);
+}
+.openccu-heating .heating-slot {
+  margin-bottom: 6px;
+}
+.openccu-heating .heating-slot label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+.openccu-heating .heating-slot-number {
+  font-size: 0.8em;
+  color: var(--heating-muted);
+}
+.openccu-heating .heating-slot input {
+  font-variant-numeric: tabular-nums;
+}
+.openccu-heating .heating-slot input[readonly] {
+  color: var(--heating-muted);
+}
+.openccu-heating button.heating-remove {
+  padding: 0;
+  font-size: 1.4em;
+  color: var(--heating-muted);
+}
+.openccu-heating .heating-copy-tools {
+  border-top: 1px solid var(--heating-border);
+  border-bottom: 1px solid var(--heating-border);
+  margin-top: 12px;
+}
+.openccu-heating .heating-copy-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+.openccu-heating .heating-copy-row .homey-form-group {
+  flex: 1 1 200px;
+}
+.openccu-heating .heating-actions,
+.openccu-heating .heating-confirm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.openccu-heating .heating-confirm {
+  background: var(--heating-surface);
+  border: 1px solid var(--heating-border);
+  border-radius: 8px;
+  padding: 12px;
+}
+.openccu-heating .heating-confirm p {
+  flex-basis: 100%;
+  margin: 0 0 4px;
+}
+@media (max-width: 480px) {
+  .openccu-heating .heating-actions > button {
+    flex: 1 1 auto;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  .openccu-heating {
+    --heating-border: var(--homey-form-input-border-color, #59616f);
+    --heating-surface: var(--homey-form-input-background-color, #272a30);
+    --heating-muted: var(--homey-text-color-secondary, #bdc4ce);
+    color: var(--homey-text-color, #f1f3f5);
+  }
+}

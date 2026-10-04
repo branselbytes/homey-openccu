@@ -2,11 +2,30 @@ import Homey from "homey";
 
 import { isRuntimeProvidingApp } from "./runtime-providing-app";
 import { resolvePairingDeviceIcon } from "./device-artwork";
+import { HeatingController, registerHeatingRepair } from "./heating-controller";
+import { HeatingError } from "../heating/types";
 
 export abstract class RuntimeBackedDriver extends Homey.Driver {
   protected abstract readonly openCcuDriverId: string;
   protected readonly pairedDeviceClass?: string;
   protected readonly pairingDuplicateDriverIds: readonly string[] = [];
+
+  onRepair(
+    session: Homey.Driver.PairSession,
+    device: Homey.Device,
+  ): Promise<void> {
+    const app: unknown = this.homey.app;
+    if (
+      typeof app !== "object" ||
+      app === null ||
+      !("heatingController" in app) ||
+      !(app.heatingController instanceof HeatingController)
+    ) {
+      throw new HeatingError("HEATING_UNAVAILABLE");
+    }
+    registerHeatingRepair(session, device, app.heatingController);
+    return Promise.resolve();
+  }
 
   onPairListDevices(): Promise<unknown[]> {
     const app = this.homey.app;

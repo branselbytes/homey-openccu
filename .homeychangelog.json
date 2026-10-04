@@ -18,5 +18,9 @@
   "0.1.3": {
     "en": "Combine switch/meter plugs and radiator thermostats into shared pairing entries while preserving existing devices and Flows. Add HmIP-PSM-2/-2-A and HmIPW-STH/-A, improve discovery and cache recovery, correct device images and family icons, and introduce the new branselbytes app design and donation link.",
     "de": "Schalt-/Messsteckdosen und Heizkörperthermostate in gemeinsamen Geräteeinträgen zusammengeführt; bestehende Geräte und Flows bleiben erhalten. HmIP-PSM-2/-2-A und HmIPW-STH/-A ergänzt, Geräteerkennung und Cache-Fehlerbehandlung verbessert, Gerätebilder und Familien-Icons korrigiert sowie neues branselbytes-App-Design und Spendenlink hinzugefügt."
+  },
+  "0.1.5": {
+    "en": "Add an English/German heating schedule editor in app settings and device repair, with compact weekday controls, copying and confirmed saves. Reduce memory use and fix startup memory warnings with bounded caches and coordinated profile reads.",
+    "de": "Heizprofile direkt in Homey bearbeiten: kompakter Wocheneditor in App-Einstellungen und Geräte-Reparatur, mit Kopierfunktion und bestätigtem Speichern. Speicherverbrauch reduziert und Speicherwarnungen beim Start durch begrenzte Zwischenspeicher und koordinierte Profilabfragen behoben."
   }
 }
