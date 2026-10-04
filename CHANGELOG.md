@@ -18,6 +18,11 @@ All notable changes to OpenCCU for Homey will be documented in this file. The pr
 - Name the Hörmann capabilities "Garagentor" / "Licht" in German and "Garage door" / "Light" in English, including existing devices, and make garage-door position and ventilation labels explicit.
 - Keep the visible light button and native light capability synchronized after missed callbacks and prevent superseded command read-backs from restoring stale state.
 
+### Also included from 0.1.5
+
+- Edit weekly heating schedules for supported OpenCCU heating groups and thermostats directly in Homey, through app settings or device repair, with weekday/profile copying and confirmed saves.
+- Compact German/English heating editor and reduced memory use through bounded caches and coordinated profile reads.
+
 ## [0.1.5] — prepared 2026-10-04
 
 ### Added
