@@ -1,0 +1,74 @@
+{
+  "description": {
+    "ADDRESS": "TESTHMPB2FM",
+    "TYPE": "HM-PB-2-FM",
+    "CHILDREN": ["TESTHMPB2FM:0", "TESTHMPB2FM:1", "TESTHMPB2FM:2"]
+  },
+  "channels": [
+    {
+      "description": {
+        "ADDRESS": "TESTHMPB2FM:0",
+        "TYPE": "MAINTENANCE",
+        "PARENT": "TESTHMPB2FM",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LOWBAT": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMPB2FM:1",
+        "TYPE": "KEY",
+        "PARENT": "TESTHMPB2FM",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "PRESS_SHORT": {
+          "TYPE": "ACTION",
+          "OPERATIONS": 6,
+          "FLAGS": 1
+        },
+        "PRESS_LONG": {
+          "TYPE": "ACTION",
+          "OPERATIONS": 6,
+          "FLAGS": 1
+        },
+        "PRESS_LONG_RELEASE": {
+          "TYPE": "ACTION",
+          "OPERATIONS": 4,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMPB2FM:2",
+        "TYPE": "KEY",
+        "PARENT": "TESTHMPB2FM",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "PRESS_SHORT": {
+          "TYPE": "ACTION",
+          "OPERATIONS": 6,
+          "FLAGS": 1
+        },
+        "PRESS_LONG": {
+          "TYPE": "ACTION",
+          "OPERATIONS": 6,
+          "FLAGS": 1
+        },
+        "PRESS_LONG_RELEASE": {
+          "TYPE": "ACTION",
+          "OPERATIONS": 4,
+          "FLAGS": 1
+        }
+      }
+    }
+  ]
+}

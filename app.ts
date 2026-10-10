@@ -78,6 +78,23 @@ export = class OpenCcuApp extends Homey.App {
       {
         error: (message, error) => this.error(message, safeErrorKind(error)),
       },
+      async () => {
+        const devices = Object.values(this.homey.drivers.getDrivers()).flatMap(
+          (driver) => driver.getDevices(),
+        );
+        for (const device of devices) {
+          if (isRuntimeRefreshable(device)) {
+            try {
+              await device.refreshOpenCcuRuntime();
+            } catch (error) {
+              this.error(
+                "Failed to reconnect OpenCCU device",
+                safeErrorKind(error),
+              );
+            }
+          }
+        }
+      },
     );
     await this.#controller.start();
     registerThermostatFlowCards(this.homey.flow);
@@ -131,4 +148,13 @@ function manifestVersion(manifest: unknown): string {
     return manifest.version;
   }
   return "unknown";
+}
+
+function isRuntimeRefreshable(
+  device: Homey.Device,
+): device is Homey.Device & { refreshOpenCcuRuntime(): Promise<void> } {
+  return (
+    "refreshOpenCcuRuntime" in device &&
+    typeof device.refreshOpenCcuRuntime === "function"
+  );
 }

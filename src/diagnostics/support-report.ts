@@ -8,6 +8,10 @@ export const SUPPORT_REPORT_SCHEMA_VERSION = 2;
 export interface SupportReportRuntime {
   readonly centralId: string;
   readonly runtime: OpenCcuRuntimeDiagnostics;
+  readonly interfaces?: readonly {
+    readonly interfaceId: string;
+    readonly runtime: OpenCcuRuntimeDiagnostics;
+  }[];
 }
 
 export interface SupportReportInput {
@@ -28,6 +32,10 @@ export interface SupportReport {
   readonly centrals: readonly {
     readonly alias: string;
     readonly runtime: OpenCcuRuntimeDiagnostics;
+    readonly interfaces?: readonly {
+      readonly interfaceId: string;
+      readonly runtime: OpenCcuRuntimeDiagnostics;
+    }[];
   }[];
 }
 
@@ -45,9 +53,21 @@ export function createSupportReport(
     generatedAt: generatedAt.toISOString(),
     app: input.app,
     ...(input.memory === undefined ? {} : { memory: input.memory }),
-    centrals: input.runtimes.map(({ runtime }, index) => ({
+    centrals: input.runtimes.map(({ runtime, interfaces }, index) => ({
       alias: `central-${index + 1}`,
       runtime: projectRuntimeDiagnostics(runtime),
+      ...(interfaces === undefined
+        ? {}
+        : {
+            interfaces: interfaces
+              .filter(({ interfaceId }) =>
+                ["VirtualDevices", "BidCos-RF"].includes(interfaceId),
+              )
+              .map(({ interfaceId, runtime: core }) => ({
+                interfaceId,
+                runtime: projectRuntimeDiagnostics(core),
+              })),
+          }),
     })),
   };
 

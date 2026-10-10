@@ -102,3 +102,30 @@ describe("OpenCcuApplicationLifecycle", () => {
     expect(lifecycle.runtimeCount).toBe(0);
   });
 });
+
+it("releases callback ports before recreating a central when BidCos is enabled", async () => {
+  const settings = settingsWith([{ centralId: "ccu", host: "openccu.local" }]);
+  let listening = false;
+  const lifecycle = new OpenCcuApplicationLifecycle(settings, {
+    create: () => {
+      if (listening) throw new Error("EADDRINUSE");
+      listening = true;
+      return Promise.resolve({
+        stop: () => {
+          listening = false;
+          return Promise.resolve();
+        },
+      });
+    },
+  });
+  await lifecycle.start();
+  settings.set([
+    { centralId: "ccu", host: "openccu.local", enableBidCosRf: true },
+  ]);
+  try {
+    await expect(lifecycle.reload()).resolves.toBeUndefined();
+  } finally {
+    await lifecycle.stop();
+  }
+  expect(listening).toBe(false);
+});

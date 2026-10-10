@@ -4,6 +4,21 @@ All notable changes to OpenCCU for Homey will be documented in this file. The pr
 
 ## [Unreleased]
 
+## [0.1.8] — 2026-10-10 (beta)
+
+### Added
+
+- HmIP-BROLL-2 through the existing BROLL family; SWDO-2 regression coverage.
+- HmIP-FALMOT-C12: twelve read-only valve devices with opening, dew-point alarm and emergency-operation status.
+- HmIP-MIOB: two physical switch outputs, two digital input signals and one normalized analog output, with native Homey Flow capabilities.
+- Optional independently supervised BidCos-RF and HM-PB-2-FM short/long button Flow events plus battery alarm. Additional interface diagnostics are included in support exports.
+
+### Fixed
+
+- Release old callback listeners before restarting a configured central so enabling classic Homematic can reuse the existing HmIP/VirtualDevices callback ports; rebind already paired devices to the replacement runtime.
+
+New model support is synthetic-fixture verified; physical hardware tests remain pending.
+
 ## [0.1.7] — 2026-10-10 (beta)
 
 ### Added

@@ -30,5 +30,9 @@
   "0.1.7": {
     "en": "Add named HmIP-SRH Flow conditions for closed, tilted and open handle positions, including inverted checks. Existing devices, state values and Flows are preserved. Missing or invalid handle states cannot satisfy inverted conditions.",
     "de": "HmIP-SRH: Eindeutige Und-Flowkarten für geschlossene, gekippte und offene Griffstellung, jeweils auch negierbar. Bestehende Geräte, Zustandswerte und Flows bleiben erhalten. Fehlende oder ungültige Griffzustände erfüllen auch negierte Bedingungen nicht."
+  },
+  "0.1.8": {
+    "en": "Add HmIP-BROLL-2, twelve read-only FALMOT-C12 valve channels, MIOB inputs/outputs and HM-PB-2-FM button Flows through optional BidCos-RF. Improve interface diagnostics and reconnect paired devices after connection settings changes. New device profiles are fixture-tested; hardware verification is pending.",
+    "de": "HmIP-BROLL-2, zwölf schreibgeschützte FALMOT-C12-Ventilkanäle, MIOB-Ein-/Ausgänge und HM-PB-2-FM-Tasten-Flows über optionales BidCos-RF ergänzt. Schnittstellendiagnose und Wiederanbindung vorhandener Geräte nach Einstellungsänderungen verbessert. Neue Profile sind mit simulierten Gerätedaten getestet; Hardwaretests stehen noch aus."
   }
 }

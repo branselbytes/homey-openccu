@@ -1,3 +1,4 @@
+import { createServer } from "node:net";
 import { EventEmitter } from "node:events";
 import { describe, expect, it, vi } from "vitest";
 
@@ -78,4 +79,27 @@ describe("XmlRpcCallbackServer", () => {
     expect(deniedSocket.resume).not.toHaveBeenCalled();
     expect(deniedSocket.destroy).toHaveBeenCalledOnce();
   });
+});
+
+it("rejects callback readiness on an occupied port instead of emitting an uncaught server error", async () => {
+  const occupied = createServer();
+  await new Promise<void>((resolve) =>
+    occupied.listen(0, "127.0.0.1", resolve),
+  );
+  const address = occupied.address();
+  if (!address || typeof address === "string") throw new Error("Missing port");
+  const server = new XmlRpcCallbackServer({
+    host: "127.0.0.1",
+    port: address.port,
+    expectedRemoteHost: "127.0.0.1",
+    dispatcher: new XmlRpcCallbackDispatcher({}),
+  });
+  try {
+    await expect(server.ready()).rejects.toMatchObject({ code: "EADDRINUSE" });
+  } finally {
+    await server.close();
+    await new Promise<void>((resolve, reject) =>
+      occupied.close((error) => (error ? reject(error) : resolve())),
+    );
+  }
 });

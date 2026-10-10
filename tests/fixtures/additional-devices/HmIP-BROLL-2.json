@@ -1,0 +1,54 @@
+{
+  "description": {
+    "ADDRESS": "TESTHMIPBROLL2",
+    "TYPE": "HmIP-BROLL-2",
+    "CHILDREN": ["TESTHMIPBROLL2:3", "TESTHMIPBROLL2:4"]
+  },
+  "channels": [
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPBROLL2:3",
+        "TYPE": "SHUTTER_TRANSMITTER",
+        "PARENT": "TESTHMIPBROLL2",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LEVEL": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 5,
+          "MIN": 0,
+          "MAX": 1.01,
+          "FLAGS": 1
+        },
+        "ACTIVITY_STATE": {
+          "TYPE": "ENUM",
+          "OPERATIONS": 5,
+          "VALUE_LIST": ["UNKNOWN", "UP", "DOWN", "STABLE"],
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPBROLL2:4",
+        "TYPE": "SHUTTER_VIRTUAL_RECEIVER",
+        "PARENT": "TESTHMIPBROLL2",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LEVEL": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 7,
+          "MIN": 0,
+          "MAX": 1.01,
+          "FLAGS": 1
+        },
+        "STOP": {
+          "TYPE": "ACTION",
+          "OPERATIONS": 2,
+          "FLAGS": 1
+        }
+      }
+    }
+  ]
+}

@@ -16,8 +16,15 @@ import {
 } from "./device-artwork-household.mjs";
 import { sensorDrivers } from "./device-artwork-sensors.mjs";
 
+import { additionalDrivers } from "./device-artwork-additional.mjs";
+
 const root = fileURLToPath(new URL("../", import.meta.url));
-const drivers = { ...electricalDrivers, ...householdDrivers, ...sensorDrivers };
+const drivers = {
+  ...additionalDrivers,
+  ...electricalDrivers,
+  ...householdDrivers,
+  ...sensorDrivers,
+};
 
 function document(name, geometry) {
   return (

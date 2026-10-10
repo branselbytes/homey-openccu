@@ -45,7 +45,7 @@ App version **0.1.2** groups SWDO, SWDO-2, SWDO-I, and the new SWDO-A under one 
 
 The local maintenance build resolves eight recorded device types through the shared PSM, eTRV, SWDO and new Wired STH profiles. Read-only checks against the configured CCU successfully read 25 mapped values across six reachable models, including the Wired STH-A and SWDO-A. The CCU reported the sampled HmIP-PSM-2 and HMIP-SWDO as unreachable (`UNREACH = true`), so their current-value checks were skipped. Their device descriptions were available and are covered by recorded-fixture tests.
 
-This verifies discovery and reads, not physical commands, new pairing or a production upgrade. PSM-2 switching, Wired STH commands and real add/remove callbacks remain hardware checks. Wired STH modes 0–3 and week profiles 1–6 remain deferred until complete Homey controls exist. At this stage the installed Homey app was version 0.1.2; see the [maintenance delivery record](IMPLEMENTATION_PLAN.md#project-maintenance-audit-2026-10-03-unreleased).
+This verifies discovery and reads, not physical commands, new pairing or a production upgrade. PSM-2 switching, Wired STH commands and real add/remove callbacks remain hardware checks. Wired STH modes 0–3 and week profiles 1–6 remain deferred until complete Homey controls exist. At this stage the installed Homey app was version 0.1.2; see the [maintenance delivery record](IMPLEMENTATION_PLAN.md#project-maintenance-audit-2026-10-03-0.1.8 beta).
 
 Socket/artwork follow-up: the local build also consolidates PS/PSM pairing and corrects catalog images and model-specific family pairing icons. The full suite now passes 409 tests, with Homey publish-level validation successful. Actual Homey rendering after installation remains unverified; existing saved per-device icon overrides are preserved.
 
@@ -63,3 +63,7 @@ No devices were deleted or re-paired, and no physical control commands were sent
 - Repeat fresh install, upgrade, restart, deletion, and re-pairing tests on every claimed Homey generation.
 - Exercise at least the oldest and newest OpenCCU versions that the first release intends to support.
 - Record callback, authentication, firewall, and VirtualDevices behavior for each tested combination.
+
+### Optional classic Homematic (0.1.8 beta)
+
+BidCos-RF uses XML-RPC TCP 2001 and a separate Homey callback on TCP 12012 by default. Enable it in the app settings only for centrals providing classic Homematic. Custom ports are supported. HM-PB-2-FM is the first dedicated classic profile; physical pairing and callback delivery remain unverified. Existing HmIP connections keep their settings.

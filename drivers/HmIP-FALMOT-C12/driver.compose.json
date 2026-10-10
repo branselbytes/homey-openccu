@@ -1,0 +1,40 @@
+{
+  "id": "HmIP-FALMOT-C12",
+  "name": {
+    "en": "HmIP-FALMOT-C12",
+    "de": "HmIP-FALMOT-C12"
+  },
+  "class": "sensor",
+  "capabilities": ["homematic_measure_valve"],
+  "images": {
+    "large": "/drivers/HmIP-FALMOT-C12/assets/images/large.png",
+    "small": "/drivers/HmIP-FALMOT-C12/assets/images/small.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "capabilitiesOptions": {
+    "alarm_generic.dew_point": {
+      "title": {
+        "en": "Dew point alarm",
+        "de": "Taupunktalarm"
+      }
+    },
+    "alarm_generic.emergency": {
+      "title": {
+        "en": "Emergency operation",
+        "de": "Notbetrieb"
+      }
+    }
+  }
+}

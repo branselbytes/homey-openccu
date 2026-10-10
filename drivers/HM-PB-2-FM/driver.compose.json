@@ -1,0 +1,29 @@
+{
+  "id": "HM-PB-2-FM",
+  "name": {
+    "en": "HM-PB-2-FM",
+    "de": "HM-PB-2-FM"
+  },
+  "class": "button",
+  "capabilities": ["alarm_battery"],
+  "images": {
+    "large": "/drivers/HM-PB-2-FM/assets/images/large.png",
+    "small": "/drivers/HM-PB-2-FM/assets/images/small.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "energy": {
+    "batteries": ["AAA", "AAA"]
+  }
+}

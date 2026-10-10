@@ -27,8 +27,18 @@ export function resolveDeviceMapping(
   device: OpenCcuDevice,
   profiles = new ProfileRegistry(),
   logicalId?: string,
+  preserveLegacyGeneric = false,
 ): ResolvedDeviceMapping {
   const profile = profiles.find(device.type);
+  // A previously paired generic parent has no logical-channel identity. Keep
+  // its mapping until the user chooses the new per-output devices.
+  if (
+    preserveLegacyGeneric &&
+    logicalId === undefined &&
+    profile?.logicalDevices !== undefined
+  ) {
+    return resolveDeviceMapping(device, new ProfileRegistry([]));
+  }
   if (profile) {
     const logical = selectLogicalDevice(profile, logicalId);
     return resolveKnownDeviceMapping(device, profiles, profile, logical);

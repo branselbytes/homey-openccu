@@ -152,10 +152,21 @@ export class OpenCcuRuntimeProvider {
   diagnostics(): readonly {
     readonly centralId: string;
     readonly runtime: OpenCcuRuntimeDiagnostics;
+    readonly interfaces: readonly {
+      readonly interfaceId: string;
+      readonly runtime: OpenCcuRuntimeDiagnostics;
+    }[];
   }[] {
     return this.#source.runtimeEntries().map(([centralId, runtime]) => ({
       centralId,
       runtime: runtime.core.getDiagnostics(),
+      interfaces: runtime
+        .interfaceCores()
+        .filter(([id]) => id !== "HmIP-RF")
+        .map(([interfaceId, core]) => ({
+          interfaceId,
+          runtime: core.getDiagnostics(),
+        })),
     }));
   }
 

@@ -1,0 +1,346 @@
+{
+  "description": {
+    "ADDRESS": "TESTHMIPFALMOTC12",
+    "TYPE": "HmIP-FALMOT-C12",
+    "CHILDREN": [
+      "TESTHMIPFALMOTC12:1",
+      "TESTHMIPFALMOTC12:2",
+      "TESTHMIPFALMOTC12:3",
+      "TESTHMIPFALMOTC12:4",
+      "TESTHMIPFALMOTC12:5",
+      "TESTHMIPFALMOTC12:6",
+      "TESTHMIPFALMOTC12:7",
+      "TESTHMIPFALMOTC12:8",
+      "TESTHMIPFALMOTC12:9",
+      "TESTHMIPFALMOTC12:10",
+      "TESTHMIPFALMOTC12:11",
+      "TESTHMIPFALMOTC12:12"
+    ]
+  },
+  "channels": [
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPFALMOTC12:1",
+        "TYPE": "CLIMATECONTROL_FLOOR_TRANSCEIVER",
+        "PARENT": "TESTHMIPFALMOTC12",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LEVEL": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 5,
+          "MIN": 0,
+          "MAX": 1.01,
+          "FLAGS": 1
+        },
+        "DEW_POINT_ALARM": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        },
+        "EMERGENCY_OPERATION": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPFALMOTC12:2",
+        "TYPE": "CLIMATECONTROL_FLOOR_TRANSCEIVER",
+        "PARENT": "TESTHMIPFALMOTC12",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LEVEL": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 5,
+          "MIN": 0,
+          "MAX": 1.01,
+          "FLAGS": 1
+        },
+        "DEW_POINT_ALARM": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        },
+        "EMERGENCY_OPERATION": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPFALMOTC12:3",
+        "TYPE": "CLIMATECONTROL_FLOOR_TRANSCEIVER",
+        "PARENT": "TESTHMIPFALMOTC12",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LEVEL": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 5,
+          "MIN": 0,
+          "MAX": 1.01,
+          "FLAGS": 1
+        },
+        "DEW_POINT_ALARM": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        },
+        "EMERGENCY_OPERATION": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPFALMOTC12:4",
+        "TYPE": "CLIMATECONTROL_FLOOR_TRANSCEIVER",
+        "PARENT": "TESTHMIPFALMOTC12",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LEVEL": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 5,
+          "MIN": 0,
+          "MAX": 1.01,
+          "FLAGS": 1
+        },
+        "DEW_POINT_ALARM": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        },
+        "EMERGENCY_OPERATION": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPFALMOTC12:5",
+        "TYPE": "CLIMATECONTROL_FLOOR_TRANSCEIVER",
+        "PARENT": "TESTHMIPFALMOTC12",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LEVEL": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 5,
+          "MIN": 0,
+          "MAX": 1.01,
+          "FLAGS": 1
+        },
+        "DEW_POINT_ALARM": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        },
+        "EMERGENCY_OPERATION": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPFALMOTC12:6",
+        "TYPE": "CLIMATECONTROL_FLOOR_TRANSCEIVER",
+        "PARENT": "TESTHMIPFALMOTC12",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LEVEL": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 5,
+          "MIN": 0,
+          "MAX": 1.01,
+          "FLAGS": 1
+        },
+        "DEW_POINT_ALARM": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        },
+        "EMERGENCY_OPERATION": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPFALMOTC12:7",
+        "TYPE": "CLIMATECONTROL_FLOOR_TRANSCEIVER",
+        "PARENT": "TESTHMIPFALMOTC12",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LEVEL": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 5,
+          "MIN": 0,
+          "MAX": 1.01,
+          "FLAGS": 1
+        },
+        "DEW_POINT_ALARM": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        },
+        "EMERGENCY_OPERATION": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPFALMOTC12:8",
+        "TYPE": "CLIMATECONTROL_FLOOR_TRANSCEIVER",
+        "PARENT": "TESTHMIPFALMOTC12",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LEVEL": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 5,
+          "MIN": 0,
+          "MAX": 1.01,
+          "FLAGS": 1
+        },
+        "DEW_POINT_ALARM": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        },
+        "EMERGENCY_OPERATION": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPFALMOTC12:9",
+        "TYPE": "CLIMATECONTROL_FLOOR_TRANSCEIVER",
+        "PARENT": "TESTHMIPFALMOTC12",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LEVEL": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 5,
+          "MIN": 0,
+          "MAX": 1.01,
+          "FLAGS": 1
+        },
+        "DEW_POINT_ALARM": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        },
+        "EMERGENCY_OPERATION": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPFALMOTC12:10",
+        "TYPE": "CLIMATECONTROL_FLOOR_TRANSCEIVER",
+        "PARENT": "TESTHMIPFALMOTC12",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LEVEL": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 5,
+          "MIN": 0,
+          "MAX": 1.01,
+          "FLAGS": 1
+        },
+        "DEW_POINT_ALARM": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        },
+        "EMERGENCY_OPERATION": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPFALMOTC12:11",
+        "TYPE": "CLIMATECONTROL_FLOOR_TRANSCEIVER",
+        "PARENT": "TESTHMIPFALMOTC12",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LEVEL": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 5,
+          "MIN": 0,
+          "MAX": 1.01,
+          "FLAGS": 1
+        },
+        "DEW_POINT_ALARM": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        },
+        "EMERGENCY_OPERATION": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPFALMOTC12:12",
+        "TYPE": "CLIMATECONTROL_FLOOR_TRANSCEIVER",
+        "PARENT": "TESTHMIPFALMOTC12",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LEVEL": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 5,
+          "MIN": 0,
+          "MAX": 1.01,
+          "FLAGS": 1
+        },
+        "DEW_POINT_ALARM": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        },
+        "EMERGENCY_OPERATION": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    }
+  ]
+}

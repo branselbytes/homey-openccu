@@ -1,0 +1,188 @@
+{
+  "description": {
+    "ADDRESS": "TESTHMIPMIOB",
+    "TYPE": "HmIP-MIOB",
+    "CHILDREN": [
+      "TESTHMIPMIOB:1",
+      "TESTHMIPMIOB:5",
+      "TESTHMIPMIOB:2",
+      "TESTHMIPMIOB:3",
+      "TESTHMIPMIOB:4",
+      "TESTHMIPMIOB:6",
+      "TESTHMIPMIOB:7",
+      "TESTHMIPMIOB:8",
+      "TESTHMIPMIOB:9",
+      "TESTHMIPMIOB:10",
+      "TESTHMIPMIOB:11"
+    ]
+  },
+  "channels": [
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPMIOB:1",
+        "TYPE": "SWITCH_TRANSMITTER",
+        "PARENT": "TESTHMIPMIOB",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "STATE": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPMIOB:5",
+        "TYPE": "SWITCH_TRANSMITTER",
+        "PARENT": "TESTHMIPMIOB",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "STATE": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPMIOB:2",
+        "TYPE": "SWITCH_VIRTUAL_RECEIVER",
+        "PARENT": "TESTHMIPMIOB",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "STATE": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 7,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPMIOB:3",
+        "TYPE": "SWITCH_VIRTUAL_RECEIVER",
+        "PARENT": "TESTHMIPMIOB",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "STATE": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 7,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPMIOB:4",
+        "TYPE": "SWITCH_VIRTUAL_RECEIVER",
+        "PARENT": "TESTHMIPMIOB",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "STATE": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 7,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPMIOB:6",
+        "TYPE": "SWITCH_VIRTUAL_RECEIVER",
+        "PARENT": "TESTHMIPMIOB",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "STATE": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 7,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPMIOB:7",
+        "TYPE": "SWITCH_VIRTUAL_RECEIVER",
+        "PARENT": "TESTHMIPMIOB",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "STATE": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 7,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPMIOB:8",
+        "TYPE": "SWITCH_VIRTUAL_RECEIVER",
+        "PARENT": "TESTHMIPMIOB",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "STATE": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 7,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPMIOB:9",
+        "TYPE": "GENERIC_INPUT_TRANSMITER",
+        "PARENT": "TESTHMIPMIOB",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "STATE": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPMIOB:10",
+        "TYPE": "GENERIC_INPUT_TRANSMITER",
+        "PARENT": "TESTHMIPMIOB",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "STATE": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPMIOB:11",
+        "TYPE": "ANALOG_OUTPUT_TRANSCEIVER",
+        "PARENT": "TESTHMIPMIOB",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LEVEL": {
+          "TYPE": "FLOAT",
+          "OPERATIONS": 7,
+          "MIN": 0,
+          "MAX": 1.01,
+          "FLAGS": 1
+        }
+      }
+    }
+  ]
+}

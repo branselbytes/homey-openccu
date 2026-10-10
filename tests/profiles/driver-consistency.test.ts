@@ -2,7 +2,7 @@ import { access, readFile, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { HMIP_PROFILES } from "../../src/profiles/hmip";
+import { ALL_PROFILES } from "../../src/profiles/registry";
 import { GENERIC_DRIVER_ID } from "../../src/mapping/device-resolver";
 
 const SYSTEM_DRIVER_ID = "openccu-system";
@@ -22,7 +22,7 @@ describe("dedicated profile drivers", () => {
   it("reference existing Homey driver directories", async () => {
     await expect(
       Promise.all(
-        HMIP_PROFILES.map((profile) =>
+        ALL_PROFILES.map((profile) =>
           access(resolve("drivers", profile.driverId, "driver.compose.json")),
         ),
       ),
@@ -37,7 +37,7 @@ describe("dedicated profile drivers", () => {
 
   it("ships only profiled, generic, central-level, and retained legacy drivers", async () => {
     const expected = [
-      ...new Set(HMIP_PROFILES.map((profile) => profile.driverId)),
+      ...new Set(ALL_PROFILES.map((profile) => profile.driverId)),
       GENERIC_DRIVER_ID,
       SYSTEM_DRIVER_ID,
       ...LEGACY_DRIVER_IDS,
@@ -136,7 +136,7 @@ describe("dedicated profile drivers", () => {
 
   it("routes selected devices to the add-devices pairing step", async () => {
     const driverIds = [
-      ...new Set(HMIP_PROFILES.map((profile) => profile.driverId)),
+      ...new Set(ALL_PROFILES.map((profile) => profile.driverId)),
       GENERIC_DRIVER_ID,
       SYSTEM_DRIVER_ID,
     ];

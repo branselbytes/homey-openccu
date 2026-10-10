@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
-import { HMIP_PROFILES } from "../../src/profiles/hmip";
+import { ALL_PROFILES } from "../../src/profiles/registry";
 
 interface FlowManifest {
   readonly title: { readonly en?: string; readonly de?: string };
@@ -41,7 +41,7 @@ describe("Flow catalog", () => {
       expect(drivers).toContain("openccu-generic");
       expect(drivers).not.toContain("HMIP-PSM");
       expect(drivers).not.toContain("openccu-system");
-      for (const profile of HMIP_PROFILES) {
+      for (const profile of ALL_PROFILES) {
         if (!profile.bindings.some((b) => b.capability === capability))
           continue;
         expect(drivers).toContain(profile.driverId);
@@ -60,7 +60,7 @@ describe("Flow catalog", () => {
     expect(drivers).toContain("openccu-generic");
     expect(drivers).not.toContain("openccu-system");
     expect(drivers).not.toContain("HmIP-eTRV-2");
-    for (const profile of HMIP_PROFILES) {
+    for (const profile of ALL_PROFILES) {
       if (
         (profile.logicalDevices ?? [profile]).some(
           (definition) => (definition.buttonChannels?.length ?? 0) > 0,

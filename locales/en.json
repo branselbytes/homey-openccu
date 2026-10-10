@@ -17,7 +17,10 @@
       "password": "Password (optional)",
       "hint": "HmIP-RF provides physical devices. VirtualDevices provides OpenCCU heating groups. Enter the host without http:// or a path.",
       "virtual_devices_port": "VirtualDevices XML-RPC port",
-      "virtual_devices_callback_port": "VirtualDevices callback port"
+      "virtual_devices_callback_port": "VirtualDevices callback port",
+      "bidcos_enabled": "Enable classic Homematic (BidCos-RF)",
+      "bidcos_port": "BidCos-RF XML-RPC port",
+      "bidcos_callback_port": "BidCos-RF callback port"
     },
     "save": "Save changes",
     "saved": "OpenCCU settings saved",
@@ -48,7 +51,8 @@
       "callback_port_invalid": "Callback port must be an integer between 1 and 65535",
       "virtual_devices_callback_port_invalid": "VirtualDevices callback port must be an integer between 1 and 65535",
       "callback_ports_distinct": "Callback ports must be different",
-      "credentials_together": "Username and password must both be set or both be empty"
+      "credentials_together": "Username and password must both be set or both be empty",
+      "bidcos_port_invalid": "BidCos-RF ports must be between 1 and 65535."
     }
   },
   "widgets": {

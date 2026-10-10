@@ -1,11 +1,11 @@
 {
   "title": {
     "en": "A button was pressed",
-    "de": "Eine Taste wurde gedrückt"
+    "de": "Eine Taste wurde gedr\u00fcckt"
   },
   "titleFormatted": {
     "en": "A button was pressed",
-    "de": "Eine Taste wurde gedrückt"
+    "de": "Eine Taste wurde gedr\u00fcckt"
   },
   "tokens": [
     {
@@ -33,9 +33,9 @@
       "type": "device",
       "title": {
         "en": "Device",
-        "de": "Gerät"
+        "de": "Ger\u00e4t"
       },
-      "filter": "driver_id=HMIP-PSM|HMIP-WRC2|HmIP-BBL|HmIP-BDT|HmIP-BRA|HmIP-BRC2|HmIP-BSM|HmIP-FCI1|HmIP-RC8|HmIP-SMI55|HmIP-WRC6|HmIPW-DRI16|openccu-generic"
+      "filter": "driver_id=HMIP-PSM|HMIP-WRC2|HmIP-BBL|HmIP-BDT|HmIP-BRA|HmIP-BRC2|HmIP-BSM|HmIP-FCI1|HmIP-RC8|HmIP-SMI55|HmIP-WRC6|HmIPW-DRI16|openccu-generic|HM-PB-2-FM"
     }
   ]
 }

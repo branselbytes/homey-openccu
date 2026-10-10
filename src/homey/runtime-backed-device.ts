@@ -14,6 +14,12 @@ import { safeErrorKind } from "../diagnostics/safe-error";
 export abstract class RuntimeBackedDevice extends Homey.Device {
   #controller?: DeviceBindingController;
 
+  async refreshOpenCcuRuntime(): Promise<void> {
+    this.#controller?.stop();
+    this.#controller = undefined;
+    await this.onInit();
+  }
+
   async onInit(): Promise<void> {
     const data = this.getData() as unknown;
     if (
@@ -27,6 +33,7 @@ export abstract class RuntimeBackedDevice extends Homey.Device {
     }
     const logicalId =
       typeof data.logicalId === "string" ? data.logicalId : undefined;
+    const preserveLegacyGeneric = this.getStoreValue("generic") === true;
     const app = this.homey.app;
     if (!isRuntimeProvidingApp(app)) {
       await this.setUnavailable("OpenCCU runtime is not initialized");
@@ -51,18 +58,33 @@ export abstract class RuntimeBackedDevice extends Homey.Device {
             const device = runtime.devices.get(data.address as string);
             return device === undefined
               ? undefined
-              : resolveDeviceMapping(device, undefined, logicalId).bindings;
+              : resolveDeviceMapping(
+                  device,
+                  undefined,
+                  logicalId,
+                  preserveLegacyGeneric,
+                ).bindings;
           },
           resolveButtonEvents: () => {
             const device = runtime.devices.get(data.address as string);
             return device === undefined
               ? []
-              : resolveDeviceMapping(device, undefined, logicalId).buttonEvents;
+              : resolveDeviceMapping(
+                  device,
+                  undefined,
+                  logicalId,
+                  preserveLegacyGeneric,
+                ).buttonEvents;
           },
           resolveInformationalCapabilities: () => {
             const device = runtime.devices.get(data.address as string);
             if (device === undefined) return {};
-            const mapping = resolveDeviceMapping(device, undefined, logicalId);
+            const mapping = resolveDeviceMapping(
+              device,
+              undefined,
+              logicalId,
+              preserveLegacyGeneric,
+            );
             return resolveOrganizationCapabilities(
               runtime.metadata,
               device.address,

@@ -5,9 +5,11 @@ import type {
   RpcValue,
 } from "../protocol/xmlrpc/types";
 
+export const BIDCOS_RF_INTERFACE = "BidCos-RF" as const;
 export const HMIP_RF_INTERFACE = "HmIP-RF" as const;
 export const VIRTUAL_DEVICES_INTERFACE = "VirtualDevices" as const;
 export type OpenCcuInterfaceType =
+  | typeof BIDCOS_RF_INTERFACE
   | typeof HMIP_RF_INTERFACE
   | typeof VIRTUAL_DEVICES_INTERFACE;
 export const PARAMETER_OPERATION = {

@@ -1,6 +1,8 @@
 import type { MappingDecisionLog } from "../mapping/decision";
 import type { OpenCcuDevice } from "../domain/model";
 import { HMIP_PROFILES } from "./hmip";
+import { ADDITIONAL_PROFILES } from "./additional-devices";
+
 import {
   resolveProfileBindings,
   type DeviceProfile,
@@ -8,10 +10,12 @@ import {
   type ProfileConfigurationParameter,
 } from "./types";
 
+export const ALL_PROFILES = [...HMIP_PROFILES, ...ADDITIONAL_PROFILES];
+
 export class ProfileRegistry {
   readonly #profiles: readonly DeviceProfile[];
 
-  constructor(profiles: readonly DeviceProfile[] = HMIP_PROFILES) {
+  constructor(profiles: readonly DeviceProfile[] = ALL_PROFILES) {
     this.#profiles = profiles;
     const claimedTypes = new Map<string, DeviceProfile>();
     for (const profile of profiles) {

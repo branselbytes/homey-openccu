@@ -26,6 +26,7 @@ export interface ProfileBinding {
   readonly setChannel?: number;
   readonly setParameter?: string;
   readonly requiresWriteTarget?: boolean;
+  readonly readOnly?: boolean;
   readonly requiredWriteParameters?: readonly string[];
   readonly transform?: ValueTransform;
   readonly writeStrategy?: WriteStrategy;
@@ -100,7 +101,10 @@ export function resolveProfileBindings(
     if (parameter === undefined) continue;
     const dataPoint = channel.dataPoints.get(parameter);
     if (!dataPoint) continue;
-    const writeTarget = findWriteTarget(device, definition, parameter);
+    const writeTarget =
+      definition.readOnly === true
+        ? undefined
+        : findWriteTarget(device, definition, parameter);
     if (definition.requiresWriteTarget === true && writeTarget === undefined)
       continue;
     if (!hasRequiredWriteParameters(device, definition)) continue;

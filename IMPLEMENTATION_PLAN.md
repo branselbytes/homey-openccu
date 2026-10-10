@@ -247,7 +247,7 @@ Validation: `npm run check` passed formatting, lint, type-checks and all 301 tes
 
 The user reports stable operation without observed disconnects on the currently installed app. The owner subsequently authorized installation on Homey Christian, committing/pushing to origin/main and a Homey CLI Developer upload. Validation with Node.js 22.23.3: `npm run check` passed formatting, ESLint, strict type checks and all 317 tests in 51 files, including the synthetic SWDO integration fixture. `npm run build`, `node_modules/.bin/homey app build` and `node_modules/.bin/homey app validate --level publish` passed. Post-install verification on Homey Christian (Homey 13.5.0) confirms app 0.1.2 running/enabled/not crashed, all 13 existing devices available with preserved identities and capabilities, and a healthy CCU runtime discovering 35 devices with zero issues. The new SWDO-A is mapped to HMIP-SWDO with alarm_contact and alarm_battery. Physical SWDO-A pairing and events remain the hardware gate. Homey CLI upload succeeded as [Draft Build 3](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/3), with zero environment keys and no Test/Live activation.
 
-## Project maintenance audit (2026-10-03, unreleased)
+## Project maintenance audit (2026-10-03, 0.1.8 beta)
 
 - [x] Inventory tracked assets and obsolete build settings. All 98 pre-existing PNG/SVG assets (about 1.67 MB) remain referenced or required by Homey conventions; keep legacy adapters, recorded fixtures, license notices and history.
 - [x] Remove absent legacy-directory/JavaScript build paths and unnecessary production Vitest globals; exclude generated coverage from app packages.
@@ -266,7 +266,7 @@ The installed 0.1.2 baseline was inspected read-only and remains running. No new
 
 PayPal metadata follow-up: added the owner-provided PayPal.Me username `branselbytes` to `contributing.donate.paypal` in the compose manifest and regenerated app.json. Homey publish-level validation (including TypeScript compilation), manifest consistency and formatting checks passed. This metadata-only change does not affect runtime behavior; unit/lint and live CCU tests were not repeated. The donation entry is prepared locally for the next publication.
 
-## Socket family and artwork follow-up (unreleased)
+## Socket family and artwork follow-up (0.1.8 beta)
 
 - [x] Combine PS and PSM new pairing while keeping PS/PSM/PSM-2 channel mappings, legacy PS devices and existing identities unchanged.
 - [x] Identify incorrect image sharing: 78 drivers reused six product PNG pairs. Restore 39 exact-model pairs from the imported MIT history.
@@ -280,7 +280,7 @@ Verification: `npm run check` passed formatting, lint, strict type checks and 40
 
 Final artwork inventory: 45 imported product image pairs, 32 original schematic pairs, one neutral generic pair and 13 model SVGs for family pairing. Homey's package file selection includes all 156 driver PNGs, all 13 family SVGs and the MIT license, and excludes the generator, tests, docs, coverage and env.json. Actual Homey rendering and cached/stored icon behavior remain the post-update check; no new live hardware test was performed in this follow-up.
 
-## App branding (2026-10-03, unreleased)
+## App branding (2026-10-03, 0.1.8 beta)
 
 - [x] Adopt the owner-selected second concept with a branselbytes bb circuit icon and navy/copper smart-home scene (ADR 0021).
 - [x] Prepare native SVG artwork and three App Store image sizes; retain source imagery and prompts outside the app package.
@@ -306,7 +306,7 @@ Post-install read-only checks confirm both apps running/enabled/not crashed on H
 
 The previously passed 409-test release suite applies unchanged: only deployment evidence was edited after installation, and its formatting was checked. PSM/eTRV-family upgrade testing remains open because neither paired inventory contains those families. Actual Homey UI artwork rendering and physical PSM-2/STH commands, contact/button events and CCU add/remove notifications still require separate verification.
 
-## App Store description localization (2026-10-03, unreleased)
+## App Store description localization (2026-10-03, 0.1.8 beta)
 
 - [x] Replace the English-only Store text with matching English `README.txt` and German `README.de.txt`, using two plain-text paragraphs without Markdown or URLs as required by the [Homey App Store guidelines](https://apps.developer.homey.app/app-store/guidelines).
 - [x] Describe the independent homey-matic fork, supported wireless/selected Wired devices and heating groups, Flows/widgets, setup requirements, beta status and the need to pair devices again when moving from the predecessor app.
@@ -318,7 +318,7 @@ These text-only changes are prepared locally for a future authorized upload. The
 
 Validation with Node.js 22.23.3: `npm run check` passed formatting, ESLint, strict production/test type checks and all 409 tests in 58 files, including recorded CCU fixtures. `npm run build`, `node_modules/.bin/homey app build` and `node_modules/.bin/homey app validate --level publish` passed. The regenerated app manifest differs only in the generic driver's German name. Both Store descriptions contain two plain-text paragraphs and match their packaged `.homeybuild` copies; the generated and packaged manifests are semantically identical. `git diff --check` passed. No new live CCU or hardware integration test was run for this text-only change, and no upload, push or publication was performed.
 
-## App Store Flow catalog and widget review (2026-10-03, unreleased)
+## App Store Flow catalog and widget review (2026-10-03, 0.1.8 beta)
 
 - [x] Read the public English and German Test listings and compare their Flow cards with the local manifest: all seven custom cards are present and translated, but only two automatic DRAP cards are shown because almost all driver capability lists are empty.
 - [x] Review official Homey widget/style/Store documentation. Replace custom 11–13px text and 12px outer padding with native size/spacing tokens, responsive layouts and semantic icon colors.
@@ -339,7 +339,7 @@ Validation with Node.js 22.23.3: `npm run check` passed formatting, ESLint, prod
 
 Local Playwright/Brave checks with synthetic data passed 32 combinations of both widget views, German/English, light/dark and widths 240/320/360/768px, plus 20 cases for empty/error/unavailable/partial/offline states, multiple centrals and long lists at 240/360px. No horizontal overflow or system-widget clipping was observed; screenshots were visually reviewed. The harness supplies a system font and documented styling fallbacks rather than running inside a connected Homey webview. No live CCU command, physical-device integration test, Homey installation or post-upload Store verification was performed. Final Store rendering and a real Homey upgrade remain the explicitly open follow-up above.
 
-## HmIP-MOD-HO and support-report issue #1 (2026-10-03, unreleased)
+## HmIP-MOD-HO and support-report issue #1 (2026-10-03, 0.1.8 beta)
 
 - [x] Compare the manufacturer's functions, issue #1 and forum screenshots/report with the imported driver and pinned `aiohomematic`/`homematicip_local` references; record attribution and decisions in ADR 0023.
 - [x] Preserve a minimal anonymized firmware 1.0.16 description and verify existing light channel/boolean and garage string-command routing.
@@ -355,11 +355,11 @@ The submitted JSON is valid; its 68,203-byte size and forum attachment restricti
 
 Final validation with Node.js 22.23.3: `npm run check` passed formatter, ESLint, production/test type checks and all **535 tests in 65 files**, including the anonymized Hörmann metadata with synthetic read/write/callback integration. `npm run build`, `node_modules/.bin/homey app build` and `node_modules/.bin/homey app validate --level publish` passed. Changed TypeScript source files also passed an explicit `prettier --check` because the repository format script does not cover `src`. `git diff --check` passed. No dedicated physical fixture is available for this module.
 
-The generated and packaged manifests are semantically identical: all 78 driver IDs and the previous seven custom Flow IDs remain, with three new garage cards and the five-capability Hörmann profile. App version remains 0.1.3; changes are unreleased. Packaged settings, locales, icons and Store descriptions match source; compiled garage/error modules are included and the diagnostic fixture is excluded. Flow dropdown IDs match the corresponding capability enums.
+The generated and packaged manifests are semantically identical: all 78 driver IDs and the previous seven custom Flow IDs remain, with three new garage cards and the five-capability Hörmann profile. App version remains 0.1.3; changes are 0.1.8 beta. Packaged settings, locales, icons and Store descriptions match source; compiled garage/error modules are included and the diagnostic fixture is excluded. Flow dropdown IDs match the corresponding capability enums.
 
 Local Playwright/Brave diagnostics checks passed 52 assertions using synthetic data in German/English at 320/768px: overview/model summaries, safe failure details, successful sharing, rejected sharing with complete JSON download, share cancellation without download, clipboard/manual-copy fallbacks, and no page errors or horizontal overflow. The harness uses a mock Homey bridge; actual native Homey rendering and physical commands remain the separate open validation step above.
 
-## Device artwork refinement (2026-10-03, unreleased)
+## Device artwork refinement (2026-10-03, 0.1.8 beta)
 
 - [x] Recheck primary OpenCCU, manufacturer OpenCCU-Base/OCCU and `openccu-data` terms with pinned references. Distinguish conditional HMSL manufacturer-image reuse from OpenCCU's own graphics restrictions; document the independent-SVG decision in ADR 0024.
 - [x] Inventory and preserve the 45 inherited driver illustrations and neutral generic fallback; snapshot the 32 generated drawings for comparison.
@@ -389,7 +389,7 @@ Developer verification confirms Draft Build 5 contains both widgets and ten cust
 
 The remote Store projection matches all 70 non-deprecated local drivers and their capabilities; the eight deprecated adapters remain in the installed manifest for existing devices. All three new Hörmann Flow IDs are present. Isolated production-dependency imports and an XML parser smoke test passed, and final read-only verification after upload again reports all 17 devices available with the app running. Final formatting and diff checks passed.
 
-## Heating schedule editor (2026-10-04, unreleased)
+## Heating schedule editor (2026-10-04, 0.1.8 beta)
 
 - [x] Implement the shared German/English weekly editor in app settings and thirteen thermostat/group/generic driver repair views (ADR 0025).
 - [x] Read metadata-defined stored profiles independently of active-profile selection; edit existing slots, copy days/profiles as drafts, and explicitly review/confirm saves.
@@ -497,3 +497,14 @@ Validation passed: `npm run check` (715 tests in 74 files, formatting, ESLint an
 0.1.7 delivery completed: source commit [`6cbe90d`](https://github.com/branselbytes/homey-openccu/commit/6cbe90d) and annotated tag `v0.1.7` were pushed to origin; the [GitHub prerelease](https://github.com/branselbytes/homey-openccu/releases/tag/v0.1.7) is public and its CI passed. A clean tagged checkout was uploaded through `HOMEY_HEADLESS=1 homey app publish`. [Homey Build 8](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/8) was verified for version, all three new conditions, matching EN/DE changelog and zero environment keys, then promoted to Test. The archive contains 632 files (7.78 MB). Issues [#1](https://github.com/branselbytes/homey-openccu/issues/1) and [#2](https://github.com/branselbytes/homey-openccu/issues/2) were commented with resolution evidence and closed as completed.
 
 The exact 0.1.7 Test build was installed on Homey Christian via the CLI raw Store request, preserving app data. Verification at 41 seconds uptime confirmed running/not crashed, App Store Test origin, automatic updates enabled, all 17 existing IDs/drivers/capabilities preserved and 17/17 available. CCU discovery is healthy with 35 devices and zero discovery, metadata, system, RPC or timeout failures; memory warnings are zero. No physical control command or schedule write was performed. The handle conditions were integration-tested with simulated states; a physical handle test remains outside this delivery.
+
+## Forum device integration — 0.1.8 beta (2026-10-10)
+
+- [x] Verify original-app, aiohomematic/HA and manufacturer channel facts; record ADR 0028.
+- [x] Add BROLL-2 family alias and retain SWDO-2 coverage.
+- [x] Add twelve read-only FALMOT-C12 valve devices and five MIOB physical I/O devices.
+- [x] Add HM-PB-2-FM battery status and short/long press Flow events using optional BidCos-RF.
+- [x] Add separate BidCos callback/queue/retry settings, interface diagnostics, and callback-port release on reload.
+- [x] Add synthetic protocol integration and configuration/lifecycle regression tests.
+- [ ] Verify pairing, physical callbacks and commands on the requested hardware, including MIOB configured operating modes.
+- [ ] Publish a subsequent beta and install it on Homey after release authorization.

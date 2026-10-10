@@ -7,6 +7,12 @@ import { safeErrorKind } from "../../src/diagnostics/safe-error";
 export = class OpenCcuSystemDevice extends Homey.Device {
   #controller?: SystemDeviceController;
 
+  async refreshOpenCcuRuntime(): Promise<void> {
+    this.#controller?.stop();
+    this.#controller = undefined;
+    await this.onInit();
+  }
+
   async onInit(): Promise<void> {
     const data = this.getData() as unknown;
     if (!isRecord(data) || typeof data.centralId !== "string") {

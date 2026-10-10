@@ -1,0 +1,39 @@
+{
+  "description": {
+    "ADDRESS": "TESTHMIPSWDO2",
+    "TYPE": "HmIP-SWDO-2",
+    "CHILDREN": ["TESTHMIPSWDO2:0", "TESTHMIPSWDO2:1"]
+  },
+  "channels": [
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPSWDO2:0",
+        "TYPE": "MAINTENANCE",
+        "PARENT": "TESTHMIPSWDO2",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "LOW_BAT": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    },
+    {
+      "description": {
+        "ADDRESS": "TESTHMIPSWDO2:1",
+        "TYPE": "SHUTTER_CONTACT",
+        "PARENT": "TESTHMIPSWDO2",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "STATE": {
+          "TYPE": "BOOL",
+          "OPERATIONS": 5,
+          "FLAGS": 1
+        }
+      }
+    }
+  ]
+}

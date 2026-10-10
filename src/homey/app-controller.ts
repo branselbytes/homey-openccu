@@ -2,7 +2,10 @@ import { OPENCCU_CONNECTIONS_SETTING } from "./settings-adapter";
 
 export interface SettingsEvents {
   on(event: "set" | "unset", listener: (key: string) => void): unknown;
-  removeListener(event: "set" | "unset", listener: (key: string) => void): unknown;
+  removeListener(
+    event: "set" | "unset",
+    listener: (key: string) => void,
+  ): unknown;
 }
 
 export interface ApplicationLifecycle {
@@ -20,21 +23,28 @@ export class OpenCcuAppController {
   readonly #lifecycle: ApplicationLifecycle;
   readonly #logger: AppControllerLogger;
   #started = false;
+  readonly #onReload: () => Promise<void>;
+  #reloadOperation: Promise<void> = Promise.resolve();
   readonly #onSettingsChanged = (key: string): void => {
     if (key !== OPENCCU_CONNECTIONS_SETTING) return;
-    void this.#lifecycle
-      .reload()
-      .catch((error: unknown) => this.#logger.error("Failed to reload OpenCCU settings", error));
+    this.#reloadOperation = this.#reloadOperation
+      .then(() => this.#lifecycle.reload())
+      .then(() => this.#onReload())
+      .catch((error: unknown) =>
+        this.#logger.error("Failed to reload OpenCCU settings", error),
+      );
   };
 
   constructor(
     settings: SettingsEvents,
     lifecycle: ApplicationLifecycle,
     logger: AppControllerLogger,
+    onReload: () => Promise<void> = () => Promise.resolve(),
   ) {
     this.#settings = settings;
     this.#lifecycle = lifecycle;
     this.#logger = logger;
+    this.#onReload = onReload;
   }
 
   async start(): Promise<void> {
@@ -51,6 +61,7 @@ export class OpenCcuAppController {
       this.#settings.removeListener("unset", this.#onSettingsChanged);
       this.#started = false;
     }
+    await this.#reloadOperation;
     await this.#lifecycle.stop();
   }
 }

@@ -380,3 +380,29 @@ describe("settings diagnostics exports", () => {
     );
   });
 });
+
+it("includes classic devices in the model picker and labels their interface in summaries", async () => {
+  const primary = report([]);
+  const classic = report([device("HM-PB-2-FM")]);
+  const combined = {
+    ...primary,
+    centrals: primary.centrals.map((central) => ({
+      ...central,
+      interfaces: [
+        { interfaceId: "BidCos-RF", runtime: classic.centrals[0].runtime },
+      ],
+    })),
+  };
+  const view = settingsView({ report: combined });
+  await view.click("download-diagnostics");
+  expect(
+    view.element("diagnostics-model").children.map((option) => option.value),
+  ).toContain("HM-PB-2-FM");
+  await view.selectModel("HM-PB-2-FM");
+  expect(view.element("diagnostics-content").value).toContain(
+    "Central 1 / BidCos-RF",
+  );
+  expect(view.element("diagnostics-content").value).toContain(
+    "HM-PB-2-FM: 1 device(s)",
+  );
+});

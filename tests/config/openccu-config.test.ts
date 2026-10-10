@@ -51,3 +51,37 @@ describe("OpenCCU configuration", () => {
     expect(() => parseOpenCcuSettings(input)).toThrow(message);
   });
 });
+
+describe("optional BidCos-RF configuration", () => {
+  it("preserves HmIP-only installations and derives a separate callback port", () => {
+    expect(
+      parseOpenCcuSettings({ centralId: "ccu", host: "openccu.local" }),
+    ).toMatchObject({
+      enableBidCosRf: false,
+      bidCosRfPort: 2001,
+      bidCosRfCallbackPort: 12012,
+    });
+    expect(
+      parseOpenCcuSettings({
+        centralId: "ccu",
+        host: "openccu.local",
+        callbackPort: 14000,
+        enableBidCosRf: true,
+      }).bidCosRfCallbackPort,
+    ).toBe(14002);
+  });
+  it.each([
+    { enableBidCosRf: "true" },
+    { enableBidCosRf: true, bidCosRfPort: 0 },
+    { enableBidCosRf: true, bidCosRfCallbackPort: 12010 },
+    { enableBidCosRf: true, bidCosRfCallbackPort: 12011 },
+  ])("rejects invalid classic settings %j", (input) => {
+    expect(() =>
+      parseOpenCcuSettings({
+        centralId: "ccu",
+        host: "openccu.local",
+        ...input,
+      }),
+    ).toThrow();
+  });
+});

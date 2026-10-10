@@ -1,0 +1,40 @@
+{
+  "id": "HmIP-MIOB",
+  "name": {
+    "en": "HmIP-MIOB",
+    "de": "HmIP-MIOB"
+  },
+  "class": "other",
+  "capabilities": [],
+  "images": {
+    "large": "/drivers/HmIP-MIOB/assets/images/large.png",
+    "small": "/drivers/HmIP-MIOB/assets/images/small.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "capabilitiesOptions": {
+    "dim": {
+      "title": {
+        "en": "Analog output level",
+        "de": "Analogausgang Pegel"
+      }
+    },
+    "alarm_contact": {
+      "title": {
+        "en": "Input signal active",
+        "de": "Eingangssignal aktiv"
+      }
+    }
+  }
+}

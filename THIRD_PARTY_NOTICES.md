@@ -33,3 +33,7 @@ The [2026-10-03 license review](docs/design/device-artwork-license-review.md) co
 ## App branding
 
 The app's branselbytes circuit monogram is project-authored SVG artwork based on the owner-selected concept. The navy/copper smart-home scene was generated with OpenAI's built-in image generation tool and is illustrative project branding, not manufacturer product photography. Its source image, approved concept and production prompts are retained in `docs/design/branding/`, outside the Homey package. The SVG and generated app imagery are provided under this repository's MIT license to the extent applicable. The new branding does not replace or alter original-project copyright notices or the imported Git history.
+
+## Additional device protocol references
+
+The unreleased forum-model profiles use the pinned original-app, aiohomematic, homematicip_local, pydevccu and eQ-3 protocol references recorded in [ADR 0028](docs/adr/0028-additional-devices-and-bidcos-rf.md). Only channel/parameter facts informed independently authored TypeScript and reduced synthetic test data. No external implementation or full fixture was copied. No manufacturer XML/jar/artwork is included. The new illustrations in `scripts/device-artwork-additional.mjs` are original MIT-licensed project geometry.

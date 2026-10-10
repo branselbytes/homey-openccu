@@ -20,6 +20,7 @@ import type { RuntimeFactory } from "./application-lifecycle";
 import { OpenCcuRuntime } from "./openccu-runtime";
 import type { DescriptionCache } from "./discovery";
 
+export const BIDCOS_RF_INTERFACE_ID = "BidCos-RF";
 export const HMIP_RF_INTERFACE_ID = "HmIP-RF";
 export const VIRTUAL_DEVICES_INTERFACE_ID = "VirtualDevices";
 
@@ -39,6 +40,9 @@ export interface ManagedCentralRuntimeFactoryOptions {
   readonly callbackBindHost?: string;
   readonly callbackAdvertisedHost: string;
   readonly enableVirtualDevices?: boolean;
+  readonly createBidCosRfClient?: (
+    config: OpenCcuConnectionConfig,
+  ) => XmlRpcClient;
   readonly createClient?: (config: OpenCcuConnectionConfig) => XmlRpcClient;
   readonly createVirtualDevicesClient?: (
     config: OpenCcuConnectionConfig,
@@ -182,9 +186,31 @@ export class ManagedCentralRuntimeFactory implements RuntimeFactory<ManagedCentr
         }),
       );
     }
+    if (config.enableBidCosRf) {
+      interfaces.push(
+        this.#createInterface({
+          config,
+          interfaceId: BIDCOS_RF_INTERFACE_ID,
+          callbackPort: config.bidCosRfCallbackPort,
+          client:
+            this.#options.createBidCosRfClient?.(config) ??
+            createHmIpXmlRpcClient({
+              host: config.host,
+              port: config.bidCosRfPort,
+              username: config.username,
+              password: config.password,
+            }),
+        }),
+      );
+    }
     const runtime = new ManagedCentralRuntime(interfaces);
-    await runtime.start();
-    return runtime;
+    try {
+      await runtime.start();
+      return runtime;
+    } catch (error) {
+      await runtime.stop().catch(() => undefined);
+      throw error;
+    }
   }
 
   #createInterface(options: {

@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 
 import { buildHmIpDeviceGraph } from "../../src/domain/model";
 import { resolveDeviceMapping } from "../../src/mapping/device-resolver";
-import { HMIP_PROFILES } from "../../src/profiles/hmip";
+import { ALL_PROFILES } from "../../src/profiles/registry";
 import type {
   DeviceDescription,
   ParamsetDescription,
@@ -77,7 +77,7 @@ describe("App Store capability baselines", () => {
         continue;
       }
       if (driverId === "openccu-system") continue;
-      const profiles = HMIP_PROFILES.filter((p) => p.driverId === driverId);
+      const profiles = ALL_PROFILES.filter((p) => p.driverId === driverId);
       expect(profiles.length, driverId).toBeGreaterThan(0);
       // A family baseline must apply to each model/logical output, not the
       // union of optional features exposed by different models or modes.
@@ -95,6 +95,20 @@ describe("App Store capability baselines", () => {
       }
       if (declared.capabilities.length === 0) {
         for (const profile of profiles) {
+          // Heterogeneous physical I/O may have no capability shared by every
+          // selectable logical device (e.g. switch, input, analog output).
+          const logical = profile.logicalDevices;
+          if (
+            logical &&
+            logical.length > 1 &&
+            logical.every((d) => d.bindings.length > 0) &&
+            !logical[0].bindings.some((binding) =>
+              logical.every((d) =>
+                d.bindings.some((b) => b.capability === binding.capability),
+              ),
+            )
+          )
+            continue;
           for (const definition of profile.logicalDevices ?? [profile]) {
             const hasButtonEvents =
               (definition.buttonChannels?.length ?? 0) > 0;

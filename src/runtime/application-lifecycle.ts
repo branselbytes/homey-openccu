@@ -1,5 +1,8 @@
 import type { OpenCcuConnectionConfig } from "../config/openccu-config";
-import { loadOpenCcuConnections, type SettingsReader } from "../homey/settings-adapter";
+import {
+  loadOpenCcuConnections,
+  type SettingsReader,
+} from "../homey/settings-adapter";
 import { RuntimeRegistry, type ManagedRuntime } from "./runtime-registry";
 
 export interface RuntimeFactory<Runtime extends ManagedRuntime> {
@@ -61,6 +64,7 @@ export class OpenCcuApplicationLifecycle<Runtime extends ManagedRuntime> {
     const nextIds = new Set(configs.map((config) => config.centralId));
 
     for (const config of configs) {
+      await this.#registry.remove(config.centralId);
       const runtime = await this.#factory.create(config);
       try {
         await this.#registry.replace(config.centralId, runtime);

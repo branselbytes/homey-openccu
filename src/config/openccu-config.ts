@@ -9,6 +9,9 @@ export interface OpenCcuConnectionConfig {
   readonly host: string;
   readonly hmIpRfPort: number;
   readonly virtualDevicesPort: number;
+  readonly enableBidCosRf: boolean;
+  readonly bidCosRfPort: number;
+  readonly bidCosRfCallbackPort: number;
   readonly callbackPort: number;
   readonly virtualDevicesCallbackPort: number;
   readonly jsonRpcUrl: string;
@@ -21,21 +24,31 @@ export interface OpenCcuSettingsInput {
   readonly host?: unknown;
   readonly hmIpRfPort?: unknown;
   readonly virtualDevicesPort?: unknown;
+  readonly enableBidCosRf?: unknown;
+  readonly bidCosRfPort?: unknown;
+  readonly bidCosRfCallbackPort?: unknown;
   readonly callbackPort?: unknown;
   readonly virtualDevicesCallbackPort?: unknown;
   readonly username?: unknown;
   readonly password?: unknown;
 }
 
-export function parseOpenCcuSettings(input: OpenCcuSettingsInput): OpenCcuConnectionConfig {
+export function parseOpenCcuSettings(
+  input: OpenCcuSettingsInput,
+): OpenCcuConnectionConfig {
   const centralId = requiredText(input.centralId, "centralId");
   const host = parseHost(requiredText(input.host, "host"));
-  const hmIpRfPort = parsePort(input.hmIpRfPort ?? DEFAULT_HMIP_RF_XML_RPC_PORT);
+  const hmIpRfPort = parsePort(
+    input.hmIpRfPort ?? DEFAULT_HMIP_RF_XML_RPC_PORT,
+  );
   const virtualDevicesPort = parsePort(
     input.virtualDevicesPort ?? DEFAULT_VIRTUAL_DEVICES_XML_RPC_PORT,
     "VirtualDevices",
   );
-  const callbackPort = parsePort(input.callbackPort ?? DEFAULT_XML_RPC_CALLBACK_PORT, "callback");
+  const callbackPort = parsePort(
+    input.callbackPort ?? DEFAULT_XML_RPC_CALLBACK_PORT,
+    "callback",
+  );
   const virtualDevicesCallbackPort = parsePort(
     input.virtualDevicesCallbackPort ?? callbackPort + 1,
     "VirtualDevices callback",
@@ -43,10 +56,26 @@ export function parseOpenCcuSettings(input: OpenCcuSettingsInput): OpenCcuConnec
   if (callbackPort === virtualDevicesCallbackPort) {
     throw new Error("OpenCCU callback ports must be different");
   }
+  const enableBidCosRf = input.enableBidCosRf ?? false;
+  if (typeof enableBidCosRf !== "boolean")
+    throw new TypeError("OpenCCU enableBidCosRf must be a boolean");
+  const bidCosRfPort = parsePort(input.bidCosRfPort ?? 2001, "BidCos-RF");
+  const bidCosRfCallbackPort = parsePort(
+    input.bidCosRfCallbackPort ?? callbackPort + 2,
+    "BidCos-RF callback",
+  );
+  if (
+    enableBidCosRf &&
+    [callbackPort, virtualDevicesCallbackPort].includes(bidCosRfCallbackPort)
+  ) {
+    throw new Error("OpenCCU callback ports must be different");
+  }
   const username = optionalText(input.username);
   const password = optionalText(input.password);
   if ((username === undefined) !== (password === undefined)) {
-    throw new Error("OpenCCU username and password must be configured together");
+    throw new Error(
+      "OpenCCU username and password must be configured together",
+    );
   }
 
   return {
@@ -54,9 +83,15 @@ export function parseOpenCcuSettings(input: OpenCcuSettingsInput): OpenCcuConnec
     host,
     hmIpRfPort,
     virtualDevicesPort,
+    enableBidCosRf,
+    bidCosRfPort,
+    bidCosRfCallbackPort,
     callbackPort,
     virtualDevicesCallbackPort,
-    jsonRpcUrl: new URL(DEFAULT_JSON_RPC_PATH, `http://${formatUrlHost(host)}`).toString(),
+    jsonRpcUrl: new URL(
+      DEFAULT_JSON_RPC_PATH,
+      `http://${formatUrlHost(host)}`,
+    ).toString(),
     ...(username === undefined ? {} : { username, password }),
   };
 }
@@ -65,12 +100,17 @@ export function parseOpenCcuSettings(input: OpenCcuSettingsInput): OpenCcuConnec
 export function publicOpenCcuConfig(config: OpenCcuConnectionConfig): Omit<
   OpenCcuConnectionConfig,
   "username" | "password"
-> & { readonly authenticated: boolean } {
+> & {
+  readonly authenticated: boolean;
+} {
   return {
     centralId: config.centralId,
     host: config.host,
     hmIpRfPort: config.hmIpRfPort,
     virtualDevicesPort: config.virtualDevicesPort,
+    enableBidCosRf: config.enableBidCosRf,
+    bidCosRfPort: config.bidCosRfPort,
+    bidCosRfCallbackPort: config.bidCosRfCallbackPort,
     callbackPort: config.callbackPort,
     virtualDevicesCallbackPort: config.virtualDevicesCallbackPort,
     jsonRpcUrl: config.jsonRpcUrl,
@@ -86,24 +126,35 @@ function requiredText(value: unknown, field: string): string {
 
 function optionalText(value: unknown): string | undefined {
   if (value === undefined || value === null || value === "") return undefined;
-  if (typeof value !== "string") throw new TypeError("OpenCCU text settings must be strings");
+  if (typeof value !== "string")
+    throw new TypeError("OpenCCU text settings must be strings");
   const result = value.trim();
   return result.length === 0 ? undefined : result;
 }
 
 function parseHost(value: string): string {
   if (value.includes("://") || /[/?#]/u.test(value)) {
-    throw new Error("OpenCCU host must not contain a protocol, path, query, or fragment");
+    throw new Error(
+      "OpenCCU host must not contain a protocol, path, query, or fragment",
+    );
   }
-  if (/\s/u.test(value)) throw new Error("OpenCCU host must not contain whitespace");
+  if (/\s/u.test(value))
+    throw new Error("OpenCCU host must not contain whitespace");
   if (value.startsWith("[") && value.endsWith("]")) return value.slice(1, -1);
   return value;
 }
 
 function parsePort(value: unknown, name = "HmIP-RF"): number {
-  const port = typeof value === "string" && value.trim() !== "" ? Number(value) : value;
-  if (!Number.isInteger(port) || (port as number) < 1 || (port as number) > 65_535) {
-    throw new RangeError(`OpenCCU ${name} port must be an integer between 1 and 65535`);
+  const port =
+    typeof value === "string" && value.trim() !== "" ? Number(value) : value;
+  if (
+    !Number.isInteger(port) ||
+    (port as number) < 1 ||
+    (port as number) > 65_535
+  ) {
+    throw new RangeError(
+      `OpenCCU ${name} port must be an integer between 1 and 65535`,
+    );
   }
   return port as number;
 }

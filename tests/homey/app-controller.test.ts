@@ -21,7 +21,7 @@ describe("OpenCcuAppController", () => {
     await controller.start();
     settings.emit("set", "unrelated");
     settings.emit("set", OPENCCU_CONNECTIONS_SETTING);
-    await Promise.resolve();
+    await new Promise((resolve) => setImmediate(resolve));
 
     expect(lifecycle.start).toHaveBeenCalledOnce();
     expect(lifecycle.reload).toHaveBeenCalledOnce();
@@ -66,4 +66,34 @@ describe("OpenCcuAppController", () => {
     expect(lifecycle.stop).toHaveBeenCalledOnce();
     expect(lifecycle.reload).not.toHaveBeenCalled();
   });
+});
+
+it("reconnects paired devices after a successful reload and serializes rapid settings changes", async () => {
+  const settings = new EventEmitter();
+  const order: string[] = [];
+  const lifecycle = {
+    start: () => Promise.resolve(),
+    reload: () => {
+      order.push("reload");
+      return Promise.resolve();
+    },
+    stop: () => {
+      order.push("stop");
+      return Promise.resolve();
+    },
+  };
+  const controller = new OpenCcuAppController(
+    settings,
+    lifecycle,
+    { error: vi.fn() },
+    () => {
+      order.push("rebind");
+      return Promise.resolve();
+    },
+  );
+  await controller.start();
+  settings.emit("set", OPENCCU_CONNECTIONS_SETTING);
+  settings.emit("set", OPENCCU_CONNECTIONS_SETTING);
+  await controller.stop();
+  expect(order).toEqual(["reload", "rebind", "reload", "rebind", "stop"]);
 });

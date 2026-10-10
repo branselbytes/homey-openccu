@@ -83,7 +83,7 @@ Expose typed interfaces independent of Homey:
 - JSON-RPC client methods behind a narrow metadata/hub interface. Authentication, session renewal, timeout, and redaction belong here.
 - One connection state machine per OpenCCU interface with bounded retries, backoff, health state, cancellation, and deterministic shutdown.
 
-Backend detection should probe configured endpoints and query available interfaces instead of assuming that all fixed ports are active. The first release activates HmIP-RF only; BidCos-RF and CUxD remain future adapters. Automatic UDP discovery is a convenience; manual host configuration is a first-class path.
+Backend detection should probe configured endpoints and query available interfaces instead of assuming that all fixed ports are active. The initial release activated HmIP-RF only. The current implementation also supports VirtualDevices and explicitly enabled BidCos-RF; CUxD remains a future adapter. Automatic UDP discovery is a convenience; manual host configuration is a first-class path.
 
 ### 2. Domain model and cache
 
@@ -220,13 +220,13 @@ HmIP-MOD-HO keeps its native closed-state and light capabilities and gains write
 
 ADR 0027 adds a stateful light button to the existing Hörmann device's button view. It aliases native `onoff` on channel 2 and hides only the native light UI component with scoped `uiComponent: null`; existing identities, capability IDs and native Flow cards remain intact. The door is the only control in the toggle view, with light and ventilation in the button view. This override was confirmed by a scoped Homey 13.5.1 probe; older supported firmware remains unverified. Explicitly named light actions, condition and triggers identify their target alongside the retained generic native cards. A garage-position change trigger and explicit position/ventilation labels identify door functions. Initial reads, callbacks and verified read-backs synchronize both light bindings; newer readable writes supersede verification for the same command target and stale in-flight replies are discarded. Existing dedicated devices reconcile titles and the hidden light UI option while preserving unrelated options. An isolated development demo app reuses the production driver/runtime with recorded metadata and an in-memory simulated transport, without real CCU configuration or network commands.
 
-### Catalog and discovery maintenance (unreleased)
+### Catalog and discovery maintenance (0.1.8 beta)
 
 The eTRV family follows the SWDO migration model: one new-pairing destination, retained deprecated driver adapters, unchanged capabilities and stable identities. PSM-2 variants share the PSM pairing entry but use their own profile so physical feedback on channel 2 and commands on channel 3 do not change legacy PSM behavior. Wired STH variants reuse the climate temperature, humidity, setpoint and boost bindings in a dedicated Wired driver; their richer mode/week-profile ranges are deferred until complete Homey mappings exist. Promoted generic devices retain existing bindings and are filtered out of the new driver pairing list.
 
 Profile collision checks normalize model names exactly as lookup does; revision/whitespace aliases may belong to one profile but cannot ambiguously select two profiles. New/delete/update callbacks serialize inventory refreshes once registration is complete. Registration callbacks, including reconnects with an existing inventory, do not recursively issue discovery RPCs. Refreshes use the lifecycle abort signal and do not publish results after cancellation. Changes received during registration/discovery are collected and replayed after the connection becomes healthy. Description-cache failures are separately reported while a healthy XML-RPC description remains usable; invalidation errors disable the description cache for that runtime instance to prevent stale reads. A failed deferred discovery is diagnosed and retried on the next device callback or explicit refresh.
 
-### Socket families and device artwork (unreleased)
+### Socket families and device artwork (0.1.8 beta)
 
 PS, PSM and PSM-2 share the existing HMIP-PSM pairing entry while retaining separate profiles and datapoint targets. The deprecated HMIP-PS driver stays packaged for existing devices. Dimmers, USB switches, boards, flush-mounted and DIN-rail actuators retain their own entries because their functions and form factors differ.
 
@@ -292,3 +292,9 @@ The HmIP-SWO-PR profile additionally derives a read-only eight-point compass enu
 Motion/presence profiles expose the optional boolean `homematic_detection_active` only when the discovered VALUES datapoint is writable. It uses the existing direct XML-RPC read/write and callback paths, independently of `alarm_motion`. HmIP-SMI55 detection bindings use channel 3 while button bindings retain channels 1/2. Initial binding reconciliation upgrades already paired devices on app restart; no new transport or live writable-binding reconciliation was introduced.
 
 The HmIP-SRH Flow adapter exposes three read-only position conditions over the existing `homematic_rhs_state` enum (`0` closed, `1` tilted, `2` open). Homey handles condition inversion; unavailable state values are rejected rather than coerced to false. No RPC writes, extra capabilities, identity changes or enum migrations are required. Manifest filters include dedicated SRH and compatible generic devices.
+
+## Additional device interfaces (0.1.8 beta)
+
+[ADR 0028](docs/adr/0028-additional-devices-and-bidcos-rf.md) adds optional independently queued/supervised BidCos-RF, shared profiles for the classic wall button and additional heating/I/O devices, explicit read-only profile constraints, and diagnostics per interface. Callback listeners are released before replacement on settings reload. BROLL-2 remains in the BROLL family; FALMOT valve channels and MIOB physical I/O use stable logical identities.
+
+After a successful settings reload, the Homey adapter rebinds paired physical and system devices to the replacement runtime. Reload and rebind operations are serialized; shutdown drains them before stopping the central.

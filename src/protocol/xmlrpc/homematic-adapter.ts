@@ -18,7 +18,9 @@ export interface HmIpXmlRpcEndpoint extends HmIpXmlRpcClientOptions {
   readonly password?: string;
 }
 
-export function createHmIpXmlRpcClient(endpoint: HmIpXmlRpcEndpoint): HmIpXmlRpcClient {
+export function createHmIpXmlRpcClient(
+  endpoint: HmIpXmlRpcEndpoint,
+): HmIpXmlRpcClient {
   if ((endpoint.username === undefined) !== (endpoint.password === undefined)) {
     throw new Error("XML-RPC username and password must be set together");
   }
@@ -29,7 +31,12 @@ export function createHmIpXmlRpcClient(endpoint: HmIpXmlRpcEndpoint): HmIpXmlRpc
       ...(endpoint.path === undefined ? {} : { path: endpoint.path }),
       ...(endpoint.username === undefined
         ? {}
-        : { basic_auth: { user: endpoint.username, pass: endpoint.password as string } }),
+        : {
+            basic_auth: {
+              user: endpoint.username,
+              pass: endpoint.password as string,
+            },
+          }),
     }),
     {
       timeoutMs: endpoint.timeoutMs,
@@ -52,11 +59,17 @@ export class XmlRpcCallbackServer {
 
   constructor(options: XmlRpcCallbackServerOptions) {
     let markReady: (() => void) | undefined;
-    this.#ready = new Promise<void>((resolve) => {
+    let rejectReady: ((error: Error) => void) | undefined;
+    this.#ready = new Promise<void>((resolve, reject) => {
+      rejectReady = reject;
       markReady = resolve;
     });
-    this.#server = xmlrpc.createServer({ host: options.host, port: options.port }, () =>
-      markReady?.(),
+    this.#server = xmlrpc.createServer(
+      { host: options.host, port: options.port },
+      () => markReady?.(),
+    );
+    this.#server.httpServer.once("error", (error: Error) =>
+      rejectReady?.(error),
     );
     this.#server.httpServer.prependListener("connection", (socket: Socket) => {
       void authorizeRemoteSocket(socket, options.expectedRemoteHost);
@@ -103,7 +116,9 @@ export async function authorizeRemoteSocket(
   return false;
 }
 
-async function resolveHostAddresses(host: string): Promise<ReadonlySet<string>> {
+async function resolveHostAddresses(
+  host: string,
+): Promise<ReadonlySet<string>> {
   const literal = normalizeIpAddress(host);
   if (literal !== undefined && isIP(literal) !== 0) return new Set([literal]);
   const addresses = await lookup(host, { all: true, verbatim: true });
@@ -118,13 +133,19 @@ function normalizeIpAddress(address: string | undefined): string | undefined {
   if (address === undefined || address === "") return undefined;
   if (address.startsWith("::ffff:")) return address.slice("::ffff:".length);
   const zoneIndex = address.indexOf("%");
-  return (zoneIndex === -1 ? address : address.slice(0, zoneIndex)).toLowerCase();
+  return (
+    zoneIndex === -1 ? address : address.slice(0, zoneIndex)
+  ).toLowerCase();
 }
 
 export interface CallbackMethodRegistry {
   on(
     method: string,
-    listener: (error: unknown, params: unknown[], callback: xmlrpc.ServerCallback) => void,
+    listener: (
+      error: unknown,
+      params: unknown[],
+      callback: xmlrpc.ServerCallback,
+    ) => void,
   ): unknown;
 }
 
@@ -145,7 +166,8 @@ export function registerCallbackMethods(
     server.on(method, (_error, params, callback) => {
       dispatcher.dispatch(method, params).then(
         (value) => callback(null, value),
-        (error: unknown) => callback(toProtocolError(error, `XML-RPC callback ${method}`), ""),
+        (error: unknown) =>
+          callback(toProtocolError(error, `XML-RPC callback ${method}`), ""),
       );
     });
   }

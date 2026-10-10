@@ -212,3 +212,123 @@ describe("buildCallbackUrl", () => {
     );
   });
 });
+
+describe("optional classic Homematic transport", () => {
+  it.each([false, true])(
+    "creates BidCos-RF only when enabled=%s and closes every callback",
+    async (enableBidCosRf) => {
+      const primary = createClient();
+      const classic = createClient();
+      const createBidCosRfClient = vi.fn(() => classic.client);
+      const servers: { port: number; close: ReturnType<typeof vi.fn> }[] = [];
+      const factory = new ManagedCentralRuntimeFactory({
+        callbackAdvertisedHost: "192.0.2.20",
+        createClient: () => primary.client,
+        createBidCosRfClient,
+        createCallbackServer: ({ port }) => {
+          const close = vi.fn().mockResolvedValue(undefined);
+          servers.push({ port, close });
+          return { ready: () => Promise.resolve(), close };
+        },
+      });
+      const runtime = await factory.create(
+        parseOpenCcuSettings({
+          centralId: "ccu",
+          host: "openccu.local",
+          enableBidCosRf,
+        }),
+      );
+      try {
+        await new Promise((resolve) => setImmediate(resolve));
+        expect(createBidCosRfClient).toHaveBeenCalledTimes(
+          enableBidCosRf ? 1 : 0,
+        );
+        expect(servers.map((s) => s.port)).toEqual(
+          enableBidCosRf ? [12010, 12012] : [12010],
+        );
+        if (enableBidCosRf) {
+          expect(classic.init).toHaveBeenCalledWith(
+            "http://192.0.2.20:12012",
+            "BidCos-RF",
+            expect.any(AbortSignal),
+          );
+          expect(runtime.getCore("BidCos-RF")?.connectionState).toBe("healthy");
+        }
+      } finally {
+        await runtime.stop();
+      }
+      for (const server of servers) expect(server.close).toHaveBeenCalledOnce();
+      if (enableBidCosRf)
+        expect(classic.init).toHaveBeenLastCalledWith(
+          "",
+          "BidCos-RF",
+          expect.any(AbortSignal),
+        );
+    },
+  );
+
+  it("isolates an unavailable BidCos interface from HmIP and heating groups", async () => {
+    const primary = createClient();
+    const virtual = createClient();
+    const classic = createClient();
+    classic.listDevices.mockRejectedValue(new Error("classic offline"));
+    const factory = new ManagedCentralRuntimeFactory({
+      callbackAdvertisedHost: "192.0.2.20",
+      enableVirtualDevices: true,
+      createClient: () => primary.client,
+      createVirtualDevicesClient: () => virtual.client,
+      createBidCosRfClient: () => classic.client,
+      createCallbackServer: () => ({
+        ready: () => Promise.resolve(),
+        close: () => Promise.resolve(),
+      }),
+      initialRetryDelayMs: 1,
+      maxRetryDelayMs: 1,
+    });
+    const runtime = await factory.create(
+      parseOpenCcuSettings({
+        centralId: "ccu",
+        host: "openccu.local",
+        enableBidCosRf: true,
+      }),
+    );
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      expect(runtime.core.connectionState).toBe("healthy");
+      expect(runtime.getCore("VirtualDevices")?.connectionState).toBe(
+        "healthy",
+      );
+      expect(runtime.getCore("BidCos-RF")?.connectionState).toBe(
+        "disconnected",
+      );
+    } finally {
+      await runtime.stop();
+    }
+  });
+
+  it("cleans up all callback servers when an additional listener cannot start", async () => {
+    const close = vi.fn().mockResolvedValue(undefined);
+    const factory = new ManagedCentralRuntimeFactory({
+      callbackAdvertisedHost: "192.0.2.20",
+      createClient: () => createClient().client,
+      createBidCosRfClient: () => createClient().client,
+      createCallbackServer: ({ interfaceId }) => ({
+        ready: () =>
+          interfaceId === "BidCos-RF"
+            ? Promise.reject(new Error("port occupied"))
+            : Promise.resolve(),
+        close,
+      }),
+    });
+    await expect(
+      factory.create(
+        parseOpenCcuSettings({
+          centralId: "ccu",
+          host: "openccu.local",
+          enableBidCosRf: true,
+        }),
+      ),
+    ).rejects.toThrow("port occupied");
+    expect(close).toHaveBeenCalledTimes(2);
+  });
+});

@@ -117,3 +117,46 @@ describe("support report", () => {
     });
   });
 });
+
+it("includes separately labelled, sanitized classic interface diagnostics", () => {
+  const runtime = {
+    connectionState: "healthy" as const,
+    deviceCount: 0,
+    discoveryIssueCount: 0,
+    metadataIssueCount: 0,
+    systemInformationIssueCount: 0,
+    radioInterfaceCount: 0,
+    metadataCounts: {
+      names: 0,
+      rooms: 0,
+      functions: 0,
+      programs: 0,
+      systemVariables: 0,
+    },
+    devices: [],
+  };
+  const report = createSupportReport({
+    app: { id: "test", version: "test", node: "test" },
+    runtimes: [
+      {
+        centralId: "private-central",
+        runtime,
+        interfaces: [
+          {
+            interfaceId: "BidCos-RF",
+            runtime: { ...structuredClone(runtime), deviceCount: 1 },
+          },
+          { interfaceId: "private-interface-name", runtime },
+        ],
+      },
+    ],
+  });
+  expect(report.centrals).toHaveLength(1);
+  expect(report.centrals[0].interfaces).toEqual([
+    {
+      interfaceId: "BidCos-RF",
+      runtime: { ...structuredClone(runtime), deviceCount: 1 },
+    },
+  ]);
+  expect(JSON.stringify(report)).not.toContain("private-");
+});

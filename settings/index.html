@@ -70,6 +70,39 @@
         />
       </div>
       <div class="field row">
+        <label
+          for="bidcos-enabled"
+          data-i18n="settings.connection.bidcos_enabled"
+        ></label>
+        <input id="bidcos-enabled" type="checkbox" />
+      </div>
+      <div class="field row">
+        <label
+          for="bidcos-port"
+          data-i18n="settings.connection.bidcos_port"
+        ></label>
+        <input
+          id="bidcos-port"
+          type="number"
+          min="1"
+          max="65535"
+          value="2001"
+        />
+      </div>
+      <div class="field row">
+        <label
+          for="bidcos-callback-port"
+          data-i18n="settings.connection.bidcos_callback_port"
+        ></label>
+        <input
+          id="bidcos-callback-port"
+          type="number"
+          min="1"
+          max="65535"
+          value="12012"
+        />
+      </div>
+      <div class="field row">
         <label for="username" data-i18n="settings.connection.username"></label>
         <input id="username" type="text" autocomplete="username" />
       </div>
@@ -161,6 +194,9 @@
         virtualDevicesCallbackPort: document.getElementById(
           "virtual-devices-callback-port",
         ),
+        enableBidCosRf: document.getElementById("bidcos-enabled"),
+        bidCosRfPort: document.getElementById("bidcos-port"),
+        bidCosRfCallbackPort: document.getElementById("bidcos-callback-port"),
         username: document.getElementById("username"),
         password: document.getElementById("password"),
       };
@@ -201,6 +237,11 @@
             fields.callbackPort.value = connection.callbackPort || 12010;
             fields.virtualDevicesCallbackPort.value =
               connection.virtualDevicesCallbackPort || 12011;
+            fields.enableBidCosRf.checked = connection.enableBidCosRf === true;
+            fields.bidCosRfPort.value = connection.bidCosRfPort || 2001;
+            fields.bidCosRfCallbackPort.value =
+              connection.bidCosRfCallbackPort ||
+              Number(fields.callbackPort.value) + 2;
             fields.username.value = connection.username || "";
             fields.password.value = connection.password || "";
           }
@@ -316,6 +357,16 @@
           fields.centralId.value = result.serial;
       }
 
+      function diagnosticInterfaces(report) {
+        return report.centrals.flatMap((central, index) => [
+          { runtime: central.runtime, label: `Central ${index + 1}` },
+          ...(central.interfaces || []).map(({ interfaceId, runtime }) => ({
+            runtime,
+            label: `Central ${index + 1} / ${interfaceId}`,
+          })),
+        ]);
+      }
+
       function populateDiagnosticModels(report) {
         const select = document.getElementById("diagnostics-model");
         select.replaceChildren();
@@ -324,7 +375,7 @@
         all.textContent = Homey.__("settings.diagnostics.all_models");
         select.appendChild(all);
         const models = new Set(
-          report.centrals.flatMap(({ runtime }) =>
+          diagnosticInterfaces(report).flatMap(({ runtime }) =>
             runtime.devices.map(({ type }) => type),
           ),
         );
@@ -375,10 +426,10 @@
         add(
           `Model: ${model || "all (select a model for datapoint definitions)"}`,
         );
-        report.centrals.forEach(({ runtime }, index) => {
+        diagnosticInterfaces(report).forEach(({ runtime, label }) => {
           add("");
           add(
-            `Central ${index + 1}: ${runtime.connectionState}; devices=${runtime.deviceCount}; ` +
+            `${label}: ${runtime.connectionState}; devices=${runtime.deviceCount}; ` +
               `issues discovery=${runtime.discoveryIssueCount}, metadata=${runtime.metadataIssueCount}, system=${runtime.systemInformationIssueCount}`,
           );
           if (runtime.transport) {
@@ -532,6 +583,9 @@
         return {
           centralId: fields.centralId.value.trim(),
           host: fields.host.value.trim(),
+          enableBidCosRf: fields.enableBidCosRf.checked,
+          bidCosRfPort: Number(fields.bidCosRfPort.value),
+          bidCosRfCallbackPort: Number(fields.bidCosRfCallbackPort.value),
           hmIpRfPort: Number(fields.hmIpRfPort.value),
           virtualDevicesPort: Number(fields.virtualDevicesPort.value),
           callbackPort: Number(fields.callbackPort.value),
@@ -582,6 +636,22 @@
           return Homey.__(
             "settings.validation.virtual_devices_callback_port_invalid",
           );
+        }
+        if (
+          ![connection.bidCosRfPort, connection.bidCosRfCallbackPort].every(
+            (port) => Number.isInteger(port) && port >= 1 && port <= 65535,
+          )
+        ) {
+          return Homey.__("settings.validation.bidcos_port_invalid");
+        }
+        if (
+          connection.enableBidCosRf &&
+          [
+            connection.callbackPort,
+            connection.virtualDevicesCallbackPort,
+          ].includes(connection.bidCosRfCallbackPort)
+        ) {
+          return Homey.__("settings.validation.callback_ports_distinct");
         }
         if (connection.callbackPort === connection.virtualDevicesCallbackPort) {
           return Homey.__("settings.validation.callback_ports_distinct");

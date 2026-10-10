@@ -1111,7 +1111,7 @@ export const HMIP_THERMOSTAT_PROFILE: DeviceProfile = {
 export const HMIP_COVER_PROFILE: DeviceProfile = {
   id: "hmip-cover",
   driverId: "HmIP-BROLL",
-  deviceTypes: ["HmIP-BROLL"],
+  deviceTypes: ["HmIP-BROLL", "HmIP-BROLL-2"],
   bindings: [
     {
       capability: "windowcoverings_set",

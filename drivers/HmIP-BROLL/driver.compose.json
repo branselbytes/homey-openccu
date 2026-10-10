@@ -1,6 +1,9 @@
 {
   "id": "HmIP-BROLL",
-  "name": { "en": "HmIP-BROLL" },
+  "name": {
+    "en": "HmIP-BROLL / BROLL-2",
+    "de": "HmIP-BROLL / BROLL-2"
+  },
   "class": "blinds",
   "capabilities": ["windowcoverings_set", "windowcoverings_state"],
   "images": {
@@ -11,8 +14,13 @@
     {
       "id": "list_devices",
       "template": "list_devices",
-      "navigation": { "next": "add_devices" }
+      "navigation": {
+        "next": "add_devices"
+      }
     },
-    { "id": "add_devices", "template": "add_devices" }
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
   ]
 }
