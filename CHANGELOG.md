@@ -4,6 +4,13 @@ All notable changes to OpenCCU for Homey will be documented in this file. The pr
 
 ## [Unreleased]
 
+## [0.1.7] — 2026-10-10 (beta)
+
+### Added
+
+- Named HmIP-SRH Flow conditions for closed, tilted and open handle positions, each supporting Homey's condition inversion. Compatible existing generic handle devices are included; no re-pairing or numeric Logic comparisons are needed ([issue #2](https://github.com/branselbytes/homey-openccu/issues/2)).
+- Reject missing or invalid handle state so neither normal nor inverted conditions mistake unknown state for a known position. Existing capability IDs and enum values remain unchanged.
+
 ## [0.1.6] — 2026-10-04 (beta)
 
 ### Added

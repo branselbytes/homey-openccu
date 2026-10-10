@@ -1,0 +1,21 @@
+{
+  "title": {
+    "en": "Handle !{{is|is not}} tilted",
+    "de": "Griff !{{ist|ist nicht}} gekippt"
+  },
+  "titleFormatted": {
+    "en": "Handle !{{is|is not}} tilted",
+    "de": "Griff !{{ist|ist nicht}} gekippt"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-SRH|openccu-generic&capabilities=homematic_rhs_state",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

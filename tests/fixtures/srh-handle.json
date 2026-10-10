@@ -1,0 +1,27 @@
+{
+  "description": {
+    "ADDRESS": "HANDLE1",
+    "TYPE": "HmIP-SRH",
+    "FIRMWARE": "1.2.12",
+    "CHILDREN": ["HANDLE1:1"]
+  },
+  "channels": [
+    {
+      "description": {
+        "ADDRESS": "HANDLE1:1",
+        "TYPE": "ROTARY_HANDLE_TRANSCEIVER",
+        "PARENT": "HANDLE1",
+        "PARAMSETS": ["VALUES"]
+      },
+      "parameters": {
+        "STATE": {
+          "TYPE": "ENUM",
+          "OPERATIONS": 5,
+          "VALUE_LIST": ["CLOSED", "TILTED", "OPEN"],
+          "MIN": "CLOSED",
+          "MAX": "OPEN"
+        }
+      }
+    }
+  ]
+}
