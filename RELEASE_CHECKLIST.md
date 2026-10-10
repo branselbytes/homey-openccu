@@ -134,3 +134,9 @@ The exact 0.1.7 Test build was installed on Homey Christian via the CLI raw Stor
 ## 0.1.8 beta authorization (2026-10-10)
 
 The owner explicitly authorized a new beta release, commit/push to origin and Homey Test publication. Includes the additional device profiles, optional BidCos-RF, interface diagnostics and runtime rebinding. The previous local quality gate passed 736 tests and publish validation; repeat the release gate after version preparation. Physical new-device verification remains pending. No forum posting or Live promotion is requested.
+
+0.1.8 delivery completed: release commit `74b58cb9dd231abf9e081dc30123bdd62a2b20f3` and annotated tag `v0.1.8` were pushed to origin. The [GitHub prerelease](https://github.com/branselbytes/homey-openccu/releases/tag/v0.1.8) is public. A clean tagged checkout without `env.json` was uploaded via `HOMEY_HEADLESS=1 homey app publish`: 648 files, 7.84 MB. [Homey Build 9](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/9) was verified for version 0.1.8, matching EN/DE changelog, all three new product drivers and zero environment keys, then promoted to Test. A subsequent read confirms state `test` and 73 active Store drivers. No Live promotion, forum posting or manual Homey installation was performed in this release request.
+
+Release checks: `npm run check` passed formatting, lint, both TypeScript projects and 736 tests in 75 files. The Homey CLI compiled and validated the package at publish level locally and during the clean-checkout upload. Physical testing of the newly added devices remains pending.
+
+[GitHub CI for release commit 74b58cb](https://github.com/branselbytes/homey-openccu/actions/runs/38068154715) completed successfully, including package validation and the production dependency audit.

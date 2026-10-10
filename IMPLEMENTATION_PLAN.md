@@ -507,4 +507,4 @@ The exact 0.1.7 Test build was installed on Homey Christian via the CLI raw Stor
 - [x] Add separate BidCos callback/queue/retry settings, interface diagnostics, and callback-port release on reload.
 - [x] Add synthetic protocol integration and configuration/lifecycle regression tests.
 - [ ] Verify pairing, physical callbacks and commands on the requested hardware, including MIOB configured operating modes.
-- [ ] Publish a subsequent beta and install it on Homey after release authorization.
+- [x] Publish 0.1.8 beta on GitHub and Homey Test (Build 9); manual Homey installation was not part of this release request.
