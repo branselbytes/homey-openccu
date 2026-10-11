@@ -140,3 +140,7 @@ The owner explicitly authorized a new beta release, commit/push to origin and Ho
 Release checks: `npm run check` passed formatting, lint, both TypeScript projects and 736 tests in 75 files. The Homey CLI compiled and validated the package at publish level locally and during the clean-checkout upload. Physical testing of the newly added devices remains pending.
 
 [GitHub CI for release commit 74b58cb](https://github.com/branselbytes/homey-openccu/actions/runs/38068154715) completed successfully, including package validation and the production dependency audit.
+
+## 0.1.9 beta authorization (2026-10-11)
+
+The owner requested implementation of the handle state change Flow with text tag, a short forum changelog, remote push and Homey upload. Publish the new beta to GitHub and Homey Test after committing and checks. No forum post or Live publication is requested.

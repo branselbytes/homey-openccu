@@ -1,0 +1,32 @@
+{
+  "title": {
+    "en": "Handle position changed",
+    "de": "Die Griffstellung hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "Handle position changed",
+    "de": "Die Griffstellung hat sich geändert"
+  },
+  "tokens": [
+    {
+      "name": "handle_state",
+      "type": "string",
+      "title": {
+        "en": "Handle position",
+        "de": "Griffstellung"
+      },
+      "example": "Closed"
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-SRH|openccu-generic&capabilities=homematic_rhs_state",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

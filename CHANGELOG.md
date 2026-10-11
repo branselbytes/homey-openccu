@@ -4,6 +4,13 @@ All notable changes to OpenCCU for Homey will be documented in this file. The pr
 
 ## [Unreleased]
 
+## [0.1.9] — 2026-10-11 (beta)
+
+### Added
+
+- HmIP-SRH handle-position change Flow trigger with a localized text tag (Closed/Tilted/Open or Geschlossen/Gekippt/Offen), including compatible existing generic devices. Existing position conditions remain unchanged.
+- Only transitions between known positions trigger Flows. Initial reads, duplicate callbacks, unknown-state recovery and reconnect initialization are silent. Serialized updates make the new position available to conditions before triggering, and stale initial reads cannot replace newer callbacks.
+
 ## [0.1.8] — 2026-10-10 (beta)
 
 ### Added

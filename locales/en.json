@@ -186,5 +186,10 @@
       "SATURDAY": "Sa",
       "SUNDAY": "Su"
     }
+  },
+  "handle_state": {
+    "closed": "Closed",
+    "tilted": "Tilted",
+    "open": "Open"
   }
 }

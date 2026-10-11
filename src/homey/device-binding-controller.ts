@@ -1,3 +1,4 @@
+import { HandleStateUpdates, type HandleState } from "./handle-state-updates";
 import type { Unsubscribe } from "../events/event-bus";
 import type {
   ButtonEventBinding,
@@ -27,6 +28,7 @@ export interface HomeyDevicePort {
   addCapability(capability: string): Promise<void>;
   removeCapability(capability: string): Promise<void>;
   setCapabilityValue(capability: string, value: RpcValue): Promise<void>;
+  triggerHandleStateChanged?(state: HandleState): Promise<void>;
   triggerButtonEvent(button: number, pressType: ButtonPressType): Promise<void>;
   onCapabilityWrite(
     capability: string,
@@ -59,6 +61,7 @@ export class DeviceBindingController {
   readonly #unsubscribers: Unsubscribe[] = [];
   readonly #pendingWrites = new Map<string, PendingWrite>();
   #activated = false;
+  readonly #handleUpdates: HandleStateUpdates;
   #refreshQueue: Promise<void> = Promise.resolve();
 
   constructor(
@@ -71,6 +74,15 @@ export class DeviceBindingController {
     this.#device = device;
     this.#bindings = bindings;
     this.#options = options;
+    this.#handleUpdates = new HandleStateUpdates(
+      (value) => device.setCapabilityValue("homematic_rhs_state", value),
+      (state) => device.triggerHandleStateChanged?.(state) ?? Promise.resolve(),
+      (error) =>
+        device.error(
+          "Failed to update handle state or trigger its Flow",
+          error,
+        ),
+    );
   }
 
   async start(): Promise<void> {
@@ -85,6 +97,7 @@ export class DeviceBindingController {
             void this.#setValue(
               binding,
               transformFromOpenCcu(binding.transform, event.value),
+              true,
             );
           }
         }
@@ -107,6 +120,7 @@ export class DeviceBindingController {
       this.#runtime.subscribe("connection", ({ state }) => {
         if (state === "healthy") void this.#activate();
         if (state === "disconnected") {
+          this.#handleUpdates.reset();
           void this.#device.setUnavailable(
             "OpenCCU device interface unavailable",
           );
@@ -231,6 +245,7 @@ export class DeviceBindingController {
   }
 
   stop(): void {
+    this.#handleUpdates.reset();
     for (const unsubscribe of this.#unsubscribers.splice(0)) unsubscribe();
     for (const pending of this.#pendingWrites.values()) {
       if (pending.timer !== undefined) clearTimeout(pending.timer);
@@ -277,12 +292,15 @@ export class DeviceBindingController {
     }
     for (const [channelAddress, bindings] of byChannel) {
       try {
+        const handleRevision = this.#handleUpdates.revision;
         const values = await this.#runtime.readChannelValues(channelAddress);
         for (const binding of bindings) {
           if (!(binding.parameter in values)) continue;
           await this.#setValue(
             binding,
             transformFromOpenCcu(binding.transform, values[binding.parameter]),
+            false,
+            handleRevision,
           );
         }
       } catch (error) {
@@ -291,7 +309,16 @@ export class DeviceBindingController {
     }
   }
 
-  async #setValue(binding: CapabilityBinding, value: RpcValue): Promise<void> {
+  async #setValue(
+    binding: CapabilityBinding,
+    value: RpcValue,
+    live = false,
+    handleRevision?: number,
+  ): Promise<void> {
+    if (binding.capability === "homematic_rhs_state") {
+      await this.#handleUpdates.update(value, live, handleRevision);
+      return;
+    }
     try {
       await this.#device.setCapabilityValue(binding.capability, value);
     } catch (error) {

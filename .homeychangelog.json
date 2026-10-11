@@ -34,5 +34,9 @@
   "0.1.8": {
     "en": "Add HmIP-BROLL-2, twelve read-only FALMOT-C12 valve channels, MIOB inputs/outputs and HM-PB-2-FM button Flows through optional BidCos-RF. Improve interface diagnostics and reconnect paired devices after connection settings changes. New device profiles are fixture-tested; hardware verification is pending.",
     "de": "HmIP-BROLL-2, zwölf schreibgeschützte FALMOT-C12-Ventilkanäle, MIOB-Ein-/Ausgänge und HM-PB-2-FM-Tasten-Flows über optionales BidCos-RF ergänzt. Schnittstellendiagnose und Wiederanbindung vorhandener Geräte nach Einstellungsänderungen verbessert. Neue Profile sind mit simulierten Gerätedaten getestet; Hardwaretests stehen noch aus."
+  },
+  "0.1.9": {
+    "en": "Add a handle-position change Flow trigger for HmIP-SRH with a translated position text tag. Existing handle conditions remain available. Ignore repeated reports, initialization and unknown states; update the device state before starting Flows.",
+    "de": "Neue Wenn-Flow-Karte für Änderungen der HmIP-SRH-Griffstellung mit Text-Tag Geschlossen/Gekippt/Offen. Bestehende Bedingungen bleiben erhalten. Keine Auslösung bei identischen Meldungen, Initialisierung oder unbekannten Zuständen; Gerätestatus wird vor dem Flow aktualisiert."
   }
 }

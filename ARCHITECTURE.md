@@ -298,3 +298,7 @@ The HmIP-SRH Flow adapter exposes three read-only position conditions over the e
 [ADR 0028](docs/adr/0028-additional-devices-and-bidcos-rf.md) adds optional independently queued/supervised BidCos-RF, shared profiles for the classic wall button and additional heating/I/O devices, explicit read-only profile constraints, and diagnostics per interface. Callback listeners are released before replacement on settings reload. BROLL-2 remains in the BROLL family; FALMOT valve channels and MIOB physical I/O use stable logical identities.
 
 After a successful settings reload, the Homey adapter rebinds paired physical and system devices to the replacement runtime. Reload and rebind operations are serialized; shutdown drains them before stopping the central.
+
+## Handle state change events (0.1.9)
+
+A per-device `HandleStateUpdates` queue tracks the known HmIP-SRH position during one connection epoch. Discovery/readback establishes a silent baseline; live callbacks trigger only valid changes after Homey capability persistence. Read revisions suppress stale initialization results, while disconnect/stop invalidates queued work. The Homey adapter translates the position into the custom Flow text token; stored enum IDs and conditions remain unchanged. No automatic enum Flow naming is used, avoiding duplicate SDK triggers.

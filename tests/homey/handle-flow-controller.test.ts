@@ -139,6 +139,7 @@ describe("rotary handle Flow conditions", () => {
     expect(candidate.driverId).toBe("HmIP-SRH");
     const values = new Map<string, RpcValue>();
     const onCapabilityWrite = vi.fn(() => () => undefined);
+    const triggerHandleStateChanged = vi.fn().mockResolvedValue(undefined);
     const controller = new DeviceBindingController(
       runtime,
       {
@@ -151,6 +152,7 @@ describe("rotary handle Flow conditions", () => {
         },
         triggerButtonEvent: vi.fn().mockResolvedValue(undefined),
         onCapabilityWrite,
+        triggerHandleStateChanged,
         setAvailable: vi.fn().mockResolvedValue(undefined),
         setUnavailable: vi.fn().mockResolvedValue(undefined),
         log: vi.fn(),
@@ -166,14 +168,17 @@ describe("rotary handle Flow conditions", () => {
     try {
       await controller.start();
       expect(await run("closed", handle)).toBe(true);
+      expect(triggerHandleStateChanged).not.toHaveBeenCalled();
       for (const [value, state] of states.entries()) {
         await runtime
           .createCallbackDispatcher()
           .dispatch("event", ["HmIP-RF", "HANDLE1:1", "STATE", value]);
+        await new Promise((resolve) => setImmediate(resolve));
         expect(values.get("homematic_rhs_state")).toBe(String(value));
         for (const expected of states)
           expect(await run(expected, handle)).toBe(expected === state);
       }
+      expect(triggerHandleStateChanged.mock.calls).toEqual([["1"], ["2"]]);
       expect(client.setValue).not.toHaveBeenCalled();
       expect(client.putParamset).not.toHaveBeenCalled();
       expect(onCapabilityWrite).not.toHaveBeenCalled();

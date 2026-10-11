@@ -1,3 +1,4 @@
+import { handleStateToken } from "./handle-state-updates";
 import Homey from "homey";
 
 import {
@@ -118,6 +119,19 @@ function createDevicePort(device: Homey.Device): HomeyDevicePort {
     removeCapability: (capability) => device.removeCapability(capability),
     setCapabilityValue: (capability, value) =>
       device.setCapabilityValue(capability, value),
+    triggerHandleStateChanged: async (state) => {
+      await device.homey.flow
+        .getDeviceTriggerCard("handle_state_changed")
+        .trigger(
+          device,
+          {
+            handle_state: handleStateToken(state, (key) =>
+              device.homey.__(key),
+            ),
+          },
+          {},
+        );
+    },
     triggerButtonEvent: async (button, pressType) => {
       await device.homey.flow
         .getDeviceTriggerCard("hmip_button_pressed")
