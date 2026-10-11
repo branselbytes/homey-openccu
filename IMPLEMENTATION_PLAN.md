@@ -514,4 +514,4 @@ The exact 0.1.7 Test build was installed on Homey Christian via the CLI raw Stor
 - [x] Add one localized position-change trigger with a text token, covering dedicated and generic handles.
 - [x] Preserve conditions; suppress duplicates, initialization and unknown transitions; serialize capability/Flow updates.
 - [x] Test transitions, token translations, lifecycle resets, stale reads and production XML-RPC callback routing.
-- [ ] Publish the authorized 0.1.9 GitHub/Homey Test beta after release checks.
+- [x] Publish 0.1.9 on GitHub and Homey Test (Build 10), with 742 passing tests, publish validation and successful release CI.
