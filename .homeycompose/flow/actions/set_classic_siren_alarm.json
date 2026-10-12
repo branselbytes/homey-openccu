@@ -1,0 +1,76 @@
+{
+  "title": {
+    "en": "Set siren alarm channel",
+    "de": "Sirenen-Alarmkanal schalten"
+  },
+  "titleFormatted": {
+    "en": "Set [[channel]] to [[state]]",
+    "de": "[[channel]] auf [[state]] setzen"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      },
+      "filter": "driver_id=HM-Sec-Sir-WM"
+    },
+    {
+      "name": "channel",
+      "type": "dropdown",
+      "title": {
+        "en": "Alarm",
+        "de": "Alarm"
+      },
+      "values": [
+        {
+          "id": "onoff",
+          "label": {
+            "en": "Panic alarm",
+            "de": "Panikalarm"
+          }
+        },
+        {
+          "id": "onoff.perimeter",
+          "label": {
+            "en": "Perimeter alarm",
+            "de": "Außenhaut-Alarm"
+          }
+        },
+        {
+          "id": "onoff.interior",
+          "label": {
+            "en": "Interior alarm",
+            "de": "Innenraum-Alarm"
+          }
+        }
+      ]
+    },
+    {
+      "name": "state",
+      "type": "dropdown",
+      "title": {
+        "en": "State",
+        "de": "Zustand"
+      },
+      "values": [
+        {
+          "id": "on",
+          "label": {
+            "en": "On",
+            "de": "Ein"
+          }
+        },
+        {
+          "id": "off",
+          "label": {
+            "en": "Off",
+            "de": "Aus"
+          }
+        }
+      ]
+    }
+  ]
+}

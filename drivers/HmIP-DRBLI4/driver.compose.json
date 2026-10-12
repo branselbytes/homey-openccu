@@ -1,0 +1,26 @@
+{
+  "id": "HmIP-DRBLI4",
+  "name": {
+    "en": "HmIP-DRBLI4",
+    "de": "HmIP-DRBLI4"
+  },
+  "class": "windowcoverings",
+  "capabilities": [],
+  "images": {
+    "small": "/drivers/HmIP-DRBLI4/assets/images/small.png",
+    "large": "/drivers/HmIP-DRBLI4/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

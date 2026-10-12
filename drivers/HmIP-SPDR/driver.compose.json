@@ -1,0 +1,30 @@
+{
+  "id": "HmIP-SPDR",
+  "name": {
+    "en": "HmIP-SPDR",
+    "de": "HmIP-SPDR"
+  },
+  "class": "sensor",
+  "capabilities": [
+    "homematic_passage_count",
+    "alarm_generic.overflow",
+    "homematic_passage_direction"
+  ],
+  "images": {
+    "small": "/drivers/HmIP-SPDR/assets/images/small.png",
+    "large": "/drivers/HmIP-SPDR/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

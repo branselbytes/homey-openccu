@@ -1,0 +1,32 @@
+{
+  "id": "HmIPW-WTH",
+  "name": {
+    "en": "HmIPW-WTH",
+    "de": "HmIPW-WTH"
+  },
+  "class": "sensor",
+  "capabilities": [
+    "measure_temperature",
+    "measure_humidity",
+    "target_temperature",
+    "homematic_thermostat_boost",
+    "measure_co2"
+  ],
+  "images": {
+    "small": "/drivers/HmIPW-WTH/assets/images/small.png",
+    "large": "/drivers/HmIPW-WTH/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

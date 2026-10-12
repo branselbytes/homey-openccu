@@ -9,6 +9,7 @@ import { ProcessMemoryDiagnostics } from "./src/diagnostics/process-memory";
 import { OpenCcuAppController } from "./src/homey/app-controller";
 import { loadOpenCcuConnections } from "./src/homey/settings-adapter";
 import { registerHubFlowCards } from "./src/homey/hub-flow-controller";
+import { registerCatalogFlowCards } from "./src/homey/catalog-flow-controller";
 import { registerThermostatFlowCards } from "./src/homey/thermostat-flow-controller";
 import { registerHandleFlowCards } from "./src/homey/handle-flow-controller";
 import { registerGarageFlowCards } from "./src/homey/garage-flow-controller";
@@ -98,6 +99,7 @@ export = class OpenCcuApp extends Homey.App {
     );
     await this.#controller.start();
     registerThermostatFlowCards(this.homey.flow);
+    registerCatalogFlowCards(this.homey.flow);
     registerGarageFlowCards(this.homey.flow);
     registerHandleFlowCards(this.homey.flow);
     registerHubFlowCards(this.homey.flow, this.runtimeProvider);

@@ -1,0 +1,21 @@
+{
+  "title": {
+    "en": "Stop sound playback",
+    "de": "Soundwiedergabe stoppen"
+  },
+  "titleFormatted": {
+    "en": "Stop sound playback",
+    "de": "Soundwiedergabe stoppen"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      },
+      "filter": "driver_id=HmIP-MP3P&capabilities=button.stop"
+    }
+  ]
+}

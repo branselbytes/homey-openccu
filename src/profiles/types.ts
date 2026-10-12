@@ -72,6 +72,8 @@ export function resolveProfileButtonEvents(
     for (const [parameter, pressType] of [
       ["PRESS_SHORT", "short"],
       ["PRESS_LONG", "long"],
+      ["PRESS_LOCK", "lock"],
+      ["PRESS_UNLOCK", "unlock"],
     ] as const) {
       if (!channel.dataPoints.has(parameter)) continue;
       result.push({

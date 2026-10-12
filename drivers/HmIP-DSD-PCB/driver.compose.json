@@ -1,0 +1,26 @@
+{
+  "id": "HmIP-DSD-PCB",
+  "name": {
+    "en": "HmIP-DSD-PCB",
+    "de": "HmIP-DSD-PCB"
+  },
+  "class": "sensor",
+  "capabilities": [],
+  "images": {
+    "small": "/drivers/HmIP-DSD-PCB/assets/images/small.png",
+    "large": "/drivers/HmIP-DSD-PCB/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

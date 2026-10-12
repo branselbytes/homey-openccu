@@ -1,0 +1,69 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Signal colour",
+    "de": "Signalfarbe"
+  },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "picker",
+  "insights": false,
+  "values": [
+    {
+      "id": "BLACK",
+      "title": {
+        "en": "Off",
+        "de": "Aus"
+      }
+    },
+    {
+      "id": "BLUE",
+      "title": {
+        "en": "Blue",
+        "de": "Blau"
+      }
+    },
+    {
+      "id": "GREEN",
+      "title": {
+        "en": "Green",
+        "de": "Grün"
+      }
+    },
+    {
+      "id": "TURQUOISE",
+      "title": {
+        "en": "Turquoise",
+        "de": "Türkis"
+      }
+    },
+    {
+      "id": "RED",
+      "title": {
+        "en": "Red",
+        "de": "Rot"
+      }
+    },
+    {
+      "id": "PURPLE",
+      "title": {
+        "en": "Purple",
+        "de": "Violett"
+      }
+    },
+    {
+      "id": "YELLOW",
+      "title": {
+        "en": "Yellow",
+        "de": "Gelb"
+      }
+    },
+    {
+      "id": "WHITE",
+      "title": {
+        "en": "White",
+        "de": "Weiß"
+      }
+    }
+  ]
+}

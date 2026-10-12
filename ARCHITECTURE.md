@@ -302,3 +302,16 @@ After a successful settings reload, the Homey adapter rebinds paired physical an
 ## Handle state change events (0.1.9)
 
 A per-device `HandleStateUpdates` queue tracks the known HmIP-SRH position during one connection epoch. Discovery/readback establishes a silent baseline; live callbacks trigger only valid changes after Homey capability persistence. Read revisions suppress stale initialization results, while disconnect/stop invalidates queued work. The Homey adapter translates the position into the custom Flow text token; stored enum IDs and conditions remain unchanged. No automatic enum Flow naming is used, avoiding duplicate SDK triggers.
+
+## Reference-catalog profiles (0.1.10)
+
+ADR 0030 extends the shared declarative registry with exact model aliases and
+reusable multi-I/O, climate, blind, light and read-only sensor definitions.
+Aliases are backed by common manufacturer descriptions; unknown suffixes do
+not match. Runtime metadata still gates each binding and write target. Separate
+logical identities represent physical outputs, while the STE2's added probes
+remain capabilities of the original device. Compound WRCD display and MP3
+start commands use one XML-RPC putParamset through the existing bounded queue;
+there is no new transport, scheduler, or Python/Home Assistant dependency.
+The catalog audit is a development-only read-only tool. See
+[the reference review](docs/reference-catalog-review.md) for scope and limits.

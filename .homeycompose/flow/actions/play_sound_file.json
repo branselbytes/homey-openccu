@@ -1,0 +1,32 @@
+{
+  "title": {
+    "en": "Play sound file for 10 seconds at 50%",
+    "de": "Sounddatei 10 Sekunden mit 50 % abspielen"
+  },
+  "titleFormatted": {
+    "en": "Play sound file [[file]] for 10 seconds at 50%",
+    "de": "Sounddatei [[file]] 10 Sekunden mit 50 % abspielen"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      },
+      "filter": "driver_id=HmIP-MP3P&capabilities=homematic_sound_file"
+    },
+    {
+      "name": "file",
+      "type": "number",
+      "title": {
+        "en": "File (0 = internal)",
+        "de": "Datei (0 = intern)"
+      },
+      "min": 0,
+      "max": 252,
+      "step": 1
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "title": {
+    "en": "Write display line",
+    "de": "Displayzeile schreiben"
+  },
+  "titleFormatted": {
+    "en": "Write [[text]] on display line [[line]]",
+    "de": "[[text]] in Displayzeile [[line]] schreiben"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      },
+      "filter": "driver_id=HmIP-WRCD"
+    },
+    {
+      "name": "line",
+      "type": "dropdown",
+      "title": {
+        "en": "Line",
+        "de": "Zeile"
+      },
+      "values": [
+        {
+          "id": "1",
+          "label": {
+            "en": "1",
+            "de": "1"
+          }
+        },
+        {
+          "id": "2",
+          "label": {
+            "en": "2",
+            "de": "2"
+          }
+        },
+        {
+          "id": "3",
+          "label": {
+            "en": "3",
+            "de": "3"
+          }
+        },
+        {
+          "id": "4",
+          "label": {
+            "en": "4",
+            "de": "4"
+          }
+        },
+        {
+          "id": "5",
+          "label": {
+            "en": "5",
+            "de": "5"
+          }
+        }
+      ]
+    },
+    {
+      "name": "text",
+      "type": "text",
+      "title": {
+        "en": "Text (16 ASCII characters)",
+        "de": "Text (16 ASCII-Zeichen)"
+      }
+    }
+  ]
+}

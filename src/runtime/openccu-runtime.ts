@@ -372,6 +372,58 @@ export class OpenCcuRuntime {
     ) {
       throw new Error(`Capability ${binding.capability} is not writable`);
     }
+    if (binding.writeStrategy === "sound-file") {
+      if (
+        typeof value !== "number" ||
+        !Number.isInteger(value) ||
+        value < 0 ||
+        value > 252
+      )
+        throw new TypeError("Invalid sound file");
+      await this.#client.putParamset(
+        binding.writeChannelAddress,
+        "VALUES",
+        {
+          SOUNDFILE:
+            value === 0
+              ? "INTERNAL_SOUNDFILE"
+              : `SOUNDFILE_${String(value).padStart(3, "0")}`,
+          LEVEL: 0.5,
+          DURATION_UNIT: "S",
+          DURATION_VALUE: 10,
+        },
+        signal,
+      );
+      return;
+    }
+    if (binding.writeStrategy === "display-text") {
+      const match = /^homematic_display_text\.line([1-5])$/.exec(
+        binding.capability,
+      );
+      if (
+        !match ||
+        typeof value !== "string" ||
+        !/^[\x20-\x7e]{0,16}$/.test(value)
+      )
+        throw new TypeError(
+          "Display text requires up to 16 printable ASCII characters and a valid line",
+        );
+      await this.#client.putParamset(
+        binding.writeChannelAddress,
+        "VALUES",
+        {
+          DISPLAY_DATA_ID: Number(match[1]),
+          DISPLAY_DATA_STRING: value,
+          DISPLAY_DATA_ALIGNMENT: "LEFT",
+          DISPLAY_DATA_BACKGROUND_COLOR: "WHITE",
+          DISPLAY_DATA_TEXT_COLOR: "BLACK",
+          DISPLAY_DATA_ICON: "NO_ICON",
+          DISPLAY_DATA_COMMIT: true,
+        },
+        signal,
+      );
+      return;
+    }
     if (binding.writeStrategy === "siren-default") {
       if (typeof value !== "boolean")
         throw new TypeError("Unsupported Homey siren state");

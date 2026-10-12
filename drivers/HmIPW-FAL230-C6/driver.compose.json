@@ -1,0 +1,30 @@
+{
+  "id": "HmIPW-FAL230-C6",
+  "name": {
+    "en": "HmIPW-FAL230-C6",
+    "de": "HmIPW-FAL230-C6"
+  },
+  "class": "sensor",
+  "capabilities": [
+    "homematic_valve_active",
+    "alarm_generic.dew_point",
+    "alarm_generic.emergency"
+  ],
+  "images": {
+    "small": "/drivers/HmIPW-FAL230-C6/assets/images/small.png",
+    "large": "/drivers/HmIPW-FAL230-C6/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "HmIP-SMO230-A",
+  "name": {
+    "en": "HmIP-SMO230-A",
+    "de": "HmIP-SMO230-A"
+  },
+  "class": "sensor",
+  "capabilities": [],
+  "images": {
+    "small": "/drivers/HmIP-SMO230-A/assets/images/small.png",
+    "large": "/drivers/HmIP-SMO230-A/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

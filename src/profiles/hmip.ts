@@ -656,11 +656,16 @@ export const HMIP_TEMPERATURE_SENSOR_PROFILE: DeviceProfile = {
   driverId: "HmIP-STE2-PCB",
   deviceTypes: ["HmIP-STE2-PCB"],
   bindings: [
-    {
-      capability: "measure_temperature",
-      channel: 1,
+    ...[
+      "measure_temperature",
+      "measure_temperature.second",
+      "measure_temperature.difference",
+    ].map((capability, index) => ({
+      capability,
+      channel: index + 1,
       parameter: "ACTUAL_TEMPERATURE",
-    },
+      readOnly: true,
+    })),
     SENSOR_MAINTENANCE_BINDING,
   ],
 };

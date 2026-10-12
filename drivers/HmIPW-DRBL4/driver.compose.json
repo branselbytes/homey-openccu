@@ -1,0 +1,26 @@
+{
+  "id": "HmIPW-DRBL4",
+  "name": {
+    "en": "HmIPW-DRBL4",
+    "de": "HmIPW-DRBL4"
+  },
+  "class": "windowcoverings",
+  "capabilities": [],
+  "images": {
+    "small": "/drivers/HmIPW-DRBL4/assets/images/small.png",
+    "large": "/drivers/HmIPW-DRBL4/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

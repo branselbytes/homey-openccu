@@ -1,0 +1,52 @@
+{
+  "id": "HmIP-SFD",
+  "name": {
+    "en": "HmIP-SFD",
+    "de": "HmIP-SFD"
+  },
+  "class": "sensor",
+  "capabilities": [
+    "measure_temperature",
+    "measure_humidity",
+    "homematic_particulate.pm1",
+    "homematic_particulate.pm25",
+    "homematic_particulate.pm10"
+  ],
+  "images": {
+    "small": "/drivers/HmIP-SFD/assets/images/small.png",
+    "large": "/drivers/HmIP-SFD/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "capabilitiesOptions": {
+    "homematic_particulate.pm1": {
+      "title": {
+        "en": "PM1 concentration",
+        "de": "PM1-Konzentration"
+      }
+    },
+    "homematic_particulate.pm25": {
+      "title": {
+        "en": "PM2.5 concentration",
+        "de": "PM2,5-Konzentration"
+      }
+    },
+    "homematic_particulate.pm10": {
+      "title": {
+        "en": "PM10 concentration",
+        "de": "PM10-Konzentration"
+      }
+    }
+  }
+}

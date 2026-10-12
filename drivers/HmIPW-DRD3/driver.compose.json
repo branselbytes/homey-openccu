@@ -1,0 +1,26 @@
+{
+  "id": "HmIPW-DRD3",
+  "name": {
+    "en": "HmIPW-DRD3",
+    "de": "HmIPW-DRD3"
+  },
+  "class": "light",
+  "capabilities": ["onoff"],
+  "images": {
+    "small": "/drivers/HmIPW-DRD3/assets/images/small.png",
+    "large": "/drivers/HmIPW-DRD3/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

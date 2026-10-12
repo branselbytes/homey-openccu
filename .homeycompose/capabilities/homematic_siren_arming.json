@@ -1,0 +1,41 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Siren arming",
+    "de": "Scharfschaltung"
+  },
+  "uiComponent": "picker",
+  "getable": true,
+  "setable": true,
+  "insights": false,
+  "values": [
+    {
+      "id": "0",
+      "title": {
+        "en": "Disarmed",
+        "de": "Unscharf"
+      }
+    },
+    {
+      "id": "1",
+      "title": {
+        "en": "Perimeter armed",
+        "de": "Außenhaut scharf"
+      }
+    },
+    {
+      "id": "2",
+      "title": {
+        "en": "All sensors armed",
+        "de": "Alle Sensoren scharf"
+      }
+    },
+    {
+      "id": "3",
+      "title": {
+        "en": "Alarm blocked",
+        "de": "Alarm gesperrt"
+      }
+    }
+  ]
+}

@@ -1,0 +1,724 @@
+{
+  "reference": "pydevccu 6fe7695f049219c77cbda2b60131fdf61d836000",
+  "scope": "Recorded Homematic IP radio/Wired model catalog; profile presence is not full feature parity or physical validation",
+  "total": 120,
+  "profiled": 117,
+  "infrastructure": 3,
+  "missing": 0,
+  "devices": [
+    {
+      "model": "HMIP-PS",
+      "status": "profile",
+      "driver": "HMIP-PSM",
+      "profile": "hmip-switch"
+    },
+    {
+      "model": "HMIP-PSM",
+      "status": "profile",
+      "driver": "HMIP-PSM",
+      "profile": "hmip-power-meter-switch"
+    },
+    {
+      "model": "HMIP-SWDO",
+      "status": "profile",
+      "driver": "HMIP-SWDO",
+      "profile": "hmip-contact"
+    },
+    {
+      "model": "HMIP-WRC2",
+      "status": "profile",
+      "driver": "HMIP-WRC2",
+      "profile": "hmip-wrc2"
+    },
+    {
+      "model": "HmIP-ASIR",
+      "status": "profile",
+      "driver": "HmIP-ASIR",
+      "profile": "hmip-asir"
+    },
+    {
+      "model": "HmIP-ASIR-2",
+      "status": "profile",
+      "driver": "HmIP-ASIR",
+      "profile": "hmip-asir-2-catalog"
+    },
+    {
+      "model": "HmIP-ASIR-O",
+      "status": "profile",
+      "driver": "HmIP-ASIR",
+      "profile": "hmip-asir-2-catalog"
+    },
+    {
+      "model": "HmIP-BDT",
+      "status": "profile",
+      "driver": "HmIP-BDT",
+      "profile": "hmip-bdt"
+    },
+    {
+      "model": "HmIP-BRC2",
+      "status": "profile",
+      "driver": "HmIP-BRC2",
+      "profile": "hmip-brc2"
+    },
+    {
+      "model": "HmIP-BROLL",
+      "status": "profile",
+      "driver": "HmIP-BROLL",
+      "profile": "hmip-cover"
+    },
+    {
+      "model": "HmIP-BSL",
+      "status": "profile",
+      "driver": "HmIP-BSL",
+      "profile": "hmip-bsl"
+    },
+    {
+      "model": "HmIP-BSM",
+      "status": "profile",
+      "driver": "HmIP-BSM",
+      "profile": "hmip-bsm"
+    },
+    {
+      "model": "HmIP-BWTH",
+      "status": "profile",
+      "driver": "HmIP-BWTH",
+      "profile": "hmip-bwth"
+    },
+    {
+      "model": "HmIP-CCU3",
+      "status": "infrastructure"
+    },
+    {
+      "model": "HmIP-DBB",
+      "status": "profile",
+      "driver": "HmIP-DBB",
+      "profile": "hmip-dbb"
+    },
+    {
+      "model": "HmIP-DLD",
+      "status": "profile",
+      "driver": "HmIP-DLD",
+      "profile": "hmip-dld"
+    },
+    {
+      "model": "HmIP-DLP",
+      "status": "profile",
+      "driver": "HmIP-DLP",
+      "profile": "hmip-dlp"
+    },
+    {
+      "model": "HmIP-DLS",
+      "status": "profile",
+      "driver": "HmIP-DLS",
+      "profile": "hmip-dls"
+    },
+    {
+      "model": "HmIP-DRBLI4",
+      "status": "profile",
+      "driver": "HmIP-DRBLI4",
+      "profile": "hmip-drbli4"
+    },
+    {
+      "model": "HmIP-DRDI3",
+      "status": "profile",
+      "driver": "HmIP-DRDI3",
+      "profile": "hmip-drdi3"
+    },
+    {
+      "model": "HmIP-DRG-DALI",
+      "status": "profile",
+      "driver": "HmIP-DRG-DALI",
+      "profile": "hmip-drg-dali"
+    },
+    {
+      "model": "HmIP-DRSI1",
+      "status": "profile",
+      "driver": "HmIP-DRSI1",
+      "profile": "hmip-drsi1"
+    },
+    {
+      "model": "HmIP-DRSI4",
+      "status": "profile",
+      "driver": "HmIP-DRSI4",
+      "profile": "hmip-drsi4"
+    },
+    {
+      "model": "HmIP-DSD-PCB",
+      "status": "profile",
+      "driver": "HmIP-DSD-PCB",
+      "profile": "hmip-dsd-pcb"
+    },
+    {
+      "model": "HmIP-ESI",
+      "status": "profile",
+      "driver": "HmIP-ESI",
+      "profile": "hmip-esi"
+    },
+    {
+      "model": "HmIP-FAL230-C10",
+      "status": "profile",
+      "driver": "HmIP-FAL230-C10",
+      "profile": "hmip-fal230-c10"
+    },
+    {
+      "model": "HmIP-FALMOT-C12",
+      "status": "profile",
+      "driver": "HmIP-FALMOT-C12",
+      "profile": "hmip-falmot-c12"
+    },
+    {
+      "model": "HmIP-FBL",
+      "status": "profile",
+      "driver": "HmIP-FBL",
+      "profile": "hmip-fbl"
+    },
+    {
+      "model": "HmIP-FCI1",
+      "status": "profile",
+      "driver": "HmIP-FCI1",
+      "profile": "hmip-fci1"
+    },
+    {
+      "model": "HmIP-FDT",
+      "status": "profile",
+      "driver": "HmIP-FDT",
+      "profile": "hmip-fdt"
+    },
+    {
+      "model": "HmIP-FROLL",
+      "status": "profile",
+      "driver": "HmIP-FROLL",
+      "profile": "hmip-froll"
+    },
+    {
+      "model": "HmIP-FSI16",
+      "status": "profile",
+      "driver": "HmIP-FSI16",
+      "profile": "hmip-fsi16"
+    },
+    {
+      "model": "HmIP-FSM16",
+      "status": "profile",
+      "driver": "HmIP-FSM16",
+      "profile": "hmip-fsm16"
+    },
+    {
+      "model": "HmIP-FWI",
+      "status": "profile",
+      "driver": "HmIP-FWI",
+      "profile": "hmip-fwi"
+    },
+    {
+      "model": "HmIP-HAP",
+      "status": "infrastructure"
+    },
+    {
+      "model": "HmIP-HDM1",
+      "status": "profile",
+      "driver": "HmIP-HDM1",
+      "profile": "hmip-hdm1"
+    },
+    {
+      "model": "HmIP-HDM2",
+      "status": "profile",
+      "driver": "HmIP-HDM2",
+      "profile": "hmip-hdm2"
+    },
+    {
+      "model": "HmIP-HEATING",
+      "status": "profile",
+      "driver": "openccu-heating-group",
+      "profile": "openccu-heating-group"
+    },
+    {
+      "model": "HmIP-KRC4",
+      "status": "profile",
+      "driver": "HmIP-KRC4",
+      "profile": "hmip-krc4"
+    },
+    {
+      "model": "HmIP-KRCA",
+      "status": "profile",
+      "driver": "HmIP-KRCA",
+      "profile": "hmip-krca"
+    },
+    {
+      "model": "HmIP-LSC",
+      "status": "profile",
+      "driver": "HmIP-LSC",
+      "profile": "hmip-lsc"
+    },
+    {
+      "model": "HmIP-MIO16-PCB",
+      "status": "profile",
+      "driver": "HmIP-MIO16-PCB",
+      "profile": "hmip-mio16-pcb"
+    },
+    {
+      "model": "HmIP-MOD-HO",
+      "status": "profile",
+      "driver": "HmIP-MOD-HO",
+      "profile": "hmip-mod-ho"
+    },
+    {
+      "model": "HmIP-MOD-OC8",
+      "status": "profile",
+      "driver": "HmIP-MOD-OC8",
+      "profile": "hmip-mod-oc8"
+    },
+    {
+      "model": "HmIP-MOD-RC8",
+      "status": "profile",
+      "driver": "HmIP-MOD-RC8",
+      "profile": "hmip-mod-rc8"
+    },
+    {
+      "model": "HmIP-MOD-TM",
+      "status": "profile",
+      "driver": "HmIP-MOD-TM",
+      "profile": "hmip-mod-tm"
+    },
+    {
+      "model": "HmIP-MP3P",
+      "status": "profile",
+      "driver": "HmIP-MP3P",
+      "profile": "hmip-mp3p"
+    },
+    {
+      "model": "HmIP-PCBS",
+      "status": "profile",
+      "driver": "HmIP-PCBS",
+      "profile": "hmip-pcbs"
+    },
+    {
+      "model": "HmIP-PCBS-BAT",
+      "status": "profile",
+      "driver": "HmIP-PCBS-BAT",
+      "profile": "hmip-pcbs-bat"
+    },
+    {
+      "model": "HmIP-PCBS2",
+      "status": "profile",
+      "driver": "HmIP-PCBS2",
+      "profile": "hmip-pcbs2"
+    },
+    {
+      "model": "HmIP-PMFS",
+      "status": "profile",
+      "driver": "HmIP-PMFS",
+      "profile": "hmip-pmfs"
+    },
+    {
+      "model": "HmIP-PSMCO",
+      "status": "profile",
+      "driver": "HMIP-PSM",
+      "profile": "hmip-psmco-catalog"
+    },
+    {
+      "model": "HmIP-RC8",
+      "status": "profile",
+      "driver": "HmIP-RC8",
+      "profile": "hmip-rc8"
+    },
+    {
+      "model": "HmIP-RCB1",
+      "status": "profile",
+      "driver": "HmIP-RCB1",
+      "profile": "hmip-rcb1"
+    },
+    {
+      "model": "HmIP-RCV-50",
+      "status": "profile",
+      "driver": "HmIP-RCV-50",
+      "profile": "hmip-rcv-50"
+    },
+    {
+      "model": "HmIP-RFUSB",
+      "status": "infrastructure"
+    },
+    {
+      "model": "HmIP-RGBW",
+      "status": "profile",
+      "driver": "HmIP-RGBW",
+      "profile": "hmip-rgbw"
+    },
+    {
+      "model": "HmIP-SAM",
+      "status": "profile",
+      "driver": "HmIP-SAM",
+      "profile": "hmip-sam"
+    },
+    {
+      "model": "HmIP-SCI",
+      "status": "profile",
+      "driver": "HmIP-SCI",
+      "profile": "hmip-sci"
+    },
+    {
+      "model": "HmIP-SCTH230",
+      "status": "profile",
+      "driver": "HmIP-SCTH230",
+      "profile": "hmip-scth230"
+    },
+    {
+      "model": "HmIP-SFD",
+      "status": "profile",
+      "driver": "HmIP-SFD",
+      "profile": "hmip-sfd"
+    },
+    {
+      "model": "HmIP-SLO",
+      "status": "profile",
+      "driver": "HmIP-SLO",
+      "profile": "hmip-light-sensor"
+    },
+    {
+      "model": "HmIP-SMI",
+      "status": "profile",
+      "driver": "HmIP-SMI",
+      "profile": "hmip-smi"
+    },
+    {
+      "model": "HmIP-SMI55",
+      "status": "profile",
+      "driver": "HmIP-SMI55",
+      "profile": "hmip-smi55"
+    },
+    {
+      "model": "HmIP-SMO",
+      "status": "profile",
+      "driver": "HmIP-SMO-A",
+      "profile": "hmip-smo-catalog"
+    },
+    {
+      "model": "HmIP-SMO-2",
+      "status": "profile",
+      "driver": "HmIP-SMO-A",
+      "profile": "hmip-smo-catalog"
+    },
+    {
+      "model": "HmIP-SMO-A",
+      "status": "profile",
+      "driver": "HmIP-SMO-A",
+      "profile": "hmip-smo-a"
+    },
+    {
+      "model": "HmIP-SMO230-A",
+      "status": "profile",
+      "driver": "HmIP-SMO230-A",
+      "profile": "hmip-smo230-a"
+    },
+    {
+      "model": "HmIP-SPDR",
+      "status": "profile",
+      "driver": "HmIP-SPDR",
+      "profile": "hmip-spdr"
+    },
+    {
+      "model": "HmIP-SPI",
+      "status": "profile",
+      "driver": "HmIP-SPI",
+      "profile": "hmip-spi"
+    },
+    {
+      "model": "HmIP-SRD",
+      "status": "profile",
+      "driver": "HmIP-SRD",
+      "profile": "hmip-srd"
+    },
+    {
+      "model": "HmIP-SRH",
+      "status": "profile",
+      "driver": "HmIP-SRH",
+      "profile": "hmip-srh"
+    },
+    {
+      "model": "HmIP-STE2-PCB",
+      "status": "profile",
+      "driver": "HmIP-STE2-PCB",
+      "profile": "hmip-temperature-sensor"
+    },
+    {
+      "model": "HmIP-STH",
+      "status": "profile",
+      "driver": "HmIP-STH",
+      "profile": "hmip-climate"
+    },
+    {
+      "model": "HmIP-STHD",
+      "status": "profile",
+      "driver": "HmIP-STHD",
+      "profile": "hmip-sthd"
+    },
+    {
+      "model": "HmIP-STHO",
+      "status": "profile",
+      "driver": "HmIP-STHO",
+      "profile": "hmip-stho"
+    },
+    {
+      "model": "HmIP-STHO-A",
+      "status": "profile",
+      "driver": "HmIP-STHO",
+      "profile": "hmip-stho-a-catalog"
+    },
+    {
+      "model": "HmIP-STV",
+      "status": "profile",
+      "driver": "HmIP-SAM",
+      "profile": "hmip-stv-catalog"
+    },
+    {
+      "model": "HmIP-SWD",
+      "status": "profile",
+      "driver": "HmIP-SWD",
+      "profile": "hmip-swd"
+    },
+    {
+      "model": "HmIP-SWDM",
+      "status": "profile",
+      "driver": "HmIP-SWDM",
+      "profile": "hmip-swdm"
+    },
+    {
+      "model": "HmIP-SWDM-B2",
+      "status": "profile",
+      "driver": "HmIP-SWDM",
+      "profile": "hmip-swdm-b2-catalog"
+    },
+    {
+      "model": "HmIP-SWDO-I",
+      "status": "profile",
+      "driver": "HMIP-SWDO",
+      "profile": "hmip-contact"
+    },
+    {
+      "model": "HmIP-SWO-B",
+      "status": "profile",
+      "driver": "HmIP-SWO-B",
+      "profile": "hmip-weather-basic"
+    },
+    {
+      "model": "HmIP-SWO-PL",
+      "status": "profile",
+      "driver": "HmIP-SWO-PL",
+      "profile": "hmip-weather-plus"
+    },
+    {
+      "model": "HmIP-SWO-PR",
+      "status": "profile",
+      "driver": "HmIP-SWO-PR",
+      "profile": "hmip-weather-pro"
+    },
+    {
+      "model": "HmIP-SWSD",
+      "status": "profile",
+      "driver": "HmIP-SWSD",
+      "profile": "hmip-swsd"
+    },
+    {
+      "model": "HmIP-SWSD-2",
+      "status": "profile",
+      "driver": "HmIP-SWSD",
+      "profile": "hmip-swsd-2-catalog"
+    },
+    {
+      "model": "HmIP-UDI-SMI55",
+      "status": "profile",
+      "driver": "HmIP-UDI-SMI55",
+      "profile": "hmip-udi-smi55"
+    },
+    {
+      "model": "HmIP-USBSM",
+      "status": "profile",
+      "driver": "HmIP-USBSM",
+      "profile": "hmip-usbsm"
+    },
+    {
+      "model": "HmIP-WGC",
+      "status": "profile",
+      "driver": "HmIP-WGC",
+      "profile": "hmip-wgc"
+    },
+    {
+      "model": "HmIP-WGTC",
+      "status": "profile",
+      "driver": "HmIP-WGTC",
+      "profile": "hmip-wgtc"
+    },
+    {
+      "model": "HmIP-WHS2",
+      "status": "profile",
+      "driver": "HmIP-WHS2",
+      "profile": "hmip-whs2"
+    },
+    {
+      "model": "HmIP-WKP",
+      "status": "profile",
+      "driver": "HmIP-WKP",
+      "profile": "hmip-wkp"
+    },
+    {
+      "model": "HmIP-WRC6",
+      "status": "profile",
+      "driver": "HmIP-WRC6",
+      "profile": "hmip-wrc6"
+    },
+    {
+      "model": "HmIP-WRCD",
+      "status": "profile",
+      "driver": "HmIP-WRCD",
+      "profile": "hmip-wrcd"
+    },
+    {
+      "model": "HmIP-WRCR",
+      "status": "profile",
+      "driver": "HmIP-WRCR",
+      "profile": "hmip-wrcr"
+    },
+    {
+      "model": "HmIP-WTH-1",
+      "status": "profile",
+      "driver": "HMIP-WTH",
+      "profile": "hmip-wth-1-catalog"
+    },
+    {
+      "model": "HmIP-WTH-2",
+      "status": "profile",
+      "driver": "HMIP-WTH",
+      "profile": "hmip-wth-1-catalog"
+    },
+    {
+      "model": "HmIP-eTRV-2",
+      "status": "profile",
+      "driver": "HmIP-eTRV-2",
+      "profile": "hmip-radiator-thermostat"
+    },
+    {
+      "model": "HmIP-eTRV-B",
+      "status": "profile",
+      "driver": "HmIP-eTRV-2",
+      "profile": "hmip-radiator-thermostat"
+    },
+    {
+      "model": "HmIP-eTRV-B-2",
+      "status": "profile",
+      "driver": "HmIP-eTRV-2",
+      "profile": "hmip-radiator-thermostat"
+    },
+    {
+      "model": "HmIP-eTRV-B1",
+      "status": "profile",
+      "driver": "HmIP-eTRV-2",
+      "profile": "hmip-etrv-b1-catalog"
+    },
+    {
+      "model": "HmIP-eTRV-C-2",
+      "status": "profile",
+      "driver": "HmIP-eTRV-2",
+      "profile": "hmip-etrv-b1-catalog"
+    },
+    {
+      "model": "HmIP-eTRV-E",
+      "status": "profile",
+      "driver": "HmIP-eTRV-2",
+      "profile": "hmip-radiator-thermostat"
+    },
+    {
+      "model": "HmIP-eTRV-F",
+      "status": "profile",
+      "driver": "HmIP-eTRV-2",
+      "profile": "hmip-etrv-b1-catalog"
+    },
+    {
+      "model": "HmIPW-DRAP",
+      "status": "profile",
+      "driver": "HmIPW-DRAP",
+      "profile": "hmipw-drap"
+    },
+    {
+      "model": "HmIPW-DRBL4",
+      "status": "profile",
+      "driver": "HmIPW-DRBL4",
+      "profile": "hmipw-drbl4"
+    },
+    {
+      "model": "HmIPW-DRD3",
+      "status": "profile",
+      "driver": "HmIPW-DRD3",
+      "profile": "hmipw-drd3"
+    },
+    {
+      "model": "HmIPW-DRI32",
+      "status": "profile",
+      "driver": "HmIPW-DRI32",
+      "profile": "hmipw-dri32"
+    },
+    {
+      "model": "HmIPW-DRS8",
+      "status": "profile",
+      "driver": "HmIPW-DRS8",
+      "profile": "hmipw-drs8"
+    },
+    {
+      "model": "HmIPW-FAL230-C6",
+      "status": "profile",
+      "driver": "HmIPW-FAL230-C6",
+      "profile": "hmipw-fal230-c6"
+    },
+    {
+      "model": "HmIPW-FALMOT-C12",
+      "status": "profile",
+      "driver": "HmIP-FALMOT-C12",
+      "profile": "hmipw-falmot-c12-catalog"
+    },
+    {
+      "model": "HmIPW-FIO6",
+      "status": "profile",
+      "driver": "HmIPW-FIO6",
+      "profile": "hmipw-fio6"
+    },
+    {
+      "model": "HmIPW-SCTHD",
+      "status": "profile",
+      "driver": "HmIPW-SCTHD",
+      "profile": "hmipw-scthd"
+    },
+    {
+      "model": "HmIPW-SMI55",
+      "status": "profile",
+      "driver": "HmIP-SMI55",
+      "profile": "hmipw-smi55-catalog"
+    },
+    {
+      "model": "HmIPW-SPI",
+      "status": "profile",
+      "driver": "HmIPW-SPI",
+      "profile": "hmipw-spi"
+    },
+    {
+      "model": "HmIPW-STH",
+      "status": "profile",
+      "driver": "HmIPW-STH",
+      "profile": "hmipw-sth"
+    },
+    {
+      "model": "HmIPW-STHD",
+      "status": "profile",
+      "driver": "HmIPW-STHD",
+      "profile": "hmipw-sthd"
+    },
+    {
+      "model": "HmIPW-WRC6",
+      "status": "profile",
+      "driver": "HmIPW-WRC6",
+      "profile": "hmipw-wrc6"
+    },
+    {
+      "model": "HmIPW-WTH",
+      "status": "profile",
+      "driver": "HmIPW-WTH",
+      "profile": "hmipw-wth"
+    }
+  ]
+}

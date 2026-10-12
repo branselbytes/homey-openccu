@@ -3,6 +3,78 @@ import type { DeviceProfile } from "./types";
 /** Independently authored profiles. Reference revisions and channel facts: docs/adr/0028-additional-devices-and-bidcos-rf.md. */
 export const ADDITIONAL_PROFILES: readonly DeviceProfile[] = [
   {
+    id: "hm-sci-3-fm",
+    driverId: "HM-SCI-3-FM",
+    deviceTypes: ["HM-SCI-3-FM"],
+    bindings: [
+      ...["alarm_contact", "alarm_contact.second", "alarm_contact.third"].map(
+        (capability, index) => ({
+          capability,
+          channel: index + 1,
+          parameter: "STATE",
+          transform: "boolean" as const,
+          readOnly: true,
+        }),
+      ),
+      {
+        capability: "alarm_battery",
+        channel: 0,
+        parameter: "LOWBAT",
+        transform: "boolean",
+        readOnly: true,
+      },
+    ],
+  },
+  {
+    id: "hm-sec-sir-wm",
+    driverId: "HM-Sec-Sir-WM",
+    deviceTypes: ["HM-Sec-Sir-WM"],
+    bindings: [
+      {
+        capability: "onoff",
+        channel: 3,
+        parameter: "STATE",
+        transform: "boolean",
+        requiresWriteTarget: true,
+      },
+      {
+        capability: "onoff.perimeter",
+        channel: 1,
+        parameter: "STATE",
+        transform: "boolean",
+        requiresWriteTarget: true,
+      },
+      {
+        capability: "onoff.interior",
+        channel: 2,
+        parameter: "STATE",
+        transform: "boolean",
+        requiresWriteTarget: true,
+      },
+      {
+        capability: "homematic_siren_arming",
+        channel: 4,
+        parameter: "ARMSTATE",
+        transform: "siren-arming",
+        requiresWriteTarget: true,
+      },
+      {
+        capability: "alarm_tamper",
+        channel: 0,
+        parameter: "ERROR_SABOTAGE",
+        transform: "sabotage-to-boolean",
+        readOnly: true,
+      },
+      {
+        capability: "alarm_battery",
+        channel: 0,
+        parameter: "LOWBAT",
+        transform: "boolean",
+        readOnly: true,
+      },
+    ],
+  },
+  {
     id: "hm-pb-2-fm",
     driverId: "HM-PB-2-FM",
     deviceTypes: ["HM-PB-2-FM"],

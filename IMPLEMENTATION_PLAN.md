@@ -260,7 +260,7 @@ The user reports stable operation without observed disconnects on the currently 
 - [ ] Verify an actual CCU add/remove event and the eTRV family upgrade after installation.
 - [ ] In a separate formatting-only change, include src in the formatter scripts and normalize the remaining existing source formatting. Avoid mixing that broad mechanical change into device support.
 
-Further functional backlog remains: the second STE2-PCB probe, metadata-normalized color temperature, enhanced cover/garage/lock actions and the already listed physical button/presence/reconnect checks. Similar names alone do not justify combining profiles: SWO pro has an additional compass mapping, FCI1 includes button events, and actuators can have different feedback/command channels. HAP, RFUSB and RCV-50 currently expose no mapped application capability and remain generic infrastructure entries rather than receiving empty dedicated drivers.
+Further functional backlog remains: metadata-normalized color temperature, enhanced cover/garage/lock actions and the already listed physical button/presence/reconnect checks. Similar names alone do not justify combining profiles: SWO pro has an additional compass mapping, FCI1 includes button events, and actuators can have different feedback/command channels. HAP and RFUSB remain infrastructure. RCV-50 button events and the STE2 probes/difference are added in 0.1.10.
 
 The installed 0.1.2 baseline was inspected read-only and remains running. No new deployment, remote push, device creation or physical control command was performed for this maintenance batch. Read-only integration resolved eight recorded model types and successfully read 25 mapped values across six reachable types. The sampled HmIP-PSM-2 and HMIP-SWDO reported UNREACH, so their current values could not be checked. Physical commands and callbacks remain unverified for this batch. Validation with Node.js 22.23.3: `npm run check` passed formatting, ESLint, production/test type checks and all 370 tests in 55 files. The four changed source files also passed an explicit Prettier check. `npm run build`, `node_modules/.bin/homey app build`, and `node_modules/.bin/homey app validate --level publish` passed. `npm audit --omit=dev --json` reported zero production vulnerabilities. The Homey package excludes tests, recorded fixtures, documentation, coverage and test configuration; license notices remain included.
 
@@ -515,3 +515,15 @@ The exact 0.1.7 Test build was installed on Homey Christian via the CLI raw Stor
 - [x] Preserve conditions; suppress duplicates, initialization and unknown transitions; serialize capability/Flow updates.
 - [x] Test transitions, token translations, lifecycle resets, stale reads and production XML-RPC callback routing.
 - [x] Publish 0.1.9 on GitHub and Homey Test (Build 10), with 742 passing tests, publish validation and successful release CI.
+
+## Reference catalog and forum devices — 0.1.10 beta
+
+- [x] Add HM-SCI-3-FM and HM-Sec-Sir-WM with explicit classic channel semantics.
+- [x] Preserve STE2 identity/primary capability while adding probe 2 and CCU difference.
+- [x] Close recorded-catalog profile gaps, compare aiohomematic/Home Assistant concepts, and document exact shared-descriptor aliases.
+- [x] Add display, signal-colour, siren and sound Flow controls with bounded validated commands.
+- [x] Document remaining advanced-function limitations and distinguish metadata/fixture from hardware verification.
+- [ ] Complete final quality gate, commit/push and publish GitHub/Homey Test release.
+
+The broader manufacturer catalog includes newer products outside the recorded
+reference set; those are not claimed as fully supported by this audit.

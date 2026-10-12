@@ -1,0 +1,26 @@
+{
+  "id": "HmIPW-FIO6",
+  "name": {
+    "en": "HmIPW-FIO6",
+    "de": "HmIPW-FIO6"
+  },
+  "class": "sensor",
+  "capabilities": [],
+  "images": {
+    "small": "/drivers/HmIPW-FIO6/assets/images/small.png",
+    "large": "/drivers/HmIPW-FIO6/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

@@ -64,6 +64,9 @@ export abstract class RuntimeBackedDriver extends Homey.Driver {
               ? {}
               : { class: this.pairedDeviceClass }),
             ...(icon === undefined ? {} : { icon }),
+            ...(candidate.store.deviceType === "HmIP-eTRV-CL"
+              ? { energy: { batteries: ["AA", "AA", "AA", "AA"] } }
+              : {}),
             capabilities: candidate.capabilities,
             store: candidate.store,
           };

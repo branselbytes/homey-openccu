@@ -33,7 +33,7 @@ OpenCCU discovery is always the source of truth. Known products are routed to a 
 | Weather sensor         | HmIP-SWO-B, HmIP-SWO-PL                                                                                    | fixture; discovery-filtered climate, wind, rain, and sunshine values                                 |
 | Weather sensor         | HmIP-SWO-PR                                                                                                | hardware/fixture; live reads and XML-RPC push updates verified                                       |
 | Light sensor           | HmIP-SLO                                                                                                   | fixture; current illuminance subset                                                                  |
-| Temperature sensor     | HmIP-STE2-PCB                                                                                              | fixture; first probe only                                                                            |
+| Temperature sensor     | HmIP-STE2-PCB                                                                                              | fixture; both probes and CCU difference in one existing device                                       |
 | CO₂ sensor + relay     | HmIP-SCTH230                                                                                               | fixture; CO₂, temperature, humidity, relay; indicator LED pending                                    |
 | Motion sensor          | HmIP-SMI, HmIP-SMI55, HmIP-SMO-A                                                                           | fixture; optional detection enable switch; SMI55 detection on channel 3; live retest pending         |
 | Presence sensor        | HmIP-SPI                                                                                                   | fixture; Homey motion alarm and optional detection enable switch                                     |
@@ -150,3 +150,13 @@ Post-install verification on Homey Christian: existing HmIP-SMI and HmIPW-SPI de
 - **HmIP-SWDO-2:** already supported; additional regression fixture.
 
 All five are covered by synthetic fixtures; the newly added models are not hardware verified. See [ADR 0028](docs/adr/0028-additional-devices-and-bidcos-rf.md) for exact scope, protocol sources and limitations.
+
+## 0.1.10 reference-catalog expansion
+
+The [detailed comparison](docs/reference-catalog-review.md) records the supported
+functions, remaining special-function gaps and exact pinned references. The
+normalized recording catalog now has profiles for all 117 end-device models;
+CCU3, HAP and RFUSB remain infrastructure. This release adds 130 HmIP model
+names through shared profiles/verified aliases and the two classic models
+HM-SCI-3-FM and HM-Sec-Sir-WM. This is fixture/descriptor verification, not
+physical validation of every model or full Home Assistant feature parity.

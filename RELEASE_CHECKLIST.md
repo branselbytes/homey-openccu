@@ -148,3 +148,19 @@ The owner requested implementation of the handle state change Flow with text tag
 0.1.9 delivery completed: release commit `8b605c959ffe2de5c0fe59a1b4fe5ddd1ac33b34` and annotated tag `v0.1.9` were pushed to origin. The [GitHub prerelease](https://github.com/branselbytes/homey-openccu/releases/tag/v0.1.9) is public and [release CI](https://github.com/branselbytes/homey-openccu/actions/runs/38142599464) passed. Local `npm run check` passed formatting, lint, both TypeScript projects and 742 tests across 76 files; Homey publish-level validation passed. Synthetic handle callbacks were exercised through the production binding controller, including existing conditions.
 
 A clean tagged checkout without `env.json` was uploaded via `HOMEY_HEADLESS=1 homey app publish` (649 files, 7.85 MB). The first request failed with a transient Bad Gateway before any build was created; a read-only build-list check confirmed this before retry. [Homey Build 10](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/10) was verified for version 0.1.9, the `handle_state_changed` device trigger and `handle_state` text token, matching EN/DE changelog and zero environment keys, then promoted to Test. A subsequent read confirmed state `test`. No Live promotion, forum posting, manual Homey installation or physical handle test was performed.
+
+## 0.1.10 release preparation (2026-10-12)
+
+The owner explicitly authorized implementation, review against Homematic(IP)
+Local, committing/pushing, a new GitHub beta and publication to Homey. The
+reference review and scope limits are in `docs/reference-catalog-review.md`.
+No manual device installation or physical actuator commands are part of this
+release. Final checks and publication evidence will be recorded below.
+
+Quality gate passed: `npm run check` (956 tests in 80 files, formatting, ESLint,
+application/test TypeScript checks), full `App.preprocess()` and in-place
+`App._validate({ level: "publish" })`. The 57-model reduced-reference fixtures
+exercise real production discovery/mapping, command targets and callback
+migration; descriptor/alias tests cover the additional variants. `git diff
+--check` is clean. Physical verification of the newly listed models remains
+pending and is not claimed by the release.

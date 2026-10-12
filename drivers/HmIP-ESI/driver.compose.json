@@ -1,0 +1,53 @@
+{
+  "id": "HmIP-ESI",
+  "name": {
+    "en": "HmIP-ESI",
+    "de": "HmIP-ESI"
+  },
+  "class": "sensor",
+  "capabilities": [
+    "measure_power",
+    "meter_power",
+    "meter_power.tariff1",
+    "meter_power.tariff2",
+    "meter_gas",
+    "homematic_gas_flow"
+  ],
+  "images": {
+    "small": "/drivers/HmIP-ESI/assets/images/small.png",
+    "large": "/drivers/HmIP-ESI/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "capabilitiesOptions": {
+    "meter_power": {
+      "title": {
+        "en": "Energy total",
+        "de": "Energie gesamt"
+      }
+    },
+    "meter_power.tariff1": {
+      "title": {
+        "en": "Energy channel 3",
+        "de": "Energie Kanal 3"
+      }
+    },
+    "meter_power.tariff2": {
+      "title": {
+        "en": "Energy channel 4",
+        "de": "Energie Kanal 4"
+      }
+    }
+  }
+}

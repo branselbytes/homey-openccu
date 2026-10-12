@@ -10,6 +10,11 @@ export const VALUE_TRANSFORMS = [
   "degrees-to-compass-8",
   "enum-number-to-string",
   "identity",
+  "siren-arming",
+  "lock-sensor-state",
+  "signal-color",
+  "sound-file",
+  "sabotage-to-boolean",
   "garage-door-state-to-closed",
   "garage-door-state-to-enum",
   "hoermann-door-state-to-closed",
@@ -32,6 +37,8 @@ export const WRITE_STRATEGIES = [
   "garage-command",
   "garage-ventilation",
   "siren-default",
+  "display-text",
+  "sound-file",
   "smoke-siren",
 ] as const;
 export type WriteStrategy = (typeof WRITE_STRATEGIES)[number];
@@ -48,7 +55,7 @@ export interface CapabilityBinding {
   readonly transform: ValueTransform;
 }
 
-export type ButtonPressType = "short" | "long";
+export type ButtonPressType = "short" | "long" | "lock" | "unlock";
 
 export interface ButtonEventBinding {
   readonly channelAddress: string;

@@ -1,0 +1,14 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Passage counter (0–127)",
+    "de": "Durchgangszähler (0–127)"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "insights": true,
+  "min": 0,
+  "max": 127,
+  "decimals": 0
+}

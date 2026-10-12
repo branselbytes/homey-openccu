@@ -1,0 +1,34 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Lock state",
+    "de": "Schlosszustand"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "insights": false,
+  "values": [
+    {
+      "id": "UNKNOWN",
+      "title": {
+        "en": "Unknown",
+        "de": "Unbekannt"
+      }
+    },
+    {
+      "id": "LOCKED",
+      "title": {
+        "en": "Locked",
+        "de": "Verriegelt"
+      }
+    },
+    {
+      "id": "UNLOCKED",
+      "title": {
+        "en": "Unlocked",
+        "de": "Entriegelt"
+      }
+    }
+  ]
+}

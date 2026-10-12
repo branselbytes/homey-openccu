@@ -37,3 +37,13 @@ The app's branselbytes circuit monogram is project-authored SVG artwork based on
 ## Additional device protocol references
 
 The unreleased forum-model profiles use the pinned original-app, aiohomematic, homematicip_local, pydevccu and eQ-3 protocol references recorded in [ADR 0028](docs/adr/0028-additional-devices-and-bidcos-rf.md). Only channel/parameter facts informed independently authored TypeScript and reduced synthetic test data. No external implementation or full fixture was copied. No manufacturer XML/jar/artwork is included. The new illustrations in `scripts/device-artwork-additional.mjs` are original MIT-licensed project geometry.
+
+The 0.1.10 comparison pins Homematic(IP) Local at
+`ec9577fd2fd2912630dc7a353e6e87615b89b76a`, aiohomematic at
+`8b8c5459f1d263d9dc248892532079b8cb73e7cc` (MIT, SukramJ, Daniel Perna and
+contributors), and pydevccu at the revision above. Reduced test data records
+selected public XML-RPC parameter facts with synthetic identities; no reference
+implementation was copied. OCCU `d9d7acbb37c29703f71c89cf3c1f62c390ddcfb2`
+informed exact aliases and channel facts only. The functional symbols in
+`scripts/device-artwork-catalog.mjs` are independently authored project artwork.
+See ADR 0030 and `docs/reference-catalog-review.md` for the evidence and limits.

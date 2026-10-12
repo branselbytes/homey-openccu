@@ -7,6 +7,27 @@ export function transformFromOpenCcu(
   value: RpcValue,
 ): RpcValue {
   switch (transform) {
+    case "lock-sensor-state":
+      return enumName(value, ["UNKNOWN", "LOCKED", "UNLOCKED"], transform);
+    case "signal-color":
+      return enumName(value, SIGNAL_COLORS, transform);
+    case "sound-file": {
+      if (
+        typeof value === "number" &&
+        Number.isInteger(value) &&
+        value >= 0 &&
+        value <= 252
+      )
+        return value;
+      if (value === "INTERNAL_SOUNDFILE") return 0;
+      if (
+        typeof value === "string" &&
+        /^SOUNDFILE_\d{3}$/.test(value) &&
+        Number(value.slice(-3)) <= 252
+      )
+        return Number(value.slice(-3));
+      return null;
+    }
     case "activity-state-to-cover-state":
       if (typeof value !== "string") throw invalidTransform(transform, value);
       if (value === "UP") return "up";
@@ -20,6 +41,35 @@ export function transformFromOpenCcu(
         Math.floor((degrees + 22.5) / 45) % 8
       ];
     }
+    case "siren-arming": {
+      const states = [
+        "DISARMED",
+        "EXTSENS_ARMED",
+        "ALLSENS_ARMED",
+        "ALARM_BLOCKED",
+      ];
+      const index =
+        typeof value === "string" && states.includes(value)
+          ? states.indexOf(value)
+          : typeof value === "number"
+            ? value
+            : typeof value === "string" && /^[0-3]$/.test(value)
+              ? Number(value)
+              : NaN;
+      if (
+        (typeof value !== "string" && typeof value !== "number") ||
+        !Number.isInteger(index) ||
+        index < 0 ||
+        index > 3 ||
+        value === ""
+      )
+        throw invalidTransform(transform, value);
+      return String(index);
+    }
+    case "sabotage-to-boolean":
+      if (value === "NO_ERROR" || value === 0) return false;
+      if (value === "SABOTAGE" || value === 1) return true;
+      throw invalidTransform(transform, value);
     case "identity":
       return value;
     case "garage-door-state-to-enum":
@@ -80,6 +130,29 @@ export function transformToOpenCcu(
   value: RpcValue,
 ): RpcValue {
   switch (transform) {
+    case "lock-sensor-state":
+      throw invalidTransform(transform, value);
+    case "signal-color":
+      if (typeof value === "string" && SIGNAL_COLORS.includes(value))
+        return value;
+      throw invalidTransform(transform, value);
+    case "sound-file":
+      if (
+        typeof value !== "number" ||
+        !Number.isInteger(value) ||
+        value < 0 ||
+        value > 252
+      )
+        throw invalidTransform(transform, value);
+      return value === 0
+        ? "INTERNAL_SOUNDFILE"
+        : `SOUNDFILE_${String(value).padStart(3, "0")}`;
+    case "siren-arming":
+      if (typeof value === "string" && /^[0-3]$/.test(value))
+        return Number(value);
+      throw invalidTransform(transform, value);
+    case "sabotage-to-boolean":
+      throw invalidTransform(transform, value);
     case "activity-state-to-cover-state":
     case "degrees-to-compass-8":
       throw invalidTransform(transform, value);
@@ -143,4 +216,29 @@ function invalidTransform(
     "invalid-response",
     `Cannot apply ${transform} to ${Array.isArray(value) ? "array" : typeof value}`,
   );
+}
+
+const SIGNAL_COLORS = [
+  "BLACK",
+  "BLUE",
+  "GREEN",
+  "TURQUOISE",
+  "RED",
+  "PURPLE",
+  "YELLOW",
+  "WHITE",
+];
+function enumName(
+  value: RpcValue,
+  names: readonly string[],
+  transform: ValueTransform,
+): string {
+  if (typeof value === "string" && names.includes(value)) return value;
+  if (
+    typeof value === "number" &&
+    Number.isInteger(value) &&
+    names[value] !== undefined
+  )
+    return names[value];
+  throw invalidTransform(transform, value);
 }

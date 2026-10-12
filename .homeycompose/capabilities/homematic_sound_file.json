@@ -1,0 +1,15 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Sound file (0 = internal)",
+    "de": "Sounddatei (0 = intern)"
+  },
+  "getable": true,
+  "setable": true,
+  "uiComponent": null,
+  "insights": false,
+  "min": 0,
+  "max": 252,
+  "step": 1,
+  "decimals": 0
+}

@@ -1,0 +1,26 @@
+{
+  "id": "HmIP-UDI-SMI55",
+  "name": {
+    "en": "HmIP-UDI-SMI55",
+    "de": "HmIP-UDI-SMI55"
+  },
+  "class": "sensor",
+  "capabilities": [],
+  "images": {
+    "small": "/drivers/HmIP-UDI-SMI55/assets/images/small.png",
+    "large": "/drivers/HmIP-UDI-SMI55/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

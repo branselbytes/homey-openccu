@@ -4,6 +4,20 @@ All notable changes to OpenCCU for Homey will be documented in this file. The pr
 
 ## [Unreleased]
 
+## [0.1.10] — 2026-10-12 (beta)
+
+### Added
+
+- Classic HM-SCI-3-FM: three contacts in one device. HM-Sec-Sir-WM: distinct perimeter/interior/panic alarms, arming modes, tamper and battery status, plus explicit Flow actions. Requires optional BidCos-RF.
+- Profiles for 54 previously missing end devices in the recorded Homematic IP radio/Wired catalog, 14 further described models and 62 exact shared-descriptor aliases. Includes multi-I/O, blinds/dimmers, floor heating, sensors, remotes, climate devices and display/sound devices. The normalized reference catalog has 117 profiled end devices and three infrastructure models.
+- Flow actions for signal colour, five WRCD display lines, MP3 playback and stop. Compound display/sound commands use one XML-RPC transaction through the existing queue.
+- Reproducible catalog comparison and explicit functional limits in `docs/reference-catalog-review.md`. Model support is fixture/descriptor checked; new hardware has not been physically actuated.
+
+### Fixed
+
+- HmIP-STE2-PCB exposes both temperature probes and the CCU's channel-3 difference, preserving its existing device identity, primary capability and Flows. Clear labels distinguish all three values; no re-pairing is required.
+- Keep sensor/floor-heating feedback explicitly read-only, hide missing write targets and avoid duplicate virtual actuator channels in the new profiles.
+
 ## [0.1.9] — 2026-10-11 (beta)
 
 ### Added

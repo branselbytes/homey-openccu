@@ -1,0 +1,26 @@
+{
+  "id": "HmIP-RCB1",
+  "name": {
+    "en": "HmIP-RCB1",
+    "de": "HmIP-RCB1"
+  },
+  "class": "button",
+  "capabilities": [],
+  "images": {
+    "small": "/drivers/HmIP-RCB1/assets/images/small.png",
+    "large": "/drivers/HmIP-RCB1/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

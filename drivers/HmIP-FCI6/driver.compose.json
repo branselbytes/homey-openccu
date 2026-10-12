@@ -1,0 +1,26 @@
+{
+  "id": "HmIP-FCI6",
+  "name": {
+    "en": "HmIP-FCI6",
+    "de": "HmIP-FCI6"
+  },
+  "class": "sensor",
+  "capabilities": [],
+  "images": {
+    "small": "/drivers/HmIP-FCI6/assets/images/small.png",
+    "large": "/drivers/HmIP-FCI6/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

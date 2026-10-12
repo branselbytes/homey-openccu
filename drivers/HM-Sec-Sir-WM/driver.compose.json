@@ -1,0 +1,56 @@
+{
+  "id": "HM-Sec-Sir-WM",
+  "name": {
+    "en": "HM-Sec-Sir-WM",
+    "de": "HM-Sec-Sir-WM"
+  },
+  "class": "siren",
+  "capabilities": [
+    "onoff",
+    "onoff.perimeter",
+    "onoff.interior",
+    "homematic_siren_arming",
+    "alarm_tamper",
+    "alarm_battery"
+  ],
+  "images": {
+    "small": "/drivers/HM-Sec-Sir-WM/assets/images/small.png",
+    "large": "/drivers/HM-Sec-Sir-WM/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "energy": {
+    "batteries": ["C", "C"]
+  },
+  "capabilitiesOptions": {
+    "onoff": {
+      "title": {
+        "en": "Panic alarm",
+        "de": "Panikalarm"
+      }
+    },
+    "onoff.perimeter": {
+      "title": {
+        "en": "Perimeter alarm",
+        "de": "Außenhaut-Alarm"
+      }
+    },
+    "onoff.interior": {
+      "title": {
+        "en": "Interior alarm",
+        "de": "Innenraum-Alarm"
+      }
+    }
+  }
+}

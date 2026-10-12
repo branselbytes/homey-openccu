@@ -4,7 +4,11 @@
     "en": "HmIP-STE2-PCB"
   },
   "class": "sensor",
-  "capabilities": ["measure_temperature"],
+  "capabilities": [
+    "measure_temperature",
+    "measure_temperature.second",
+    "measure_temperature.difference"
+  ],
   "images": {
     "large": "/drivers/HmIP-STE2-PCB/assets/images/large.png",
     "small": "/drivers/HmIP-STE2-PCB/assets/images/small.png"
@@ -21,5 +25,25 @@
       "id": "add_devices",
       "template": "add_devices"
     }
-  ]
+  ],
+  "capabilitiesOptions": {
+    "measure_temperature": {
+      "title": {
+        "en": "Temperature 1",
+        "de": "Temperatur 1"
+      }
+    },
+    "measure_temperature.second": {
+      "title": {
+        "en": "Temperature 2",
+        "de": "Temperatur 2"
+      }
+    },
+    "measure_temperature.difference": {
+      "title": {
+        "en": "Temperature difference (CCU)",
+        "de": "Temperaturdifferenz (CCU)"
+      }
+    }
+  }
 }

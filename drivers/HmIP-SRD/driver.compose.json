@@ -1,0 +1,38 @@
+{
+  "id": "HmIP-SRD",
+  "name": {
+    "en": "HmIP-SRD",
+    "de": "HmIP-SRD"
+  },
+  "class": "sensor",
+  "capabilities": [
+    "alarm_water",
+    "measure_temperature",
+    "homematic_heater_active"
+  ],
+  "images": {
+    "small": "/drivers/HmIP-SRD/assets/images/small.png",
+    "large": "/drivers/HmIP-SRD/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "capabilitiesOptions": {
+    "alarm_water": {
+      "title": {
+        "en": "Rain detected",
+        "de": "Regen erkannt"
+      }
+    }
+  }
+}

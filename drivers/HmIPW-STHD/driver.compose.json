@@ -1,0 +1,32 @@
+{
+  "id": "HmIPW-STHD",
+  "name": {
+    "en": "HmIPW-STHD",
+    "de": "HmIPW-STHD"
+  },
+  "class": "sensor",
+  "capabilities": [
+    "measure_temperature",
+    "measure_humidity",
+    "target_temperature",
+    "homematic_thermostat_boost",
+    "measure_co2"
+  ],
+  "images": {
+    "small": "/drivers/HmIPW-STHD/assets/images/small.png",
+    "large": "/drivers/HmIPW-STHD/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

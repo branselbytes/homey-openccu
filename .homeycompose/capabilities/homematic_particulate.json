@@ -1,0 +1,16 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Particulate concentration",
+    "de": "Feinstaubkonzentration"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "insights": true,
+  "units": {
+    "en": "µg/m³",
+    "de": "µg/m³"
+  },
+  "decimals": 2
+}

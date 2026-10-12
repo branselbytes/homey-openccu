@@ -1,0 +1,59 @@
+{
+  "title": {
+    "en": "Set siren arming",
+    "de": "Scharfschaltung setzen"
+  },
+  "titleFormatted": {
+    "en": "Set siren arming to [[state]]",
+    "de": "Scharfschaltung auf [[state]] setzen"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      },
+      "filter": "driver_id=HM-Sec-Sir-WM&capabilities=homematic_siren_arming"
+    },
+    {
+      "name": "state",
+      "type": "dropdown",
+      "title": {
+        "en": "Arming",
+        "de": "Scharfschaltung"
+      },
+      "values": [
+        {
+          "id": "0",
+          "label": {
+            "en": "Disarmed",
+            "de": "Unscharf"
+          }
+        },
+        {
+          "id": "1",
+          "label": {
+            "en": "Perimeter armed",
+            "de": "Außenhaut scharf"
+          }
+        },
+        {
+          "id": "2",
+          "label": {
+            "en": "All sensors armed",
+            "de": "Alle Sensoren scharf"
+          }
+        },
+        {
+          "id": "3",
+          "label": {
+            "en": "Alarm blocked",
+            "de": "Alarm gesperrt"
+          }
+        }
+      ]
+    }
+  ]
+}

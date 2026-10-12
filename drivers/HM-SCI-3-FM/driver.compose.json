@@ -1,0 +1,54 @@
+{
+  "id": "HM-SCI-3-FM",
+  "name": {
+    "en": "HM-SCI-3-FM",
+    "de": "HM-SCI-3-FM"
+  },
+  "class": "sensor",
+  "capabilities": [
+    "alarm_contact",
+    "alarm_contact.second",
+    "alarm_contact.third",
+    "alarm_battery"
+  ],
+  "images": {
+    "small": "/drivers/HM-SCI-3-FM/assets/images/small.png",
+    "large": "/drivers/HM-SCI-3-FM/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "energy": {
+    "batteries": ["CR2032"]
+  },
+  "capabilitiesOptions": {
+    "alarm_contact": {
+      "title": {
+        "en": "Contact 1",
+        "de": "Kontakt 1"
+      }
+    },
+    "alarm_contact.second": {
+      "title": {
+        "en": "Contact 2",
+        "de": "Kontakt 2"
+      }
+    },
+    "alarm_contact.third": {
+      "title": {
+        "en": "Contact 3",
+        "de": "Kontakt 3"
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "HmIP-DLP",
+  "name": {
+    "en": "HmIP-DLP",
+    "de": "HmIP-DLP"
+  },
+  "class": "lock",
+  "capabilities": ["alarm_contact"],
+  "images": {
+    "small": "/drivers/HmIP-DLP/assets/images/small.png",
+    "large": "/drivers/HmIP-DLP/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

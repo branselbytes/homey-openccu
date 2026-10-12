@@ -1,0 +1,26 @@
+{
+  "id": "HmIP-MIO16-PCB",
+  "name": {
+    "en": "HmIP-MIO16-PCB",
+    "de": "HmIP-MIO16-PCB"
+  },
+  "class": "sensor",
+  "capabilities": [],
+  "images": {
+    "small": "/drivers/HmIP-MIO16-PCB/assets/images/small.png",
+    "large": "/drivers/HmIP-MIO16-PCB/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

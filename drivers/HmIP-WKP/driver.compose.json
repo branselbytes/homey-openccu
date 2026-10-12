@@ -1,0 +1,26 @@
+{
+  "id": "HmIP-WKP",
+  "name": {
+    "en": "HmIP-WKP",
+    "de": "HmIP-WKP"
+  },
+  "class": "sensor",
+  "capabilities": ["alarm_tamper"],
+  "images": {
+    "small": "/drivers/HmIP-WKP/assets/images/small.png",
+    "large": "/drivers/HmIP-WKP/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

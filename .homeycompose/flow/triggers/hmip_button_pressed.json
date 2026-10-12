@@ -1,11 +1,11 @@
 {
   "title": {
     "en": "A button was pressed",
-    "de": "Eine Taste wurde gedr\u00fcckt"
+    "de": "Eine Taste wurde gedrückt"
   },
   "titleFormatted": {
     "en": "A button was pressed",
-    "de": "Eine Taste wurde gedr\u00fcckt"
+    "de": "Eine Taste wurde gedrückt"
   },
   "tokens": [
     {
@@ -33,9 +33,9 @@
       "type": "device",
       "title": {
         "en": "Device",
-        "de": "Ger\u00e4t"
+        "de": "Gerät"
       },
-      "filter": "driver_id=HMIP-PSM|HMIP-WRC2|HmIP-BBL|HmIP-BDT|HmIP-BRA|HmIP-BRC2|HmIP-BSM|HmIP-FCI1|HmIP-RC8|HmIP-SMI55|HmIP-WRC6|HmIPW-DRI16|openccu-generic|HM-PB-2-FM"
+      "filter": "driver_id=HM-PB-2-FM|HMIP-PSM|HMIP-WRC2|HmIP-BBL|HmIP-BDT|HmIP-BRA|HmIP-BRC2|HmIP-BSL|HmIP-BSM|HmIP-DBB|HmIP-DLP|HmIP-DRBLI4|HmIP-DSD-PCB|HmIP-FCI1|HmIP-FCI6|HmIP-KRC4|HmIP-KRCA|HmIP-MIO16-PCB|HmIP-MOD-RC8|HmIP-RC8|HmIP-RCB1|HmIP-RCV-50|HmIP-SMI55|HmIP-UDI-SMI55|HmIP-WGT|HmIP-WGTC|HmIP-WKP|HmIP-WRC6|HmIP-WRC6-230|HmIP-WRCD|HmIP-WRCR|HmIPW-DRI16|HmIPW-DRI32|HmIPW-FIO6|HmIPW-WRC6|openccu-generic"
     }
   ]
 }

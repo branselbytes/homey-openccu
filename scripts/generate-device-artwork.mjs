@@ -18,9 +18,12 @@ import { sensorDrivers } from "./device-artwork-sensors.mjs";
 
 import { additionalDrivers } from "./device-artwork-additional.mjs";
 
+import { catalogDrivers } from "./device-artwork-catalog.mjs";
+
 const root = fileURLToPath(new URL("../", import.meta.url));
 const drivers = {
   ...additionalDrivers,
+  ...catalogDrivers,
   ...electricalDrivers,
   ...householdDrivers,
   ...sensorDrivers,

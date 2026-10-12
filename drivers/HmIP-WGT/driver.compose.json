@@ -1,0 +1,26 @@
+{
+  "id": "HmIP-WGT",
+  "name": {
+    "en": "HmIP-WGT",
+    "de": "HmIP-WGT"
+  },
+  "class": "sensor",
+  "capabilities": [],
+  "images": {
+    "small": "/drivers/HmIP-WGT/assets/images/small.png",
+    "large": "/drivers/HmIP-WGT/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

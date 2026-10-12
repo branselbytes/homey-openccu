@@ -1,0 +1,26 @@
+{
+  "id": "HmIP-FWI",
+  "name": {
+    "en": "HmIP-FWI",
+    "de": "HmIP-FWI"
+  },
+  "class": "sensor",
+  "capabilities": [],
+  "images": {
+    "small": "/drivers/HmIP-FWI/assets/images/small.png",
+    "large": "/drivers/HmIP-FWI/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

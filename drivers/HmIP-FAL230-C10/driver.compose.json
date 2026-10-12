@@ -1,0 +1,30 @@
+{
+  "id": "HmIP-FAL230-C10",
+  "name": {
+    "en": "HmIP-FAL230-C10",
+    "de": "HmIP-FAL230-C10"
+  },
+  "class": "sensor",
+  "capabilities": [
+    "homematic_valve_active",
+    "alarm_generic.dew_point",
+    "alarm_generic.emergency"
+  ],
+  "images": {
+    "small": "/drivers/HmIP-FAL230-C10/assets/images/small.png",
+    "large": "/drivers/HmIP-FAL230-C10/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

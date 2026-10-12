@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "io.github.branselbytes.openccu",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "compatibility": ">=12.9.0",
   "sdk": 3,
   "name": {
@@ -148,7 +148,7 @@
               "en": "Device",
               "de": "Gerät"
             },
-            "filter": "driver_id=HMIP-PSM|HMIP-WRC2|HmIP-BBL|HmIP-BDT|HmIP-BRA|HmIP-BRC2|HmIP-BSM|HmIP-FCI1|HmIP-RC8|HmIP-SMI55|HmIP-WRC6|HmIPW-DRI16|openccu-generic|HM-PB-2-FM"
+            "filter": "driver_id=HM-PB-2-FM|HMIP-PSM|HMIP-WRC2|HmIP-BBL|HmIP-BDT|HmIP-BRA|HmIP-BRC2|HmIP-BSL|HmIP-BSM|HmIP-DBB|HmIP-DLP|HmIP-DRBLI4|HmIP-DSD-PCB|HmIP-FCI1|HmIP-FCI6|HmIP-KRC4|HmIP-KRCA|HmIP-MIO16-PCB|HmIP-MOD-RC8|HmIP-RC8|HmIP-RCB1|HmIP-RCV-50|HmIP-SMI55|HmIP-UDI-SMI55|HmIP-WGT|HmIP-WGTC|HmIP-WKP|HmIP-WRC6|HmIP-WRC6-230|HmIP-WRCD|HmIP-WRCR|HmIPW-DRI16|HmIPW-DRI32|HmIPW-FIO6|HmIPW-WRC6|openccu-generic"
           }
         ],
         "id": "hmip_button_pressed"
@@ -446,7 +446,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=HMIP-WTH|HMIP-eTRV|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-eTRV-2|HmIP-eTRV-B|HmIP-eTRV-B-2|HmIP-eTRV-C|HmIP-eTRV-E|HmIPW-STH|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_boost",
+            "filter": "driver_id=HMIP-WTH|HMIP-eTRV|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-WGT|HmIP-WGTC|HmIP-eTRV-2|HmIP-eTRV-B|HmIP-eTRV-B-2|HmIP-eTRV-C|HmIP-eTRV-E|HmIPW-SCTHD|HmIPW-STH|HmIPW-STHD|HmIPW-WTH|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_boost",
             "title": {
               "en": "Device",
               "de": "Gerät"
@@ -475,6 +475,191 @@
           }
         ],
         "id": "execute_openccu_program"
+      },
+      {
+        "title": {
+          "en": "Play sound file for 10 seconds at 50%",
+          "de": "Sounddatei 10 Sekunden mit 50 % abspielen"
+        },
+        "titleFormatted": {
+          "en": "Play sound file [[file]] for 10 seconds at 50%",
+          "de": "Sounddatei [[file]] 10 Sekunden mit 50 % abspielen"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            },
+            "filter": "driver_id=HmIP-MP3P&capabilities=homematic_sound_file"
+          },
+          {
+            "name": "file",
+            "type": "number",
+            "title": {
+              "en": "File (0 = internal)",
+              "de": "Datei (0 = intern)"
+            },
+            "min": 0,
+            "max": 252,
+            "step": 1
+          }
+        ],
+        "id": "play_sound_file"
+      },
+      {
+        "title": {
+          "en": "Set siren alarm channel",
+          "de": "Sirenen-Alarmkanal schalten"
+        },
+        "titleFormatted": {
+          "en": "Set [[channel]] to [[state]]",
+          "de": "[[channel]] auf [[state]] setzen"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            },
+            "filter": "driver_id=HM-Sec-Sir-WM"
+          },
+          {
+            "name": "channel",
+            "type": "dropdown",
+            "title": {
+              "en": "Alarm",
+              "de": "Alarm"
+            },
+            "values": [
+              {
+                "id": "onoff",
+                "label": {
+                  "en": "Panic alarm",
+                  "de": "Panikalarm"
+                }
+              },
+              {
+                "id": "onoff.perimeter",
+                "label": {
+                  "en": "Perimeter alarm",
+                  "de": "Außenhaut-Alarm"
+                }
+              },
+              {
+                "id": "onoff.interior",
+                "label": {
+                  "en": "Interior alarm",
+                  "de": "Innenraum-Alarm"
+                }
+              }
+            ]
+          },
+          {
+            "name": "state",
+            "type": "dropdown",
+            "title": {
+              "en": "State",
+              "de": "Zustand"
+            },
+            "values": [
+              {
+                "id": "on",
+                "label": {
+                  "en": "On",
+                  "de": "Ein"
+                }
+              },
+              {
+                "id": "off",
+                "label": {
+                  "en": "Off",
+                  "de": "Aus"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_classic_siren_alarm"
+      },
+      {
+        "title": {
+          "en": "Write display line",
+          "de": "Displayzeile schreiben"
+        },
+        "titleFormatted": {
+          "en": "Write [[text]] on display line [[line]]",
+          "de": "[[text]] in Displayzeile [[line]] schreiben"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            },
+            "filter": "driver_id=HmIP-WRCD"
+          },
+          {
+            "name": "line",
+            "type": "dropdown",
+            "title": {
+              "en": "Line",
+              "de": "Zeile"
+            },
+            "values": [
+              {
+                "id": "1",
+                "label": {
+                  "en": "1",
+                  "de": "1"
+                }
+              },
+              {
+                "id": "2",
+                "label": {
+                  "en": "2",
+                  "de": "2"
+                }
+              },
+              {
+                "id": "3",
+                "label": {
+                  "en": "3",
+                  "de": "3"
+                }
+              },
+              {
+                "id": "4",
+                "label": {
+                  "en": "4",
+                  "de": "4"
+                }
+              },
+              {
+                "id": "5",
+                "label": {
+                  "en": "5",
+                  "de": "5"
+                }
+              }
+            ]
+          },
+          {
+            "name": "text",
+            "type": "text",
+            "title": {
+              "en": "Text (16 ASCII characters)",
+              "de": "Text (16 ASCII-Zeichen)"
+            }
+          }
+        ],
+        "id": "set_display_line"
       },
       {
         "title": {
@@ -557,6 +742,154 @@
           }
         ],
         "id": "set_openccu_system_variable"
+      },
+      {
+        "title": {
+          "en": "Set signal colour",
+          "de": "Signalfarbe setzen"
+        },
+        "titleFormatted": {
+          "en": "Set signal colour to [[color]]",
+          "de": "Signalfarbe auf [[color]] setzen"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            },
+            "filter": "driver_id=HmIP-WRC6-230|HmIP-BSL|HmIPW-WRC6|HmIP-MP3P&capabilities=homematic_signal_color"
+          },
+          {
+            "name": "color",
+            "type": "dropdown",
+            "title": {
+              "en": "Colour",
+              "de": "Farbe"
+            },
+            "values": [
+              {
+                "id": "BLACK",
+                "label": {
+                  "en": "Off",
+                  "de": "Aus"
+                }
+              },
+              {
+                "id": "BLUE",
+                "label": {
+                  "en": "Blue",
+                  "de": "Blau"
+                }
+              },
+              {
+                "id": "GREEN",
+                "label": {
+                  "en": "Green",
+                  "de": "Grün"
+                }
+              },
+              {
+                "id": "TURQUOISE",
+                "label": {
+                  "en": "Turquoise",
+                  "de": "Türkis"
+                }
+              },
+              {
+                "id": "RED",
+                "label": {
+                  "en": "Red",
+                  "de": "Rot"
+                }
+              },
+              {
+                "id": "PURPLE",
+                "label": {
+                  "en": "Purple",
+                  "de": "Violett"
+                }
+              },
+              {
+                "id": "YELLOW",
+                "label": {
+                  "en": "Yellow",
+                  "de": "Gelb"
+                }
+              },
+              {
+                "id": "WHITE",
+                "label": {
+                  "en": "White",
+                  "de": "Weiß"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_signal_color"
+      },
+      {
+        "title": {
+          "en": "Set siren arming",
+          "de": "Scharfschaltung setzen"
+        },
+        "titleFormatted": {
+          "en": "Set siren arming to [[state]]",
+          "de": "Scharfschaltung auf [[state]] setzen"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            },
+            "filter": "driver_id=HM-Sec-Sir-WM&capabilities=homematic_siren_arming"
+          },
+          {
+            "name": "state",
+            "type": "dropdown",
+            "title": {
+              "en": "Arming",
+              "de": "Scharfschaltung"
+            },
+            "values": [
+              {
+                "id": "0",
+                "label": {
+                  "en": "Disarmed",
+                  "de": "Unscharf"
+                }
+              },
+              {
+                "id": "1",
+                "label": {
+                  "en": "Perimeter armed",
+                  "de": "Außenhaut scharf"
+                }
+              },
+              {
+                "id": "2",
+                "label": {
+                  "en": "All sensors armed",
+                  "de": "Alle Sensoren scharf"
+                }
+              },
+              {
+                "id": "3",
+                "label": {
+                  "en": "Alarm blocked",
+                  "de": "Alarm gesperrt"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_siren_arming"
       },
       {
         "title": {
@@ -659,6 +992,28 @@
       },
       {
         "title": {
+          "en": "Stop sound playback",
+          "de": "Soundwiedergabe stoppen"
+        },
+        "titleFormatted": {
+          "en": "Stop sound playback",
+          "de": "Soundwiedergabe stoppen"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            },
+            "filter": "driver_id=HmIP-MP3P&capabilities=button.stop"
+          }
+        ],
+        "id": "stop_sound_file"
+      },
+      {
+        "title": {
           "en": "Toggle garage light",
           "de": "Garagenlicht umschalten"
         },
@@ -753,6 +1108,116 @@
       ],
       "energy": {
         "batteries": ["AAA", "AAA"]
+      }
+    },
+    {
+      "id": "HM-SCI-3-FM",
+      "name": {
+        "en": "HM-SCI-3-FM",
+        "de": "HM-SCI-3-FM"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "alarm_contact",
+        "alarm_contact.second",
+        "alarm_contact.third",
+        "alarm_battery"
+      ],
+      "images": {
+        "small": "/drivers/HM-SCI-3-FM/assets/images/small.png",
+        "large": "/drivers/HM-SCI-3-FM/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "energy": {
+        "batteries": ["CR2032"]
+      },
+      "capabilitiesOptions": {
+        "alarm_contact": {
+          "title": {
+            "en": "Contact 1",
+            "de": "Kontakt 1"
+          }
+        },
+        "alarm_contact.second": {
+          "title": {
+            "en": "Contact 2",
+            "de": "Kontakt 2"
+          }
+        },
+        "alarm_contact.third": {
+          "title": {
+            "en": "Contact 3",
+            "de": "Kontakt 3"
+          }
+        }
+      }
+    },
+    {
+      "id": "HM-Sec-Sir-WM",
+      "name": {
+        "en": "HM-Sec-Sir-WM",
+        "de": "HM-Sec-Sir-WM"
+      },
+      "class": "siren",
+      "capabilities": [
+        "onoff",
+        "onoff.perimeter",
+        "onoff.interior",
+        "homematic_siren_arming",
+        "alarm_tamper",
+        "alarm_battery"
+      ],
+      "images": {
+        "small": "/drivers/HM-Sec-Sir-WM/assets/images/small.png",
+        "large": "/drivers/HM-Sec-Sir-WM/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "energy": {
+        "batteries": ["C", "C"]
+      },
+      "capabilitiesOptions": {
+        "onoff": {
+          "title": {
+            "en": "Panic alarm",
+            "de": "Panikalarm"
+          }
+        },
+        "onoff.perimeter": {
+          "title": {
+            "en": "Perimeter alarm",
+            "de": "Außenhaut-Alarm"
+          }
+        },
+        "onoff.interior": {
+          "title": {
+            "en": "Interior alarm",
+            "de": "Innenraum-Alarm"
+          }
+        }
       }
     },
     {
@@ -1107,6 +1572,32 @@
       ]
     },
     {
+      "id": "HmIP-BSL",
+      "name": {
+        "en": "HmIP-BSL",
+        "de": "HmIP-BSL"
+      },
+      "class": "light",
+      "capabilities": ["onoff"],
+      "images": {
+        "small": "/drivers/HmIP-BSL/assets/images/small.png",
+        "large": "/drivers/HmIP-BSL/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-BSM",
       "name": {
         "en": "HmIP-BSM"
@@ -1175,6 +1666,32 @@
       ]
     },
     {
+      "id": "HmIP-DBB",
+      "name": {
+        "en": "HmIP-DBB",
+        "de": "HmIP-DBB"
+      },
+      "class": "button",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-DBB/assets/images/small.png",
+        "large": "/drivers/HmIP-DBB/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-DLD",
       "name": {
         "en": "HmIP-DLD"
@@ -1184,6 +1701,84 @@
       "images": {
         "large": "/drivers/HmIP-DLD/assets/images/large.png",
         "small": "/drivers/HmIP-DLD/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-DLP",
+      "name": {
+        "en": "HmIP-DLP",
+        "de": "HmIP-DLP"
+      },
+      "class": "lock",
+      "capabilities": ["alarm_contact"],
+      "images": {
+        "small": "/drivers/HmIP-DLP/assets/images/small.png",
+        "large": "/drivers/HmIP-DLP/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-DLS",
+      "name": {
+        "en": "HmIP-DLS",
+        "de": "HmIP-DLS"
+      },
+      "class": "sensor",
+      "capabilities": ["homematic_lock_state"],
+      "images": {
+        "small": "/drivers/HmIP-DLS/assets/images/small.png",
+        "large": "/drivers/HmIP-DLS/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-DRBLI4",
+      "name": {
+        "en": "HmIP-DRBLI4",
+        "de": "HmIP-DRBLI4"
+      },
+      "class": "windowcoverings",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-DRBLI4/assets/images/small.png",
+        "large": "/drivers/HmIP-DRBLI4/assets/images/large.png"
       },
       "pair": [
         {
@@ -1300,6 +1895,115 @@
       ]
     },
     {
+      "id": "HmIP-DSD-PCB",
+      "name": {
+        "en": "HmIP-DSD-PCB",
+        "de": "HmIP-DSD-PCB"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-DSD-PCB/assets/images/small.png",
+        "large": "/drivers/HmIP-DSD-PCB/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-ESI",
+      "name": {
+        "en": "HmIP-ESI",
+        "de": "HmIP-ESI"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_power",
+        "meter_power",
+        "meter_power.tariff1",
+        "meter_power.tariff2",
+        "meter_gas",
+        "homematic_gas_flow"
+      ],
+      "images": {
+        "small": "/drivers/HmIP-ESI/assets/images/small.png",
+        "large": "/drivers/HmIP-ESI/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "capabilitiesOptions": {
+        "meter_power": {
+          "title": {
+            "en": "Energy total",
+            "de": "Energie gesamt"
+          }
+        },
+        "meter_power.tariff1": {
+          "title": {
+            "en": "Energy channel 3",
+            "de": "Energie Kanal 3"
+          }
+        },
+        "meter_power.tariff2": {
+          "title": {
+            "en": "Energy channel 4",
+            "de": "Energie Kanal 4"
+          }
+        }
+      }
+    },
+    {
+      "id": "HmIP-FAL230-C10",
+      "name": {
+        "en": "HmIP-FAL230-C10",
+        "de": "HmIP-FAL230-C10"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "homematic_valve_active",
+        "alarm_generic.dew_point",
+        "alarm_generic.emergency"
+      ],
+      "images": {
+        "small": "/drivers/HmIP-FAL230-C10/assets/images/small.png",
+        "large": "/drivers/HmIP-FAL230-C10/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-FALMOT-C12",
       "name": {
         "en": "HmIP-FALMOT-C12",
@@ -1378,6 +2082,32 @@
       "images": {
         "large": "/drivers/HmIP-FCI1/assets/images/large.png",
         "small": "/drivers/HmIP-FCI1/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-FCI6",
+      "name": {
+        "en": "HmIP-FCI6",
+        "de": "HmIP-FCI6"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-FCI6/assets/images/small.png",
+        "large": "/drivers/HmIP-FCI6/assets/images/large.png"
       },
       "pair": [
         {
@@ -1606,6 +2336,188 @@
       ]
     },
     {
+      "id": "HmIP-FWI",
+      "name": {
+        "en": "HmIP-FWI",
+        "de": "HmIP-FWI"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-FWI/assets/images/small.png",
+        "large": "/drivers/HmIP-FWI/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-HDM1",
+      "name": {
+        "en": "HmIP-HDM1",
+        "de": "HmIP-HDM1"
+      },
+      "class": "windowcoverings",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-HDM1/assets/images/small.png",
+        "large": "/drivers/HmIP-HDM1/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-HDM2",
+      "name": {
+        "en": "HmIP-HDM2",
+        "de": "HmIP-HDM2"
+      },
+      "class": "windowcoverings",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-HDM2/assets/images/small.png",
+        "large": "/drivers/HmIP-HDM2/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-KRC4",
+      "name": {
+        "en": "HmIP-KRC4",
+        "de": "HmIP-KRC4"
+      },
+      "class": "button",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-KRC4/assets/images/small.png",
+        "large": "/drivers/HmIP-KRC4/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-KRCA",
+      "name": {
+        "en": "HmIP-KRCA",
+        "de": "HmIP-KRCA"
+      },
+      "class": "button",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-KRCA/assets/images/small.png",
+        "large": "/drivers/HmIP-KRCA/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-LSC",
+      "name": {
+        "en": "HmIP-LSC",
+        "de": "HmIP-LSC"
+      },
+      "class": "light",
+      "capabilities": ["onoff"],
+      "images": {
+        "small": "/drivers/HmIP-LSC/assets/images/small.png",
+        "large": "/drivers/HmIP-LSC/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-MIO16-PCB",
+      "name": {
+        "en": "HmIP-MIO16-PCB",
+        "de": "HmIP-MIO16-PCB"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-MIO16-PCB/assets/images/small.png",
+        "large": "/drivers/HmIP-MIO16-PCB/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-MIOB",
       "name": {
         "en": "HmIP-MIOB",
@@ -1718,6 +2630,32 @@
       ]
     },
     {
+      "id": "HmIP-MOD-RC8",
+      "name": {
+        "en": "HmIP-MOD-RC8",
+        "de": "HmIP-MOD-RC8"
+      },
+      "class": "button",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-MOD-RC8/assets/images/small.png",
+        "large": "/drivers/HmIP-MOD-RC8/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-MOD-TM",
       "name": {
         "en": "HmIP-MOD-TM"
@@ -1727,6 +2665,32 @@
       "images": {
         "large": "/drivers/HmIP-MOD-TM/assets/images/large.png",
         "small": "/drivers/HmIP-MOD-TM/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-MP3P",
+      "name": {
+        "en": "HmIP-MP3P",
+        "de": "HmIP-MP3P"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-MP3P/assets/images/small.png",
+        "large": "/drivers/HmIP-MP3P/assets/images/large.png"
       },
       "pair": [
         {
@@ -1843,6 +2807,40 @@
       ]
     },
     {
+      "id": "HmIP-PMFS",
+      "name": {
+        "en": "HmIP-PMFS",
+        "de": "HmIP-PMFS"
+      },
+      "class": "sensor",
+      "capabilities": ["alarm_generic.power_failure"],
+      "images": {
+        "small": "/drivers/HmIP-PMFS/assets/images/small.png",
+        "large": "/drivers/HmIP-PMFS/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "capabilitiesOptions": {
+        "alarm_generic.power_failure": {
+          "title": {
+            "en": "Power failure",
+            "de": "Netzausfall"
+          }
+        }
+      }
+    },
+    {
       "id": "HmIP-RC8",
       "name": {
         "en": "HmIP-RC8"
@@ -1852,6 +2850,58 @@
       "images": {
         "large": "/drivers/HmIP-RC8/assets/images/large.png",
         "small": "/drivers/HmIP-RC8/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-RCB1",
+      "name": {
+        "en": "HmIP-RCB1",
+        "de": "HmIP-RCB1"
+      },
+      "class": "button",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-RCB1/assets/images/small.png",
+        "large": "/drivers/HmIP-RCB1/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-RCV-50",
+      "name": {
+        "en": "HmIP-RCV-50",
+        "de": "HmIP-RCV-50"
+      },
+      "class": "button",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-RCV-50/assets/images/small.png",
+        "large": "/drivers/HmIP-RCV-50/assets/images/large.png"
       },
       "pair": [
         {
@@ -1973,6 +3023,58 @@
       ]
     },
     {
+      "id": "HmIP-SFD",
+      "name": {
+        "en": "HmIP-SFD",
+        "de": "HmIP-SFD"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_temperature",
+        "measure_humidity",
+        "homematic_particulate.pm1",
+        "homematic_particulate.pm25",
+        "homematic_particulate.pm10"
+      ],
+      "images": {
+        "small": "/drivers/HmIP-SFD/assets/images/small.png",
+        "large": "/drivers/HmIP-SFD/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "capabilitiesOptions": {
+        "homematic_particulate.pm1": {
+          "title": {
+            "en": "PM1 concentration",
+            "de": "PM1-Konzentration"
+          }
+        },
+        "homematic_particulate.pm25": {
+          "title": {
+            "en": "PM2.5 concentration",
+            "de": "PM2,5-Konzentration"
+          }
+        },
+        "homematic_particulate.pm10": {
+          "title": {
+            "en": "PM10 concentration",
+            "de": "PM10-Konzentration"
+          }
+        }
+      }
+    },
+    {
       "id": "HmIP-SLO",
       "name": {
         "en": "HmIP-SLO"
@@ -2073,6 +3175,62 @@
       ]
     },
     {
+      "id": "HmIP-SMO230-A",
+      "name": {
+        "en": "HmIP-SMO230-A",
+        "de": "HmIP-SMO230-A"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-SMO230-A/assets/images/small.png",
+        "large": "/drivers/HmIP-SMO230-A/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-SPDR",
+      "name": {
+        "en": "HmIP-SPDR",
+        "de": "HmIP-SPDR"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "homematic_passage_count",
+        "alarm_generic.overflow",
+        "homematic_passage_direction"
+      ],
+      "images": {
+        "small": "/drivers/HmIP-SPDR/assets/images/small.png",
+        "large": "/drivers/HmIP-SPDR/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-SPI",
       "name": {
         "en": "HmIP-SPI"
@@ -2096,6 +3254,44 @@
           "template": "add_devices"
         }
       ]
+    },
+    {
+      "id": "HmIP-SRD",
+      "name": {
+        "en": "HmIP-SRD",
+        "de": "HmIP-SRD"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "alarm_water",
+        "measure_temperature",
+        "homematic_heater_active"
+      ],
+      "images": {
+        "small": "/drivers/HmIP-SRD/assets/images/small.png",
+        "large": "/drivers/HmIP-SRD/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "capabilitiesOptions": {
+        "alarm_water": {
+          "title": {
+            "en": "Rain detected",
+            "de": "Regen erkannt"
+          }
+        }
+      }
     },
     {
       "id": "HmIP-SRH",
@@ -2128,7 +3324,11 @@
         "en": "HmIP-STE2-PCB"
       },
       "class": "sensor",
-      "capabilities": ["measure_temperature"],
+      "capabilities": [
+        "measure_temperature",
+        "measure_temperature.second",
+        "measure_temperature.difference"
+      ],
       "images": {
         "large": "/drivers/HmIP-STE2-PCB/assets/images/large.png",
         "small": "/drivers/HmIP-STE2-PCB/assets/images/small.png"
@@ -2145,7 +3345,27 @@
           "id": "add_devices",
           "template": "add_devices"
         }
-      ]
+      ],
+      "capabilitiesOptions": {
+        "measure_temperature": {
+          "title": {
+            "en": "Temperature 1",
+            "de": "Temperatur 1"
+          }
+        },
+        "measure_temperature.second": {
+          "title": {
+            "en": "Temperature 2",
+            "de": "Temperatur 2"
+          }
+        },
+        "measure_temperature.difference": {
+          "title": {
+            "en": "Temperature difference (CCU)",
+            "de": "Temperaturdifferenz (CCU)"
+          }
+        }
+      }
     },
     {
       "id": "HmIP-STH",
@@ -2454,6 +3674,32 @@
       ]
     },
     {
+      "id": "HmIP-UDI-SMI55",
+      "name": {
+        "en": "HmIP-UDI-SMI55",
+        "de": "HmIP-UDI-SMI55"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-UDI-SMI55/assets/images/small.png",
+        "large": "/drivers/HmIP-UDI-SMI55/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-USBSM",
       "name": {
         "en": "HmIP-USBSM"
@@ -2504,6 +3750,58 @@
       ]
     },
     {
+      "id": "HmIP-WGT",
+      "name": {
+        "en": "HmIP-WGT",
+        "de": "HmIP-WGT"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-WGT/assets/images/small.png",
+        "large": "/drivers/HmIP-WGT/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-WGTC",
+      "name": {
+        "en": "HmIP-WGTC",
+        "de": "HmIP-WGTC"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-WGTC/assets/images/small.png",
+        "large": "/drivers/HmIP-WGTC/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-WHS2",
       "name": {
         "en": "HmIP-WHS2"
@@ -2529,6 +3827,32 @@
       ]
     },
     {
+      "id": "HmIP-WKP",
+      "name": {
+        "en": "HmIP-WKP",
+        "de": "HmIP-WKP"
+      },
+      "class": "sensor",
+      "capabilities": ["alarm_tamper"],
+      "images": {
+        "small": "/drivers/HmIP-WKP/assets/images/small.png",
+        "large": "/drivers/HmIP-WKP/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIP-WRC6",
       "name": {
         "en": "HmIP-WRC6"
@@ -2538,6 +3862,84 @@
       "images": {
         "large": "/drivers/HmIP-WRC6/assets/images/large.png",
         "small": "/drivers/HmIP-WRC6/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-WRC6-230",
+      "name": {
+        "en": "HmIP-WRC6-230",
+        "de": "HmIP-WRC6-230"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-WRC6-230/assets/images/small.png",
+        "large": "/drivers/HmIP-WRC6-230/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-WRCD",
+      "name": {
+        "en": "HmIP-WRCD",
+        "de": "HmIP-WRCD"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-WRCD/assets/images/small.png",
+        "large": "/drivers/HmIP-WRCD/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIP-WRCR",
+      "name": {
+        "en": "HmIP-WRCR",
+        "de": "HmIP-WRCR"
+      },
+      "class": "button",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIP-WRCR/assets/images/small.png",
+        "large": "/drivers/HmIP-WRCR/assets/images/large.png"
       },
       "pair": [
         {
@@ -2855,6 +4257,58 @@
       }
     },
     {
+      "id": "HmIPW-DRBL4",
+      "name": {
+        "en": "HmIPW-DRBL4",
+        "de": "HmIPW-DRBL4"
+      },
+      "class": "windowcoverings",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIPW-DRBL4/assets/images/small.png",
+        "large": "/drivers/HmIPW-DRBL4/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIPW-DRD3",
+      "name": {
+        "en": "HmIPW-DRD3",
+        "de": "HmIPW-DRD3"
+      },
+      "class": "light",
+      "capabilities": ["onoff"],
+      "images": {
+        "small": "/drivers/HmIPW-DRD3/assets/images/small.png",
+        "large": "/drivers/HmIPW-DRD3/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIPW-DRI16",
       "name": {
         "en": "HmIPW-DRI16"
@@ -2880,6 +4334,32 @@
       ]
     },
     {
+      "id": "HmIPW-DRI32",
+      "name": {
+        "en": "HmIPW-DRI32",
+        "de": "HmIPW-DRI32"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIPW-DRI32/assets/images/small.png",
+        "large": "/drivers/HmIPW-DRI32/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
       "id": "HmIPW-DRS8",
       "name": {
         "en": "HmIPW-DRS8"
@@ -2889,6 +4369,94 @@
       "images": {
         "large": "/drivers/HmIPW-DRS8/assets/images/large.png",
         "small": "/drivers/HmIPW-DRS8/assets/images/small.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIPW-FAL230-C6",
+      "name": {
+        "en": "HmIPW-FAL230-C6",
+        "de": "HmIPW-FAL230-C6"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "homematic_valve_active",
+        "alarm_generic.dew_point",
+        "alarm_generic.emergency"
+      ],
+      "images": {
+        "small": "/drivers/HmIPW-FAL230-C6/assets/images/small.png",
+        "large": "/drivers/HmIPW-FAL230-C6/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIPW-FIO6",
+      "name": {
+        "en": "HmIPW-FIO6",
+        "de": "HmIPW-FIO6"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIPW-FIO6/assets/images/small.png",
+        "large": "/drivers/HmIPW-FIO6/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIPW-SCTHD",
+      "name": {
+        "en": "HmIPW-SCTHD",
+        "de": "HmIPW-SCTHD"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_temperature",
+        "measure_humidity",
+        "target_temperature",
+        "homematic_thermostat_boost",
+        "measure_co2"
+      ],
+      "images": {
+        "small": "/drivers/HmIPW-SCTHD/assets/images/small.png",
+        "large": "/drivers/HmIPW-SCTHD/assets/images/large.png"
       },
       "pair": [
         {
@@ -2962,6 +4530,96 @@
       "repair": [
         {
           "id": "heating_profiles"
+        }
+      ]
+    },
+    {
+      "id": "HmIPW-STHD",
+      "name": {
+        "en": "HmIPW-STHD",
+        "de": "HmIPW-STHD"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_temperature",
+        "measure_humidity",
+        "target_temperature",
+        "homematic_thermostat_boost",
+        "measure_co2"
+      ],
+      "images": {
+        "small": "/drivers/HmIPW-STHD/assets/images/small.png",
+        "large": "/drivers/HmIPW-STHD/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIPW-WRC6",
+      "name": {
+        "en": "HmIPW-WRC6",
+        "de": "HmIPW-WRC6"
+      },
+      "class": "sensor",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/HmIPW-WRC6/assets/images/small.png",
+        "large": "/drivers/HmIPW-WRC6/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ]
+    },
+    {
+      "id": "HmIPW-WTH",
+      "name": {
+        "en": "HmIPW-WTH",
+        "de": "HmIPW-WTH"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_temperature",
+        "measure_humidity",
+        "target_temperature",
+        "homematic_thermostat_boost",
+        "measure_co2"
+      ],
+      "images": {
+        "small": "/drivers/HmIPW-WTH/assets/images/small.png",
+        "large": "/drivers/HmIPW-WTH/assets/images/large.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
         }
       ]
     },
@@ -3112,6 +4770,17 @@
       "insights": false,
       "icon": "/assets/detection-active.svg"
     },
+    "homematic_display_text": {
+      "type": "string",
+      "title": {
+        "en": "Display text",
+        "de": "Displaytext"
+      },
+      "getable": false,
+      "setable": true,
+      "uiComponent": null,
+      "insights": false
+    },
     "homematic_garage_command": {
       "type": "enum",
       "title": {
@@ -3213,6 +4882,67 @@
       "insights": false,
       "icon": "/assets/garage-ventilation.svg"
     },
+    "homematic_gas_flow": {
+      "type": "number",
+      "title": {
+        "en": "Gas flow",
+        "de": "Gasdurchfluss"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": true,
+      "units": {
+        "en": "m³/h",
+        "de": "m³/h"
+      },
+      "decimals": 3
+    },
+    "homematic_heater_active": {
+      "type": "boolean",
+      "title": {
+        "en": "Heater active",
+        "de": "Heizung aktiv"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": false
+    },
+    "homematic_lock_state": {
+      "type": "enum",
+      "title": {
+        "en": "Lock state",
+        "de": "Schlosszustand"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": false,
+      "values": [
+        {
+          "id": "UNKNOWN",
+          "title": {
+            "en": "Unknown",
+            "de": "Unbekannt"
+          }
+        },
+        {
+          "id": "LOCKED",
+          "title": {
+            "en": "Locked",
+            "de": "Verriegelt"
+          }
+        },
+        {
+          "id": "UNLOCKED",
+          "title": {
+            "en": "Unlocked",
+            "de": "Entriegelt"
+          }
+        }
+      ]
+    },
     "homematic_measure_valve": {
       "type": "number",
       "title": {
@@ -3228,6 +4958,58 @@
       "min": 0,
       "max": 100,
       "step": 1
+    },
+    "homematic_particulate": {
+      "type": "number",
+      "title": {
+        "en": "Particulate concentration",
+        "de": "Feinstaubkonzentration"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": true,
+      "units": {
+        "en": "µg/m³",
+        "de": "µg/m³"
+      },
+      "decimals": 2
+    },
+    "homematic_passage_count": {
+      "type": "number",
+      "title": {
+        "en": "Passage counter (0–127)",
+        "de": "Durchgangszähler (0–127)"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": true,
+      "min": 0,
+      "max": 127,
+      "decimals": 0
+    },
+    "homematic_passage_direction": {
+      "type": "boolean",
+      "title": {
+        "en": "Passage direction",
+        "de": "Durchgangsrichtung"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": false
+    },
+    "homematic_playing": {
+      "type": "boolean",
+      "title": {
+        "en": "Sound playing",
+        "de": "Wiedergabe aktiv"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": false
     },
     "homematic_rhs_state": {
       "type": "enum",
@@ -3261,6 +5043,131 @@
       "uiComponent": "picker",
       "getable": true,
       "setable": false
+    },
+    "homematic_signal_color": {
+      "type": "enum",
+      "title": {
+        "en": "Signal colour",
+        "de": "Signalfarbe"
+      },
+      "getable": true,
+      "setable": true,
+      "uiComponent": "picker",
+      "insights": false,
+      "values": [
+        {
+          "id": "BLACK",
+          "title": {
+            "en": "Off",
+            "de": "Aus"
+          }
+        },
+        {
+          "id": "BLUE",
+          "title": {
+            "en": "Blue",
+            "de": "Blau"
+          }
+        },
+        {
+          "id": "GREEN",
+          "title": {
+            "en": "Green",
+            "de": "Grün"
+          }
+        },
+        {
+          "id": "TURQUOISE",
+          "title": {
+            "en": "Turquoise",
+            "de": "Türkis"
+          }
+        },
+        {
+          "id": "RED",
+          "title": {
+            "en": "Red",
+            "de": "Rot"
+          }
+        },
+        {
+          "id": "PURPLE",
+          "title": {
+            "en": "Purple",
+            "de": "Violett"
+          }
+        },
+        {
+          "id": "YELLOW",
+          "title": {
+            "en": "Yellow",
+            "de": "Gelb"
+          }
+        },
+        {
+          "id": "WHITE",
+          "title": {
+            "en": "White",
+            "de": "Weiß"
+          }
+        }
+      ]
+    },
+    "homematic_siren_arming": {
+      "type": "enum",
+      "title": {
+        "en": "Siren arming",
+        "de": "Scharfschaltung"
+      },
+      "uiComponent": "picker",
+      "getable": true,
+      "setable": true,
+      "insights": false,
+      "values": [
+        {
+          "id": "0",
+          "title": {
+            "en": "Disarmed",
+            "de": "Unscharf"
+          }
+        },
+        {
+          "id": "1",
+          "title": {
+            "en": "Perimeter armed",
+            "de": "Außenhaut scharf"
+          }
+        },
+        {
+          "id": "2",
+          "title": {
+            "en": "All sensors armed",
+            "de": "Alle Sensoren scharf"
+          }
+        },
+        {
+          "id": "3",
+          "title": {
+            "en": "Alarm blocked",
+            "de": "Alarm gesperrt"
+          }
+        }
+      ]
+    },
+    "homematic_sound_file": {
+      "type": "number",
+      "title": {
+        "en": "Sound file (0 = internal)",
+        "de": "Sounddatei (0 = intern)"
+      },
+      "getable": true,
+      "setable": true,
+      "uiComponent": null,
+      "insights": false,
+      "min": 0,
+      "max": 252,
+      "step": 1,
+      "decimals": 0
     },
     "homematic_sunshine_duration": {
       "type": "number",
@@ -3345,6 +5252,17 @@
       "uiComponent": "picker",
       "getable": true,
       "setable": true
+    },
+    "homematic_valve_active": {
+      "type": "boolean",
+      "title": {
+        "en": "Heating output active",
+        "de": "Heizungsausgang aktiv"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": false
     },
     "homematic_wind_direction": {
       "type": "enum",

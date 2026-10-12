@@ -1,0 +1,34 @@
+{
+  "id": "HmIP-PMFS",
+  "name": {
+    "en": "HmIP-PMFS",
+    "de": "HmIP-PMFS"
+  },
+  "class": "sensor",
+  "capabilities": ["alarm_generic.power_failure"],
+  "images": {
+    "small": "/drivers/HmIP-PMFS/assets/images/small.png",
+    "large": "/drivers/HmIP-PMFS/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "capabilitiesOptions": {
+    "alarm_generic.power_failure": {
+      "title": {
+        "en": "Power failure",
+        "de": "Netzausfall"
+      }
+    }
+  }
+}

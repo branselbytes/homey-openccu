@@ -1,0 +1,26 @@
+{
+  "id": "HmIP-KRC4",
+  "name": {
+    "en": "HmIP-KRC4",
+    "de": "HmIP-KRC4"
+  },
+  "class": "button",
+  "capabilities": [],
+  "images": {
+    "small": "/drivers/HmIP-KRC4/assets/images/small.png",
+    "large": "/drivers/HmIP-KRC4/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

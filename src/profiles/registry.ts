@@ -1,6 +1,8 @@
 import type { MappingDecisionLog } from "../mapping/decision";
 import type { OpenCcuDevice } from "../domain/model";
 import { HMIP_PROFILES } from "./hmip";
+import { catalogAliases } from "./catalog-aliases";
+import { CATALOG_PROFILES } from "./catalog-expansion";
 import { ADDITIONAL_PROFILES } from "./additional-devices";
 
 import {
@@ -10,7 +12,15 @@ import {
   type ProfileConfigurationParameter,
 } from "./types";
 
-export const ALL_PROFILES = [...HMIP_PROFILES, ...ADDITIONAL_PROFILES];
+const BASE_PROFILES = [
+  ...HMIP_PROFILES,
+  ...ADDITIONAL_PROFILES,
+  ...CATALOG_PROFILES,
+];
+export const ALL_PROFILES = [
+  ...BASE_PROFILES,
+  ...catalogAliases(BASE_PROFILES),
+];
 
 export class ProfileRegistry {
   readonly #profiles: readonly DeviceProfile[];

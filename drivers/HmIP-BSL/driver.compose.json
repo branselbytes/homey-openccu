@@ -1,0 +1,26 @@
+{
+  "id": "HmIP-BSL",
+  "name": {
+    "en": "HmIP-BSL",
+    "de": "HmIP-BSL"
+  },
+  "class": "light",
+  "capabilities": ["onoff"],
+  "images": {
+    "small": "/drivers/HmIP-BSL/assets/images/small.png",
+    "large": "/drivers/HmIP-BSL/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}
