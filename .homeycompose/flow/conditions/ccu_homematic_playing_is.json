@@ -1,0 +1,45 @@
+{
+  "title": {
+    "en": "Check Sound playing",
+    "de": "Wiedergabe aktiv prüfen"
+  },
+  "titleFormatted": {
+    "en": "Sound playing !{{is|is not}} [[value]]",
+    "de": "Wiedergabe aktiv !{{ist|ist nicht}} [[value]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-MP3P|openccu-generic&capabilities=homematic_playing",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    },
+    {
+      "name": "value",
+      "type": "dropdown",
+      "title": {
+        "en": "Sound playing",
+        "de": "Wiedergabe aktiv"
+      },
+      "values": [
+        {
+          "id": "true",
+          "label": {
+            "en": "Yes",
+            "de": "Ja"
+          }
+        },
+        {
+          "id": "false",
+          "label": {
+            "en": "No",
+            "de": "Nein"
+          }
+        }
+      ]
+    }
+  ]
+}

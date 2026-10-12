@@ -1,3 +1,5 @@
+import { StatusUpdates } from "./status-updates";
+import type { StatusValue } from "./status-flow-controller";
 import type { Unsubscribe } from "../events/event-bus";
 import type { ConnectionState } from "../protocol/connection-supervisor";
 import type { OpenCcuSystemInformationResult } from "../protocol/jsonrpc/system-information";
@@ -17,6 +19,7 @@ export interface SystemDeviceRuntime {
 }
 
 export interface SystemDevicePort {
+  triggerStatusChanged?(capability: string, value: StatusValue): Promise<void>;
   setCapabilityValue(
     capability: string,
     value: string | number | boolean | null,
@@ -33,10 +36,21 @@ export class SystemDeviceController {
   #timer?: ReturnType<typeof setInterval>;
   #refreshPromise?: Promise<void>;
   #stopped = false;
+  readonly #updates: StatusUpdates;
 
   constructor(runtime: SystemDeviceRuntime, device: SystemDevicePort) {
     this.#runtime = runtime;
     this.#device = device;
+    this.#updates = new StatusUpdates(
+      (id, value) =>
+        device.setCapabilityValue(
+          id,
+          value as string | number | boolean | null,
+        ),
+      (id, value) =>
+        device.triggerStatusChanged?.(id, value) ?? Promise.resolve(),
+      (error) => device.error("Failed to update system status Flow", error),
+    );
   }
 
   async start(): Promise<void> {
@@ -53,6 +67,7 @@ export class SystemDeviceController {
 
   stop(): void {
     this.#stopped = true;
+    this.#updates.reset();
     this.#unsubscribe?.();
     this.#unsubscribe = undefined;
     if (this.#timer !== undefined) clearInterval(this.#timer);
@@ -70,29 +85,34 @@ export class SystemDeviceController {
   async #refresh(): Promise<void> {
     if (this.#stopped || this.#runtime.connectionState !== "healthy") return;
     try {
-      await this.#device.setCapabilityValue(
+      await this.#setValue(
         "openccu_measure_devices",
         this.#runtime.devices.size,
       );
       const result = await this.#runtime.refreshSystemInformation();
-      if (this.#stopped || result === undefined) return;
+      if (
+        this.#stopped ||
+        this.#runtime.connectionState !== "healthy" ||
+        result === undefined
+      )
+        return;
       const { information } = result;
       await Promise.all([
-        this.#device.setCapabilityValue(
+        this.#setValue(
           "openccu_measure_service_messages",
           information.serviceMessageCount ?? null,
         ),
-        this.#device.setCapabilityValue(
+        this.#setValue(
           "openccu_alarm_service_messages",
           information.serviceMessageCount === undefined
             ? null
             : information.serviceMessageCount > 0,
         ),
-        this.#device.setCapabilityValue(
+        this.#setValue(
           "openccu_measure_duty_cycle",
           information.dutyCycle ?? null,
         ),
-        this.#device.setCapabilityValue(
+        this.#setValue(
           "openccu_measure_carrier_sense",
           information.carrierSense ?? null,
         ),
@@ -102,8 +122,17 @@ export class SystemDeviceController {
     }
   }
 
+  #setValue(
+    capability: string,
+    value: string | number | boolean | null,
+  ): Promise<void> {
+    return this.#updates.update(capability, value, true);
+  }
+
   async #applyConnectionState(state: ConnectionState): Promise<void> {
-    await this.#device.setCapabilityValue("openccu_connection_status", state);
+    if (this.#stopped) return;
+    await this.#setValue("openccu_connection_status", state);
+    if (this.#stopped) return;
     if (state === "healthy") {
       await this.#device.setAvailable();
       await this.refresh();

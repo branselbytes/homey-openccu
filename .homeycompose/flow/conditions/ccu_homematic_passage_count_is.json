@@ -1,0 +1,74 @@
+{
+  "title": {
+    "en": "Check Passage counter (0–127)",
+    "de": "Durchgangszähler (0–127) prüfen"
+  },
+  "titleFormatted": {
+    "en": "Passage counter (0–127) !{{is|is not}} [[operator]] [[value]]",
+    "de": "Durchgangszähler (0–127) !{{ist|ist nicht}} [[operator]] [[value]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-SPDR|openccu-generic&capabilities=homematic_passage_count",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    },
+    {
+      "name": "operator",
+      "type": "dropdown",
+      "title": {
+        "en": "Comparison",
+        "de": "Vergleich"
+      },
+      "values": [
+        {
+          "id": "eq",
+          "label": {
+            "en": "=",
+            "de": "gleich"
+          }
+        },
+        {
+          "id": "gt",
+          "label": {
+            "en": ">",
+            "de": "größer als"
+          }
+        },
+        {
+          "id": "lt",
+          "label": {
+            "en": "<",
+            "de": "kleiner als"
+          }
+        },
+        {
+          "id": "gte",
+          "label": {
+            "en": "≥",
+            "de": "größer oder gleich"
+          }
+        },
+        {
+          "id": "lte",
+          "label": {
+            "en": "≤",
+            "de": "kleiner oder gleich"
+          }
+        }
+      ]
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "title": {
+        "en": "Passage counter (0–127)",
+        "de": "Durchgangszähler (0–127)"
+      }
+    }
+  ]
+}

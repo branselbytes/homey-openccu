@@ -315,3 +315,13 @@ start commands use one XML-RPC putParamset through the existing bounded queue;
 there is no new transport, scheduler, or Python/Home Assistant dependency.
 The catalog audit is a development-only read-only tool. See
 [the reference review](docs/reference-catalog-review.md) for scope and limits.
+
+## Complete custom-status Flow catalog (0.1.11)
+
+ADR 0031 defines the generated capability-level trigger/condition catalog and
+per-capability serialized status updates. Current-value tags remain Homey's
+capability tags; event tags add typed values and localized boolean/enum text.
+Explicit trigger IDs avoid duplicate SDK auto-triggers. Revision/epoch checks
+reject stale initial reads and stopped queues. System connection events and
+polled metrics share the same transition logic. The generator includes logical
+outputs and compatible generic devices and leaves existing cards untouched.

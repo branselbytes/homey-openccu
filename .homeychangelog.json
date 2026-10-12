@@ -42,5 +42,9 @@
   "0.1.10": {
     "en": "Add HM-SCI-3-FM and HM-Sec-Sir-WM. Show both STE2-PCB probes and the CCU temperature difference in the existing device. Expand Homematic IP radio/Wired profiles and verified model aliases; add siren arming, signal colour, display and sound Flow actions. Reference catalog coverage and advanced-function limits are documented.",
     "de": "HM-SCI-3-FM und HM-Sec-Sir-WM ergänzt. STE2-PCB zeigt beide Fühler und die CCU-Temperaturdifferenz im vorhandenen Gerät. HmIP-Funk-/Wired-Profile und geprüfte Modellvarianten erweitert; neue Flow-Aktionen für Scharfschaltung, Signalfarbe, Display und Sound. Referenzabdeckung und Grenzen erweiterter Funktionen dokumentiert."
+  },
+  "0.1.11": {
+    "en": "Complete custom-status Flow coverage: 26 change triggers and 26 conditions, typed value tags and readable status text. Add detection enable/disable and boost-off actions. Preserve existing Flows and suppress duplicate, initial and stale updates.",
+    "de": "Flow-Abdeckung für eigene Statuswerte ergänzt: 26 Änderungsauslöser und 26 Bedingungen mit Wert-Tags und lesbaren Statustexten. Erkennung aktivieren/deaktivieren und Boost ausschalten per Flow. Bestehende Flows bleiben erhalten; doppelte, initiale und veraltete Meldungen werden unterdrückt."
   }
 }

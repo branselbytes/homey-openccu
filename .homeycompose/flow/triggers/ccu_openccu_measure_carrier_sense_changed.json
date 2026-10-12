@@ -1,0 +1,32 @@
+{
+  "title": {
+    "en": "Carrier sense changed",
+    "de": "Carrier Sense hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "Carrier sense changed",
+    "de": "Carrier Sense hat sich geändert"
+  },
+  "tokens": [
+    {
+      "name": "value",
+      "type": "number",
+      "title": {
+        "en": "Carrier sense",
+        "de": "Carrier Sense"
+      },
+      "example": 1
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=openccu-system&capabilities=openccu_measure_carrier_sense",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

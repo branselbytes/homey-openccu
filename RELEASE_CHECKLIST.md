@@ -178,3 +178,18 @@ the six new Flow actions, matching EN/DE release notes and zero environment
 keys. Promotion and a subsequent read confirm state `test`, with 116 active
 drivers. No Live promotion, forum posting or manual Homey installation was
 performed.
+
+## 0.1.11 release preparation (2026-10-12)
+
+The owner explicitly authorized implementing the audited Flow gaps, committing,
+pushing and publishing the next beta, plus a combined forum draft for 0.1.10
+and 0.1.11. This release adds 26 custom-status triggers, 26 conditions and two
+actions. Shared status handling suppresses initial values and duplicates,
+serializes updates and rejects stale initialization reads. Passage direction
+is explicitly the last reported value rather than an atomic passage reading.
+
+Quality gate passed: `npm run check` (1,000 tests in 81 files, formatting,
+ESLint and application/test TypeScript), full `App.preprocess()` and
+`App._validate({ level: "publish" })`. Production binding tests exercise
+recorded/synthetic XML-RPC callbacks, status transitions and system polling.
+Physical hardware verification remains pending. Publication evidence follows.

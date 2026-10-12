@@ -1,0 +1,32 @@
+{
+  "title": {
+    "en": "Service messages changed",
+    "de": "Servicemeldungen hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "Service messages changed",
+    "de": "Servicemeldungen hat sich geändert"
+  },
+  "tokens": [
+    {
+      "name": "value",
+      "type": "number",
+      "title": {
+        "en": "Service messages",
+        "de": "Servicemeldungen"
+      },
+      "example": 1
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=openccu-system&capabilities=openccu_measure_service_messages",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

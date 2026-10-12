@@ -1,0 +1,41 @@
+{
+  "title": {
+    "en": "Detection active changed",
+    "de": "Erkennung aktiv hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "Detection active changed",
+    "de": "Erkennung aktiv hat sich geändert"
+  },
+  "tokens": [
+    {
+      "name": "value",
+      "type": "boolean",
+      "title": {
+        "en": "Detection active",
+        "de": "Erkennung aktiv"
+      },
+      "example": true
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "title": {
+        "en": "Status text",
+        "de": "Statustext"
+      },
+      "example": "Active"
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-SMI|HmIP-SMI55|HmIP-SMO-A|HmIP-SPI|HmIPW-SPI|openccu-generic&capabilities=homematic_detection_active",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

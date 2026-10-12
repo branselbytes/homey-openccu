@@ -1,0 +1,45 @@
+{
+  "title": {
+    "en": "Check Boost",
+    "de": "Boost prüfen"
+  },
+  "titleFormatted": {
+    "en": "Boost !{{is|is not}} [[value]]",
+    "de": "Boost !{{ist|ist nicht}} [[value]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HMIP-WTH|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-WGT|HmIP-WGTC|HmIP-eTRV-2|HmIPW-SCTHD|HmIPW-STH|HmIPW-STHD|HmIPW-WTH|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_boost",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    },
+    {
+      "name": "value",
+      "type": "dropdown",
+      "title": {
+        "en": "Boost",
+        "de": "Boost"
+      },
+      "values": [
+        {
+          "id": "true",
+          "label": {
+            "en": "Yes",
+            "de": "Ja"
+          }
+        },
+        {
+          "id": "false",
+          "label": {
+            "en": "No",
+            "de": "Nein"
+          }
+        }
+      ]
+    }
+  ]
+}

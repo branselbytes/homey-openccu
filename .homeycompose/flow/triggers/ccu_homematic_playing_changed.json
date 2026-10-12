@@ -1,0 +1,41 @@
+{
+  "title": {
+    "en": "Sound playing changed",
+    "de": "Wiedergabe aktiv hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "Sound playing changed",
+    "de": "Wiedergabe aktiv hat sich geändert"
+  },
+  "tokens": [
+    {
+      "name": "value",
+      "type": "boolean",
+      "title": {
+        "en": "Sound playing",
+        "de": "Wiedergabe aktiv"
+      },
+      "example": true
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "title": {
+        "en": "Status text",
+        "de": "Statustext"
+      },
+      "example": "Active"
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-MP3P|openccu-generic&capabilities=homematic_playing",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

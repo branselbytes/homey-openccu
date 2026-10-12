@@ -1,3 +1,4 @@
+import { registerStatusFlowCards } from "./src/homey/status-flow-controller";
 import Homey from "homey";
 import { isIP } from "node:net";
 
@@ -100,6 +101,7 @@ export = class OpenCcuApp extends Homey.App {
     await this.#controller.start();
     registerThermostatFlowCards(this.homey.flow);
     registerCatalogFlowCards(this.homey.flow);
+    registerStatusFlowCards(this.homey.flow);
     registerGarageFlowCards(this.homey.flow);
     registerHandleFlowCards(this.homey.flow);
     registerHubFlowCards(this.homey.flow, this.runtimeProvider);

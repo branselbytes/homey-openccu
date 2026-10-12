@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "io.github.branselbytes.openccu",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "compatibility": ">=12.9.0",
   "sdk": 3,
   "name": {
@@ -78,6 +78,999 @@
   },
   "flow": {
     "triggers": [
+      {
+        "title": {
+          "en": "Detection active changed",
+          "de": "Erkennung aktiv hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Detection active changed",
+          "de": "Erkennung aktiv hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "boolean",
+            "title": {
+              "en": "Detection active",
+              "de": "Erkennung aktiv"
+            },
+            "example": true
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status text",
+              "de": "Statustext"
+            },
+            "example": "Active"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SMI|HmIP-SMI55|HmIP-SMO-A|HmIP-SPI|HmIPW-SPI|openccu-generic&capabilities=homematic_detection_active",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_detection_active_changed"
+      },
+      {
+        "title": {
+          "en": "Gas flow changed",
+          "de": "Gasdurchfluss hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Gas flow changed",
+          "de": "Gasdurchfluss hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Gas flow",
+              "de": "Gasdurchfluss"
+            },
+            "example": 1
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-ESI|openccu-generic&capabilities=homematic_gas_flow",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_gas_flow_changed"
+      },
+      {
+        "title": {
+          "en": "Heater active changed",
+          "de": "Heizung aktiv hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Heater active changed",
+          "de": "Heizung aktiv hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "boolean",
+            "title": {
+              "en": "Heater active",
+              "de": "Heizung aktiv"
+            },
+            "example": true
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status text",
+              "de": "Statustext"
+            },
+            "example": "Active"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SRD|openccu-generic&capabilities=homematic_heater_active",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_heater_active_changed"
+      },
+      {
+        "title": {
+          "en": "Lock state changed",
+          "de": "Schlosszustand hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Lock state changed",
+          "de": "Schlosszustand hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "string",
+            "title": {
+              "en": "Lock state",
+              "de": "Schlosszustand"
+            },
+            "example": "UNKNOWN"
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status text",
+              "de": "Statustext"
+            },
+            "example": "Unknown"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-DLS|openccu-generic&capabilities=homematic_lock_state",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_lock_state_changed"
+      },
+      {
+        "title": {
+          "en": "Valve changed",
+          "de": "Ventilöffnung hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Valve changed",
+          "de": "Ventilöffnung hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Valve",
+              "de": "Ventilöffnung"
+            },
+            "example": 1
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-FALMOT-C12|HmIP-eTRV-2|openccu-generic&capabilities=homematic_measure_valve",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_measure_valve_changed"
+      },
+      {
+        "title": {
+          "en": "PM1 concentration changed",
+          "de": "PM1-Konzentration hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "PM1 concentration changed",
+          "de": "PM1-Konzentration hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "PM1 concentration",
+              "de": "PM1-Konzentration"
+            },
+            "example": 1
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SFD|openccu-generic&capabilities=homematic_particulate.pm1",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_particulate_pm1_changed"
+      },
+      {
+        "title": {
+          "en": "PM10 concentration changed",
+          "de": "PM10-Konzentration hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "PM10 concentration changed",
+          "de": "PM10-Konzentration hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "PM10 concentration",
+              "de": "PM10-Konzentration"
+            },
+            "example": 1
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SFD|openccu-generic&capabilities=homematic_particulate.pm10",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_particulate_pm10_changed"
+      },
+      {
+        "title": {
+          "en": "PM2.5 concentration changed",
+          "de": "PM2,5-Konzentration hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "PM2.5 concentration changed",
+          "de": "PM2,5-Konzentration hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "PM2.5 concentration",
+              "de": "PM2,5-Konzentration"
+            },
+            "example": 1
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SFD|openccu-generic&capabilities=homematic_particulate.pm25",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_particulate_pm25_changed"
+      },
+      {
+        "title": {
+          "en": "Passage counter (0–127) changed",
+          "de": "Durchgangszähler (0–127) hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Passage counter (0–127) changed",
+          "de": "Durchgangszähler (0–127) hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Passage counter (0–127)",
+              "de": "Durchgangszähler (0–127)"
+            },
+            "example": 1
+          },
+          {
+            "name": "direction",
+            "type": "string",
+            "title": {
+              "en": "Last reported direction value",
+              "de": "Zuletzt gemeldeter Richtungswert"
+            },
+            "example": "Yes"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SPDR|openccu-generic&capabilities=homematic_passage_count",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_passage_count_changed"
+      },
+      {
+        "title": {
+          "en": "Passage direction changed",
+          "de": "Durchgangsrichtung hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Passage direction changed",
+          "de": "Durchgangsrichtung hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "boolean",
+            "title": {
+              "en": "Passage direction",
+              "de": "Durchgangsrichtung"
+            },
+            "example": true
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status text",
+              "de": "Statustext"
+            },
+            "example": "Active"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SPDR|openccu-generic&capabilities=homematic_passage_direction",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_passage_direction_changed"
+      },
+      {
+        "title": {
+          "en": "Sound playing changed",
+          "de": "Wiedergabe aktiv hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Sound playing changed",
+          "de": "Wiedergabe aktiv hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "boolean",
+            "title": {
+              "en": "Sound playing",
+              "de": "Wiedergabe aktiv"
+            },
+            "example": true
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status text",
+              "de": "Statustext"
+            },
+            "example": "Active"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-MP3P|openccu-generic&capabilities=homematic_playing",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_playing_changed"
+      },
+      {
+        "title": {
+          "en": "Signal colour changed",
+          "de": "Signalfarbe hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Signal colour changed",
+          "de": "Signalfarbe hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "string",
+            "title": {
+              "en": "Signal colour",
+              "de": "Signalfarbe"
+            },
+            "example": "BLACK"
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status text",
+              "de": "Statustext"
+            },
+            "example": "Off"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-BSL|HmIP-MP3P|HmIP-WRC6-230|HmIPW-WRC6|openccu-generic&capabilities=homematic_signal_color",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_signal_color_changed"
+      },
+      {
+        "title": {
+          "en": "Siren arming changed",
+          "de": "Scharfschaltung hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Siren arming changed",
+          "de": "Scharfschaltung hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "string",
+            "title": {
+              "en": "Siren arming",
+              "de": "Scharfschaltung"
+            },
+            "example": "0"
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status text",
+              "de": "Statustext"
+            },
+            "example": "Disarmed"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HM-Sec-Sir-WM|openccu-generic&capabilities=homematic_siren_arming",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_siren_arming_changed"
+      },
+      {
+        "title": {
+          "en": "Sound file (0 = internal) changed",
+          "de": "Sounddatei (0 = intern) hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Sound file (0 = internal) changed",
+          "de": "Sounddatei (0 = intern) hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Sound file (0 = internal)",
+              "de": "Sounddatei (0 = intern)"
+            },
+            "example": 1
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-MP3P|openccu-generic&capabilities=homematic_sound_file",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_sound_file_changed"
+      },
+      {
+        "title": {
+          "en": "Sunshine duration changed",
+          "de": "Sonnenscheindauer hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Sunshine duration changed",
+          "de": "Sonnenscheindauer hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Sunshine duration",
+              "de": "Sonnenscheindauer"
+            },
+            "example": 1
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SWO-B|HmIP-SWO-PL|HmIP-SWO-PR|openccu-generic&capabilities=homematic_sunshine_duration",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_sunshine_duration_changed"
+      },
+      {
+        "title": {
+          "en": "Boost changed",
+          "de": "Boost hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Boost changed",
+          "de": "Boost hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "boolean",
+            "title": {
+              "en": "Boost",
+              "de": "Boost"
+            },
+            "example": true
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status text",
+              "de": "Statustext"
+            },
+            "example": "Active"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HMIP-WTH|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-WGT|HmIP-WGTC|HmIP-eTRV-2|HmIPW-SCTHD|HmIPW-STH|HmIPW-STHD|HmIPW-WTH|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_boost",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_thermostat_boost_changed"
+      },
+      {
+        "title": {
+          "en": "Mode changed",
+          "de": "Modus hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Mode changed",
+          "de": "Modus hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "string",
+            "title": {
+              "en": "Mode",
+              "de": "Modus"
+            },
+            "example": "0"
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status text",
+              "de": "Statustext"
+            },
+            "example": "Auto"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HMIP-WTH|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-eTRV-2|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_mode",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_thermostat_mode_changed"
+      },
+      {
+        "title": {
+          "en": "Weekprofile changed",
+          "de": "Wochenprofil hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Weekprofile changed",
+          "de": "Wochenprofil hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "string",
+            "title": {
+              "en": "Weekprofile",
+              "de": "Wochenprofil"
+            },
+            "example": "1"
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status text",
+              "de": "Statustext"
+            },
+            "example": "1"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HMIP-WTH|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-eTRV-2|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_weekprofile",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_thermostat_weekprofile_changed"
+      },
+      {
+        "title": {
+          "en": "Heating output active changed",
+          "de": "Heizungsausgang aktiv hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Heating output active changed",
+          "de": "Heizungsausgang aktiv hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "boolean",
+            "title": {
+              "en": "Heating output active",
+              "de": "Heizungsausgang aktiv"
+            },
+            "example": true
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status text",
+              "de": "Statustext"
+            },
+            "example": "Active"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-FAL230-C10|HmIPW-FAL230-C6|openccu-generic&capabilities=homematic_valve_active",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_valve_active_changed"
+      },
+      {
+        "title": {
+          "en": "Wind direction changed",
+          "de": "Windrichtung hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Wind direction changed",
+          "de": "Windrichtung hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "string",
+            "title": {
+              "en": "Wind direction",
+              "de": "Windrichtung"
+            },
+            "example": "n"
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status text",
+              "de": "Statustext"
+            },
+            "example": "North"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SWO-PR|openccu-generic&capabilities=homematic_wind_direction",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_homematic_wind_direction_changed"
+      },
+      {
+        "title": {
+          "en": "Service message active changed",
+          "de": "Servicemeldung aktiv hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Service message active changed",
+          "de": "Servicemeldung aktiv hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "boolean",
+            "title": {
+              "en": "Service message active",
+              "de": "Servicemeldung aktiv"
+            },
+            "example": true
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status text",
+              "de": "Statustext"
+            },
+            "example": "Active"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=openccu-system&capabilities=openccu_alarm_service_messages",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_openccu_alarm_service_messages_changed"
+      },
+      {
+        "title": {
+          "en": "Connection changed",
+          "de": "Verbindung hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Connection changed",
+          "de": "Verbindung hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "string",
+            "title": {
+              "en": "Connection",
+              "de": "Verbindung"
+            },
+            "example": "healthy"
+          },
+          {
+            "name": "status",
+            "type": "string",
+            "title": {
+              "en": "Status text",
+              "de": "Statustext"
+            },
+            "example": "Connected"
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=openccu-system&capabilities=openccu_connection_status",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_openccu_connection_status_changed"
+      },
+      {
+        "title": {
+          "en": "Carrier sense changed",
+          "de": "Carrier Sense hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Carrier sense changed",
+          "de": "Carrier Sense hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Carrier sense",
+              "de": "Carrier Sense"
+            },
+            "example": 1
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=openccu-system&capabilities=openccu_measure_carrier_sense",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_openccu_measure_carrier_sense_changed"
+      },
+      {
+        "title": {
+          "en": "HmIP devices changed",
+          "de": "HmIP-Geräte hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "HmIP devices changed",
+          "de": "HmIP-Geräte hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "HmIP devices",
+              "de": "HmIP-Geräte"
+            },
+            "example": 1
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=openccu-system&capabilities=openccu_measure_devices",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_openccu_measure_devices_changed"
+      },
+      {
+        "title": {
+          "en": "Duty cycle changed",
+          "de": "Duty Cycle hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Duty cycle changed",
+          "de": "Duty Cycle hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Duty cycle",
+              "de": "Duty Cycle"
+            },
+            "example": 1
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=openccu-system&capabilities=openccu_measure_duty_cycle",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_openccu_measure_duty_cycle_changed"
+      },
+      {
+        "title": {
+          "en": "Service messages changed",
+          "de": "Servicemeldungen hat sich geändert"
+        },
+        "titleFormatted": {
+          "en": "Service messages changed",
+          "de": "Servicemeldungen hat sich geändert"
+        },
+        "tokens": [
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Service messages",
+              "de": "Servicemeldungen"
+            },
+            "example": 1
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=openccu-system&capabilities=openccu_measure_service_messages",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "ccu_openccu_measure_service_messages_changed"
+      },
       {
         "title": {
           "en": "Handle position changed",
@@ -232,6 +1225,1676 @@
       }
     ],
     "conditions": [
+      {
+        "title": {
+          "en": "Check Detection active",
+          "de": "Erkennung aktiv prüfen"
+        },
+        "titleFormatted": {
+          "en": "Detection active !{{is|is not}} [[value]]",
+          "de": "Erkennung aktiv !{{ist|ist nicht}} [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SMI|HmIP-SMI55|HmIP-SMO-A|HmIP-SPI|HmIPW-SPI|openccu-generic&capabilities=homematic_detection_active",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "title": {
+              "en": "Detection active",
+              "de": "Erkennung aktiv"
+            },
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "Yes",
+                  "de": "Ja"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "No",
+                  "de": "Nein"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "ccu_homematic_detection_active_is"
+      },
+      {
+        "title": {
+          "en": "Check Gas flow",
+          "de": "Gasdurchfluss prüfen"
+        },
+        "titleFormatted": {
+          "en": "Gas flow !{{is|is not}} [[operator]] [[value]]",
+          "de": "Gasdurchfluss !{{ist|ist nicht}} [[operator]] [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-ESI|openccu-generic&capabilities=homematic_gas_flow",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "operator",
+            "type": "dropdown",
+            "title": {
+              "en": "Comparison",
+              "de": "Vergleich"
+            },
+            "values": [
+              {
+                "id": "eq",
+                "label": {
+                  "en": "=",
+                  "de": "gleich"
+                }
+              },
+              {
+                "id": "gt",
+                "label": {
+                  "en": ">",
+                  "de": "größer als"
+                }
+              },
+              {
+                "id": "lt",
+                "label": {
+                  "en": "<",
+                  "de": "kleiner als"
+                }
+              },
+              {
+                "id": "gte",
+                "label": {
+                  "en": "≥",
+                  "de": "größer oder gleich"
+                }
+              },
+              {
+                "id": "lte",
+                "label": {
+                  "en": "≤",
+                  "de": "kleiner oder gleich"
+                }
+              }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Gas flow",
+              "de": "Gasdurchfluss"
+            }
+          }
+        ],
+        "id": "ccu_homematic_gas_flow_is"
+      },
+      {
+        "title": {
+          "en": "Check Heater active",
+          "de": "Heizung aktiv prüfen"
+        },
+        "titleFormatted": {
+          "en": "Heater active !{{is|is not}} [[value]]",
+          "de": "Heizung aktiv !{{ist|ist nicht}} [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SRD|openccu-generic&capabilities=homematic_heater_active",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "title": {
+              "en": "Heater active",
+              "de": "Heizung aktiv"
+            },
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "Yes",
+                  "de": "Ja"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "No",
+                  "de": "Nein"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "ccu_homematic_heater_active_is"
+      },
+      {
+        "title": {
+          "en": "Check Lock state",
+          "de": "Schlosszustand prüfen"
+        },
+        "titleFormatted": {
+          "en": "Lock state !{{is|is not}} [[value]]",
+          "de": "Schlosszustand !{{ist|ist nicht}} [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-DLS|openccu-generic&capabilities=homematic_lock_state",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "title": {
+              "en": "Lock state",
+              "de": "Schlosszustand"
+            },
+            "values": [
+              {
+                "id": "UNKNOWN",
+                "label": {
+                  "en": "Unknown",
+                  "de": "Unbekannt"
+                }
+              },
+              {
+                "id": "LOCKED",
+                "label": {
+                  "en": "Locked",
+                  "de": "Verriegelt"
+                }
+              },
+              {
+                "id": "UNLOCKED",
+                "label": {
+                  "en": "Unlocked",
+                  "de": "Entriegelt"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "ccu_homematic_lock_state_is"
+      },
+      {
+        "title": {
+          "en": "Check Valve",
+          "de": "Ventilöffnung prüfen"
+        },
+        "titleFormatted": {
+          "en": "Valve !{{is|is not}} [[operator]] [[value]]",
+          "de": "Ventilöffnung !{{ist|ist nicht}} [[operator]] [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-FALMOT-C12|HmIP-eTRV-2|openccu-generic&capabilities=homematic_measure_valve",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "operator",
+            "type": "dropdown",
+            "title": {
+              "en": "Comparison",
+              "de": "Vergleich"
+            },
+            "values": [
+              {
+                "id": "eq",
+                "label": {
+                  "en": "=",
+                  "de": "gleich"
+                }
+              },
+              {
+                "id": "gt",
+                "label": {
+                  "en": ">",
+                  "de": "größer als"
+                }
+              },
+              {
+                "id": "lt",
+                "label": {
+                  "en": "<",
+                  "de": "kleiner als"
+                }
+              },
+              {
+                "id": "gte",
+                "label": {
+                  "en": "≥",
+                  "de": "größer oder gleich"
+                }
+              },
+              {
+                "id": "lte",
+                "label": {
+                  "en": "≤",
+                  "de": "kleiner oder gleich"
+                }
+              }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Valve",
+              "de": "Ventilöffnung"
+            }
+          }
+        ],
+        "id": "ccu_homematic_measure_valve_is"
+      },
+      {
+        "title": {
+          "en": "Check PM1 concentration",
+          "de": "PM1-Konzentration prüfen"
+        },
+        "titleFormatted": {
+          "en": "PM1 concentration !{{is|is not}} [[operator]] [[value]]",
+          "de": "PM1-Konzentration !{{ist|ist nicht}} [[operator]] [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SFD|openccu-generic&capabilities=homematic_particulate.pm1",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "operator",
+            "type": "dropdown",
+            "title": {
+              "en": "Comparison",
+              "de": "Vergleich"
+            },
+            "values": [
+              {
+                "id": "eq",
+                "label": {
+                  "en": "=",
+                  "de": "gleich"
+                }
+              },
+              {
+                "id": "gt",
+                "label": {
+                  "en": ">",
+                  "de": "größer als"
+                }
+              },
+              {
+                "id": "lt",
+                "label": {
+                  "en": "<",
+                  "de": "kleiner als"
+                }
+              },
+              {
+                "id": "gte",
+                "label": {
+                  "en": "≥",
+                  "de": "größer oder gleich"
+                }
+              },
+              {
+                "id": "lte",
+                "label": {
+                  "en": "≤",
+                  "de": "kleiner oder gleich"
+                }
+              }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "PM1 concentration",
+              "de": "PM1-Konzentration"
+            }
+          }
+        ],
+        "id": "ccu_homematic_particulate_pm1_is"
+      },
+      {
+        "title": {
+          "en": "Check PM10 concentration",
+          "de": "PM10-Konzentration prüfen"
+        },
+        "titleFormatted": {
+          "en": "PM10 concentration !{{is|is not}} [[operator]] [[value]]",
+          "de": "PM10-Konzentration !{{ist|ist nicht}} [[operator]] [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SFD|openccu-generic&capabilities=homematic_particulate.pm10",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "operator",
+            "type": "dropdown",
+            "title": {
+              "en": "Comparison",
+              "de": "Vergleich"
+            },
+            "values": [
+              {
+                "id": "eq",
+                "label": {
+                  "en": "=",
+                  "de": "gleich"
+                }
+              },
+              {
+                "id": "gt",
+                "label": {
+                  "en": ">",
+                  "de": "größer als"
+                }
+              },
+              {
+                "id": "lt",
+                "label": {
+                  "en": "<",
+                  "de": "kleiner als"
+                }
+              },
+              {
+                "id": "gte",
+                "label": {
+                  "en": "≥",
+                  "de": "größer oder gleich"
+                }
+              },
+              {
+                "id": "lte",
+                "label": {
+                  "en": "≤",
+                  "de": "kleiner oder gleich"
+                }
+              }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "PM10 concentration",
+              "de": "PM10-Konzentration"
+            }
+          }
+        ],
+        "id": "ccu_homematic_particulate_pm10_is"
+      },
+      {
+        "title": {
+          "en": "Check PM2.5 concentration",
+          "de": "PM2,5-Konzentration prüfen"
+        },
+        "titleFormatted": {
+          "en": "PM2.5 concentration !{{is|is not}} [[operator]] [[value]]",
+          "de": "PM2,5-Konzentration !{{ist|ist nicht}} [[operator]] [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SFD|openccu-generic&capabilities=homematic_particulate.pm25",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "operator",
+            "type": "dropdown",
+            "title": {
+              "en": "Comparison",
+              "de": "Vergleich"
+            },
+            "values": [
+              {
+                "id": "eq",
+                "label": {
+                  "en": "=",
+                  "de": "gleich"
+                }
+              },
+              {
+                "id": "gt",
+                "label": {
+                  "en": ">",
+                  "de": "größer als"
+                }
+              },
+              {
+                "id": "lt",
+                "label": {
+                  "en": "<",
+                  "de": "kleiner als"
+                }
+              },
+              {
+                "id": "gte",
+                "label": {
+                  "en": "≥",
+                  "de": "größer oder gleich"
+                }
+              },
+              {
+                "id": "lte",
+                "label": {
+                  "en": "≤",
+                  "de": "kleiner oder gleich"
+                }
+              }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "PM2.5 concentration",
+              "de": "PM2,5-Konzentration"
+            }
+          }
+        ],
+        "id": "ccu_homematic_particulate_pm25_is"
+      },
+      {
+        "title": {
+          "en": "Check Passage counter (0–127)",
+          "de": "Durchgangszähler (0–127) prüfen"
+        },
+        "titleFormatted": {
+          "en": "Passage counter (0–127) !{{is|is not}} [[operator]] [[value]]",
+          "de": "Durchgangszähler (0–127) !{{ist|ist nicht}} [[operator]] [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SPDR|openccu-generic&capabilities=homematic_passage_count",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "operator",
+            "type": "dropdown",
+            "title": {
+              "en": "Comparison",
+              "de": "Vergleich"
+            },
+            "values": [
+              {
+                "id": "eq",
+                "label": {
+                  "en": "=",
+                  "de": "gleich"
+                }
+              },
+              {
+                "id": "gt",
+                "label": {
+                  "en": ">",
+                  "de": "größer als"
+                }
+              },
+              {
+                "id": "lt",
+                "label": {
+                  "en": "<",
+                  "de": "kleiner als"
+                }
+              },
+              {
+                "id": "gte",
+                "label": {
+                  "en": "≥",
+                  "de": "größer oder gleich"
+                }
+              },
+              {
+                "id": "lte",
+                "label": {
+                  "en": "≤",
+                  "de": "kleiner oder gleich"
+                }
+              }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Passage counter (0–127)",
+              "de": "Durchgangszähler (0–127)"
+            }
+          }
+        ],
+        "id": "ccu_homematic_passage_count_is"
+      },
+      {
+        "title": {
+          "en": "Check Passage direction",
+          "de": "Durchgangsrichtung prüfen"
+        },
+        "titleFormatted": {
+          "en": "Passage direction !{{is|is not}} [[value]]",
+          "de": "Durchgangsrichtung !{{ist|ist nicht}} [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SPDR|openccu-generic&capabilities=homematic_passage_direction",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "title": {
+              "en": "Passage direction",
+              "de": "Durchgangsrichtung"
+            },
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "Yes",
+                  "de": "Ja"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "No",
+                  "de": "Nein"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "ccu_homematic_passage_direction_is"
+      },
+      {
+        "title": {
+          "en": "Check Sound playing",
+          "de": "Wiedergabe aktiv prüfen"
+        },
+        "titleFormatted": {
+          "en": "Sound playing !{{is|is not}} [[value]]",
+          "de": "Wiedergabe aktiv !{{ist|ist nicht}} [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-MP3P|openccu-generic&capabilities=homematic_playing",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "title": {
+              "en": "Sound playing",
+              "de": "Wiedergabe aktiv"
+            },
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "Yes",
+                  "de": "Ja"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "No",
+                  "de": "Nein"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "ccu_homematic_playing_is"
+      },
+      {
+        "title": {
+          "en": "Check Signal colour",
+          "de": "Signalfarbe prüfen"
+        },
+        "titleFormatted": {
+          "en": "Signal colour !{{is|is not}} [[value]]",
+          "de": "Signalfarbe !{{ist|ist nicht}} [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-BSL|HmIP-MP3P|HmIP-WRC6-230|HmIPW-WRC6|openccu-generic&capabilities=homematic_signal_color",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "title": {
+              "en": "Signal colour",
+              "de": "Signalfarbe"
+            },
+            "values": [
+              {
+                "id": "BLACK",
+                "label": {
+                  "en": "Off",
+                  "de": "Aus"
+                }
+              },
+              {
+                "id": "BLUE",
+                "label": {
+                  "en": "Blue",
+                  "de": "Blau"
+                }
+              },
+              {
+                "id": "GREEN",
+                "label": {
+                  "en": "Green",
+                  "de": "Grün"
+                }
+              },
+              {
+                "id": "TURQUOISE",
+                "label": {
+                  "en": "Turquoise",
+                  "de": "Türkis"
+                }
+              },
+              {
+                "id": "RED",
+                "label": {
+                  "en": "Red",
+                  "de": "Rot"
+                }
+              },
+              {
+                "id": "PURPLE",
+                "label": {
+                  "en": "Purple",
+                  "de": "Violett"
+                }
+              },
+              {
+                "id": "YELLOW",
+                "label": {
+                  "en": "Yellow",
+                  "de": "Gelb"
+                }
+              },
+              {
+                "id": "WHITE",
+                "label": {
+                  "en": "White",
+                  "de": "Weiß"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "ccu_homematic_signal_color_is"
+      },
+      {
+        "title": {
+          "en": "Check Siren arming",
+          "de": "Scharfschaltung prüfen"
+        },
+        "titleFormatted": {
+          "en": "Siren arming !{{is|is not}} [[value]]",
+          "de": "Scharfschaltung !{{ist|ist nicht}} [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HM-Sec-Sir-WM|openccu-generic&capabilities=homematic_siren_arming",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "title": {
+              "en": "Siren arming",
+              "de": "Scharfschaltung"
+            },
+            "values": [
+              {
+                "id": "0",
+                "label": {
+                  "en": "Disarmed",
+                  "de": "Unscharf"
+                }
+              },
+              {
+                "id": "1",
+                "label": {
+                  "en": "Perimeter armed",
+                  "de": "Außenhaut scharf"
+                }
+              },
+              {
+                "id": "2",
+                "label": {
+                  "en": "All sensors armed",
+                  "de": "Alle Sensoren scharf"
+                }
+              },
+              {
+                "id": "3",
+                "label": {
+                  "en": "Alarm blocked",
+                  "de": "Alarm gesperrt"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "ccu_homematic_siren_arming_is"
+      },
+      {
+        "title": {
+          "en": "Check Sound file (0 = internal)",
+          "de": "Sounddatei (0 = intern) prüfen"
+        },
+        "titleFormatted": {
+          "en": "Sound file (0 = internal) !{{is|is not}} [[operator]] [[value]]",
+          "de": "Sounddatei (0 = intern) !{{ist|ist nicht}} [[operator]] [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-MP3P|openccu-generic&capabilities=homematic_sound_file",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "operator",
+            "type": "dropdown",
+            "title": {
+              "en": "Comparison",
+              "de": "Vergleich"
+            },
+            "values": [
+              {
+                "id": "eq",
+                "label": {
+                  "en": "=",
+                  "de": "gleich"
+                }
+              },
+              {
+                "id": "gt",
+                "label": {
+                  "en": ">",
+                  "de": "größer als"
+                }
+              },
+              {
+                "id": "lt",
+                "label": {
+                  "en": "<",
+                  "de": "kleiner als"
+                }
+              },
+              {
+                "id": "gte",
+                "label": {
+                  "en": "≥",
+                  "de": "größer oder gleich"
+                }
+              },
+              {
+                "id": "lte",
+                "label": {
+                  "en": "≤",
+                  "de": "kleiner oder gleich"
+                }
+              }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Sound file (0 = internal)",
+              "de": "Sounddatei (0 = intern)"
+            }
+          }
+        ],
+        "id": "ccu_homematic_sound_file_is"
+      },
+      {
+        "title": {
+          "en": "Check Sunshine duration",
+          "de": "Sonnenscheindauer prüfen"
+        },
+        "titleFormatted": {
+          "en": "Sunshine duration !{{is|is not}} [[operator]] [[value]]",
+          "de": "Sonnenscheindauer !{{ist|ist nicht}} [[operator]] [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SWO-B|HmIP-SWO-PL|HmIP-SWO-PR|openccu-generic&capabilities=homematic_sunshine_duration",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "operator",
+            "type": "dropdown",
+            "title": {
+              "en": "Comparison",
+              "de": "Vergleich"
+            },
+            "values": [
+              {
+                "id": "eq",
+                "label": {
+                  "en": "=",
+                  "de": "gleich"
+                }
+              },
+              {
+                "id": "gt",
+                "label": {
+                  "en": ">",
+                  "de": "größer als"
+                }
+              },
+              {
+                "id": "lt",
+                "label": {
+                  "en": "<",
+                  "de": "kleiner als"
+                }
+              },
+              {
+                "id": "gte",
+                "label": {
+                  "en": "≥",
+                  "de": "größer oder gleich"
+                }
+              },
+              {
+                "id": "lte",
+                "label": {
+                  "en": "≤",
+                  "de": "kleiner oder gleich"
+                }
+              }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Sunshine duration",
+              "de": "Sonnenscheindauer"
+            }
+          }
+        ],
+        "id": "ccu_homematic_sunshine_duration_is"
+      },
+      {
+        "title": {
+          "en": "Check Boost",
+          "de": "Boost prüfen"
+        },
+        "titleFormatted": {
+          "en": "Boost !{{is|is not}} [[value]]",
+          "de": "Boost !{{ist|ist nicht}} [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HMIP-WTH|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-WGT|HmIP-WGTC|HmIP-eTRV-2|HmIPW-SCTHD|HmIPW-STH|HmIPW-STHD|HmIPW-WTH|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_boost",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "title": {
+              "en": "Boost",
+              "de": "Boost"
+            },
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "Yes",
+                  "de": "Ja"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "No",
+                  "de": "Nein"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "ccu_homematic_thermostat_boost_is"
+      },
+      {
+        "title": {
+          "en": "Check Mode",
+          "de": "Modus prüfen"
+        },
+        "titleFormatted": {
+          "en": "Mode !{{is|is not}} [[value]]",
+          "de": "Modus !{{ist|ist nicht}} [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HMIP-WTH|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-eTRV-2|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_mode",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "title": {
+              "en": "Mode",
+              "de": "Modus"
+            },
+            "values": [
+              {
+                "id": "0",
+                "label": {
+                  "en": "Auto",
+                  "de": "Automatik"
+                }
+              },
+              {
+                "id": "1",
+                "label": {
+                  "en": "Manu",
+                  "de": "Manuell"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "ccu_homematic_thermostat_mode_is"
+      },
+      {
+        "title": {
+          "en": "Check Weekprofile",
+          "de": "Wochenprofil prüfen"
+        },
+        "titleFormatted": {
+          "en": "Weekprofile !{{is|is not}} [[value]]",
+          "de": "Wochenprofil !{{ist|ist nicht}} [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HMIP-WTH|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-eTRV-2|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_weekprofile",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "title": {
+              "en": "Weekprofile",
+              "de": "Wochenprofil"
+            },
+            "values": [
+              {
+                "id": "1",
+                "label": {
+                  "en": "1",
+                  "de": "1"
+                }
+              },
+              {
+                "id": "2",
+                "label": {
+                  "en": "2",
+                  "de": "2"
+                }
+              },
+              {
+                "id": "3",
+                "label": {
+                  "en": "3",
+                  "de": "3"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "ccu_homematic_thermostat_weekprofile_is"
+      },
+      {
+        "title": {
+          "en": "Check Heating output active",
+          "de": "Heizungsausgang aktiv prüfen"
+        },
+        "titleFormatted": {
+          "en": "Heating output active !{{is|is not}} [[value]]",
+          "de": "Heizungsausgang aktiv !{{ist|ist nicht}} [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-FAL230-C10|HmIPW-FAL230-C6|openccu-generic&capabilities=homematic_valve_active",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "title": {
+              "en": "Heating output active",
+              "de": "Heizungsausgang aktiv"
+            },
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "Yes",
+                  "de": "Ja"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "No",
+                  "de": "Nein"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "ccu_homematic_valve_active_is"
+      },
+      {
+        "title": {
+          "en": "Check Wind direction",
+          "de": "Windrichtung prüfen"
+        },
+        "titleFormatted": {
+          "en": "Wind direction !{{is|is not}} [[value]]",
+          "de": "Windrichtung !{{ist|ist nicht}} [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SWO-PR|openccu-generic&capabilities=homematic_wind_direction",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "title": {
+              "en": "Wind direction",
+              "de": "Windrichtung"
+            },
+            "values": [
+              {
+                "id": "n",
+                "label": {
+                  "en": "North",
+                  "de": "Nord"
+                }
+              },
+              {
+                "id": "ne",
+                "label": {
+                  "en": "Northeast",
+                  "de": "Nordost"
+                }
+              },
+              {
+                "id": "e",
+                "label": {
+                  "en": "East",
+                  "de": "Ost"
+                }
+              },
+              {
+                "id": "se",
+                "label": {
+                  "en": "Southeast",
+                  "de": "Südost"
+                }
+              },
+              {
+                "id": "s",
+                "label": {
+                  "en": "South",
+                  "de": "Süd"
+                }
+              },
+              {
+                "id": "sw",
+                "label": {
+                  "en": "Southwest",
+                  "de": "Südwest"
+                }
+              },
+              {
+                "id": "w",
+                "label": {
+                  "en": "West",
+                  "de": "West"
+                }
+              },
+              {
+                "id": "nw",
+                "label": {
+                  "en": "Northwest",
+                  "de": "Nordwest"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "ccu_homematic_wind_direction_is"
+      },
+      {
+        "title": {
+          "en": "Check Service message active",
+          "de": "Servicemeldung aktiv prüfen"
+        },
+        "titleFormatted": {
+          "en": "Service message active !{{is|is not}} [[value]]",
+          "de": "Servicemeldung aktiv !{{ist|ist nicht}} [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=openccu-system&capabilities=openccu_alarm_service_messages",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "title": {
+              "en": "Service message active",
+              "de": "Servicemeldung aktiv"
+            },
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "Yes",
+                  "de": "Ja"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "No",
+                  "de": "Nein"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "ccu_openccu_alarm_service_messages_is"
+      },
+      {
+        "title": {
+          "en": "Check Connection",
+          "de": "Verbindung prüfen"
+        },
+        "titleFormatted": {
+          "en": "Connection !{{is|is not}} [[value]]",
+          "de": "Verbindung !{{ist|ist nicht}} [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=openccu-system&capabilities=openccu_connection_status",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "value",
+            "type": "dropdown",
+            "title": {
+              "en": "Connection",
+              "de": "Verbindung"
+            },
+            "values": [
+              {
+                "id": "healthy",
+                "label": {
+                  "en": "Connected",
+                  "de": "Verbunden"
+                }
+              },
+              {
+                "id": "connecting",
+                "label": {
+                  "en": "Connecting",
+                  "de": "Verbindungsaufbau"
+                }
+              },
+              {
+                "id": "disconnected",
+                "label": {
+                  "en": "Disconnected",
+                  "de": "Getrennt"
+                }
+              },
+              {
+                "id": "stopped",
+                "label": {
+                  "en": "Stopped",
+                  "de": "Gestoppt"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "ccu_openccu_connection_status_is"
+      },
+      {
+        "title": {
+          "en": "Check Carrier sense",
+          "de": "Carrier Sense prüfen"
+        },
+        "titleFormatted": {
+          "en": "Carrier sense !{{is|is not}} [[operator]] [[value]]",
+          "de": "Carrier Sense !{{ist|ist nicht}} [[operator]] [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=openccu-system&capabilities=openccu_measure_carrier_sense",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "operator",
+            "type": "dropdown",
+            "title": {
+              "en": "Comparison",
+              "de": "Vergleich"
+            },
+            "values": [
+              {
+                "id": "eq",
+                "label": {
+                  "en": "=",
+                  "de": "gleich"
+                }
+              },
+              {
+                "id": "gt",
+                "label": {
+                  "en": ">",
+                  "de": "größer als"
+                }
+              },
+              {
+                "id": "lt",
+                "label": {
+                  "en": "<",
+                  "de": "kleiner als"
+                }
+              },
+              {
+                "id": "gte",
+                "label": {
+                  "en": "≥",
+                  "de": "größer oder gleich"
+                }
+              },
+              {
+                "id": "lte",
+                "label": {
+                  "en": "≤",
+                  "de": "kleiner oder gleich"
+                }
+              }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Carrier sense",
+              "de": "Carrier Sense"
+            }
+          }
+        ],
+        "id": "ccu_openccu_measure_carrier_sense_is"
+      },
+      {
+        "title": {
+          "en": "Check HmIP devices",
+          "de": "HmIP-Geräte prüfen"
+        },
+        "titleFormatted": {
+          "en": "HmIP devices !{{is|is not}} [[operator]] [[value]]",
+          "de": "HmIP-Geräte !{{ist|ist nicht}} [[operator]] [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=openccu-system&capabilities=openccu_measure_devices",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "operator",
+            "type": "dropdown",
+            "title": {
+              "en": "Comparison",
+              "de": "Vergleich"
+            },
+            "values": [
+              {
+                "id": "eq",
+                "label": {
+                  "en": "=",
+                  "de": "gleich"
+                }
+              },
+              {
+                "id": "gt",
+                "label": {
+                  "en": ">",
+                  "de": "größer als"
+                }
+              },
+              {
+                "id": "lt",
+                "label": {
+                  "en": "<",
+                  "de": "kleiner als"
+                }
+              },
+              {
+                "id": "gte",
+                "label": {
+                  "en": "≥",
+                  "de": "größer oder gleich"
+                }
+              },
+              {
+                "id": "lte",
+                "label": {
+                  "en": "≤",
+                  "de": "kleiner oder gleich"
+                }
+              }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "HmIP devices",
+              "de": "HmIP-Geräte"
+            }
+          }
+        ],
+        "id": "ccu_openccu_measure_devices_is"
+      },
+      {
+        "title": {
+          "en": "Check Duty cycle",
+          "de": "Duty Cycle prüfen"
+        },
+        "titleFormatted": {
+          "en": "Duty cycle !{{is|is not}} [[operator]] [[value]]",
+          "de": "Duty Cycle !{{ist|ist nicht}} [[operator]] [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=openccu-system&capabilities=openccu_measure_duty_cycle",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "operator",
+            "type": "dropdown",
+            "title": {
+              "en": "Comparison",
+              "de": "Vergleich"
+            },
+            "values": [
+              {
+                "id": "eq",
+                "label": {
+                  "en": "=",
+                  "de": "gleich"
+                }
+              },
+              {
+                "id": "gt",
+                "label": {
+                  "en": ">",
+                  "de": "größer als"
+                }
+              },
+              {
+                "id": "lt",
+                "label": {
+                  "en": "<",
+                  "de": "kleiner als"
+                }
+              },
+              {
+                "id": "gte",
+                "label": {
+                  "en": "≥",
+                  "de": "größer oder gleich"
+                }
+              },
+              {
+                "id": "lte",
+                "label": {
+                  "en": "≤",
+                  "de": "kleiner oder gleich"
+                }
+              }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Duty cycle",
+              "de": "Duty Cycle"
+            }
+          }
+        ],
+        "id": "ccu_openccu_measure_duty_cycle_is"
+      },
+      {
+        "title": {
+          "en": "Check Service messages",
+          "de": "Servicemeldungen prüfen"
+        },
+        "titleFormatted": {
+          "en": "Service messages !{{is|is not}} [[operator]] [[value]]",
+          "de": "Servicemeldungen !{{ist|ist nicht}} [[operator]] [[value]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=openccu-system&capabilities=openccu_measure_service_messages",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "operator",
+            "type": "dropdown",
+            "title": {
+              "en": "Comparison",
+              "de": "Vergleich"
+            },
+            "values": [
+              {
+                "id": "eq",
+                "label": {
+                  "en": "=",
+                  "de": "gleich"
+                }
+              },
+              {
+                "id": "gt",
+                "label": {
+                  "en": ">",
+                  "de": "größer als"
+                }
+              },
+              {
+                "id": "lt",
+                "label": {
+                  "en": "<",
+                  "de": "kleiner als"
+                }
+              },
+              {
+                "id": "gte",
+                "label": {
+                  "en": "≥",
+                  "de": "größer oder gleich"
+                }
+              },
+              {
+                "id": "lte",
+                "label": {
+                  "en": "≤",
+                  "de": "kleiner oder gleich"
+                }
+              }
+            ]
+          },
+          {
+            "name": "value",
+            "type": "number",
+            "title": {
+              "en": "Service messages",
+              "de": "Servicemeldungen"
+            }
+          }
+        ],
+        "id": "ccu_openccu_measure_service_messages_is"
+      },
       {
         "title": {
           "en": "Garage door position is",
@@ -457,6 +3120,28 @@
       },
       {
         "title": {
+          "en": "Deactivate thermostat boost",
+          "de": "Thermostat-Boost deaktivieren"
+        },
+        "titleFormatted": {
+          "en": "Deactivate thermostat boost",
+          "de": "Thermostat-Boost deaktivieren"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HMIP-WTH|HMIP-eTRV|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-WGT|HmIP-WGTC|HmIP-eTRV-2|HmIP-eTRV-B|HmIP-eTRV-B-2|HmIP-eTRV-C|HmIP-eTRV-E|HmIPW-SCTHD|HmIPW-STH|HmIPW-STHD|HmIPW-WTH|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_boost",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          }
+        ],
+        "id": "deactivate_thermostat_boost"
+      },
+      {
+        "title": {
           "en": "Execute OpenCCU program [[program]]",
           "de": "OpenCCU-Programm [[program]] ausführen"
         },
@@ -585,6 +3270,52 @@
           }
         ],
         "id": "set_classic_siren_alarm"
+      },
+      {
+        "title": {
+          "en": "Set detection active",
+          "de": "Erkennung aktivieren/deaktivieren"
+        },
+        "titleFormatted": {
+          "en": "Set detection to [[active]]",
+          "de": "Erkennung auf [[active]] setzen"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HmIP-SMI|HmIP-SMI55|HmIP-SMO-A|HmIP-SPI|HmIPW-SPI|openccu-generic&capabilities=homematic_detection_active",
+            "title": {
+              "en": "Device",
+              "de": "Gerät"
+            }
+          },
+          {
+            "name": "active",
+            "type": "dropdown",
+            "title": {
+              "en": "Detection",
+              "de": "Erkennung"
+            },
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "Active",
+                  "de": "Aktiv"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "Inactive",
+                  "de": "Inaktiv"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_detection_active"
       },
       {
         "title": {

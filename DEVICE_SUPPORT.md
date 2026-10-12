@@ -160,3 +160,21 @@ CCU3, HAP and RFUSB remain infrastructure. This release adds 130 HmIP model
 names through shared profiles/verified aliases and the two classic models
 HM-SCI-3-FM and HM-Sec-Sir-WM. This is fixture/descriptor verification, not
 physical validation of every model or full Home Assistant feature parity.
+
+## Flow coverage in 0.1.11
+
+Every readable custom device/system status now has a dedicated trigger and
+condition, except organization metadata (room/functions, available as tags) and
+garage/handle states already covered by their existing cards. Numeric states
+support comparisons; enums/booleans have typed value tags and localized status
+text. PM1, PM2.5 and PM10 have separate cards. Detection can be enabled/disabled
+and boost can be deactivated through Flow. Standard capabilities retain Homey's
+built-in cards and tags, including all STE2 probes/difference and SCI contacts.
+Write-only commands do not pretend to provide measured status tags.
+
+SPDR count triggers include the last reported direction value. The direction
+is a CCU boolean, not an inferred physical orientation; separate CCU events
+mean it is not guaranteed to belong to the same passage. Missing direction is
+reported as unknown. Initial/reconnect snapshots, repeated values and invalid
+value recovery do not trigger changes. Connection transitions remain observable
+on the central's system device; its first snapshot is silent.

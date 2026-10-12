@@ -1,0 +1,87 @@
+{
+  "title": {
+    "en": "Check Signal colour",
+    "de": "Signalfarbe prüfen"
+  },
+  "titleFormatted": {
+    "en": "Signal colour !{{is|is not}} [[value]]",
+    "de": "Signalfarbe !{{ist|ist nicht}} [[value]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-BSL|HmIP-MP3P|HmIP-WRC6-230|HmIPW-WRC6|openccu-generic&capabilities=homematic_signal_color",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    },
+    {
+      "name": "value",
+      "type": "dropdown",
+      "title": {
+        "en": "Signal colour",
+        "de": "Signalfarbe"
+      },
+      "values": [
+        {
+          "id": "BLACK",
+          "label": {
+            "en": "Off",
+            "de": "Aus"
+          }
+        },
+        {
+          "id": "BLUE",
+          "label": {
+            "en": "Blue",
+            "de": "Blau"
+          }
+        },
+        {
+          "id": "GREEN",
+          "label": {
+            "en": "Green",
+            "de": "Grün"
+          }
+        },
+        {
+          "id": "TURQUOISE",
+          "label": {
+            "en": "Turquoise",
+            "de": "Türkis"
+          }
+        },
+        {
+          "id": "RED",
+          "label": {
+            "en": "Red",
+            "de": "Rot"
+          }
+        },
+        {
+          "id": "PURPLE",
+          "label": {
+            "en": "Purple",
+            "de": "Violett"
+          }
+        },
+        {
+          "id": "YELLOW",
+          "label": {
+            "en": "Yellow",
+            "de": "Gelb"
+          }
+        },
+        {
+          "id": "WHITE",
+          "label": {
+            "en": "White",
+            "de": "Weiß"
+          }
+        }
+      ]
+    }
+  ]
+}

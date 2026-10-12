@@ -1,0 +1,41 @@
+{
+  "title": {
+    "en": "Signal colour changed",
+    "de": "Signalfarbe hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "Signal colour changed",
+    "de": "Signalfarbe hat sich geändert"
+  },
+  "tokens": [
+    {
+      "name": "value",
+      "type": "string",
+      "title": {
+        "en": "Signal colour",
+        "de": "Signalfarbe"
+      },
+      "example": "BLACK"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "title": {
+        "en": "Status text",
+        "de": "Statustext"
+      },
+      "example": "Off"
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-BSL|HmIP-MP3P|HmIP-WRC6-230|HmIPW-WRC6|openccu-generic&capabilities=homematic_signal_color",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

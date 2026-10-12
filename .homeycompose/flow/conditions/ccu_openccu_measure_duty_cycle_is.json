@@ -1,0 +1,74 @@
+{
+  "title": {
+    "en": "Check Duty cycle",
+    "de": "Duty Cycle prüfen"
+  },
+  "titleFormatted": {
+    "en": "Duty cycle !{{is|is not}} [[operator]] [[value]]",
+    "de": "Duty Cycle !{{ist|ist nicht}} [[operator]] [[value]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=openccu-system&capabilities=openccu_measure_duty_cycle",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    },
+    {
+      "name": "operator",
+      "type": "dropdown",
+      "title": {
+        "en": "Comparison",
+        "de": "Vergleich"
+      },
+      "values": [
+        {
+          "id": "eq",
+          "label": {
+            "en": "=",
+            "de": "gleich"
+          }
+        },
+        {
+          "id": "gt",
+          "label": {
+            "en": ">",
+            "de": "größer als"
+          }
+        },
+        {
+          "id": "lt",
+          "label": {
+            "en": "<",
+            "de": "kleiner als"
+          }
+        },
+        {
+          "id": "gte",
+          "label": {
+            "en": "≥",
+            "de": "größer oder gleich"
+          }
+        },
+        {
+          "id": "lte",
+          "label": {
+            "en": "≤",
+            "de": "kleiner oder gleich"
+          }
+        }
+      ]
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "title": {
+        "en": "Duty cycle",
+        "de": "Duty Cycle"
+      }
+    }
+  ]
+}

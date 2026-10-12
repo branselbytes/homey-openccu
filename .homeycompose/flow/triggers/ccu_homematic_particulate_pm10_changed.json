@@ -1,0 +1,32 @@
+{
+  "title": {
+    "en": "PM10 concentration changed",
+    "de": "PM10-Konzentration hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "PM10 concentration changed",
+    "de": "PM10-Konzentration hat sich geändert"
+  },
+  "tokens": [
+    {
+      "name": "value",
+      "type": "number",
+      "title": {
+        "en": "PM10 concentration",
+        "de": "PM10-Konzentration"
+      },
+      "example": 1
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-SFD|openccu-generic&capabilities=homematic_particulate.pm10",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

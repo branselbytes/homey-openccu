@@ -1,0 +1,74 @@
+{
+  "title": {
+    "en": "Check Sunshine duration",
+    "de": "Sonnenscheindauer prüfen"
+  },
+  "titleFormatted": {
+    "en": "Sunshine duration !{{is|is not}} [[operator]] [[value]]",
+    "de": "Sonnenscheindauer !{{ist|ist nicht}} [[operator]] [[value]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-SWO-B|HmIP-SWO-PL|HmIP-SWO-PR|openccu-generic&capabilities=homematic_sunshine_duration",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    },
+    {
+      "name": "operator",
+      "type": "dropdown",
+      "title": {
+        "en": "Comparison",
+        "de": "Vergleich"
+      },
+      "values": [
+        {
+          "id": "eq",
+          "label": {
+            "en": "=",
+            "de": "gleich"
+          }
+        },
+        {
+          "id": "gt",
+          "label": {
+            "en": ">",
+            "de": "größer als"
+          }
+        },
+        {
+          "id": "lt",
+          "label": {
+            "en": "<",
+            "de": "kleiner als"
+          }
+        },
+        {
+          "id": "gte",
+          "label": {
+            "en": "≥",
+            "de": "größer oder gleich"
+          }
+        },
+        {
+          "id": "lte",
+          "label": {
+            "en": "≤",
+            "de": "kleiner oder gleich"
+          }
+        }
+      ]
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "title": {
+        "en": "Sunshine duration",
+        "de": "Sonnenscheindauer"
+      }
+    }
+  ]
+}

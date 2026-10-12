@@ -1,3 +1,5 @@
+import { StatusUpdates } from "./status-updates";
+import type { StatusValue } from "./status-flow-controller";
 import { HandleStateUpdates, type HandleState } from "./handle-state-updates";
 import type { Unsubscribe } from "../events/event-bus";
 import type {
@@ -28,6 +30,7 @@ export interface HomeyDevicePort {
   addCapability(capability: string): Promise<void>;
   removeCapability(capability: string): Promise<void>;
   setCapabilityValue(capability: string, value: RpcValue): Promise<void>;
+  triggerStatusChanged?(capability: string, value: StatusValue): Promise<void>;
   triggerHandleStateChanged?(state: HandleState): Promise<void>;
   triggerButtonEvent(button: number, pressType: ButtonPressType): Promise<void>;
   onCapabilityWrite(
@@ -62,6 +65,7 @@ export class DeviceBindingController {
   readonly #pendingWrites = new Map<string, PendingWrite>();
   #activated = false;
   readonly #handleUpdates: HandleStateUpdates;
+  readonly #statusUpdates: StatusUpdates;
   #refreshQueue: Promise<void> = Promise.resolve();
 
   constructor(
@@ -74,6 +78,13 @@ export class DeviceBindingController {
     this.#device = device;
     this.#bindings = bindings;
     this.#options = options;
+    this.#statusUpdates = new StatusUpdates(
+      (id, value) => device.setCapabilityValue(id, value),
+      (id, value) =>
+        device.triggerStatusChanged?.(id, value) ?? Promise.resolve(),
+      (error) =>
+        device.error("Failed to update status or trigger its Flow", error),
+    );
     this.#handleUpdates = new HandleStateUpdates(
       (value) => device.setCapabilityValue("homematic_rhs_state", value),
       (state) => device.triggerHandleStateChanged?.(state) ?? Promise.resolve(),
@@ -121,6 +132,7 @@ export class DeviceBindingController {
         if (state === "healthy") void this.#activate();
         if (state === "disconnected") {
           this.#handleUpdates.reset();
+          this.#statusUpdates.reset();
           void this.#device.setUnavailable(
             "OpenCCU device interface unavailable",
           );
@@ -246,6 +258,7 @@ export class DeviceBindingController {
 
   stop(): void {
     this.#handleUpdates.reset();
+    this.#statusUpdates.reset();
     for (const unsubscribe of this.#unsubscribers.splice(0)) unsubscribe();
     for (const pending of this.#pendingWrites.values()) {
       if (pending.timer !== undefined) clearTimeout(pending.timer);
@@ -293,6 +306,12 @@ export class DeviceBindingController {
     for (const [channelAddress, bindings] of byChannel) {
       try {
         const handleRevision = this.#handleUpdates.revision;
+        const statusRevisions = new Map(
+          bindings.map((b) => [
+            b.capability,
+            this.#statusUpdates.revision(b.capability),
+          ]),
+        );
         const values = await this.#runtime.readChannelValues(channelAddress);
         for (const binding of bindings) {
           if (!(binding.parameter in values)) continue;
@@ -301,6 +320,7 @@ export class DeviceBindingController {
             transformFromOpenCcu(binding.transform, values[binding.parameter]),
             false,
             handleRevision,
+            statusRevisions.get(binding.capability),
           );
         }
       } catch (error) {
@@ -314,13 +334,19 @@ export class DeviceBindingController {
     value: RpcValue,
     live = false,
     handleRevision?: number,
+    statusRevision?: number,
   ): Promise<void> {
     if (binding.capability === "homematic_rhs_state") {
       await this.#handleUpdates.update(value, live, handleRevision);
       return;
     }
     try {
-      await this.#device.setCapabilityValue(binding.capability, value);
+      await this.#statusUpdates.update(
+        binding.capability,
+        value,
+        live,
+        statusRevision,
+      );
     } catch (error) {
       this.#device.error(`Failed to update ${binding.capability}`, error);
     }
@@ -416,7 +442,7 @@ export class DeviceBindingController {
         binding.parameter === source.parameter &&
         binding.transform === source.transform
       ) {
-        await this.#setValue(binding, value);
+        await this.#setValue(binding, value, true);
       }
     }
   }

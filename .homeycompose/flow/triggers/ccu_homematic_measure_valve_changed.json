@@ -1,0 +1,32 @@
+{
+  "title": {
+    "en": "Valve changed",
+    "de": "Ventilöffnung hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "Valve changed",
+    "de": "Ventilöffnung hat sich geändert"
+  },
+  "tokens": [
+    {
+      "name": "value",
+      "type": "number",
+      "title": {
+        "en": "Valve",
+        "de": "Ventilöffnung"
+      },
+      "example": 1
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-FALMOT-C12|HmIP-eTRV-2|openccu-generic&capabilities=homematic_measure_valve",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "title": {
+    "en": "PM2.5 concentration changed",
+    "de": "PM2,5-Konzentration hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "PM2.5 concentration changed",
+    "de": "PM2,5-Konzentration hat sich geändert"
+  },
+  "tokens": [
+    {
+      "name": "value",
+      "type": "number",
+      "title": {
+        "en": "PM2.5 concentration",
+        "de": "PM2,5-Konzentration"
+      },
+      "example": 1
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-SFD|openccu-generic&capabilities=homematic_particulate.pm25",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

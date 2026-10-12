@@ -1,0 +1,32 @@
+{
+  "title": {
+    "en": "Duty cycle changed",
+    "de": "Duty Cycle hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "Duty cycle changed",
+    "de": "Duty Cycle hat sich geändert"
+  },
+  "tokens": [
+    {
+      "name": "value",
+      "type": "number",
+      "title": {
+        "en": "Duty cycle",
+        "de": "Duty Cycle"
+      },
+      "example": 1
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=openccu-system&capabilities=openccu_measure_duty_cycle",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

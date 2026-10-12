@@ -97,3 +97,41 @@ describe("SystemDeviceController", () => {
     expect(unsubscribe).toHaveBeenCalledOnce();
   });
 });
+
+it("triggers only actual polled service-message transitions", async () => {
+  let count = 0;
+  const runtime: SystemDeviceRuntime = {
+    connectionState: "healthy",
+    devices: new Map(),
+    subscribe: vi.fn().mockReturnValue(vi.fn()),
+    refreshSystemInformation: vi.fn(() =>
+      Promise.resolve({
+        information: { serviceMessageCount: count, radioInterfaces: [] },
+        issues: [],
+      }),
+    ),
+  };
+  const device = {
+    ...createDevice(),
+    triggerStatusChanged: vi.fn().mockResolvedValue(undefined),
+  };
+  const controller = new SystemDeviceController(runtime, device);
+  try {
+    await controller.start();
+    expect(device.triggerStatusChanged).not.toHaveBeenCalled();
+    count = 2;
+    await controller.refresh();
+    expect(device.triggerStatusChanged).toHaveBeenCalledWith(
+      "openccu_measure_service_messages",
+      2,
+    );
+    expect(device.triggerStatusChanged).toHaveBeenCalledWith(
+      "openccu_alarm_service_messages",
+      true,
+    );
+    await controller.refresh();
+    expect(device.triggerStatusChanged).toHaveBeenCalledTimes(2);
+  } finally {
+    controller.stop();
+  }
+});

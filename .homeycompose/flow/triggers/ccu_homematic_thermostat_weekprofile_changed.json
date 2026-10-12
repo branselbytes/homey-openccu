@@ -1,0 +1,41 @@
+{
+  "title": {
+    "en": "Weekprofile changed",
+    "de": "Wochenprofil hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "Weekprofile changed",
+    "de": "Wochenprofil hat sich geändert"
+  },
+  "tokens": [
+    {
+      "name": "value",
+      "type": "string",
+      "title": {
+        "en": "Weekprofile",
+        "de": "Wochenprofil"
+      },
+      "example": "1"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "title": {
+        "en": "Status text",
+        "de": "Statustext"
+      },
+      "example": "1"
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HMIP-WTH|HmIP-BWTH|HmIP-STH|HmIP-STHD|HmIP-eTRV-2|openccu-generic|openccu-heating-group&capabilities=homematic_thermostat_weekprofile",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

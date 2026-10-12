@@ -1,0 +1,45 @@
+{
+  "title": {
+    "en": "Check Detection active",
+    "de": "Erkennung aktiv prüfen"
+  },
+  "titleFormatted": {
+    "en": "Detection active !{{is|is not}} [[value]]",
+    "de": "Erkennung aktiv !{{ist|ist nicht}} [[value]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-SMI|HmIP-SMI55|HmIP-SMO-A|HmIP-SPI|HmIPW-SPI|openccu-generic&capabilities=homematic_detection_active",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    },
+    {
+      "name": "value",
+      "type": "dropdown",
+      "title": {
+        "en": "Detection active",
+        "de": "Erkennung aktiv"
+      },
+      "values": [
+        {
+          "id": "true",
+          "label": {
+            "en": "Yes",
+            "de": "Ja"
+          }
+        },
+        {
+          "id": "false",
+          "label": {
+            "en": "No",
+            "de": "Nein"
+          }
+        }
+      ]
+    }
+  ]
+}

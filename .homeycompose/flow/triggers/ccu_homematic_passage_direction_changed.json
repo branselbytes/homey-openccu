@@ -1,0 +1,41 @@
+{
+  "title": {
+    "en": "Passage direction changed",
+    "de": "Durchgangsrichtung hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "Passage direction changed",
+    "de": "Durchgangsrichtung hat sich geändert"
+  },
+  "tokens": [
+    {
+      "name": "value",
+      "type": "boolean",
+      "title": {
+        "en": "Passage direction",
+        "de": "Durchgangsrichtung"
+      },
+      "example": true
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "title": {
+        "en": "Status text",
+        "de": "Statustext"
+      },
+      "example": "Active"
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-SPDR|openccu-generic&capabilities=homematic_passage_direction",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

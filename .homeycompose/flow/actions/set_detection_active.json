@@ -1,0 +1,45 @@
+{
+  "title": {
+    "en": "Set detection active",
+    "de": "Erkennung aktivieren/deaktivieren"
+  },
+  "titleFormatted": {
+    "en": "Set detection to [[active]]",
+    "de": "Erkennung auf [[active]] setzen"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-SMI|HmIP-SMI55|HmIP-SMO-A|HmIP-SPI|HmIPW-SPI|openccu-generic&capabilities=homematic_detection_active",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    },
+    {
+      "name": "active",
+      "type": "dropdown",
+      "title": {
+        "en": "Detection",
+        "de": "Erkennung"
+      },
+      "values": [
+        {
+          "id": "true",
+          "label": {
+            "en": "Active",
+            "de": "Aktiv"
+          }
+        },
+        {
+          "id": "false",
+          "label": {
+            "en": "Inactive",
+            "de": "Inaktiv"
+          }
+        }
+      ]
+    }
+  ]
+}

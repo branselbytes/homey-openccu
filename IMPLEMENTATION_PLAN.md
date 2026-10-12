@@ -530,3 +530,12 @@ reference set; those are not claimed as fully supported by this audit.
 
 Delivery: source commit `5f685b2ab178a40e3b35d730d070c406ee1863eb`, annotated
 `v0.1.10`, GitHub prerelease, successful source CI and verified Homey Test Build 11. The uploaded package contains 116 active drivers and no environment keys.
+
+## Flow coverage — 0.1.11 beta
+
+- [x] Add 26 custom-status triggers and 26 conditions with typed/localized tags.
+- [x] Add detection enable/disable and thermostat boost-off actions.
+- [x] Preserve existing Flow IDs, capability tags and read-only device behavior.
+- [x] Guard initialization, duplicate events, stale reads and controller shutdown.
+- [x] Test declarative coverage, driver filters, status semantics, XML-RPC callback routing and system polling.
+- [ ] Complete final quality gate and publish GitHub/Homey Test release.

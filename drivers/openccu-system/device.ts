@@ -1,3 +1,7 @@
+import {
+  statusDefinition,
+  statusTokens,
+} from "../../src/homey/status-flow-controller";
 import Homey from "homey";
 
 import { isRuntimeProvidingApp } from "../../src/homey/runtime-providing-app";
@@ -33,6 +37,17 @@ export = class OpenCcuSystemDevice extends Homey.Device {
     this.#controller = new SystemDeviceController(runtime, {
       setCapabilityValue: (capability, value) =>
         this.setCapabilityValue(capability, value),
+      triggerStatusChanged: async (capability, value) => {
+        const definition = statusDefinition(capability);
+        if (definition)
+          await this.homey.flow
+            .getDeviceTriggerCard(definition.trigger)
+            .trigger(
+              this,
+              statusTokens(capability, value, this.homey.i18n.getLanguage()),
+              {},
+            );
+      },
       setAvailable: () => this.setAvailable(),
       setUnavailable: (message) => this.setUnavailable(message),
       error: (message, error) => this.error(message, safeErrorKind(error)),

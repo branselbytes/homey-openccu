@@ -1,3 +1,4 @@
+import { statusDefinition, statusTokens } from "./status-flow-controller";
 import { handleStateToken } from "./handle-state-updates";
 import Homey from "homey";
 
@@ -119,6 +120,22 @@ function createDevicePort(device: Homey.Device): HomeyDevicePort {
     removeCapability: (capability) => device.removeCapability(capability),
     setCapabilityValue: (capability, value) =>
       device.setCapabilityValue(capability, value),
+    triggerStatusChanged: async (capability, value) => {
+      const definition = statusDefinition(capability);
+      if (definition)
+        await device.homey.flow
+          .getDeviceTriggerCard(definition.trigger)
+          .trigger(
+            device,
+            statusTokens(
+              capability,
+              value,
+              device.homey.i18n.getLanguage(),
+              (id) => device.getCapabilityValue(id) as unknown,
+            ),
+            {},
+          );
+    },
     triggerHandleStateChanged: async (state) => {
       await device.homey.flow
         .getDeviceTriggerCard("handle_state_changed")

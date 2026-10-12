@@ -4,6 +4,19 @@ All notable changes to OpenCCU for Homey will be documented in this file. The pr
 
 ## [Unreleased]
 
+## [0.1.11] — 2026-10-12 (beta)
+
+### Added
+
+- 26 custom-status change triggers and 26 conditions covering detection, heating/valves, locks, siren arming, passage counts/direction, particulate/gas/weather values, playback/LEDs and CCU connection/service metrics.
+- Numeric value tags and comparisons; enums and booleans additionally expose localized readable status text. SPDR count cards include the last reported direction, without claiming an atomic passage snapshot.
+- Detection enable/disable and thermostat boost-off Flow actions. Existing Flow IDs and native capability tags remain intact.
+- Generated coverage and regression tests for all matching drivers, logical outputs and compatible generic devices.
+
+### Fixed
+
+- Serialize status updates before triggering Flows. Suppress initial/reconnect snapshots, duplicates and invalid-value recovery; reject stale initialization reads and stopped work.
+
 ## [0.1.10] — 2026-10-12 (beta)
 
 ### Added

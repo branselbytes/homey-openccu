@@ -1,0 +1,74 @@
+{
+  "title": {
+    "en": "Check Gas flow",
+    "de": "Gasdurchfluss prüfen"
+  },
+  "titleFormatted": {
+    "en": "Gas flow !{{is|is not}} [[operator]] [[value]]",
+    "de": "Gasdurchfluss !{{ist|ist nicht}} [[operator]] [[value]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-ESI|openccu-generic&capabilities=homematic_gas_flow",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    },
+    {
+      "name": "operator",
+      "type": "dropdown",
+      "title": {
+        "en": "Comparison",
+        "de": "Vergleich"
+      },
+      "values": [
+        {
+          "id": "eq",
+          "label": {
+            "en": "=",
+            "de": "gleich"
+          }
+        },
+        {
+          "id": "gt",
+          "label": {
+            "en": ">",
+            "de": "größer als"
+          }
+        },
+        {
+          "id": "lt",
+          "label": {
+            "en": "<",
+            "de": "kleiner als"
+          }
+        },
+        {
+          "id": "gte",
+          "label": {
+            "en": "≥",
+            "de": "größer oder gleich"
+          }
+        },
+        {
+          "id": "lte",
+          "label": {
+            "en": "≤",
+            "de": "kleiner oder gleich"
+          }
+        }
+      ]
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "title": {
+        "en": "Gas flow",
+        "de": "Gasdurchfluss"
+      }
+    }
+  ]
+}

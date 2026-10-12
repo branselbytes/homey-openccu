@@ -1,0 +1,59 @@
+{
+  "title": {
+    "en": "Check Siren arming",
+    "de": "Scharfschaltung prüfen"
+  },
+  "titleFormatted": {
+    "en": "Siren arming !{{is|is not}} [[value]]",
+    "de": "Scharfschaltung !{{ist|ist nicht}} [[value]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HM-Sec-Sir-WM|openccu-generic&capabilities=homematic_siren_arming",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    },
+    {
+      "name": "value",
+      "type": "dropdown",
+      "title": {
+        "en": "Siren arming",
+        "de": "Scharfschaltung"
+      },
+      "values": [
+        {
+          "id": "0",
+          "label": {
+            "en": "Disarmed",
+            "de": "Unscharf"
+          }
+        },
+        {
+          "id": "1",
+          "label": {
+            "en": "Perimeter armed",
+            "de": "Außenhaut scharf"
+          }
+        },
+        {
+          "id": "2",
+          "label": {
+            "en": "All sensors armed",
+            "de": "Alle Sensoren scharf"
+          }
+        },
+        {
+          "id": "3",
+          "label": {
+            "en": "Alarm blocked",
+            "de": "Alarm gesperrt"
+          }
+        }
+      ]
+    }
+  ]
+}

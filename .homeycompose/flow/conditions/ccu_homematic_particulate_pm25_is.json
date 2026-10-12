@@ -1,0 +1,74 @@
+{
+  "title": {
+    "en": "Check PM2.5 concentration",
+    "de": "PM2,5-Konzentration prüfen"
+  },
+  "titleFormatted": {
+    "en": "PM2.5 concentration !{{is|is not}} [[operator]] [[value]]",
+    "de": "PM2,5-Konzentration !{{ist|ist nicht}} [[operator]] [[value]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-SFD|openccu-generic&capabilities=homematic_particulate.pm25",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    },
+    {
+      "name": "operator",
+      "type": "dropdown",
+      "title": {
+        "en": "Comparison",
+        "de": "Vergleich"
+      },
+      "values": [
+        {
+          "id": "eq",
+          "label": {
+            "en": "=",
+            "de": "gleich"
+          }
+        },
+        {
+          "id": "gt",
+          "label": {
+            "en": ">",
+            "de": "größer als"
+          }
+        },
+        {
+          "id": "lt",
+          "label": {
+            "en": "<",
+            "de": "kleiner als"
+          }
+        },
+        {
+          "id": "gte",
+          "label": {
+            "en": "≥",
+            "de": "größer oder gleich"
+          }
+        },
+        {
+          "id": "lte",
+          "label": {
+            "en": "≤",
+            "de": "kleiner oder gleich"
+          }
+        }
+      ]
+    },
+    {
+      "name": "value",
+      "type": "number",
+      "title": {
+        "en": "PM2.5 concentration",
+        "de": "PM2,5-Konzentration"
+      }
+    }
+  ]
+}

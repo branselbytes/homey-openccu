@@ -1,0 +1,41 @@
+{
+  "title": {
+    "en": "Passage counter (0–127) changed",
+    "de": "Durchgangszähler (0–127) hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "Passage counter (0–127) changed",
+    "de": "Durchgangszähler (0–127) hat sich geändert"
+  },
+  "tokens": [
+    {
+      "name": "value",
+      "type": "number",
+      "title": {
+        "en": "Passage counter (0–127)",
+        "de": "Durchgangszähler (0–127)"
+      },
+      "example": 1
+    },
+    {
+      "name": "direction",
+      "type": "string",
+      "title": {
+        "en": "Last reported direction value",
+        "de": "Zuletzt gemeldeter Richtungswert"
+      },
+      "example": "Yes"
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-SPDR|openccu-generic&capabilities=homematic_passage_count",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

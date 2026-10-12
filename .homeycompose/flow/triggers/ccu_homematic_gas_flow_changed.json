@@ -1,0 +1,32 @@
+{
+  "title": {
+    "en": "Gas flow changed",
+    "de": "Gasdurchfluss hat sich geändert"
+  },
+  "titleFormatted": {
+    "en": "Gas flow changed",
+    "de": "Gasdurchfluss hat sich geändert"
+  },
+  "tokens": [
+    {
+      "name": "value",
+      "type": "number",
+      "title": {
+        "en": "Gas flow",
+        "de": "Gasdurchfluss"
+      },
+      "example": 1
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-ESI|openccu-generic&capabilities=homematic_gas_flow",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "title": {
+    "en": "Check Lock state",
+    "de": "Schlosszustand prüfen"
+  },
+  "titleFormatted": {
+    "en": "Lock state !{{is|is not}} [[value]]",
+    "de": "Schlosszustand !{{ist|ist nicht}} [[value]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HmIP-DLS|openccu-generic&capabilities=homematic_lock_state",
+      "title": {
+        "en": "Device",
+        "de": "Gerät"
+      }
+    },
+    {
+      "name": "value",
+      "type": "dropdown",
+      "title": {
+        "en": "Lock state",
+        "de": "Schlosszustand"
+      },
+      "values": [
+        {
+          "id": "UNKNOWN",
+          "label": {
+            "en": "Unknown",
+            "de": "Unbekannt"
+          }
+        },
+        {
+          "id": "LOCKED",
+          "label": {
+            "en": "Locked",
+            "de": "Verriegelt"
+          }
+        },
+        {
+          "id": "UNLOCKED",
+          "label": {
+            "en": "Unlocked",
+            "de": "Entriegelt"
+          }
+        }
+      ]
+    }
+  ]
+}
