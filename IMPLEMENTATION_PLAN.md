@@ -538,4 +538,8 @@ Delivery: source commit `5f685b2ab178a40e3b35d730d070c406ee1863eb`, annotated
 - [x] Preserve existing Flow IDs, capability tags and read-only device behavior.
 - [x] Guard initialization, duplicate events, stale reads and controller shutdown.
 - [x] Test declarative coverage, driver filters, status semantics, XML-RPC callback routing and system polling.
-- [ ] Complete final quality gate and publish GitHub/Homey Test release.
+- [x] Complete final quality gate (1,000 tests), successful source CI and GitHub/Homey Test publication (Build 12).
+
+Delivery: source commit `c077b78497d01b19921311d1547c4e726140db31`, annotated
+`v0.1.11`, GitHub prerelease and verified Homey Test Build 12. All 31 triggers,
+32 conditions and 18 actions were verified in the uploaded build.

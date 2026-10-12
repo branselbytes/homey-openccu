@@ -193,3 +193,17 @@ ESLint and application/test TypeScript), full `App.preprocess()` and
 `App._validate({ level: "publish" })`. Production binding tests exercise
 recorded/synthetic XML-RPC callbacks, status transitions and system polling.
 Physical hardware verification remains pending. Publication evidence follows.
+
+0.1.11 delivery completed: source commit
+[`c077b78497d01b19921311d1547c4e726140db31`](https://github.com/branselbytes/homey-openccu/commit/c077b78497d01b19921311d1547c4e726140db31)
+and annotated tag `v0.1.11` were pushed to origin. The
+[GitHub prerelease](https://github.com/branselbytes/homey-openccu/releases/tag/v0.1.11)
+is public; [source CI](https://github.com/branselbytes/homey-openccu/actions/runs/38263635530)
+passed. A clean tagged checkout with offline dependency installation and no
+`env.json` was uploaded using `HOMEY_HEADLESS=1 homey app publish` (870 files,
+8.83 MB). [Homey Build 12](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/12)
+was verified for version, all Flow IDs and counts, 116 drivers, matching EN/DE
+release notes and zero environment keys. Promotion and a subsequent read
+confirmed state `test`: 31 triggers, 32 conditions and 18 actions, in addition
+to Homey's native capability cards. No Live promotion, forum posting or manual
+Homey installation was performed.
