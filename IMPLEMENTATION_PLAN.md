@@ -523,7 +523,10 @@ The exact 0.1.7 Test build was installed on Homey Christian via the CLI raw Stor
 - [x] Close recorded-catalog profile gaps, compare aiohomematic/Home Assistant concepts, and document exact shared-descriptor aliases.
 - [x] Add display, signal-colour, siren and sound Flow controls with bounded validated commands.
 - [x] Document remaining advanced-function limitations and distinguish metadata/fixture from hardware verification.
-- [ ] Complete final quality gate, commit/push and publish GitHub/Homey Test release.
+- [x] Complete final quality gate (956 tests), commit/push and publish GitHub/Homey Test release (Build 11).
 
 The broader manufacturer catalog includes newer products outside the recorded
 reference set; those are not claimed as fully supported by this audit.
+
+Delivery: source commit `5f685b2ab178a40e3b35d730d070c406ee1863eb`, annotated
+`v0.1.10`, GitHub prerelease, successful source CI and verified Homey Test Build 11. The uploaded package contains 116 active drivers and no environment keys.

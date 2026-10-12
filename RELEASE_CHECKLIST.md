@@ -164,3 +164,17 @@ exercise real production discovery/mapping, command targets and callback
 migration; descriptor/alias tests cover the additional variants. `git diff
 --check` is clean. Physical verification of the newly listed models remains
 pending and is not claimed by the release.
+
+0.1.10 delivery completed: source commit
+[`5f685b2ab178a40e3b35d730d070c406ee1863eb`](https://github.com/branselbytes/homey-openccu/commit/5f685b2ab178a40e3b35d730d070c406ee1863eb)
+and annotated tag `v0.1.10` were pushed to origin. The
+[GitHub prerelease](https://github.com/branselbytes/homey-openccu/releases/tag/v0.1.10)
+is public; [source CI](https://github.com/branselbytes/homey-openccu/actions/runs/38256542746)
+passed. A clean tagged checkout with `npm ci --ignore-scripts --offline` and no
+`env.json` was published using `HOMEY_HEADLESS=1 homey app publish` (867 files,
+8.73 MB). [Homey Build 11](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/11)
+was verified for version 0.1.10, both classic drivers, all three STE2 capabilities,
+the six new Flow actions, matching EN/DE release notes and zero environment
+keys. Promotion and a subsequent read confirm state `test`, with 116 active
+drivers. No Live promotion, forum posting or manual Homey installation was
+performed.
