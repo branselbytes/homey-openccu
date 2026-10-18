@@ -552,5 +552,7 @@ Delivery: source commit `c077b78497d01b19921311d1547c4e726140db31`, annotated
 - [x] Ignore superseded/stopped verification failures and cancel background work.
 - [x] Clarify the classic siren label without changing identifiers.
 - [x] Add regression scenarios for retained/recovered handles, mixed-interface isolation, shutter recovery, shutdown and current write targets.
-- [ ] Complete final quality gates and publish GitHub/Homey Test beta.
+- [x] Complete final quality gates and publish GitHub/Homey Test beta (Build 13).
 - [ ] Obtain reporter confirmation with BidCos-RF enabled and overnight BROLL-2 Flows; original timeout cause remains unverified.
+
+Delivery: source commit `120bbbe`, annotated `v0.1.12`, published GitHub prerelease and successful source CI. Homey Build 13 was verified as 0.1.12 with zero environment keys, matching EN/DE changelog/readme and all 81 custom Flow IDs, then promoted to Test and read back as `test`. No individual Homey installation or forum publication was performed.

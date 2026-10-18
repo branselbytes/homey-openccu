@@ -1,6 +1,6 @@
 # Forenentwurf für Beta 0.1.12
 
-Nach bestätigter Homey-Testveröffentlichung verwenden:
+Homey Test-Build 13 ist veröffentlicht. Dieser Entwurf wurde noch nicht im Forum gepostet:
 
 Die neue **Beta 0.1.12** ist verfügbar. Danke für eure Rückmeldungen!
 
