@@ -44,6 +44,7 @@ export interface HomeyDevicePort {
 }
 
 export interface DeviceBindingControllerOptions {
+  readonly isMappingComplete?: () => boolean;
   readonly resolveBindings?: () => readonly CapabilityBinding[] | undefined;
   readonly persistBindings?: (
     bindings: readonly CapabilityBinding[],
@@ -63,7 +64,11 @@ export class DeviceBindingController {
   #informationalCapabilities: Readonly<Record<string, RpcValue>> = {};
   readonly #unsubscribers: Unsubscribe[] = [];
   readonly #pendingWrites = new Map<string, PendingWrite>();
+  readonly #registeredWrites = new Set<string>();
   #activated = false;
+  #stopped = false;
+  #recoveryBinding?: CapabilityBinding;
+  #recoveryTimer?: ReturnType<typeof setTimeout>;
   readonly #handleUpdates: HandleStateUpdates;
   readonly #statusUpdates: StatusUpdates;
   #refreshQueue: Promise<void> = Promise.resolve();
@@ -99,12 +104,24 @@ export class DeviceBindingController {
   async start(): Promise<void> {
     this.#unsubscribers.push(
       this.#runtime.subscribe("datapoint", (event) => {
+        if (this.#stopped) return;
         for (const binding of this.#bindings) {
           if (
             event.channelAddress === binding.channelAddress &&
             event.parameter === binding.parameter
           ) {
             this.#confirmPendingWriteFromEvent(binding, event.value);
+            if (
+              this.#recoveryBinding?.channelAddress === event.channelAddress &&
+              this.#recoveryBinding.parameter === event.parameter
+            ) {
+              void this.#recoverAvailability().catch((error: unknown) =>
+                this.#device.error(
+                  "Failed to restore OpenCCU device availability",
+                  error,
+                ),
+              );
+            }
             void this.#setValue(
               binding,
               transformFromOpenCcu(binding.transform, event.value),
@@ -129,7 +146,13 @@ export class DeviceBindingController {
         }
       }),
       this.#runtime.subscribe("connection", ({ state }) => {
-        if (state === "healthy") void this.#activate();
+        if (state === "healthy") {
+          this.#refreshQueue = this.#refreshQueue
+            .then(() => this.#activate())
+            .catch((error: unknown) =>
+              this.#device.error("Failed to activate OpenCCU device", error),
+            );
+        }
         if (state === "disconnected") {
           this.#handleUpdates.reset();
           this.#statusUpdates.reset();
@@ -139,22 +162,34 @@ export class DeviceBindingController {
         }
       }),
       this.#runtime.subscribe("discovery", () => {
-        if (!this.#activated) return;
+        if (!this.#activated || this.#stopped) return;
         this.#refreshQueue = this.#refreshQueue
           .then(async () => {
+            if (this.#stopped || !this.#mappingComplete()) return;
             const resolved = this.#options.resolveBindings?.();
-            // Live reconciliation is currently limited to read-only/event devices.
-            if (
-              this.#bindings.some((binding) => binding.writable) ||
-              resolved?.some((binding) => binding.writable)
-            )
-              return;
             this.#buttonEvents = this.#options.resolveButtonEvents?.() ?? [];
-            if (resolved !== undefined) {
+            if (
+              resolved !== undefined &&
+              !bindingsEqual(this.#bindings, resolved)
+            ) {
+              for (const pending of this.#pendingWrites.values())
+                this.#clearPendingWrite(pending);
+              if (this.#recoveryBinding) {
+                const replacement = resolved.find(
+                  (binding) =>
+                    binding.capability === this.#recoveryBinding?.capability &&
+                    binding.readable,
+                );
+                if (replacement) this.#recoveryBinding = replacement;
+                else await this.#recoverAvailability();
+              }
+              if (this.#stopped) return;
               this.#bindings = resolved;
               await this.#options.persistBindings?.(resolved);
             }
             await this.#refreshInformationalCapabilities();
+            if (this.#stopped) return;
+            this.#registerWrites();
             await this.#readInitialValues();
           })
           .catch((error: unknown) =>
@@ -183,10 +218,19 @@ export class DeviceBindingController {
     }
   }
 
+  #mappingComplete(): boolean {
+    return this.#options.isMappingComplete?.() ?? true;
+  }
+
   async #activate(): Promise<void> {
+    if (this.#stopped) return;
     if (!this.#activated) {
-      this.#buttonEvents = this.#options.resolveButtonEvents?.() ?? [];
-      const resolved = this.#options.resolveBindings?.();
+      this.#buttonEvents = this.#mappingComplete()
+        ? (this.#options.resolveButtonEvents?.() ?? [])
+        : [];
+      const resolved = this.#mappingComplete()
+        ? this.#options.resolveBindings?.()
+        : undefined;
       if (resolved !== undefined && !bindingsEqual(this.#bindings, resolved)) {
         this.#bindings = resolved;
         await this.#options.persistBindings?.(resolved);
@@ -197,66 +241,83 @@ export class DeviceBindingController {
       this.#informationalCapabilities =
         this.#options.resolveInformationalCapabilities?.() ?? {};
       await this.#reconcile();
-      for (const binding of this.#bindings) {
-        if (!binding.writable) continue;
-        this.#unsubscribers.push(
-          this.#device.onCapabilityWrite(binding.capability, async (value) => {
-            this.#device.log(`Writing ${binding.capability} to OpenCCU`);
-            // Commands such as STOP have no readable target state. Their
-            // delivery is acknowledged by XML-RPC; state arrives separately.
-            const pending = binding.readable
-              ? this.#beginWriteVerification(binding, value)
-              : undefined;
-            const writeOutcome: Promise<WriteOutcome> = this.#runtime
-              .write(binding, value)
-              .then(
-                (): WriteOutcome => ({ status: "confirmed" }),
-                (error: unknown): WriteOutcome => ({ status: "failed", error }),
-              );
-            // A write-only command cannot be verified later from its own
-            // datapoint. Await its RPC reply so a late failure reaches Homey.
-            const outcome = binding.readable
-              ? await Promise.race([writeOutcome, waitForPendingWrite()])
-              : await writeOutcome;
-            if (outcome.status === "pending") {
-              this.#device.log(
-                `Accepted ${binding.capability} write; awaiting OpenCCU confirmation`,
-              );
-              void writeOutcome.then((lateOutcome) => {
-                this.#scheduleWriteVerification(pending, 0);
-                if (lateOutcome.status === "confirmed") {
-                  this.#device.log(`Confirmed ${binding.capability} write`);
-                } else {
-                  this.#device.error(
-                    `OpenCCU did not confirm ${binding.capability} write`,
-                    lateOutcome.error,
-                  );
-                }
-              });
-              return;
-            }
-            if (outcome.status === "confirmed") {
-              this.#device.log(`Wrote ${binding.capability} to OpenCCU`);
-              this.#scheduleWriteVerification(pending, 0);
-              return;
-            }
-            this.#clearPendingWrite(pending);
-            this.#device.error(
-              `Failed to write ${binding.capability} to OpenCCU`,
-              outcome.error,
-            );
-            throw outcome.error;
-          }),
-        );
-      }
+      if (this.#stopped) return;
+      this.#registerWrites();
       this.#activated = true;
     }
+    if (this.#stopped) return;
     await this.#device.setAvailable();
     await this.#readInitialValues();
     await this.#setInformationalCapabilityValues();
   }
 
+  #registerWrites(): void {
+    for (const binding of this.#bindings) {
+      if (!binding.writable || this.#registeredWrites.has(binding.capability))
+        continue;
+      this.#registeredWrites.add(binding.capability);
+      const capability = binding.capability;
+      this.#unsubscribers.push(
+        this.#device.onCapabilityWrite(capability, async (value) => {
+          const binding = this.#bindings.find(
+            (entry) => entry.capability === capability && entry.writable,
+          );
+          if (!binding)
+            throw new Error("OpenCCU control is no longer available");
+          if (this.#stopped) throw new Error("OpenCCU device is restarting");
+          this.#device.log(`Writing ${binding.capability} to OpenCCU`);
+          // Commands such as STOP have no readable target state. Their
+          // delivery is acknowledged by XML-RPC; state arrives separately.
+          const pending = binding.readable
+            ? this.#beginWriteVerification(binding, value)
+            : undefined;
+          const writeOutcome: Promise<WriteOutcome> = this.#runtime
+            .write(binding, value)
+            .then(
+              (): WriteOutcome => ({ status: "confirmed" }),
+              (error: unknown): WriteOutcome => ({ status: "failed", error }),
+            );
+          // A write-only command cannot be verified later from its own
+          // datapoint. Await its RPC reply so a late failure reaches Homey.
+          const outcome = binding.readable
+            ? await Promise.race([writeOutcome, waitForPendingWrite()])
+            : await writeOutcome;
+          if (outcome.status === "pending") {
+            this.#device.log(
+              `Accepted ${binding.capability} write; awaiting OpenCCU confirmation`,
+            );
+            void writeOutcome.then((lateOutcome) => {
+              this.#scheduleWriteVerification(pending, 0);
+              if (lateOutcome.status === "confirmed") {
+                this.#device.log(`Confirmed ${binding.capability} write`);
+              } else {
+                this.#device.error(
+                  `OpenCCU did not confirm ${binding.capability} write`,
+                  lateOutcome.error,
+                );
+              }
+            });
+            return;
+          }
+          if (outcome.status === "confirmed") {
+            this.#device.log(`Wrote ${binding.capability} to OpenCCU`);
+            this.#scheduleWriteVerification(pending, 0);
+            return;
+          }
+          this.#clearPendingWrite(pending);
+          this.#device.error(
+            `Failed to write ${binding.capability} to OpenCCU`,
+            outcome.error,
+          );
+          throw outcome.error;
+        }),
+      );
+    }
+  }
+
   stop(): void {
+    this.#stopped = true;
+    this.#clearRecovery();
     this.#handleUpdates.reset();
     this.#statusUpdates.reset();
     for (const unsubscribe of this.#unsubscribers.splice(0)) unsubscribe();
@@ -271,13 +332,20 @@ export class DeviceBindingController {
       ...this.#bindings.map((binding) => binding.capability),
       ...Object.keys(this.#informationalCapabilities),
     ]);
-    for (const capability of changes.remove)
-      await this.#device.removeCapability(capability);
-    for (const capability of changes.add)
+    if (this.#mappingComplete()) {
+      for (const capability of changes.remove) {
+        if (this.#stopped) return;
+        await this.#device.removeCapability(capability);
+      }
+    }
+    for (const capability of changes.add) {
+      if (this.#stopped) return;
       await this.#device.addCapability(capability);
+    }
   }
 
   async #refreshInformationalCapabilities(): Promise<void> {
+    if (this.#stopped || !this.#mappingComplete()) return;
     this.#informationalCapabilities =
       this.#options.resolveInformationalCapabilities?.() ?? {};
     await this.#reconcile();
@@ -288,6 +356,7 @@ export class DeviceBindingController {
     for (const [capability, value] of Object.entries(
       this.#informationalCapabilities,
     )) {
+      if (this.#stopped) return;
       try {
         await this.#device.setCapabilityValue(capability, value);
       } catch (error) {
@@ -304,6 +373,7 @@ export class DeviceBindingController {
       byChannel.set(binding.channelAddress, bindings);
     }
     for (const [channelAddress, bindings] of byChannel) {
+      if (this.#stopped) return;
       try {
         const handleRevision = this.#handleUpdates.revision;
         const statusRevisions = new Map(
@@ -313,6 +383,7 @@ export class DeviceBindingController {
           ]),
         );
         const values = await this.#runtime.readChannelValues(channelAddress);
+        if (this.#stopped) return;
         for (const binding of bindings) {
           if (!(binding.parameter in values)) continue;
           await this.#setValue(
@@ -336,6 +407,7 @@ export class DeviceBindingController {
     handleRevision?: number,
     statusRevision?: number,
   ): Promise<void> {
+    if (this.#stopped) return;
     if (binding.capability === "homematic_rhs_state") {
       await this.#handleUpdates.update(value, live, handleRevision);
       return;
@@ -379,7 +451,7 @@ export class DeviceBindingController {
     pending: PendingWrite | undefined,
     attempt: number,
   ): void {
-    if (pending === undefined) return;
+    if (pending === undefined || this.#stopped) return;
     if (this.#pendingWrites.get(pending.binding.capability) !== pending) return;
     const delay = WRITE_VERIFICATION_DELAYS_MS[attempt];
     if (delay === undefined) return;
@@ -423,9 +495,57 @@ export class DeviceBindingController {
         error,
       );
       this.#clearPendingWrite(pending);
+      this.#recoveryBinding = pending.binding;
       await this.#device.setUnavailable(
         "OpenCCU command delivery could not be verified",
       );
+      this.#scheduleRecovery();
+    }
+  }
+
+  #clearRecovery(): void {
+    if (this.#recoveryTimer !== undefined) clearTimeout(this.#recoveryTimer);
+    this.#recoveryTimer = undefined;
+    this.#recoveryBinding = undefined;
+  }
+
+  async #recoverAvailability(): Promise<void> {
+    if (
+      this.#stopped ||
+      !this.#recoveryBinding ||
+      this.#runtime.connectionState !== "healthy"
+    )
+      return;
+    this.#clearRecovery();
+    await this.#device.setAvailable();
+  }
+
+  #scheduleRecovery(): void {
+    if (
+      this.#stopped ||
+      !this.#recoveryBinding ||
+      this.#recoveryTimer !== undefined
+    )
+      return;
+    this.#recoveryTimer = setTimeout(() => {
+      this.#recoveryTimer = undefined;
+      void this.#probeRecovery();
+    }, 30_000);
+    this.#recoveryTimer.unref?.();
+  }
+
+  async #probeRecovery(): Promise<void> {
+    const binding = this.#recoveryBinding;
+    if (this.#stopped || !binding) return;
+    try {
+      const value = await this.#runtime.read(binding);
+      if (this.#stopped || this.#recoveryBinding !== binding) return;
+      await this.#setReadBackValues(binding, value);
+      await this.#recoverAvailability();
+    } catch {
+      // Retry reads only. A motor command must never be replayed automatically.
+    } finally {
+      this.#scheduleRecovery();
     }
   }
 

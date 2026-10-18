@@ -42,3 +42,11 @@ The sanitized report includes connection states, counters, device types, firmwar
 When reporting a problem, include the app/Homey/OpenCCU versions, product type and firmware, the operation performed, observed behavior, and the diagnostic report. Never post credentials or an unredacted OpenCCU backup.
 
 For HmIP-MOD-HO motor or light errors, create the report after the failed operation and before restarting the app. Include whether opening, stopping, closing, ventilation or light switching failed and the displayed fault code, if available. A successful background read does not erase the latest failed request; a later failure replaces it and restarting resets it. The detailed **Position unknown** reading is a valid device state and does not itself identify why a command was rejected.
+
+## Missing handle functions or unavailable shutters (0.1.12 beta)
+
+Update to 0.1.12 before deleting or re-pairing devices. Incomplete channel discovery now preserves existing functions and retries automatically (first after 30 seconds, then with delays up to five minutes). A successful discovery can restore previously lost mappings. Classic HM devices still require BidCos-RF to remain enabled; disabling it is not a solution for mixed installations.
+
+After `OpenCCU command delivery could not be verified`, the app probes the affected datapoint every 30 seconds and also accepts matching callbacks to restore availability. It never automatically repeats the original motor command. Restored availability does not prove the previous movement was completed.
+
+If either problem returns, create a sanitized diagnostic report before restarting or changing interface settings. Include app/Homey/OpenCCU versions, exact device model/firmware, whether BidCos-RF is enabled, approximate failure time and the exact error text. For shutter reports, distinguish a missing control from an unavailable device and note whether callbacks or the next read restore availability. Use the short report in the forum; attach the full sanitized JSON to GitHub if needed. Check reports for private information before sharing.

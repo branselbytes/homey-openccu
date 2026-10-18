@@ -20,7 +20,7 @@ function fixture() {
   const setValue = vi.fn().mockResolvedValue(undefined);
   const getValue = vi.fn().mockResolvedValue(1);
   const getParamset = vi.fn().mockResolvedValue({ STATE: true });
-  const client: XmlRpcClient = {
+  const client = {
     listDevices: vi.fn(),
     getParamsetDescription: vi.fn(),
     getValue,
@@ -28,7 +28,7 @@ function fixture() {
     setValue,
     putParamset: vi.fn(),
     init: vi.fn(),
-  };
+  } satisfies XmlRpcClient;
   const runtime = new OpenCcuRuntime(client, {
     centralId: "ccu-1",
     interfaceId: "HmIP-RF",
@@ -61,6 +61,7 @@ function fixture() {
   };
   return {
     runtime,
+    client,
     device,
     setValue,
     getParamset,
@@ -330,5 +331,62 @@ it("adds a compass to an existing weather device and updates it with the degree 
     "nw",
   );
   expect(device.onCapabilityWrite).not.toHaveBeenCalled();
+  controller.stop();
+});
+
+it("retains capabilities and bindings across an incomplete live inventory refresh", async () => {
+  const { runtime, device, client } = fixture();
+  vi.mocked(client.listDevices).mockResolvedValue([]);
+  const readOnly = { ...binding, writable: false };
+  runtime.publishConnectionState("healthy");
+  let complete = true;
+  let resolved = [readOnly];
+  const persist = vi.fn();
+  const controller = new DeviceBindingController(runtime, device, [readOnly], {
+    isMappingComplete: () => complete,
+    resolveBindings: () => resolved,
+    persistBindings: persist,
+  });
+  await controller.start();
+  device.removeCapability.mockClear();
+  complete = false;
+  resolved = [];
+  await runtime.refresh();
+  await new Promise((resolve) => setImmediate(resolve));
+  expect(device.getCapabilities()).toContain("onoff");
+  expect(device.removeCapability).not.toHaveBeenCalled();
+  expect(persist).not.toHaveBeenCalled();
+  // A complete inventory can legitimately remove a configured input.
+  complete = true;
+  await runtime.refresh();
+  await vi.waitFor(() =>
+    expect(device.removeCapability).toHaveBeenCalledWith("onoff"),
+  );
+  controller.stop();
+});
+
+it("repairs writable mappings after discovery recovery and uses the current command target", async () => {
+  const { runtime, device, client, setValue, getWriteListener } = fixture();
+  vi.mocked(client.listDevices).mockResolvedValue([]);
+  runtime.publishConnectionState("healthy");
+  let complete = false;
+  let resolved = [binding];
+  const controller = new DeviceBindingController(runtime, device, [], {
+    isMappingComplete: () => complete,
+    resolveBindings: () => resolved,
+  });
+  await controller.start();
+  expect(device.onCapabilityWrite).not.toHaveBeenCalled();
+  complete = true;
+  await runtime.refresh();
+  await vi.waitFor(() =>
+    expect(device.onCapabilityWrite).toHaveBeenCalledOnce(),
+  );
+  resolved = [{ ...binding, writeChannelAddress: "301:5" }];
+  await runtime.refresh();
+  await new Promise((resolve) => setImmediate(resolve));
+  await getWriteListener()?.(false);
+  expect(setValue).toHaveBeenCalledWith("301:5", "STATE", false, undefined);
+  expect(device.onCapabilityWrite).toHaveBeenCalledOnce();
   controller.stop();
 });

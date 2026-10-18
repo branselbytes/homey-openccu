@@ -45,6 +45,8 @@ export interface OpenCcuChannel {
 }
 
 export interface OpenCcuDevice {
+  /** False when discovery could not read every required channel/configuration. */
+  readonly discoveryComplete?: boolean;
   readonly address: string;
   readonly type: string;
   readonly firmware?: string;

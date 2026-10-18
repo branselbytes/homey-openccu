@@ -4,6 +4,18 @@ All notable changes to OpenCCU for Homey will be documented in this file. The pr
 
 ## [Unreleased]
 
+## [0.1.12] — 2026-10-18 (beta)
+
+### Fixed
+
+- Preserve paired capabilities and stored mappings when channel descriptions or required configuration reads are incomplete. Exclude incomplete devices from new pairing and retry discovery with a 30-second to five-minute backoff, using the existing description cache and serialized inventory queue.
+- Repair read-only and writable mappings after successful discovery without re-pairing; registered controls use the current command target. Complete configuration changes can still remove obsolete capabilities.
+- Recover device availability after exhausted command read-back errors through a matching callback or 30-second read-only probes. Recovery reflects communication health, not confirmation that the earlier command succeeded; no actuator commands are replayed.
+- Ignore superseded/stopped verification failures and stop queued controller work, discovery retry timers and recovery probes during shutdown.
+- Clarify the HM-Sec-Sir-WM German perimeter-alarm label as “Alarm der Außenüberwachung”; retain capability and Flow identifiers.
+
+These changes address reproducible failure paths matching forum posts 19–20. The original timeouts and BidCos-related trigger have not been reproduced on the reporters' physical installations; field confirmation is still needed.
+
 ## [0.1.11] — 2026-10-12 (beta)
 
 ### Added

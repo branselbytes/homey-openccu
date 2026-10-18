@@ -122,6 +122,8 @@ export class OpenCcuRuntime {
   #descriptionCacheIssue?: HmIpDiscoveryResult["issues"][number];
   #deferredRefreshIssue?: HmIpDiscoveryResult["issues"][number];
   #stopped = false;
+  #discoveryRetryTimer?: ReturnType<typeof setTimeout>;
+  #discoveryRetryDelay = 30_000;
 
   constructor(client: XmlRpcClient, options: OpenCcuRuntimeOptions) {
     this.#client = client;
@@ -293,9 +295,22 @@ export class OpenCcuRuntime {
       signal,
     );
     signal?.throwIfAborted();
+    if (this.#stopped) return discovery;
     this.#discovery = discovery;
     this.#deferredRefreshIssue = undefined;
     this.#events.publish("discovery", undefined);
+    if (
+      [...discovery.devices.values()].some(
+        (device) => device.discoveryComplete === false,
+      )
+    ) {
+      this.#scheduleDiscoveryRetry();
+    } else {
+      if (this.#discoveryRetryTimer !== undefined)
+        clearTimeout(this.#discoveryRetryTimer);
+      this.#discoveryRetryTimer = undefined;
+      this.#discoveryRetryDelay = 30_000;
+    }
     return discovery;
   }
 
@@ -493,7 +508,12 @@ export class OpenCcuRuntime {
   publishConnectionState(state: ConnectionState, error?: unknown): void {
     this.#connectionState = state;
     this.#stopped = state === "stopped";
-    if (this.#stopped) this.#pendingDeviceChanges.clear();
+    if (this.#stopped) {
+      this.#pendingDeviceChanges.clear();
+      if (this.#discoveryRetryTimer !== undefined)
+        clearTimeout(this.#discoveryRetryTimer);
+      this.#discoveryRetryTimer = undefined;
+    }
     this.#events.publish("connection", {
       interfaceId: this.#options.interfaceId,
       state,
@@ -514,6 +534,32 @@ export class OpenCcuRuntime {
 
   clearSubscriptions(): void {
     this.#events.clear();
+  }
+
+  #scheduleDiscoveryRetry(): void {
+    if (
+      this.#stopped ||
+      this.#discoverySignal?.aborted ||
+      this.#discoveryRetryTimer !== undefined
+    )
+      return;
+    this.#discoveryRetryTimer = setTimeout(() => {
+      this.#discoveryRetryTimer = undefined;
+      const retry = this.#deviceChangeQueue.then(async () => {
+        if (this.#stopped || this.#discoverySignal?.aborted) return;
+        try {
+          await this.refresh(this.#discoverySignal);
+        } catch {
+          this.#scheduleDiscoveryRetry();
+        }
+      });
+      this.#deviceChangeQueue = retry.catch(() => undefined);
+    }, this.#discoveryRetryDelay);
+    this.#discoveryRetryTimer.unref?.();
+    this.#discoveryRetryDelay = Math.min(
+      300_000,
+      this.#discoveryRetryDelay * 2,
+    );
   }
 
   #requireJsonRpcSession(): JsonRpcSession {

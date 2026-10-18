@@ -207,3 +207,11 @@ release notes and zero environment keys. Promotion and a subsequent read
 confirmed state `test`: 31 triggers, 32 conditions and 18 actions, in addition
 to Homey's native capability cards. No Live promotion, forum posting or manual
 Homey installation was performed.
+
+## 0.1.12 forum reliability beta (2026-10-18)
+
+The owner authorized fixing the new forum reports and publishing the next beta. Version 0.1.12 protects existing mappings during incomplete discovery, retries inventory with bounded frequency, restores device availability through callbacks/read-only probes, guards stopped controller work and clarifies the siren label, including existing devices. The forum reply is prepared in `docs/forum-0.1.12-de.md`; it is not posted automatically.
+
+Validation passed: `npm run check` (**1,011 tests in 82 files**, Prettier, ESLint and both TypeScript checks). The new nine-scenario forum regression file was also run against an isolated 0.1.11 checkout: four cases fail there and all nine pass on 0.1.12. Full production preprocessing and in-place publish validation passed using Node.js 24.22.0. The production dependency audit has zero findings. The 870-file package retains all runtime dependencies, 31 custom triggers, 32 conditions and 18 actions, and excludes environment files, tests and development documentation.
+
+GitHub prerelease and Homey Test publication follow the source commit. Homey upload must use an empty environment. No installation on individual Homeys or physical actuator commands are part of this release. Original reporter hardware, the cause of their timeouts and the exact BidCos-related trigger remain unverified; the forum draft explicitly requests those confirmations.

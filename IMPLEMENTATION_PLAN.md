@@ -543,3 +543,14 @@ Delivery: source commit `5f685b2ab178a40e3b35d730d070c406ee1863eb`, annotated
 Delivery: source commit `c077b78497d01b19921311d1547c4e726140db31`, annotated
 `v0.1.11`, GitHub prerelease and verified Homey Test Build 12. All 31 triggers,
 32 conditions and 18 actions were verified in the uploaded build.
+
+## Forum reliability fixes — 0.1.12 beta
+
+- [x] Retain existing capabilities/bindings on incomplete discovery and retry with bounded frequency.
+- [x] Restore mappings after successful discovery, including existing writable controls.
+- [x] Recover availability through callbacks/read-only probes without actuator replay.
+- [x] Ignore superseded/stopped verification failures and cancel background work.
+- [x] Clarify the classic siren label without changing identifiers.
+- [x] Add regression scenarios for retained/recovered handles, mixed-interface isolation, shutter recovery, shutdown and current write targets.
+- [ ] Complete final quality gates and publish GitHub/Homey Test beta.
+- [ ] Obtain reporter confirmation with BidCos-RF enabled and overnight BROLL-2 Flows; original timeout cause remains unverified.

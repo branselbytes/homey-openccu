@@ -45,6 +45,7 @@ export function createPairingCandidates(
   options: PairingCandidateOptions,
 ): readonly PairingCandidate[] {
   return [...devices.values()]
+    .filter((device) => device.discoveryComplete !== false)
     .flatMap((device) => createCandidates(device, options))
     .sort((left, right) => left.name.localeCompare(right.name));
 }

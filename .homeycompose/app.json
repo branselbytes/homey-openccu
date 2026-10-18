@@ -1,6 +1,6 @@
 {
   "id": "io.github.branselbytes.openccu",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "compatibility": ">=12.9.0",
   "sdk": 3,
   "name": {

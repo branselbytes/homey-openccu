@@ -46,5 +46,9 @@
   "0.1.11": {
     "en": "Complete custom-status Flow coverage: 26 change triggers and 26 conditions, typed value tags and readable status text. Add detection enable/disable and boost-off actions. Preserve existing Flows and suppress duplicate, initial and stale updates.",
     "de": "Flow-Abdeckung für eigene Statuswerte ergänzt: 26 Änderungsauslöser und 26 Bedingungen mit Wert-Tags und lesbaren Statustexten. Erkennung aktivieren/deaktivieren und Boost ausschalten per Flow. Bestehende Flows bleiben erhalten; doppelte, initiale und veraltete Meldungen werden unterdrückt."
+  },
+  "0.1.12": {
+    "en": "Preserve existing device capabilities and Flows when discovery is incomplete; retry discovery automatically and restore mappings without re-pairing. Recover device availability after failed command read-back through callbacks or read-only probes, without repeating motor commands. Ignore stale verification errors after newer commands or shutdown. Clarify the classic siren perimeter-alarm label. Physical confirmation of the reported mixed HmIP/BidCos setup is still requested.",
+    "de": "Bestehende Gerätefunktionen und Flows bei unvollständiger Erkennung erhalten; Gerätebeschreibungen automatisch nachladen und Zuordnungen ohne erneutes Anlernen wiederherstellen. Geräte nach fehlgeschlagener Befehlsprüfung durch Rückmeldungen oder reine Leseabfragen wieder verfügbar machen, ohne Fahrbefehle zu wiederholen. Verspätete Prüffehler nach neueren Befehlen oder Neustart ignorieren. Sirenenbeschriftung verdeutlicht. Rückmeldung zum gemeldeten HmIP-/BidCos-Mischbetrieb weiterhin erbeten."
   }
 }

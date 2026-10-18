@@ -142,14 +142,35 @@ export async function discoverHmIpDevices(
     }
   });
 
-  return {
-    devices: buildHmIpDeviceGraph({
-      centralId: options.centralId,
-      interfaceId: options.interfaceId,
-      descriptions,
-      paramsets,
-      configuration,
+  const devices = buildHmIpDeviceGraph({
+    centralId: options.centralId,
+    interfaceId: options.interfaceId,
+    descriptions,
+    paramsets,
+    configuration,
+  });
+  const descriptionsByAddress = new Map(
+    descriptions.map((entry) => [entry.ADDRESS, entry]),
+  );
+  const completeDevices = new Map(
+    [...devices].map(([address, device]) => {
+      const parent = descriptionsByAddress.get(address);
+      const complete =
+        (parent?.CHILDREN ?? []).every((child) => {
+          const channel = descriptionsByAddress.get(child);
+          return (
+            channel !== undefined &&
+            (!channel.PARAMSETS?.includes("VALUES") || paramsets.has(child))
+          );
+        }) &&
+        configurationRequests
+          .filter((request) => request.channelAddress.startsWith(`${address}:`))
+          .every((request) => configuration.has(request.channelAddress));
+      return [address, { ...device, discoveryComplete: complete }] as const;
     }),
+  );
+  return {
+    devices: completeDevices,
     descriptions,
     paramsets,
     issues,

@@ -56,6 +56,10 @@ export abstract class RuntimeBackedDevice extends Homey.Device {
         createDevicePort(this),
         bindings,
         {
+          isMappingComplete: () => {
+            const device = runtime.devices.get(data.address as string);
+            return device !== undefined && device.discoveryComplete !== false;
+          },
           resolveBindings: () => {
             const device = runtime.devices.get(data.address as string);
             return device === undefined

@@ -43,7 +43,7 @@
     "onoff.perimeter": {
       "title": {
         "en": "Perimeter alarm",
-        "de": "Außenhaut-Alarm"
+        "de": "Alarm der Außenüberwachung"
       }
     },
     "onoff.interior": {
