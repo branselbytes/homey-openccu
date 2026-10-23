@@ -236,3 +236,21 @@ failure remains unconfirmed. Parsed manifest comparison confirms only the
 version changed from the published 0.1.12: all driver/capability/Flow definitions
 remain intact. No installation on individual Homeys or physical actuator command
 is part of this release; forum and user messages are drafts only.
+
+0.1.13 delivery: source commit
+[`14af5e335b152ae93e827288e203dfd98c9cf5cd`](https://github.com/branselbytes/homey-openccu/commit/14af5e335b152ae93e827288e203dfd98c9cf5cd)
+and annotated tag `v0.1.13` were pushed to origin. The
+[GitHub prerelease](https://github.com/branselbytes/homey-openccu/releases/tag/v0.1.13)
+is public. The clean release worktree was uploaded through
+`HOMEY_HEADLESS=1 homey app publish` (871 files, 8.84 MB).
+[Homey Build 14](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/14)
+was verified for version 0.1.13, zero environment keys, all Flow IDs, 116 drivers
+and matching EN/DE changelog before promotion. A subsequent read confirms state
+`test`, with 31 triggers, 32 conditions and 18 actions. No direct device
+installation or physical actuator test was performed. Draft messages are supplied
+to the owner rather than sent to the reporter or forum.
+
+[Source CI](https://github.com/branselbytes/homey-openccu/actions/runs/39969062884)
+completed successfully, including Homey validation and the production dependency
+audit. The main workspace is aligned with the published release; the earlier
+local preparation history is preserved on `local-pre-0.1.13-20261023`.

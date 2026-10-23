@@ -563,4 +563,4 @@ Delivery: source commit `120bbbe`, annotated `v0.1.12`, published GitHub prerele
 - [x] Fix numeric activity conversion for initial reads, verification and callbacks.
 - [x] Keep Homey write listeners stable and expose safe protocol error codes.
 - [x] Exercise managed runtimes with Classic enabled/disabled and failed read-back.
-- [ ] Complete combined release quality gate and GitHub/Homey Test delivery.
+- [x] Complete combined quality gate (1,029 tests) and publish GitHub prerelease / verified Homey Test Build 14.
