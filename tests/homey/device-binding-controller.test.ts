@@ -390,3 +390,29 @@ it("repairs writable mappings after discovery recovery and uses the current comm
   expect(device.onCapabilityWrite).toHaveBeenCalledOnce();
   controller.stop();
 });
+
+it("registers a writable capability again after complete removal and re-addition", async () => {
+  const { runtime, device, client } = fixture();
+  vi.mocked(client.listDevices).mockResolvedValue([]);
+  let current: readonly CapabilityBinding[] = [binding];
+  runtime.publishConnectionState("healthy");
+  const controller = new DeviceBindingController(runtime, device, [binding], {
+    resolveBindings: () => current,
+  });
+  try {
+    await controller.start();
+    expect(device.onCapabilityWrite).toHaveBeenCalledTimes(1);
+    current = [];
+    await runtime.refresh();
+    await vi.waitFor(() =>
+      expect(device.removeCapability).toHaveBeenCalledWith("onoff"),
+    );
+    current = [binding];
+    await runtime.refresh();
+    await vi.waitFor(() =>
+      expect(device.onCapabilityWrite).toHaveBeenCalledTimes(2),
+    );
+  } finally {
+    controller.stop();
+  }
+});

@@ -124,3 +124,22 @@ describe("eight-point compass", () => {
     expect(() => transformToOpenCcu("degrees-to-compass-8", "n")).toThrow();
   });
 });
+
+it.each([
+  [0, "idle"],
+  [1, "up"],
+  [2, "down"],
+  [3, "idle"],
+] as const)("accepts numeric CCU cover activity %s", (value, expected) => {
+  expect(transformFromOpenCcu("activity-state-to-cover-state", value)).toBe(
+    expected,
+  );
+});
+it.each([-1, 4, 1.5, NaN, Infinity, true, null])(
+  "rejects invalid cover activity %s",
+  (value) => {
+    expect(() =>
+      transformFromOpenCcu("activity-state-to-cover-state", value),
+    ).toThrow();
+  },
+);

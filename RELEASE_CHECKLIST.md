@@ -217,3 +217,22 @@ Validation passed: `npm run check` (**1,011 tests in 82 files**, Prettier, ESLin
 GitHub prerelease and Homey Test publication follow the source commit. Homey upload must use an empty environment. No installation on individual Homeys or physical actuator commands are part of this release. Original reporter hardware, the cause of their timeouts and the exact BidCos-related trigger remain unverified; the forum draft explicitly requests those confirmations.
 
 Publication completed: source commit [`120bbbe`](https://github.com/branselbytes/homey-openccu/commit/120bbbe) and annotated tag `v0.1.12` were pushed to origin. The [GitHub prerelease](https://github.com/branselbytes/homey-openccu/releases/tag/v0.1.12) is public and [source CI](https://github.com/branselbytes/homey-openccu/actions/runs/39131122467) passed all gates. The Homey CLI uploaded the 870-file, 8.83 MB package as [Build 13](https://tools.developer.homey.app/apps/app/io.github.branselbytes.openccu/build/13). Read-only checks verified version 0.1.12, an empty environment, exact EN/DE changelog/readme and all 81 custom Flow IDs before promotion; a subsequent API read confirms state `test`. No Live promotion, direct Homey installation, forum post or physical control command was performed.
+
+## 0.1.13 beta authorization and quality gate (2026-10-23)
+
+The owner explicitly authorized committing, pushing, GitHub beta publication
+and Homey upload/Test promotion, plus a forum draft and a user reply draft.
+The release is based on published origin/main 0.1.12 (a48dc6c), preserving its
+discovery retries and availability recovery rather than publishing the earlier
+local 0.1.12 preparation. Changes add numeric cover activity handling, stable
+Homey write dispatch and safe protocol error details. Removal/re-addition of a
+writable capability resets its registration in the controller as well.
+
+`npm run check` passed formatting, ESLint, both TypeScript projects and 1,029
+tests in 84 files. Full Homey preprocess/compile and publish-level validation
+passed. Managed runtime fixtures cover Classic on/off, numeric initial/read-back/
+callback states, read failures and recovery; the original reporter's physical
+failure remains unconfirmed. Parsed manifest comparison confirms only the
+version changed from the published 0.1.12: all driver/capability/Flow definitions
+remain intact. No installation on individual Homeys or physical actuator command
+is part of this release; forum and user messages are drafts only.

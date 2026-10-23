@@ -556,3 +556,11 @@ Delivery: source commit `c077b78497d01b19921311d1547c4e726140db31`, annotated
 - [ ] Obtain reporter confirmation with BidCos-RF enabled and overnight BROLL-2 Flows; original timeout cause remains unverified.
 
 Delivery: source commit `120bbbe`, annotated `v0.1.12`, published GitHub prerelease and successful source CI. Homey Build 13 was verified as 0.1.12 with zero environment keys, matching EN/DE changelog/readme and all 81 custom Flow IDs, then promoted to Test and read back as `test`. No individual Homey installation or forum publication was performed.
+
+## 0.1.13 beta — numeric cover status and runtime dispatch
+
+- [x] Base release on the published 0.1.12, preserving discovery retries and device recovery.
+- [x] Fix numeric activity conversion for initial reads, verification and callbacks.
+- [x] Keep Homey write listeners stable and expose safe protocol error codes.
+- [x] Exercise managed runtimes with Classic enabled/disabled and failed read-back.
+- [ ] Complete combined release quality gate and GitHub/Homey Test delivery.

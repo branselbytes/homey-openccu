@@ -4,6 +4,15 @@ All notable changes to OpenCCU for Homey will be documented in this file. The pr
 
 ## [Unreleased]
 
+## [0.1.13] — 2026-10-23 (beta)
+
+### Fixed
+
+- Accept numeric CCU `ACTIVITY_STATE` values for shutter/blind initial reads, read-back and callbacks. Valid enum indices previously raised local `ProtocolError` exceptions.
+- Register each Homey capability-write dispatcher once across runtime replacement; stale controllers cannot receive commands or detach their successor.
+- Log safe protocol error categories and numeric CCU fault codes without exposing raw error details.
+- Add managed-runtime cover regressions with Classic enabled and disabled, retaining 0.1.12 discovery retries and availability recovery. The original user's exact Classic-related trigger still needs field confirmation.
+
 ## [0.1.12] — 2026-10-18 (beta)
 
 ### Fixed

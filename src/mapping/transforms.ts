@@ -28,11 +28,18 @@ export function transformFromOpenCcu(
         return Number(value.slice(-3));
       return null;
     }
-    case "activity-state-to-cover-state":
-      if (typeof value !== "string") throw invalidTransform(transform, value);
-      if (value === "UP") return "up";
-      if (value === "DOWN") return "down";
+    case "activity-state-to-cover-state": {
+      // CCU XML-RPC may return the enum index rather than its display name.
+      const activity =
+        typeof value === "number"
+          ? ["UNKNOWN", "UP", "DOWN", "STABLE"][value]
+          : value;
+      if (typeof activity !== "string")
+        throw invalidTransform(transform, value);
+      if (activity === "UP") return "up";
+      if (activity === "DOWN") return "down";
       return "idle";
+    }
     case "degrees-to-compass-8": {
       const degrees = numeric(value, transform);
       if (degrees < 0 || degrees > 360)

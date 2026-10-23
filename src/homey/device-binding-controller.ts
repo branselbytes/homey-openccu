@@ -336,6 +336,7 @@ export class DeviceBindingController {
       for (const capability of changes.remove) {
         if (this.#stopped) return;
         await this.#device.removeCapability(capability);
+        this.#registeredWrites.delete(capability);
       }
     }
     for (const capability of changes.add) {

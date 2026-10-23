@@ -11,10 +11,18 @@ import { parseStoredBindings } from "./stored-bindings";
 import type { RpcValue } from "../protocol/xmlrpc/types";
 import { resolveDeviceMapping } from "../mapping/device-resolver";
 import { resolveOrganizationCapabilities } from "./device-organization-capabilities";
-import { safeErrorKind } from "../diagnostics/safe-error";
+import { CapabilityWriteListeners } from "./capability-write-listeners";
+import { safeErrorSummary } from "../diagnostics/safe-error";
 
 export abstract class RuntimeBackedDevice extends Homey.Device {
   #controller?: DeviceBindingController;
+  readonly #writeListeners = new CapabilityWriteListeners(
+    (capability, listener) => {
+      this.registerCapabilityListener(capability, (value: RpcValue) =>
+        listener(value),
+      );
+    },
+  );
 
   async refreshOpenCcuRuntime(): Promise<void> {
     this.#controller?.stop();
@@ -53,7 +61,7 @@ export abstract class RuntimeBackedDevice extends Homey.Device {
       );
       this.#controller = new DeviceBindingController(
         runtime,
-        createDevicePort(this),
+        createDevicePort(this, this.#writeListeners),
         bindings,
         {
           isMappingComplete: () => {
@@ -104,7 +112,10 @@ export abstract class RuntimeBackedDevice extends Homey.Device {
       );
       await this.#controller.start();
     } catch (error) {
-      this.error("Failed to initialize OpenCCU device", safeErrorKind(error));
+      this.error(
+        "Failed to initialize OpenCCU device",
+        safeErrorSummary(error),
+      );
       await this.setUnavailable(
         "Invalid or unsupported OpenCCU device mapping",
       );
@@ -117,11 +128,17 @@ export abstract class RuntimeBackedDevice extends Homey.Device {
   }
 }
 
-function createDevicePort(device: Homey.Device): HomeyDevicePort {
+function createDevicePort(
+  device: Homey.Device,
+  writes: CapabilityWriteListeners,
+): HomeyDevicePort {
   return {
     getCapabilities: () => device.getCapabilities(),
     addCapability: (capability) => device.addCapability(capability),
-    removeCapability: (capability) => device.removeCapability(capability),
+    removeCapability: async (capability) => {
+      await device.removeCapability(capability);
+      writes.removed(capability);
+    },
     setCapabilityValue: (capability, value) =>
       device.setCapabilityValue(capability, value),
     triggerStatusChanged: async (capability, value) => {
@@ -158,12 +175,8 @@ function createDevicePort(device: Homey.Device): HomeyDevicePort {
         .getDeviceTriggerCard("hmip_button_pressed")
         .trigger(device, { button, press_type: pressType }, {});
     },
-    onCapabilityWrite: (capability, listener) => {
-      device.registerCapabilityListener(capability, (value: RpcValue) =>
-        listener(value),
-      );
-      return () => undefined;
-    },
+    onCapabilityWrite: (capability, listener) =>
+      writes.bind(capability, listener),
     setAvailable: async () => {
       await device.setAvailable();
     },
@@ -171,7 +184,7 @@ function createDevicePort(device: Homey.Device): HomeyDevicePort {
       await device.setUnavailable(message);
     },
     log: (message) => device.log(message),
-    error: (message, error) => device.error(message, safeErrorKind(error)),
+    error: (message, error) => device.error(message, safeErrorSummary(error)),
   };
 }
 

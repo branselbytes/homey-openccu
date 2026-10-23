@@ -331,3 +331,13 @@ outputs and compatible generic devices and leaves existing cards untouched.
 ADR 0032 separates incomplete inventory from an intentional capability removal. Discovery marks each device complete only after all listed channel descriptions and requested configuration reads succeed. Existing devices retain their capabilities and stored bindings during incomplete discovery; incomplete devices are not offered for new pairing. The runtime retries incomplete inventory through its serialized queue with a 30-second exponential delay capped at five minutes and cancels retries on shutdown. Complete results reconcile both read-only and writable bindings, with registered controls resolving the current command target.
 
 After exhausted command verification read errors, a device is temporarily unavailable. A matching datapoint callback or successful 30-second read-only probe restores availability; the observed value need not equal the old command target. Recovery never sends control commands. Superseded verification failures, stopped controllers and stale recovery reads cannot change the replacement state. This is device-level recovery, not a general continuous interface heartbeat.
+
+Runtime-backed devices keep one Homey capability-write dispatcher per capability
+across runtime replacement. The dispatcher targets only the current controller;
+unsubscription removes that target and stale cleanup cannot detach its successor.
+Actual capability removal resets the registration so a later re-add can bind again.
+Device error logs retain allowlisted protocol categories and numeric XML-RPC fault
+codes, but never raw messages, stacks, causes or arbitrary error properties (ADR 0033).
+
+Cover activity conversion accepts both textual state names and numeric CCU enum
+indices, using the same transform for initial reads, verification and callbacks.
